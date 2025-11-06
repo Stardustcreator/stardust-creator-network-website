@@ -1,0 +1,239 @@
+# Cursor Rules for Stardust Creator Network Website
+
+You are working on the Stardust Creator Network website - a modern Next.js 14 application with TypeScript, Tailwind CSS, and comprehensive SEO optimization. Follow these guidelines when contributing to this project.
+
+## Project Context
+- **Framework**: Next.js 14 with App Router (not Pages Router)
+- **Language**: TypeScript with strict mode enabled
+- **Styling**: Tailwind CSS 4 (latest version)
+- **Deployment**: Optimized for Vercel but platform-agnostic
+- **Focus**: SEO-first, performance-optimized, and developer-friendly
+
+## Architecture Guidelines
+
+### File Organization
+- One component per file with default export
+- Extract hooks to `*.hook.ts` or `*.hooks.ts` files
+- Utilities go in `*.utils.ts` files
+- Types in `*.types.ts` files
+- Service layer in `src/lib/services/*`
+
+### Component Structure
+```typescript
+// ✅ Good: Single component with clear exports
+export default function ComponentName() {
+  return <div>Component content</div>;
+}
+
+// ❌ Bad: Multiple components in one file
+export function Component1() { }
+export function Component2() { }
+```
+
+### Page Organization
+- Keep page files minimal - delegate to feature components
+- Use the metadata API for SEO in every page/layout
+- Set explicit `revalidate` or `dynamic` export when needed
+
+## Code Quality Standards
+
+### TypeScript
+- **Strict mode**: No `any` types in exported APIs
+- **Prefer**: Explicit return types for functions
+- **Use**: Discriminated unions over boolean flags
+- **Avoid**: `null` unless required by external API (prefer `undefined`)
+
+### React Patterns
+- **Prefer**: Server Components by default
+- **Use**: `"use client"` only when necessary (interactivity, hooks, browser APIs)
+- **Hooks**: Follow exhaustive deps rule, stable callbacks with useCallback
+- **State**: Prefer `useState` over `useReducer` for simple state
+
+### Styling
+- **Use**: Tailwind CSS utility classes
+- **Prefer**: Semantic class names and component-scoped styles
+- **Avoid**: Inline styles unless dynamic values required
+- **Responsive**: Mobile-first responsive design
+
+## SEO Requirements
+
+### Metadata
+Every page MUST include proper metadata:
+```typescript
+import type { Metadata } from 'next';
+import { generateMetaTags } from '@/lib/seo';
+
+export const metadata: Metadata = generateMetaTags({
+  title: "Page Title",
+  description: "Page description for search engines",
+  url: "/page-path",
+});
+```
+
+### Images
+- Use Next.js `Image` component for all images
+- Include descriptive `alt` text for accessibility
+- Optimize images for web (WebP/AVIF support enabled)
+
+### Performance
+- Use `loading="lazy"` for below-fold images
+- Implement proper heading hierarchy (h1 → h2 → h3)
+- Add structured data for rich snippets when appropriate
+
+## API Development
+
+### Route Handlers
+Follow this pattern for all API routes:
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const schema = z.object({
+  // Define input schema
+});
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const validatedData = schema.parse(body);
+
+    // Business logic here
+
+    return NextResponse.json({ success: true, data: result });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error message' }, { status: 400 });
+  }
+}
+```
+
+### Error Handling
+- Use Zod for input validation
+- Return consistent error responses
+- Log errors appropriately (avoid console.log in production)
+
+## Security Practices
+
+### Environment Variables
+- Use `NEXT_PUBLIC_` prefix only for browser-safe values
+- Validate required env vars at application startup
+- Never expose secrets to the client bundle
+
+### User Input
+- Validate all inputs with Zod schemas
+- Sanitize HTML content if accepting user markup
+- Use parameterized queries for database interactions
+
+## Performance Guidelines
+
+### Bundle Optimization
+- Dynamic imports for heavy components/libraries
+- Use `next/dynamic` with proper loading states
+- Avoid importing entire libraries (use tree-shaking friendly imports)
+
+### Caching Strategy
+- Set appropriate `revalidate` values for static pages
+- Use `unstable_cache` for expensive computations
+- Implement proper Cache-Control headers
+
+## Testing Requirements
+
+### Unit Tests
+- Test utility functions and custom hooks
+- Mock external dependencies
+- Focus on business logic and edge cases
+
+### E2E Tests
+- Test critical user journeys
+- Include accessibility checks with @axe-core/playwright
+- Test across different viewport sizes
+
+## Content Management
+
+### Static Content
+- Store in `src/content/` as MDX files
+- Use consistent frontmatter structure
+- Generate slugs from filenames or explicit slug field
+
+### Dynamic Content
+- Implement proper TypeScript interfaces for CMS data
+- Handle loading and error states gracefully
+- Cache CMS responses appropriately
+
+## Common Patterns
+
+### Loading States
+```typescript
+// ✅ Good: Proper loading UI
+if (loading) return <LoadingSpinner />;
+if (error) return <ErrorMessage error={error} />;
+return <Content data={data} />;
+```
+
+### Form Handling
+```typescript
+// ✅ Good: Controlled forms with validation
+const [formData, setFormData] = useState(initialData);
+const [errors, setErrors] = useState({});
+
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  const result = schema.safeParse(formData);
+  if (!result.success) {
+    setErrors(result.error.flatten().fieldErrors);
+    return;
+  }
+  // Submit logic
+};
+```
+
+## Don'ts - Avoid These
+
+### Code Organization
+- ❌ Don't put multiple components in one file
+- ❌ Don't use barrel exports for external libraries
+- ❌ Don't import entire libraries when specific functions needed
+- ❌ Don't put business logic in components
+
+### Performance
+- ❌ Don't use `"use client"` unnecessarily
+- ❌ Don't import heavy libraries without code splitting
+- ❌ Don't forget to optimize images
+- ❌ Don't skip the loading states
+
+### SEO/Accessibility
+- ❌ Don't forget metadata for new pages
+- ❌ Don't use non-semantic HTML elements
+- ❌ Don't skip alt text for images
+- ❌ Don't break heading hierarchy
+
+### Security
+- ❌ Don't expose sensitive data to client
+- ❌ Don't trust user input without validation
+- ❌ Don't commit secrets to version control
+
+## When Making Changes
+
+1. **Before coding**: Understand the existing patterns and follow them
+2. **During coding**: Write TypeScript-first, test as you go
+3. **Before committing**: Run `npm run ci` to ensure quality
+4. **Documentation**: Update README if adding new patterns or requirements
+
+## Questions to Ask Yourself
+
+- Is this component server-side or does it need client interactivity?
+- Does this page have proper SEO metadata?
+- Am I following the established file structure patterns?
+- Are my TypeScript types strict and accurate?
+- Will this perform well on slow devices/networks?
+- Is this accessible to screen readers?
+- Am I handling loading and error states?
+
+## Getting Help
+
+- Check existing components for patterns before creating new ones
+- Look in `src/lib/seo.ts` for SEO utilities
+- Reference the README.md for setup and deployment
+- Use TypeScript compiler and ESLint for guidance
+- Test changes locally with `npm run dev` and `npm run ci`
+
+Remember: This is a foundation that prioritizes developer experience, performance, SEO, and maintainability. Every change should align with these principles.
