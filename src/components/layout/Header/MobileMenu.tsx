@@ -1,0 +1,176 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
+interface NavigationItem {
+  label: string;
+  href: string;
+  children?: NavigationItem[];
+}
+
+const navigationItems: NavigationItem[] = [
+  {
+    label: 'For Creators',
+    href: '/creators',
+    children: [
+      { label: 'Join Our Network', href: '/creators/join' },
+      { label: 'Creator Opportunities', href: '/creators/opportunities' },
+      { label: 'Success Stories', href: '/creators/stories' },
+      { label: 'Creator Resources', href: '/creators/resources' },
+    ],
+  },
+  {
+    label: 'For Brands',
+    href: '/brands',
+    children: [
+      { label: 'Find Creators', href: '/brands/find' },
+      { label: 'Campaign Examples', href: '/brands/campaigns' },
+      { label: 'How It Works', href: '/brands/process' },
+    ],
+  },
+  {
+    label: 'SCN Community',
+    href: '/community',
+    children: [
+      { label: "What's Included", href: '/community/features' },
+      { label: 'Join Waitlist', href: '/community/waitlist' },
+    ],
+  },
+  {
+    label: 'Creator OS',
+    href: '/creator-os',
+  },
+  {
+    label: 'About',
+    href: '/about',
+  },
+];
+
+interface MobileMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (label: string) => {
+    const newExpanded = new Set(expandedItems);
+    if (newExpanded.has(label)) {
+      newExpanded.delete(label);
+    } else {
+      newExpanded.add(label);
+    }
+    setExpandedItems(newExpanded);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="lg:hidden">
+      <div
+        className="fixed inset-0 z-50 bg-black bg-opacity-50"
+        onClick={onClose}
+      />
+      <div className="fixed top-0 right-0 z-50 h-full w-80 max-w-sm bg-white shadow-xl">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+          <span className="text-lg font-semibold text-brand-purple">Menu</span>
+          <button
+            onClick={onClose}
+            className="p-2 text-neutral-600 hover:text-brand-purple transition-colors"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="p-6">
+          <ul className="space-y-4">
+            {navigationItems.map(item => (
+              <li key={item.label}>
+                {item.children ? (
+                  <div>
+                    <button
+                      onClick={() => toggleExpanded(item.label)}
+                      className="flex items-center justify-between w-full text-left text-neutral-700 hover:text-brand-purple font-medium transition-colors py-2"
+                    >
+                      {item.label}
+                      <svg
+                        className={`w-4 h-4 transition-transform ${
+                          expandedItems.has(item.label) ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+                    {expandedItems.has(item.label) && (
+                      <ul className="ml-4 mt-2 space-y-2">
+                        {item.children.map(child => (
+                          <li key={child.label}>
+                            <Link
+                              href={child.href}
+                              onClick={onClose}
+                              className="block text-neutral-600 hover:text-brand-purple transition-colors py-1"
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="block text-neutral-700 hover:text-brand-purple font-medium transition-colors py-2"
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {/* Mobile CTAs */}
+          <div className="mt-8 space-y-3">
+            <Link
+              href="/creators/join"
+              onClick={onClose}
+              className="btn-primary w-full text-center"
+            >
+              Join as Creator
+            </Link>
+            <Link
+              href="/brands/find"
+              onClick={onClose}
+              className="btn-secondary w-full text-center"
+            >
+              Find Creators
+            </Link>
+          </div>
+        </nav>
+      </div>
+    </div>
+  );
+}

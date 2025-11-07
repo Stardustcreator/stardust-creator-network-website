@@ -1,0 +1,93 @@
+export default function StatisticsDashboardSection() {
+  return (
+    <section className="py-32 bg-black">
+      <div className="container mx-auto px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Section Label */}
+          <div className="mb-8">
+            <span className="text-purple-400 font-semibold text-sm uppercase tracking-wider">
+              Credibility / Vision Statement
+            </span>
+          </div>
+
+          {/* Main Content */}
+          <p className="text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed font-light">
+            Backed by a team that has powered{' '}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold">
+              top brands, creators, and media campaigns
+            </span>{' '}
+            across the globe, SCN is on a mission to build the infrastructure that turns{' '}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold">
+              creativity into sustainable business
+            </span>
+            .
+          </p>
+
+          {/* Decorative Element */}
+          <div className="mt-12 flex justify-center">
+            <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+          </div>
+
+          {/* Testimonial Card */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-3xl p-8 md:p-12">
+              {/* Quote Icon */}
+              <div className="mb-6">
+                <svg
+                  className="w-12 h-12 text-purple-400"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z" />
+                </svg>
+              </div>
+
+              {/* Main Quote */}
+              <p className="text-xl md:text-2xl text-white leading-relaxed mb-6 font-light">
+                Thanks to Stardust Creator Network, I transformed my content creation into a
+                thriving business. The community, tools, and support are unmatched. I went from
+                posting sporadically to running a sustainable creative enterprise with consistent
+                income.
+              </p>
+
+              {/* Secondary Quote */}
+              <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                The analytics helped me understand my audience better, and the monetization features
+                made it easy to turn my passion into profit. I couldn&apos;t have done this without
+                the platform.
+              </p>
+
+              {/* User Profile */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-500 rounded-full flex items-center justify-center text-xl font-bold text-white">
+                  JM
+                </div>
+                <div className="text-left">
+                  <h4 className="text-white font-semibold text-lg">Jessica Martinez</h4>
+                  <p className="text-gray-400">Content Creator & Entrepreneur</p>
+                  <p className="text-gray-500 text-sm">850K followers</p>
+                </div>
+              </div>
+
+              {/* Statistics */}
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-700/50">
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">5/5</div>
+                  <div className="text-gray-400 text-sm">Rating</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">2,500+</div>
+                  <div className="text-gray-400 text-sm">Reviews</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
+                  <div className="text-gray-400 text-sm">Satisfaction</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

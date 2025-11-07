@@ -1,26 +1,217 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Stardust Creator Network Brand Colors */
+  --color-white: #ffffff;
+  --color-deep-purple: #57058b;
+  --color-black: #000000;
+  --color-light-grey: #e6e6e6;
+  --color-bright-purple: #a51cff;
+  --color-vivid-violet: #8500d1;
+  --color-yellow-gold: #ffcc00;
+  --color-orange-red: #ff5400;
+
+  /* Additional brand colors */
+  --color-brand-orange: #ff5400;
+
+  /* Neutral Colors (inspired by Suna'nın Kızları) */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #a51cff 0%, #57058b 100%);
+  --gradient-hero: linear-gradient(135deg, #f9fafb 0%, #ffffff 50%, #f3f4f6 100%);
+
+  /* Typography */
+  --font-family-primary: var(--font-lato);
+
+  /* Section Numbers (inspired by reference) */
+  --color-section-number: #f3f4f6;
+
+  /* Background and Foreground */
+  --background: var(--color-white);
+  --foreground: var(--color-neutral-800);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-lato);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Brand Colors */
+  --color-brand-purple: var(--color-deep-purple);
+  --color-brand-bright: var(--color-bright-purple);
+  --color-brand-violet: var(--color-vivid-violet);
+  --color-brand-gold: var(--color-yellow-gold);
+  --color-brand-orange: var(--color-orange-red);
+
+  /* Brand orange for CTAs */
+  --color-brand-orange: #ff5400;
+
+  /* Neutral Palette */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-lato), 'Lato', sans-serif;
+  line-height: 1.6;
+}
+
+/* Typography Hierarchy matching Suna'nın Kızları */
+.section-number {
+  font-size: 6rem;
+  font-weight: 300;
+  color: var(--color-section-number);
+  line-height: 1;
+  user-select: none;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-deep-purple);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-neutral-800);
+  line-height: 1.4;
+}
+
+/* Hero Typography */
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-deep-purple);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+}
+
+/* Button Styles matching reference */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(165, 28, 255, 0.25);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: var(--color-deep-purple);
+  border: 2px solid var(--color-deep-purple);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--color-deep-purple);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Collapsible Navigation Enhancements */
+.nav-collapsed {
+  transform: translateY(-100%);
+}
+
+.nav-visible {
+  transform: translateY(0);
+}
+
+/* Ensure header doesn't interfere with content */
+body {
+  padding-top: 0;
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(12px)) {
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Custom animations */
+@keyframes scroll-logos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-logos {
+  animation: scroll-logos 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-logos:hover {
+  animation-play-state: paused;
+}
+
+/* Responsive scroll speed adjustments */
+@media (max-width: 768px) {
+  .animate-scroll-logos {
+    animation-duration: 25s;
+  }
+}
+
+@media (max-width: 480px) {
+  .animate-scroll-logos {
+    animation-duration: 20s;
+  }
 }

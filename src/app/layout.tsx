@@ -1,17 +1,14 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Lato } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const lato = Lato({
+  variable: '--font-lato',
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -106,7 +103,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${lato.variable} antialiased font-lato`}>
         {children}
         <Analytics />
       </body>
