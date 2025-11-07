@@ -95,12 +95,7 @@ export default function proxy(request: NextRequest) {
     return new Response(null, { status: 200, headers: response.headers });
   }
 
-  // Redirect www to non-www (or vice versa) if needed
-  const url = request.nextUrl.clone();
-  if (process.env.NODE_ENV === 'production' && url.hostname.startsWith('www.')) {
-    url.hostname = url.hostname.substring(4);
-    return NextResponse.redirect(url, 301);
-  }
+  // Host canonicalization is handled by Vercel platform
 
   // Block known bot patterns that we don't want
   const userAgent = request.headers.get('user-agent') || '';
