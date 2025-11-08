@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { navigationItems, type NavigationItem } from './navigation.constants';
+import { navigationItems } from './navigation.constants';
 
 interface TopNavigationProps {
   className?: string;
@@ -24,7 +24,7 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
                 onMouseEnter={() => setActiveDropdown(item.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button className="flex items-center gap-1 text-white/90 hover:text-white hover:bg-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap backdrop-blur-sm">
+                <button className="flex items-center gap-1 text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm border border-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap">
                   {item.label}
                   <svg
                     className="w-4 h-4 transition-transform group-hover:rotate-180"
@@ -65,7 +65,7 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
             ) : (
               <Link
                 href={item.href}
-                className="text-white/90 hover:text-white hover:bg-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap backdrop-blur-sm"
+                className="text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm border border-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap"
               >
                 {item.label}
               </Link>

@@ -5,7 +5,7 @@ export default function ConnectCollaborateCreateSection() {
   return (
     <section
       id="who-we-are"
-      className="py-20 bg-slate-900"
+      className="py-20 bg-slate-900 rounded-[40px]"
     >
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">

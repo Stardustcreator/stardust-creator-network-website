@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import TypewriterText from './TypewriterText';
 import { Heading, Text } from '@/components/typography';
 
 export default function Hero() {
   return (
-    <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black">
+    <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
       {/* Mobile Background Image */}
       <Image
         src="/hero background picture.png"
@@ -71,11 +72,27 @@ export default function Hero() {
             <Text
               variant="large"
               color="white"
-              className="max-w-3xl"
+              className="max-w-3xl mb-8"
             >
               Stardust Creator Network connects creators and brands today, and is building the
               infrastructure that will power tomorrow&apos;s creative businesses.
             </Text>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/creators/join"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-medium transition-all whitespace-nowrap shadow-lg text-center"
+            >
+              Join as Creator
+            </Link>
+            <Link
+              href="/brands/find"
+              className="inline-flex items-center justify-center text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm border border-white/20 hover:border-white/50 px-6 py-3 rounded-full font-medium transition-all whitespace-nowrap text-center"
+            >
+              Find Creators
+            </Link>
           </div>
         </div>
       </div>

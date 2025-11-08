@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { navigationItems } from './navigation.constants';
+import CountrySelector from './CountrySelector';
 
 interface MobileTopNavigationProps {
   isOpen: boolean;
@@ -13,6 +14,14 @@ interface MobileTopNavigationProps {
 
 export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNavigationProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering interactive content after mount
+  useEffect(() => {
+    // This is necessary for preventing hydration mismatch in Next.js
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
 
   const toggleExpanded = (label: string) => {
     const newExpanded = new Set(expandedItems);
@@ -40,7 +49,7 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (!isMounted || typeof window === 'undefined') {
       return undefined;
     }
 
@@ -56,7 +65,20 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
     return () => {
       body.style.overflow = originalOverflow;
     };
-  }, [isOpen]);
+  }, [isOpen, isMounted]);
+
+  // Prevent hydration mismatch - render consistent structure on server
+  if (!isMounted) {
+    return (
+      <div
+        id={menuId}
+        role="dialog"
+        aria-modal="false"
+        className="fixed top-0 left-0 right-0 bottom-0 h-screen bg-black/95 backdrop-blur-lg z-50 lg:hidden transform -translate-y-full opacity-0 pointer-events-none"
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <>
@@ -186,6 +208,11 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
               ))}
             </ul>
           </nav>
+
+          {/* Country Selector */}
+          <div className="mb-6">
+            <CountrySelector variant="mobile" />
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3">

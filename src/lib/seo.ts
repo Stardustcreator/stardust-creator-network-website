@@ -136,8 +136,12 @@ export function generateMetaTags(params: {
     author,
   } = params;
 
+  // Check if title already includes the site name to avoid duplication
+  const titleAlreadyIncludesSiteName =
+    title === site.name || title.includes(`| ${site.name}`) || title.startsWith(`${site.name} |`);
+
   const metaTags = {
-    title: title === site.name ? title : `${title} | ${site.name}`,
+    title: titleAlreadyIncludesSiteName ? title : `${title} | ${site.name}`,
     description,
     openGraph: {
       title,

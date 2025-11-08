@@ -9,15 +9,7 @@ export default function StatisticsDashboardSection() {
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           {/* Section Label */}
-          <div className="mb-8">
-            <Text
-              variant="label"
-              color="gradient-primary"
-              as="span"
-            >
-              Credibility / Vision Statement
-            </Text>
-          </div>
+          <div className="mb-8"></div>
 
           {/* Main Content */}
           <Text

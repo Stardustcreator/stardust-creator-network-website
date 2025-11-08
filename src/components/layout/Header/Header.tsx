@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { TopNavigation } from './TopNavigation';
 import { MobileTopNavigation } from './MobileTopNavigation';
+import CountrySelector from './CountrySelector';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -67,20 +68,9 @@ export default function Header() {
               <TopNavigation />
             </div>
 
-            {/* CTA Buttons */}
+            {/* Country Selector */}
             <div className="flex items-center gap-3">
-              <Link
-                href="/brands/find"
-                className="text-white/90 hover:text-white border border-white/30 hover:border-white/50 px-4 py-2 rounded-full font-medium transition-all whitespace-nowrap backdrop-blur-sm"
-              >
-                Find Creators
-              </Link>
-              <Link
-                href="/creators/join"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-2 rounded-full font-medium transition-all whitespace-nowrap shadow-lg"
-              >
-                Join as Creator
-              </Link>
+              <CountrySelector variant="desktop" />
             </div>
           </div>
 

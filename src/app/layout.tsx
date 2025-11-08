@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
+import { CountryProvider } from '@/lib/contexts/CountryContext';
 import './globals.css';
 
 const lato = Lato({
@@ -105,7 +106,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
-        {children}
+        <CountryProvider>{children}</CountryProvider>
         <Analytics />
       </body>
     </html>

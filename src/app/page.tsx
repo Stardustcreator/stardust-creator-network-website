@@ -14,9 +14,9 @@ import CTASection from '@/components/sections/CTA/CTASection';
 
 // Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
-  title: 'The Fastest Growing Creators of TikTok Shop - Stardust Creator Network',
+  title: 'Stardust Creator Network | Discover, Collaborate & Grow With Top Creators',
   description:
-    'Join thousands of creators building sustainable businesses on Stardust Creator Network. Create. Connect. Convert. Access powerful tools, analytics, and monetization features.',
+    "Join the Stardust Creator Network — where brands and creators connect through authentic stories, data-driven campaigns, and real community. Collaborate, earn, and grow your influence with Africa's most vibrant creator network.",
   url: '/',
 });
 
