@@ -1,4 +1,5 @@
-import { Heading, Text } from '@/components/typography';
+import { Text } from '@/components/typography';
+import { SectionHeader } from '@/components/shared';
 import ImagePlaceholderCard from './ImagePlaceholderCard';
 
 export default function IconGridSection() {
@@ -10,23 +11,19 @@ export default function IconGridSection() {
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto text-center">
           {/* Main Headline */}
-          <Heading
-            level={2}
-            variant="default"
-            className="text-white mb-8"
-          >
-            <span className="text-gradient-primary">Learn. Collaborate. Scale.</span>
-            <br />
-            <Text
-              variant="large"
-              color="white"
-              weight={600}
-              as="span"
-              className="text-3xl md:text-4xl lg:text-5xl"
-            >
-              The Stardust Creator Community is Launching Soon.
-            </Text>
-          </Heading>
+          <SectionHeader
+            words={[
+              { text: 'Learn.', className: 'text-gradient-primary' },
+              { text: 'Collaborate.', className: 'text-gradient-primary' },
+              { text: 'Scale.', className: 'text-gradient-primary' },
+            ]}
+            subtitle="The Stardust Creator Community is Launching Soon."
+            headingClassName="text-white"
+            subtitleClassName="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mt-4"
+            className="mb-8"
+            staggerDelay={350}
+            variant="fadeUp"
+          />
 
           {/* Main Copy */}
           <Text

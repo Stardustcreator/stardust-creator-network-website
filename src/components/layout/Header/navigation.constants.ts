@@ -14,7 +14,7 @@ export const navigationItems: NavigationItem[] = [
     href: '/#stardust-creator-community',
   },
   {
-    label: 'Creator OS',
+    label: 'CreatorOS',
     href: '/#creator-os',
   },
 ];

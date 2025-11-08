@@ -1,4 +1,5 @@
 import { Heading, Text } from '@/components/typography';
+import { SectionHeader } from '@/components/shared';
 
 export default function CTASection() {
   return (
@@ -28,22 +29,19 @@ export default function CTASection() {
             </div>
 
             {/* Headline */}
-            <Heading
-              level={2}
-              variant="default"
-              className="text-white mb-8"
-            >
-              Create. <span className="text-gradient-primary">Connect.</span> Convert.
-            </Heading>
-
-            <Text
-              variant="large"
-              color="white"
-              className="mb-16 max-w-2xl mx-auto opacity-90"
-            >
-              Join thousands of creators building sustainable businesses and authentic connections
-              with their audiences.
-            </Text>
+            <SectionHeader
+              words={[
+                { text: 'Create.' },
+                { text: 'Connect.', className: 'text-gradient-primary' },
+                { text: 'Convert.' },
+              ]}
+              subtitle="Join thousands of creators building sustainable businesses and authentic connections with their audiences."
+              headingClassName="text-white"
+              subtitleClassName="max-w-2xl mx-auto"
+              className="mb-16"
+              staggerDelay={300}
+              variant="scale"
+            />
           </div>
 
           {/* Newsletter Subscription */}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
+import { SectionHeader } from '@/components/shared';
 
 export default function ConnectCollaborateCreateSection() {
   return (
@@ -18,24 +19,18 @@ export default function ConnectCollaborateCreateSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20 animate-fade-in-up">
-          <Heading
-            level={2}
-            variant="default"
-            className="text-white mb-6"
-          >
-            Connect. <span className="text-gradient-primary">Collaborate.</span> Create.
-          </Heading>
-          <Text
-            variant="large"
-            color="white"
-            className="max-w-4xl mx-auto opacity-90"
-          >
-            We connect leading brands with Nigeria and the UK&apos;s most dynamic creators — from
-            nano storytellers to macro influencers — to craft authentic campaigns that convert. More
-            countries coming soon.
-          </Text>
-        </div>
+        <SectionHeader
+          words={[
+            { text: 'Connect.' },
+            { text: 'Collaborate.', className: 'text-gradient-primary' },
+            { text: 'Create.' },
+          ]}
+          subtitle="We connect leading brands with Nigeria and the UK's most dynamic creators — from nano storytellers to macro influencers — to craft authentic campaigns that convert. More countries coming soon."
+          headingClassName="text-white"
+          subtitleClassName="max-w-4xl mx-auto"
+          className="mb-20"
+          staggerDelay={400}
+        />
 
         {/* Split-Screen Layout */}
         <div className="grid lg:grid-cols-2 gap-0 max-w-7xl mx-auto">
