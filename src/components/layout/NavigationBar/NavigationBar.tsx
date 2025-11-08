@@ -20,7 +20,7 @@ export default function NavigationBar({
   logoSrc = '/logos/scn logo white.png',
   logoAlt = 'Stardust Creator Network Logo',
   logoWidth = 120,
-  logoHeight = 48
+  logoHeight = 48,
 }: NavigationBarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,7 +83,7 @@ export default function NavigationBar({
             </div>
 
             {/* Country Selector */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               <CountrySelector variant="desktop" />
             </div>
           </div>

@@ -112,10 +112,10 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/brands/find"
+              href="/brands/brief"
               className="inline-flex items-center justify-center px-8 py-4 bg-linear-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
             >
-              Find Creators
+              Find a Creator
             </Link>
             <Link
               href="/creators/join"

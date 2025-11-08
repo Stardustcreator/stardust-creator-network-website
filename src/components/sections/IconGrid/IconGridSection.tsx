@@ -30,8 +30,9 @@ export default function IconGridSection() {
             variant="large"
             className="text-white mb-12 max-w-4xl mx-auto opacity-90"
           >
-            The SCN Creator Community will empower creators with access to education, monetization
-            playbooks, and peer collaboration, all within a private, growth-focused ecosystem.
+            The Stardust Creator Community will empower creators with access to education,
+            monetization playbooks, and peer collaboration, all within a private, growth-focused
+            ecosystem.
           </Text>
 
           <Text
@@ -46,19 +47,19 @@ export default function IconGridSection() {
             <ImagePlaceholderCard
               title="Learning Hub"
               description="Educational Resources"
-              placeholder="📚"
+              placeholder="LH"
               size="medium"
             />
             <ImagePlaceholderCard
               title="Creator Network"
               description="Community Connections"
-              placeholder="🤝"
+              placeholder="CN"
               size="medium"
             />
             <ImagePlaceholderCard
               title="Growth Tools"
               description="Monetization Playbooks"
-              placeholder="📈"
+              placeholder="GT"
               size="medium"
             />
           </div>

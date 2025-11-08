@@ -217,11 +217,11 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3">
             <Link
-              href="/brands/find"
+              href="/brands/brief"
               onClick={onClose}
               className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 text-center"
             >
-              Find Creators
+              Find a Creator
             </Link>
             <Link
               href="/creators/join"

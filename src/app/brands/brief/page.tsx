@@ -8,7 +8,7 @@ import { Text } from '@/components/typography/Text';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 
-export default function CreatorJoinPage() {
+export default function BrandBriefPage() {
   const router = useRouter();
   const [isDetecting, setIsDetecting] = useState(true);
 
@@ -23,10 +23,10 @@ export default function CreatorJoinPage() {
 
           // Redirect based on detected country
           if (country === 'NG' || country === 'Nigeria') {
-            router.push('/join/creator/nigeria');
+            router.push('/brands/brief/nigeria');
             return;
           } else if (country === 'GB' || country === 'UK' || country === 'United Kingdom') {
-            router.push('/join/creator/uk');
+            router.push('/brands/brief/uk');
             return;
           }
         }
@@ -59,7 +59,7 @@ export default function CreatorJoinPage() {
               variant="body"
               className="text-white opacity-70"
             >
-              Unlocking opportunities tailored to your location
+              Finding the best creators for your region
             </Text>
           </div>
         </main>
@@ -78,7 +78,7 @@ export default function CreatorJoinPage() {
             <div className="mb-12">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
                 <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse" />
-                <span className="text-purple-300 text-sm font-medium">Creator Applications</span>
+                <span className="text-purple-300 text-sm font-medium">Brand Partnerships</span>
               </div>
 
               <Heading
@@ -92,14 +92,14 @@ export default function CreatorJoinPage() {
                 variant="large"
                 className="text-white opacity-80"
               >
-                Select your location to access the most relevant application form and opportunities
+                Select your location to connect with verified creators in your market
               </Text>
             </div>
 
             {/* Location Selection */}
             <div className="space-y-4 mb-8">
               <Link
-                href="/join/creator/nigeria"
+                href="/brands/brief/nigeria"
                 className="block w-full bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 text-left hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-105 group"
               >
                 <div className="flex items-center justify-between">
@@ -116,7 +116,7 @@ export default function CreatorJoinPage() {
                         variant="body"
                         className="text-white opacity-70"
                       >
-                        Join Nigeria&apos;s leading creator network
+                        Connect with Nigeria&apos;s leading creators
                       </Text>
                     </div>
                   </div>
@@ -137,7 +137,7 @@ export default function CreatorJoinPage() {
               </Link>
 
               <Link
-                href="/join/creator/uk"
+                href="/brands/brief/uk"
                 className="block w-full bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 text-left hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-105 group"
               >
                 <div className="flex items-center justify-between">
@@ -154,7 +154,7 @@ export default function CreatorJoinPage() {
                         variant="body"
                         className="text-white opacity-70"
                       >
-                        Join the UK&apos;s innovative creator network
+                        Connect with the UK&apos;s innovative creators
                       </Text>
                     </div>
                   </div>

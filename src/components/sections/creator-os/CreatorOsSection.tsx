@@ -14,7 +14,7 @@ export default function CreatorOsSection() {
             variant="default"
             className="text-white mb-8"
           >
-            The <span className="text-gradient-primary">Stardust Creator OS</span>
+            The <span className="text-gradient-primary">Stardust CreatorOS</span>
             <br />
             <Text
               variant="large"
@@ -31,9 +31,9 @@ export default function CreatorOsSection() {
             variant="large"
             className="text-white mb-12 max-w-4xl mx-auto opacity-90"
           >
-            We&apos;re building Stardust Creator OS, the operating system for modern creators.
-            Create and sell digital products, courses, memberships, or event tickets. Manage
-            campaigns, license your content, and automate payments all in one platform.
+            We&apos;re building Stardust CreatorOS, the operating system for modern creators. Create
+            and sell digital products, courses, memberships, or event tickets. Manage campaigns,
+            license your content, and automate payments all in one platform.
           </Text>
 
           <Text

@@ -130,10 +130,10 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/brands/find"
+                  href="/brands/brief"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
-                  Find Creators
+                  Find a Creator
                 </Link>
               </li>
               <li>

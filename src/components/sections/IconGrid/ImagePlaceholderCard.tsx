@@ -9,7 +9,7 @@ interface ImagePlaceholderCardProps {
 export default function ImagePlaceholderCard({
   title = 'Community Preview',
   description = 'Coming Soon',
-  placeholder = '🎨',
+  placeholder = 'CP',
   size = 'medium',
   className = '',
 }: ImagePlaceholderCardProps) {

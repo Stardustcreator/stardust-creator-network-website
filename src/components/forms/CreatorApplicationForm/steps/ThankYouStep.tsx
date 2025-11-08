@@ -7,6 +7,7 @@ interface ThankYouStepProps {
 }
 
 const getSocialLinks = (_country: Country) => {
+  // eslint-disable-line @typescript-eslint/no-unused-vars
   // This could be country-specific in the future
   return {
     instagram: 'https://instagram.com/stardustcreatornetwork',
@@ -61,7 +62,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
           level={1}
           className="text-white mb-4 text-3xl md:text-4xl"
         >
-          You&apos;re officially part of the Stardust orbit ✨
+          You&apos;re officially part of the Stardust orbit
         </Heading>
 
         <Text
@@ -228,8 +229,8 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
           variant="caption"
           className="text-white opacity-70"
         >
-          Thank you for choosing Stardust Creator Network. We&apos;re excited to potentially
-          welcome you to our community of innovative creators in {country}.
+          Thank you for choosing Stardust Creator Network. We&apos;re excited to potentially welcome
+          you to our community of innovative creators in {country}.
         </Text>
       </div>
     </div>
