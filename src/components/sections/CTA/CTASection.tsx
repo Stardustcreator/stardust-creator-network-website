@@ -52,7 +52,7 @@ export default function CTASection() {
               <Heading
                 level={3}
                 variant="default"
-                className="text-white mb-2"
+                className="!text-white mb-2 text-lg md:text-xl"
               >
                 Stay in the Loop
               </Heading>

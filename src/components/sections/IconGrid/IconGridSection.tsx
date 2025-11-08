@@ -23,7 +23,7 @@ export default function IconGridSection() {
               as="span"
               className="text-3xl md:text-4xl lg:text-5xl"
             >
-              The SCN Creator Community is Launching Soon.
+              The Stardust Creator Community is Launching Soon.
             </Text>
           </Heading>
 
