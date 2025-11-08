@@ -11,6 +11,7 @@ body {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
+  background-color: #000000;
 }
 
 /* Hero section full-width breakout */
@@ -27,6 +28,7 @@ body {
   /* Stardust Creator Network Brand Colors */
   --color-white: #ffffff;
   --color-deep-purple: #57058b;
+  --color-deep-purple-dark: #3d0461;
   --color-black: #000000;
   --color-light-grey: #e6e6e6;
   --color-bright-purple: #a51cff;
@@ -53,6 +55,7 @@ body {
   --gradient-primary: linear-gradient(135deg, #a51cff 0%, #57058b 100%);
   --gradient-accent: linear-gradient(90deg, #a51cff 0%, #ff5400 50%, #ffcc00 100%);
   --gradient-hero: linear-gradient(135deg, #f9fafb 0%, #ffffff 50%, #f3f4f6 100%);
+  --gradient-footer: linear-gradient(135deg, #57058b 0%, #000000 100%);
 
   /* Base Type Scale (16px base) */
   --text-xs: 0.75rem; /* 12px */
@@ -88,8 +91,8 @@ body {
   --color-section-number: #f3f4f6;
 
   /* Background and Foreground */
-  --background: var(--color-white);
-  --foreground: var(--color-neutral-800);
+  --background: var(--color-black);
+  --foreground: var(--color-white);
 }
 
 @theme inline {
@@ -99,6 +102,7 @@ body {
 
   /* Brand Colors */
   --color-brand-purple: var(--color-deep-purple);
+  --color-brand-purple-dark: var(--color-deep-purple-dark);
   --color-brand-bright: var(--color-bright-purple);
   --color-brand-violet: var(--color-vivid-violet);
   --color-brand-gold: var(--color-yellow-gold);
@@ -168,6 +172,7 @@ body {
 
 body {
   background: var(--background);
+  background-color: #000000;
   color: var(--foreground);
   font-family: var(--font-lato), 'Lato', sans-serif;
   line-height: 1.6;
@@ -396,6 +401,47 @@ body {
   transform: translateY(-1px);
 }
 
+/* Custom background utilities */
+.bg-deep-purple-dark {
+  background-color: #3d0461 !important;
+}
+
+.bg-gradient-footer {
+  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
+  border-radius: 40px 40px 0 0 !important;
+}
+
+/* Ensure footer has the correct gradient background */
+footer.bg-gradient-footer {
+  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
+  border-radius: 40px 40px 0 0 !important;
+}
+
+/* Additional specificity for footer gradient */
+footer[class*='bg-gradient-footer'] {
+  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
+  border-radius: 40px 40px 0 0 !important;
+}
+
+/* Override any inherited backgrounds on footer */
+footer {
+  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
+  border-radius: 40px 40px 0 0 !important;
+}
+
+/* Rounded top corners utility */
+.rounded-t-footer {
+  border-radius: 40px 40px 0 0 !important;
+}
+
+/* Ensure page background is black to cover footer curve edges */
+html,
+body,
+#__next,
+[data-reactroot] {
+  background-color: #000000 !important;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
@@ -413,6 +459,7 @@ html {
 /* Ensure header doesn't interfere with content */
 body {
   padding-top: 0;
+  background-color: #000000 !important;
 }
 
 /* Backdrop blur support */

@@ -1,6 +1,6 @@
 import { Heading, Text } from '@/components/typography';
 
-export default function CreatorShowcaseSection() {
+export default function CreatorOsSection() {
   return (
     <section
       id="creator-os"
@@ -21,7 +21,7 @@ export default function CreatorShowcaseSection() {
               color="white"
               weight={600}
               as="span"
-              className="text-3xl md:text-4xl lg:text-5xl"
+              className="text-xl md:text-2xl lg:text-3xl"
             >
               Coming 2026
             </Text>

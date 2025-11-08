@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Heading } from '@/components/typography';
+import { Text } from '@/components/typography';
 
 export default function PlatformLogosSection() {
   const brands = [
@@ -30,18 +30,8 @@ export default function PlatformLogosSection() {
   );
 
   return (
-    <section className="pt-12 pb-8 bg-black border-y border-white/5">
+    <section className="pt-12 pb-8 bg-black border-t border-white/5">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-6">
-          <Heading
-            level={4}
-            variant="default"
-            className="!text-white"
-          >
-            Trusted by Leading Brands
-          </Heading>
-        </div>
-
         {/* Horizontally Scrolling Brand Logos */}
         <div className="relative overflow-hidden">
           {/* Left fade gradient */}

@@ -24,7 +24,7 @@ export default function CTASection() {
                 as="span"
                 className="opacity-75"
               >
-                Powered by Stardust
+                Powered by Intense Group
               </Text>
             </div>
 
@@ -47,13 +47,14 @@ export default function CTASection() {
           {/* Newsletter Subscription */}
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
             <div className="text-center mb-6">
-              <Heading
-                level={3}
-                variant="default"
-                className="!text-white mb-2 text-lg md:text-xl"
+              <Text
+                variant="large"
+                color="white"
+                weight={600}
+                className="text-xl md:text-2xl lg:text-3xl mb-2"
               >
                 Stay in the Loop
-              </Heading>
+              </Text>
               <Text
                 variant="body"
                 color="white"

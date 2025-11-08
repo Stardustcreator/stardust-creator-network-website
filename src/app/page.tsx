@@ -8,7 +8,7 @@ import Hero from '@/components/sections/Hero/Hero';
 import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLogosSection';
 import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection';
 import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
-import CreatorShowcaseSection from '@/components/sections/CreatorShowcase/CreatorShowcaseSection';
+import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
 import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
 import CTASection from '@/components/sections/CTA/CTASection';
 
@@ -41,10 +41,13 @@ export default function Home() {
         <IconGridSection />
 
         {/* Creator Showcase with Analytics */}
-        <CreatorShowcaseSection />
+        <CreatorOsSection />
 
         {/* Credibility & Vision Statement */}
         <StatisticsDashboardSection />
+
+        {/* Trusted by Leading Brands */}
+        <PlatformLogosSection />
 
         {/* Final CTA Section */}
         <CTASection />

@@ -66,7 +66,7 @@ export default function Hero() {
                 typeSpeed={100}
                 deleteSpeed={50}
                 delayBetweenWords={2500}
-                className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight"
+                className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-tight tracking-tight"
                 cursorClassName="bg-white"
               />
             </Heading>

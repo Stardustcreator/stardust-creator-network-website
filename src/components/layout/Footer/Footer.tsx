@@ -4,7 +4,13 @@ import { Heading, Text } from '@/components/typography';
 
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-white/10 py-16">
+    <footer
+      className="bg-gradient-footer rounded-t-footer border-t border-white/10 py-16"
+      style={{
+        background: 'linear-gradient(135deg, #57058B 0%, #000000 100%)',
+        borderRadius: '40px 40px 0 0',
+      }}
+    >
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
@@ -217,12 +223,6 @@ export default function Footer() {
               className="text-gray-500 hover:text-purple-400 transition-colors text-sm"
             >
               Terms
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-500 hover:text-purple-400 transition-colors text-sm"
-            >
-              Contact
             </Link>
           </div>
         </div>

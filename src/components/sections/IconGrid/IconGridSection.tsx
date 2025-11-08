@@ -19,7 +19,7 @@ export default function IconGridSection() {
             ]}
             subtitle="The Stardust Creator Community is Launching Soon."
             headingClassName="text-white"
-            subtitleClassName="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mt-4"
+            subtitleClassName="text-xl md:text-2xl lg:text-3xl font-semibold text-white mt-4"
             className="mb-8"
             staggerDelay={350}
             variant="fadeUp"
