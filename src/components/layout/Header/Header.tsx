@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SideMenu } from './SideMenu';
+import { Text } from '@/components/typography';
 
 export default function Header() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -77,7 +78,7 @@ export default function Header() {
                 {/* Primary CTA */}
                 <Link
                   href="/creators/join"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-semibold transition-all hidden sm:block shadow-lg"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full text-button transition-all hidden sm:block shadow-lg"
                 >
                   Join as Creator
                 </Link>

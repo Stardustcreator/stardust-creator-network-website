@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { Heading, Text } from '@/components/typography';
 
 export default function PlatformLogosSection() {
   const brands = [
@@ -26,9 +27,14 @@ export default function PlatformLogosSection() {
           className="object-contain max-w-full max-h-full transition-all duration-300"
         />
       </div>
-      <p className="text-center text-gray-400 text-xs mt-3 opacity-0 group-hover:opacity-100 transition-opacity font-medium">
+      <Text
+        variant="caption"
+        color="white"
+        weight={500}
+        className="text-center mt-3 opacity-0 group-hover:opacity-100 transition-opacity"
+      >
         {brand.name}
-      </p>
+      </Text>
     </div>
   );
 
@@ -36,9 +42,13 @@ export default function PlatformLogosSection() {
     <section className="py-20 bg-black border-y border-white/5">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-white/60 mb-4">
+          <Heading
+            level={2}
+            variant="default"
+            className="text-white opacity-60 mb-4"
+          >
             Trusted by Leading Brands
-          </h2>
+          </Heading>
         </div>
 
         {/* Horizontally Scrolling Brand Logos */}

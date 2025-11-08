@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Heading, Text } from '@/components/typography';
 
 export default function Footer() {
   return (
@@ -17,9 +18,13 @@ export default function Footer() {
                 className="object-contain"
               />
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <Text
+              variant="small"
+              color="white"
+              className="opacity-60 mb-6"
+            >
               Building the infrastructure that turns creativity into sustainable business.
-            </p>
+            </Text>
             <div className="flex gap-4">
               <Link
                 href="https://instagram.com"
@@ -65,7 +70,13 @@ export default function Footer() {
 
           {/* For Creators */}
           <div>
-            <h3 className="font-semibold text-white mb-6">For Creators</h3>
+            <Heading
+              level={3}
+              variant="default"
+              className="text-white mb-6"
+            >
+              For Creators
+            </Heading>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -104,7 +115,13 @@ export default function Footer() {
 
           {/* For Brands */}
           <div>
-            <h3 className="font-semibold text-white mb-6">For Brands</h3>
+            <Heading
+              level={3}
+              variant="default"
+              className="text-white mb-6"
+            >
+              For Brands
+            </Heading>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -135,7 +152,13 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-white mb-6">Company</h3>
+            <Heading
+              level={3}
+              variant="default"
+              className="text-white mb-6"
+            >
+              Company
+            </Heading>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -175,9 +198,13 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-12 mt-12 border-t border-white/10">
-          <p className="text-gray-500 text-sm">
+          <Text
+            variant="small"
+            color="white"
+            className="opacity-40"
+          >
             © 2025 Stardust Creator Network. Powered by Intense Group.
-          </p>
+          </Text>
           <div className="flex gap-6 mt-4 md:mt-0">
             <Link
               href="/legal/privacy"

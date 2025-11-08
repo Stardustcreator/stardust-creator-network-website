@@ -1,27 +1,41 @@
+import { Heading, Text } from '@/components/typography';
+
 export default function StatisticsDashboardSection() {
   return (
-    <section className="py-32 bg-black">
+    <section
+      id="vision"
+      className="py-32 bg-black"
+    >
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           {/* Section Label */}
           <div className="mb-8">
-            <span className="text-purple-400 font-semibold text-sm uppercase tracking-wider">
+            <Text
+              variant="label"
+              color="gradient-primary"
+              as="span"
+            >
               Credibility / Vision Statement
-            </span>
+            </Text>
           </div>
 
           {/* Main Content */}
-          <p className="text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed font-light">
+          <Text
+            variant="large"
+            color="white"
+            weight={300}
+            className="text-2xl md:text-3xl lg:text-4xl"
+          >
             Backed by a team that has powered{' '}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold">
+            <span className="text-gradient-primary font-semibold">
               top brands, creators, and media campaigns
             </span>{' '}
             across the globe, SCN is on a mission to build the infrastructure that turns{' '}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold">
+            <span className="text-gradient-primary font-semibold">
               creativity into sustainable business
             </span>
             .
-          </p>
+          </Text>
 
           {/* Decorative Element */}
           <div className="mt-12 flex justify-center">
@@ -43,19 +57,28 @@ export default function StatisticsDashboardSection() {
               </div>
 
               {/* Main Quote */}
-              <p className="text-xl md:text-2xl text-white leading-relaxed mb-6 font-light">
+              <Text
+                variant="large"
+                color="white"
+                weight={300}
+                className="mb-6 text-xl md:text-2xl"
+              >
                 Thanks to Stardust Creator Network, I transformed my content creation into a
                 thriving business. The community, tools, and support are unmatched. I went from
                 posting sporadically to running a sustainable creative enterprise with consistent
                 income.
-              </p>
+              </Text>
 
               {/* Secondary Quote */}
-              <p className="text-lg text-gray-300 leading-relaxed mb-8">
+              <Text
+                variant="body"
+                color="white"
+                className="mb-8 opacity-75"
+              >
                 The analytics helped me understand my audience better, and the monetization features
                 made it easy to turn my passion into profit. I couldn&apos;t have done this without
                 the platform.
-              </p>
+              </Text>
 
               {/* User Profile */}
               <div className="flex items-center gap-4 mb-8">
@@ -63,25 +86,82 @@ export default function StatisticsDashboardSection() {
                   JM
                 </div>
                 <div className="text-left">
-                  <h4 className="text-white font-semibold text-lg">Jessica Martinez</h4>
-                  <p className="text-gray-400">Content Creator & Entrepreneur</p>
-                  <p className="text-gray-500 text-sm">850K followers</p>
+                  <Heading
+                    level={4}
+                    variant="default"
+                    className="text-white text-lg"
+                  >
+                    Jessica Martinez
+                  </Heading>
+                  <Text
+                    variant="small"
+                    color="white"
+                    className="opacity-75"
+                  >
+                    Content Creator & Entrepreneur
+                  </Text>
+                  <Text
+                    variant="caption"
+                    color="white"
+                    className="opacity-60"
+                  >
+                    850K followers
+                  </Text>
                 </div>
               </div>
 
               {/* Statistics */}
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-700/50">
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">5/5</div>
-                  <div className="text-gray-400 text-sm">Rating</div>
+                  <Text
+                    variant="large"
+                    color="white"
+                    weight={700}
+                    className="text-3xl md:text-4xl mb-2"
+                  >
+                    5/5
+                  </Text>
+                  <Text
+                    variant="caption"
+                    color="white"
+                    className="opacity-60"
+                  >
+                    Rating
+                  </Text>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">2,500+</div>
-                  <div className="text-gray-400 text-sm">Reviews</div>
+                  <Text
+                    variant="large"
+                    color="white"
+                    weight={700}
+                    className="text-3xl md:text-4xl mb-2"
+                  >
+                    2,500+
+                  </Text>
+                  <Text
+                    variant="caption"
+                    color="white"
+                    className="opacity-60"
+                  >
+                    Reviews
+                  </Text>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-                  <div className="text-gray-400 text-sm">Satisfaction</div>
+                  <Text
+                    variant="large"
+                    color="white"
+                    weight={700}
+                    className="text-3xl md:text-4xl mb-2"
+                  >
+                    98%
+                  </Text>
+                  <Text
+                    variant="caption"
+                    color="white"
+                    className="opacity-60"
+                  >
+                    Satisfaction
+                  </Text>
                 </div>
               </div>
             </div>

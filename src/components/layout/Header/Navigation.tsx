@@ -11,39 +11,20 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    label: 'For Creators',
-    href: '/creators',
-    children: [
-      { label: 'Join Our Network', href: '/creators/join' },
-      { label: 'Creator Opportunities', href: '/creators/opportunities' },
-      { label: 'Success Stories', href: '/creators/stories' },
-      { label: 'Creator Resources', href: '/creators/resources' },
-    ],
+    label: 'Who We Are',
+    href: '/#who-we-are',
   },
   {
-    label: 'For Brands',
-    href: '/brands',
-    children: [
-      { label: 'Find Creators', href: '/brands/find' },
-      { label: 'Campaign Examples', href: '/brands/campaigns' },
-      { label: 'How It Works', href: '/brands/process' },
-    ],
-  },
-  {
-    label: 'SCN Community',
-    href: '/community',
-    children: [
-      { label: "What's Included", href: '/community/features' },
-      { label: 'Join Waitlist', href: '/community/waitlist' },
-    ],
+    label: 'Stardust Creator Community',
+    href: '/#stardust-creator-community',
   },
   {
     label: 'Creator OS',
-    href: '/creator-os',
+    href: '/#creator-os',
   },
   {
-    label: 'About',
-    href: '/about',
+    label: 'Vision',
+    href: '/#vision',
   },
 ];
 

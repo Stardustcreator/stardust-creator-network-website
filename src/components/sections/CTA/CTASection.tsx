@@ -1,3 +1,5 @@
+import { Heading, Text } from '@/components/typography';
+
 export default function CTASection() {
   return (
     <section className="py-32 bg-gradient-to-b from-black via-purple-950/20 to-black relative overflow-hidden">
@@ -14,31 +16,53 @@ export default function CTASection() {
             {/* Brand Badge */}
             <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 mb-8">
               <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-              <span className="text-gray-300 text-sm font-semibold">Powered by Stardust</span>
+              <Text
+                variant="small"
+                color="white"
+                weight={600}
+                as="span"
+                className="opacity-75"
+              >
+                Powered by Stardust
+              </Text>
             </div>
 
             {/* Headline */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 leading-tight">
-              Create.{' '}
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Connect.
-              </span>{' '}
-              Convert.
-            </h2>
+            <Heading
+              level={2}
+              variant="default"
+              className="text-white mb-8"
+            >
+              Create. <span className="text-gradient-primary">Connect.</span> Convert.
+            </Heading>
 
-            <p className="text-xl text-gray-300 mb-16 max-w-2xl mx-auto leading-relaxed">
+            <Text
+              variant="large"
+              color="white"
+              className="mb-16 max-w-2xl mx-auto opacity-90"
+            >
               Join thousands of creators building sustainable businesses and authentic connections
               with their audiences.
-            </p>
+            </Text>
           </div>
 
           {/* Newsletter Subscription */}
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">Stay in the Loop</h3>
-              <p className="text-gray-300">
+              <Heading
+                level={3}
+                variant="default"
+                className="text-white mb-2"
+              >
+                Stay in the Loop
+              </Heading>
+              <Text
+                variant="body"
+                color="white"
+                className="opacity-75"
+              >
                 Get updates on new features, creator spotlights, and industry insights.
-              </p>
+              </Text>
             </div>
 
             <form className="flex flex-col sm:flex-row gap-4">
@@ -50,15 +74,19 @@ export default function CTASection() {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full text-button transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
               >
                 Subscribe
               </button>
             </form>
 
-            <p className="text-center text-gray-400 text-sm mt-4">
+            <Text
+              variant="caption"
+              color="white"
+              className="text-center mt-4 opacity-60"
+            >
               No spam, unsubscribe at any time.
-            </p>
+            </Text>
           </div>
         </div>
       </div>

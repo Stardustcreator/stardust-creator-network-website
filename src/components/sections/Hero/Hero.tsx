@@ -1,6 +1,7 @@
 'use client';
 
 import TypewriterText from './TypewriterText';
+import { Heading, Text } from '@/components/typography';
 
 export default function Hero() {
   return (
@@ -34,7 +35,11 @@ export default function Hero() {
         <div className="max-w-4xl">
           {/* Main Headline */}
           <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 leading-tight tracking-tight">
+            <Heading
+              level={1}
+              variant="default"
+              className="mb-4"
+            >
               <TypewriterText
                 words={['Build.', 'Collaborate.', 'Monetize.']}
                 typeSpeed={100}
@@ -43,14 +48,22 @@ export default function Hero() {
                 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight"
                 cursorClassName="bg-white"
               />
-            </h1>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-transparent bg-linear-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text leading-tight mb-4">
+            </Heading>
+            <Heading
+              level={2}
+              variant="gradient"
+              className="mb-4"
+            >
               The Future of the Creator Economy Starts Here.
-            </h2>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-3xl">
+            </Heading>
+            <Text
+              variant="large"
+              color="white"
+              className="max-w-3xl"
+            >
               Stardust Creator Network connects creators and brands today, and is building the
               infrastructure that will power tomorrow&apos;s creative businesses.
-            </p>
+            </Text>
           </div>
         </div>
       </div>
