@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { navigationItems, type NavigationItem } from './navigation.constants';
+import { navigationItems } from './navigation.constants';
 
 interface MobileTopNavigationProps {
   isOpen: boolean;
   onClose: () => void;
+  menuId: string;
 }
 
-export function MobileTopNavigation({ isOpen, onClose }: MobileTopNavigationProps) {
+export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNavigationProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   const toggleExpanded = (label: string) => {
@@ -23,22 +24,110 @@ export function MobileTopNavigation({ isOpen, onClose }: MobileTopNavigationProp
     setExpandedItems(newExpanded);
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const { body } = document;
+    const originalOverflow = body.style.overflow;
+
+    if (isOpen) {
+      body.style.overflow = 'hidden';
+    } else {
+      body.style.overflow = originalOverflow;
+    }
+
+    return () => {
+      body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
   return (
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-all duration-300 lg:hidden ${
-          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`fixed inset-0 bg-black/70 backdrop-blur-sm transition-all duration-300 lg:hidden z-40 ${
+          isOpen
+            ? 'opacity-100 visible pointer-events-auto'
+            : 'opacity-0 invisible pointer-events-none'
         }`}
+        aria-hidden="true"
         onClick={onClose}
       />
 
       {/* Mobile Menu Panel - Full Height Dropdown */}
       <div
-        className={`fixed top-20 left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-white/10 z-50 lg:hidden transform transition-all duration-300 ease-in-out ${
-          isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        id={menuId}
+        role="dialog"
+        aria-modal="true"
+        onClick={e => e.stopPropagation()}
+        className={`fixed top-0 left-0 right-0 bottom-0 h-screen bg-black/95 backdrop-blur-lg z-50 lg:hidden transform transition-all duration-300 ease-in-out overflow-y-auto ${
+          isOpen
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : '-translate-y-full opacity-0 pointer-events-none'
         }`}
       >
+        {/* Header with Logo and Close Button */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 sticky top-0 bg-black/95 backdrop-blur-lg z-10">
+          {/* Logo */}
+          <Link
+            href="/"
+            onClick={onClose}
+            className="flex items-center text-white hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src="/logos/scn logo white.png"
+              alt="Stardust Creator Network Logo"
+              width={120}
+              height={48}
+              className="object-contain"
+              priority
+            />
+          </Link>
+
+          {/* Close Button */}
+          <button
+            type="button"
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
+            className="p-2 text-white hover:text-purple-300 transition-colors rounded-lg hover:bg-white/10"
+            aria-label="Close navigation menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
         <div className="container mx-auto px-6 py-6">
           {/* Navigation Links */}
           <nav className="mb-6">

@@ -10,6 +10,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const mobileMenuId = 'mobile-navigation';
 
   // Handle mounting to prevent hydration mismatch
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function Header() {
         <div className="flex items-center justify-center px-6 py-4">
           {/* Single Glassmorphic Container for Everything */}
           <div
-            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border border-white/20 rounded-full px-8 py-4 shadow-lg shadow-black/25 transition-all duration-300 ${
+            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border border-white/20 rounded-full px-8 py-4 shadow-lg shadow-black/25 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
               isScrolled
                 ? 'bg-white/15 shadow-xl shadow-black/40'
                 : 'bg-white/10 shadow-lg shadow-black/25'
@@ -85,7 +86,7 @@ export default function Header() {
 
           {/* Mobile Layout - Outside glassmorphic container */}
           <div
-            className={`lg:hidden flex items-center justify-between w-full max-w-7xl transition-all duration-300 ${
+            className={`lg:hidden flex items-center justify-between w-full max-w-7xl transition-all duration-300 relative ${
               isScrolled ? 'bg-black/40 backdrop-blur-md rounded-full px-6 py-2' : ''
             }`}
           >
@@ -106,12 +107,23 @@ export default function Header() {
 
             {/* Mobile Menu Button */}
             <button
-              className="p-3 text-white hover:text-purple-400 transition-colors z-50"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              type="button"
+              className="p-3 text-white hover:text-purple-400 transition-colors z-[60] relative touch-manipulation"
+              onClick={e => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsMobileMenuOpen(prev => !prev);
+              }}
+              onTouchStart={e => {
+                e.stopPropagation();
+              }}
               aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
             >
               <svg
-                className="w-6 h-6"
+                className="w-6 h-6 pointer-events-none"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -141,6 +153,7 @@ export default function Header() {
       <MobileTopNavigation
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+        menuId={mobileMenuId}
       />
     </>
   );
