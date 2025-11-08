@@ -22,10 +22,6 @@ const navigationItems: NavigationItem[] = [
     label: 'Creator OS',
     href: '/#creator-os',
   },
-  {
-    label: 'Vision',
-    href: '/#vision',
-  },
 ];
 
 interface MobileMenuProps {
@@ -136,18 +132,18 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           {/* Mobile CTAs */}
           <div className="mt-8 space-y-3">
             <Link
-              href="/creators/join"
-              onClick={onClose}
-              className="btn-primary w-full text-center"
-            >
-              Join as Creator
-            </Link>
-            <Link
               href="/brands/find"
               onClick={onClose}
-              className="btn-secondary w-full text-center"
+              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full text-center"
             >
               Find Creators
+            </Link>
+            <Link
+              href="/creators/join"
+              onClick={onClose}
+              className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-purple-500 text-purple-500 text-button rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full text-center"
+            >
+              Join as Creator
             </Link>
           </div>
         </nav>

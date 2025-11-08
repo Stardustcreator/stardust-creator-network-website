@@ -71,7 +71,7 @@ export default function ConnectCollaborateCreateSection() {
                   <Heading
                     level={3}
                     variant="default"
-                    className="text-white mb-4 text-3xl lg:text-4xl"
+                    className="!text-white mb-4 text-3xl lg:text-4xl font-bold"
                   >
                     For Brands
                   </Heading>
@@ -116,7 +116,7 @@ export default function ConnectCollaborateCreateSection() {
             <div className="relative h-full flex flex-col justify-between p-8 lg:p-12">
               {/* Floating Stats Badge */}
               <div
-                className="self-end animate-float"
+                className="self-start lg:self-end animate-float"
                 style={{ animationDelay: '1s' }}
               >
                 <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 shadow-xl">
@@ -131,7 +131,7 @@ export default function ConnectCollaborateCreateSection() {
                   <Heading
                     level={3}
                     variant="default"
-                    className="text-white mb-4 text-3xl lg:text-4xl"
+                    className="!text-white mb-4 text-3xl lg:text-4xl font-bold"
                   >
                     For Creators
                   </Heading>
@@ -151,18 +151,6 @@ export default function ConnectCollaborateCreateSection() {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Additional Stats Row - Mobile/Tablet View */}
-        <div className="grid grid-cols-2 gap-4 mt-8 lg:hidden max-w-2xl mx-auto">
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center">
-            <div className="text-2xl font-bold text-white mb-1">500+</div>
-            <div className="text-xs text-white/70 font-medium">Brands Served</div>
-          </div>
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center">
-            <div className="text-2xl font-bold text-white mb-1">10+</div>
-            <div className="text-xs text-white/70 font-medium">Years Experience</div>
           </div>
         </div>
       </div>

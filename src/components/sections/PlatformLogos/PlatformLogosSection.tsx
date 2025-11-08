@@ -1,11 +1,10 @@
 import Image from 'next/image';
-import { Heading, Text } from '@/components/typography';
+import { Heading } from '@/components/typography';
 
 export default function PlatformLogosSection() {
   const brands = [
     { name: 'Honeywell', logo: '/brand logos/honeywell.png' },
     { name: 'Chevrolet', logo: '/brand logos/chevrolet.png' },
-    { name: 'International Breweries', logo: '/brand logos/International Breweries Logo.png' },
     { name: 'FMN', logo: '/brand logos/fmn.png' },
     { name: 'Golden Penny', logo: '/brand logos/golden penny.png' },
     { name: 'Daily Trust', logo: '/brand logos/daily trust.png' },
@@ -27,14 +26,6 @@ export default function PlatformLogosSection() {
           className="object-contain max-w-full max-h-full transition-all duration-300"
         />
       </div>
-      <Text
-        variant="caption"
-        color="white"
-        weight={500}
-        className="text-center mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        {brand.name}
-      </Text>
     </div>
   );
 

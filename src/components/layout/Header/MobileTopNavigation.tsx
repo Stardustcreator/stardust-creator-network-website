@@ -151,6 +151,11 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
         </div>
 
         <div className="container mx-auto px-6 py-6">
+          {/* Country Selector */}
+          <div className="mb-6">
+            <CountrySelector variant="mobile" />
+          </div>
+
           {/* Navigation Links */}
           <nav className="mb-6">
             <ul className="space-y-2">
@@ -209,26 +214,21 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
             </ul>
           </nav>
 
-          {/* Country Selector */}
-          <div className="mb-6">
-            <CountrySelector variant="mobile" />
-          </div>
-
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3">
             <Link
-              href="/creators/join"
-              onClick={onClose}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-lg font-medium transition-all text-center shadow-lg"
-            >
-              Join as Creator
-            </Link>
-            <Link
               href="/brands/find"
               onClick={onClose}
-              className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-6 py-3 rounded-lg font-medium transition-all text-center"
+              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 text-center"
             >
               Find Creators
+            </Link>
+            <Link
+              href="/creators/join"
+              onClick={onClose}
+              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10 text-center"
+            >
+              Join as Creator
             </Link>
           </div>
         </div>

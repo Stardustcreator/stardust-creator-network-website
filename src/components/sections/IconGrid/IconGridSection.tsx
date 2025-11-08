@@ -1,4 +1,5 @@
 import { Heading, Text } from '@/components/typography';
+import ImagePlaceholderCard from './ImagePlaceholderCard';
 
 export default function IconGridSection() {
   return (
@@ -44,6 +45,28 @@ export default function IconGridSection() {
           >
             Join the waitlist to be first in line when we open doors next month.
           </Text>
+
+          {/* Community Preview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 max-w-4xl mx-auto">
+            <ImagePlaceholderCard
+              title="Learning Hub"
+              description="Educational Resources"
+              placeholder="📚"
+              size="medium"
+            />
+            <ImagePlaceholderCard
+              title="Creator Network"
+              description="Community Connections"
+              placeholder="🤝"
+              size="medium"
+            />
+            <ImagePlaceholderCard
+              title="Growth Tools"
+              description="Monetization Playbooks"
+              placeholder="📈"
+              size="medium"
+            />
+          </div>
 
           {/* Call-to-Action */}
           <div className="flex justify-center">

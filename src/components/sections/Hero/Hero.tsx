@@ -82,16 +82,16 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/creators/join"
-              className="inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-medium transition-all whitespace-nowrap shadow-lg text-center"
-            >
-              Join as Creator
-            </Link>
-            <Link
               href="/brands/find"
-              className="inline-flex items-center justify-center text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm border border-white/20 hover:border-white/50 px-6 py-3 rounded-full font-medium transition-all whitespace-nowrap text-center"
+              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
             >
               Find Creators
+            </Link>
+            <Link
+              href="/creators/join"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10"
+            >
+              Join as Creator
             </Link>
           </div>
         </div>
