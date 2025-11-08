@@ -1,5 +1,28 @@
 @import 'tailwindcss';
 
+/* CSS Reset for full-width sections */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hero section full-width breakout */
+.hero-fullwidth {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
 :root {
   /* Stardust Creator Network Brand Colors */
   --color-white: #ffffff;
