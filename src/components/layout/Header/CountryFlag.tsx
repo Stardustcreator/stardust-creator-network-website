@@ -15,16 +15,29 @@ export default function CountryFlag({ country, className = '' }: CountryFlagProp
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
+        {/* Left green stripe */}
         <rect
-          width="60"
+          x="0"
+          y="0"
+          width="20"
           height="40"
           fill="#008751"
         />
+        {/* Middle white stripe */}
         <rect
-          y="13.33"
-          width="60"
-          height="13.33"
+          x="20"
+          y="0"
+          width="20"
+          height="40"
           fill="#FFFFFF"
+        />
+        {/* Right green stripe */}
+        <rect
+          x="40"
+          y="0"
+          width="20"
+          height="40"
+          fill="#008751"
         />
       </svg>
     );

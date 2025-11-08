@@ -33,6 +33,14 @@ export default function Hero() {
           type="video/mp4"
         />
         {/* Fallback for browsers that don't support video */}
+        <Image
+          src="/hero background picture.png"
+          alt="Galaxy-inspired background with vibrant lighting effects"
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </video>
 
       {/* Background with Gradient Overlays */}
