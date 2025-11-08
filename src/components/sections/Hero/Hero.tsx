@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import TypewriterText from './TypewriterText';
 import { Heading, Text } from '@/components/typography';
+import { LocationSpecificContent } from '@/components/shared';
 
 export default function Hero() {
   return (
@@ -77,21 +78,45 @@ export default function Hero() {
             >
               The Future of the Creator Economy Starts Here.
             </Heading>
-            <Text
-              variant="large"
-              color="white"
-              className="max-w-3xl mb-8"
-            >
-              Stardust Creator Network connects creators and brands today, and is building the
-              infrastructure that will power tomorrow&apos;s creative businesses.
-            </Text>
+            <LocationSpecificContent
+              nigeria={
+                <Text
+                  variant="large"
+                  color="white"
+                  className="max-w-3xl mb-8"
+                >
+                  Stardust Creator Network connects creators and brands in Nigeria today, and is
+                  building the infrastructure that will power tomorrow&apos;s creative businesses.
+                </Text>
+              }
+              uk={
+                <Text
+                  variant="large"
+                  color="white"
+                  className="max-w-3xl mb-8"
+                >
+                  Stardust Creator Network connects creators and brands in the UK today, and is
+                  building the infrastructure that will power tomorrow&apos;s creative businesses.
+                </Text>
+              }
+              fallback={
+                <Text
+                  variant="large"
+                  color="white"
+                  className="max-w-3xl mb-8"
+                >
+                  Stardust Creator Network connects creators and brands today, and is building the
+                  infrastructure that will power tomorrow&apos;s creative businesses.
+                </Text>
+              }
+            />
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href="/brands/find"
-              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+              className="inline-flex items-center justify-center px-8 py-4 bg-linear-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
             >
               Find Creators
             </Link>

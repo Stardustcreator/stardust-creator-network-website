@@ -13,7 +13,7 @@ export default function CountrySelector({
   className = '',
   variant = 'desktop',
 }: CountrySelectorProps) {
-  const { country, setCountry } = useCountry();
+  const { country, setCountry, isAutoDetected, isDetecting } = useCountry();
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,11 +48,11 @@ export default function CountrySelector({
     };
   }, [isOpen]);
 
-  if (!isMounted) {
+  if (!isMounted || isDetecting) {
     return (
       <div className={`${className} flex items-center gap-2`}>
         <div className="w-5 h-4 rounded bg-white/10 animate-pulse" />
-        <span className="text-white/90 text-sm">Nigeria</span>
+        <span className="text-white/90 text-sm">{isDetecting ? 'Detecting...' : 'Nigeria'}</span>
       </div>
     );
   }
@@ -64,6 +64,11 @@ export default function CountrySelector({
 
   const getCountryName = (countryCode: Country): string => {
     return countryCode === 'nigeria' ? 'Nigeria' : 'United Kingdom';
+  };
+
+  const getCountryDisplayText = (countryCode: Country): string => {
+    const name = getCountryName(countryCode);
+    return isAutoDetected ? `${name} (Auto)` : name;
   };
 
   const isDesktop = variant === 'desktop';
@@ -87,7 +92,7 @@ export default function CountrySelector({
           country={country}
           className="w-5 h-4 rounded-sm shrink-0"
         />
-        <span className="text-sm font-semibold">{getCountryName(country)}</span>
+        <span className="text-sm font-semibold">{getCountryDisplayText(country)}</span>
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
