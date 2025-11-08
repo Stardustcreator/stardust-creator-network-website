@@ -1,14 +1,26 @@
 'use client';
 
+import Image from 'next/image';
+
 import TypewriterText from './TypewriterText';
 import { Heading, Text } from '@/components/typography';
 
 export default function Hero() {
   return (
     <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black">
+      {/* Mobile Background Image */}
+      <Image
+        src="/hero background picture.png"
+        alt="Galaxy-inspired background with vibrant lighting effects"
+        fill
+        priority
+        sizes="100vw"
+        className="z-0 object-cover md:hidden"
+      />
+
       {/* Video Background */}
       <video
-        className="absolute top-0 left-0 w-full h-full min-w-full min-h-full object-cover z-0"
+        className="absolute top-0 left-0 w-full h-full min-w-full min-h-full object-cover z-0 hidden md:block"
         autoPlay
         muted
         loop
