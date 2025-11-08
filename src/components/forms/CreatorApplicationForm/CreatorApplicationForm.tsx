@@ -7,6 +7,7 @@ import type {
   FormStep,
   CreatorApplicationFormData,
   FormState,
+  MonetizationExperience,
 } from '@/types/creator-application.types';
 import { createCompleteFormSchema } from '@/lib/validations/creator-application.validations';
 
@@ -113,7 +114,8 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
           break;
         case 'monetization-experience':
           // Check if any data has been entered before validating
-          const monetizationData = (data.monetizationExperience as Record<string, any>) || {};
+          const monetizationData =
+            (data.monetizationExperience as Partial<MonetizationExperience>) || {};
 
           // Only validate if user has started filling the form
           if (
@@ -184,18 +186,26 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
         location: country,
         submittedAt: new Date().toISOString(),
       };
-      
+
       console.log('Submitting form data:', JSON.stringify(submitData, null, 2));
-      
+
       // Validate that all required sections exist before submitting
-      const requiredSections = ['personalInformation', 'creatorIdentity', 'monetizationExperience', 'educationToolsInterest', 'verificationAgreement'];
+      const requiredSections: (keyof CreatorApplicationFormData)[] = [
+        'personalInformation',
+        'creatorIdentity',
+        'monetizationExperience',
+        'educationToolsInterest',
+        'verificationAgreement',
+      ];
       const missingSections = requiredSections.filter(section => !submitData[section]);
-      
+
       if (missingSections.length > 0) {
         console.error('Missing form sections:', missingSections);
-        throw new Error(`Please complete all form sections. Missing: ${missingSections.join(', ')}`);
+        throw new Error(
+          `Please complete all form sections. Missing: ${missingSections.join(', ')}`
+        );
       }
-      
+
       // Log each section to see what's populated
       requiredSections.forEach(section => {
         console.log(`${section}:`, submitData[section]);
@@ -212,14 +222,16 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
         });
       } catch (fetchError) {
         console.error('Fetch request failed:', fetchError);
-        throw new Error(`Network error: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`);
+        throw new Error(
+          `Network error: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`
+        );
       }
 
       console.log('Response received:', {
         ok: response.ok,
         status: response.status,
         statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries())
+        headers: Object.fromEntries(response.headers.entries()),
       });
 
       if (!response.ok) {
@@ -231,11 +243,11 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
           console.error('Failed to parse error response:', parseError);
           errorData = { error: 'Unable to read error response' };
         }
-        
+
         console.error('API response error:', {
           status: response.status,
           statusText: response.statusText,
-          body: errorData
+          body: errorData,
         });
 
         // Handle specific error cases with user-friendly messages
@@ -248,22 +260,26 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
               ...prev.errors,
               personalInformation: {
                 ...prev.errors.personalInformation,
-                email: 'An application with this email address has already been submitted. Please use a different email address or contact us if you believe this is an error.',
+                email:
+                  'An application with this email address has already been submitted. Please use a different email address or contact us if you believe this is an error.',
               },
             },
             isSubmitting: false,
           }));
           return; // Don't throw error, just set field error and return
         }
-        
+
         // Handle validation errors
         if (response.status === 400 && errorData.details) {
-          const fieldErrors = errorData.details.map((detail: any) => 
-            `${detail.path?.join('.')} - ${detail.message}`
-          ).join('\n');
+          const fieldErrors = errorData.details
+            .map(
+              (detail: { path?: string[]; message: string }) =>
+                `${detail.path?.join('.')} - ${detail.message}`
+            )
+            .join('\n');
           throw new Error(`Please check the following:\n${fieldErrors}`);
         }
-        
+
         // Generic error message with specific details if available
         const userMessage = errorData.error || `Server error (${response.status})`;
         throw new Error(`Failed to submit application: ${userMessage}`);
@@ -279,12 +295,13 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
 
       if (result.success) {
         // Redirect to country-specific confirmation page for better tracking
-        const confirmationUrl = country === 'Nigeria' 
-          ? '/join/creator/nigeria/confirmation'
-          : country === 'United Kingdom'
-          ? '/join/creator/uk/confirmation'
-          : '/join/creator/nigeria/confirmation'; // Default fallback
-        
+        const confirmationUrl =
+          country === 'Nigeria'
+            ? '/join/creator/nigeria/confirmation'
+            : country === 'United Kingdom'
+              ? '/join/creator/uk/confirmation'
+              : '/join/creator/nigeria/confirmation'; // Default fallback
+
         router.push(confirmationUrl);
       } else {
         throw new Error(result.error || 'Submission failed');
@@ -373,7 +390,6 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
             isSubmitting={formState.isSubmitting}
           />
         );
-
 
       default:
         return null;
