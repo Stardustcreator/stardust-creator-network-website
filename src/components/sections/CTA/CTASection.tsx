@@ -1,4 +1,4 @@
-import { Heading, Text } from '@/components/typography';
+import { Text } from '@/components/typography';
 import { SectionHeader } from '@/components/shared';
 
 export default function CTASection() {
@@ -19,7 +19,7 @@ export default function CTASection() {
               <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
               <Text
                 variant="small"
-                color="white"
+                className="text-white"
                 weight={600}
                 as="span"
                 className="opacity-75"
@@ -49,7 +49,7 @@ export default function CTASection() {
             <div className="text-center mb-6">
               <Text
                 variant="large"
-                color="white"
+                className="text-white"
                 weight={600}
                 className="text-xl md:text-2xl lg:text-3xl mb-2"
               >
@@ -57,7 +57,7 @@ export default function CTASection() {
               </Text>
               <Text
                 variant="body"
-                color="white"
+                className="text-white"
                 className="opacity-75"
               >
                 Get updates on new features, creator spotlights, and industry insights.
@@ -81,7 +81,7 @@ export default function CTASection() {
 
             <Text
               variant="caption"
-              color="white"
+              className="text-white"
               className="text-center mt-4 opacity-60"
             >
               No spam, unsubscribe at any time.

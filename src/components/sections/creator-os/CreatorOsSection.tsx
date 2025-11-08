@@ -18,7 +18,7 @@ export default function CreatorOsSection() {
             <br />
             <Text
               variant="large"
-              color="white"
+              className="text-white"
               weight={600}
               as="span"
               className="text-xl md:text-2xl lg:text-3xl"
@@ -30,7 +30,7 @@ export default function CreatorOsSection() {
           {/* Main Copy */}
           <Text
             variant="large"
-            color="white"
+            className="text-white"
             className="mb-12 max-w-4xl mx-auto opacity-90"
           >
             We&apos;re building Stardust Creator OS, the operating system for modern creators.
@@ -40,7 +40,7 @@ export default function CreatorOsSection() {
 
           <Text
             variant="body"
-            color="white"
+            className="text-white"
             className="mb-12 max-w-3xl mx-auto opacity-75"
           >
             Help us shape it. Take our 2-minute survey and tell us what your dream creator workspace
@@ -60,7 +60,7 @@ export default function CreatorOsSection() {
             <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse mr-3"></div>
             <Text
               variant="small"
-              color="white"
+              className="text-white"
               weight={500}
               as="span"
               className="opacity-75"

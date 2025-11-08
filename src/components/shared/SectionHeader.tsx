@@ -86,7 +86,7 @@ export default function SectionHeader({
       {subtitle && (
         <Text
           variant="large"
-          color="white"
+          className="text-white"
           className={`opacity-90 transition-all duration-700 delay-300 ${
             isIntersecting ? 'opacity-90 translate-y-0' : 'opacity-0 translate-y-4'
           } ${subtitleClassName}`}

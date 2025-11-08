@@ -1,0 +1,337 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import type {
+  Country,
+  FormStep,
+  CreatorApplicationFormData,
+  FormState,
+} from '@/types/creator-application.types';
+import { createCompleteFormSchema } from '@/lib/validations/creator-application.validations';
+
+// Step components
+import WelcomeStep from './steps/WelcomeStep';
+import PersonalInformationStep from './steps/PersonalInformationStep';
+import CreatorIdentityStep from './steps/CreatorIdentityStep';
+import MonetizationExperienceStep from './steps/MonetizationExperienceStep';
+import EducationToolsInterestStep from './steps/EducationToolsInterestStep';
+import VerificationAgreementStep from './steps/VerificationAgreementStep';
+import ThankYouStep from './steps/ThankYouStep';
+
+// Shared components
+import FormProgress from './FormProgress';
+import FormNavigation from './FormNavigation';
+
+interface CreatorApplicationFormProps {
+  country: Country;
+}
+
+const FORM_STEPS: FormStep[] = [
+  'welcome',
+  'personal-information',
+  'creator-identity',
+  'monetization-experience',
+  'education-tools-interest',
+  'verification-agreement',
+  'thank-you',
+];
+
+export default function CreatorApplicationForm({ country }: CreatorApplicationFormProps) {
+  const [formState, setFormState] = useState<FormState>({
+    currentStep: 'welcome',
+    data: {},
+    errors: {},
+    isSubmitting: false,
+    isValid: false,
+    completedSteps: new Set(),
+  });
+
+  const currentStepIndex = FORM_STEPS.indexOf(formState.currentStep);
+  const totalSteps = FORM_STEPS.length - 2; // Exclude welcome and thank-you from count
+
+  // Navigate to next step
+  const goToNextStep = useCallback(() => {
+    const nextIndex = currentStepIndex + 1;
+    if (nextIndex < FORM_STEPS.length) {
+      setFormState(prev => ({
+        ...prev,
+        currentStep: FORM_STEPS[nextIndex],
+        completedSteps: new Set([...prev.completedSteps, prev.currentStep]),
+      }));
+    }
+  }, [currentStepIndex]);
+
+  // Navigate to previous step
+  const goToPreviousStep = useCallback(() => {
+    const prevIndex = currentStepIndex - 1;
+    if (prevIndex >= 0) {
+      setFormState(prev => ({
+        ...prev,
+        currentStep: FORM_STEPS[prevIndex],
+      }));
+    }
+  }, [currentStepIndex]);
+
+  // Update form data
+  const updateFormData = useCallback(
+    <K extends keyof CreatorApplicationFormData>(
+      section: K,
+      data: Partial<CreatorApplicationFormData[K]>
+    ) => {
+      setFormState(prev => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          [section]: {
+            ...(prev.data[section] || {}), // Provide empty object as fallback
+            ...data,
+          },
+        },
+        errors: {
+          ...prev.errors,
+          [section]: {}, // Clear errors for this section
+        },
+      }));
+    },
+    []
+  );
+
+  // Validate current step
+  const validateCurrentStep = useCallback(() => {
+    const { currentStep, data } = formState;
+
+    try {
+      const schema = createCompleteFormSchema(country);
+
+      switch (currentStep) {
+        case 'personal-information':
+          // Always validate - required fields should fail if missing
+          schema.shape.personalInformation.parse(data.personalInformation || {});
+          break;
+        case 'creator-identity':
+          schema.shape.creatorIdentity.parse(data.creatorIdentity || {});
+          break;
+        case 'monetization-experience':
+          // Check if any data has been entered before validating
+          const monetizationData = (data.monetizationExperience as Record<string, any>) || {};
+
+          // Only validate if user has started filling the form
+          if (
+            monetizationData.workedWithBrands !== undefined ||
+            monetizationData.feeRange ||
+            (monetizationData.monetizationMethods &&
+              monetizationData.monetizationMethods.length > 0) ||
+            (monetizationData.opportunityInterests &&
+              monetizationData.opportunityInterests.length > 0)
+          ) {
+            schema.shape.monetizationExperience.parse(monetizationData);
+          } else {
+            // If no data entered yet, fail validation with helpful message
+            setFormState(prev => ({
+              ...prev,
+              errors: {
+                ...prev.errors,
+                monetizationExperience: {
+                  workedWithBrands: 'Please indicate if you have worked with brands before',
+                },
+              },
+            }));
+            return false;
+          }
+          break;
+        case 'education-tools-interest':
+          schema.shape.educationToolsInterest.parse(data.educationToolsInterest || {});
+          break;
+        case 'verification-agreement':
+          schema.shape.verificationAgreement.parse(data.verificationAgreement || {});
+          break;
+      }
+
+      return true;
+    } catch (error) {
+      if (error && typeof error === 'object' && 'issues' in error) {
+        // Handle Zod validation errors
+        const zodError = error as { issues: Array<{ path: string[]; message: string }> };
+        const fieldErrors: Record<string, string> = {};
+        zodError.issues.forEach(issue => {
+          const path = issue.path.join('.');
+          fieldErrors[path] = issue.message;
+        });
+
+        // Map step names to camelCase for error keys
+        const errorKey = currentStep.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+        setFormState(prev => ({
+          ...prev,
+          errors: {
+            ...prev.errors,
+            [errorKey]: fieldErrors,
+          },
+        }));
+      }
+      return false;
+    }
+  }, [formState, country]);
+
+  // Submit form
+  const submitForm = useCallback(async () => {
+    setFormState(prev => ({ ...prev, isSubmitting: true }));
+
+    try {
+      const response = await fetch('/api/creator-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formState.data,
+          location: country,
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        goToNextStep(); // Go to thank you step
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setFormState(prev => ({
+        ...prev,
+        errors: {
+          ...prev.errors,
+          general: 'Failed to submit application. Please try again.',
+        },
+      }));
+    } finally {
+      setFormState(prev => ({ ...prev, isSubmitting: false }));
+    }
+  }, [formState.data, country, goToNextStep]);
+
+  // Handle step navigation with validation
+  const handleNextStep = useCallback(() => {
+    if (validateCurrentStep()) {
+      goToNextStep();
+    }
+  }, [validateCurrentStep, goToNextStep]);
+
+  // Render current step component
+  const renderCurrentStep = () => {
+    const commonProps = {
+      formData: formState.data,
+      errors: formState.errors,
+      updateFormData,
+      country,
+    };
+
+    switch (formState.currentStep) {
+      case 'welcome':
+        return (
+          <WelcomeStep
+            onNext={goToNextStep}
+            country={country}
+          />
+        );
+
+      case 'personal-information':
+        return (
+          <PersonalInformationStep
+            {...commonProps}
+            data={formState.data.personalInformation}
+            errors={formState.errors.personalInformation}
+          />
+        );
+
+      case 'creator-identity':
+        return (
+          <CreatorIdentityStep
+            {...commonProps}
+            data={formState.data.creatorIdentity}
+            errors={formState.errors.creatorIdentity}
+          />
+        );
+
+      case 'monetization-experience':
+        return (
+          <MonetizationExperienceStep
+            {...commonProps}
+            data={formState.data.monetizationExperience}
+            errors={formState.errors.monetizationExperience}
+          />
+        );
+
+      case 'education-tools-interest':
+        return (
+          <EducationToolsInterestStep
+            {...commonProps}
+            data={formState.data.educationToolsInterest}
+            errors={formState.errors.educationToolsInterest}
+          />
+        );
+
+      case 'verification-agreement':
+        return (
+          <VerificationAgreementStep
+            {...commonProps}
+            data={formState.data.verificationAgreement}
+            errors={formState.errors.verificationAgreement}
+            onSubmit={submitForm}
+            isSubmitting={formState.isSubmitting}
+          />
+        );
+
+      case 'thank-you':
+        return <ThankYouStep country={country} />;
+
+      default:
+        return null;
+    }
+  };
+
+  const shouldShowProgress = !['welcome', 'thank-you'].includes(formState.currentStep);
+  const shouldShowNavigation = !['welcome', 'thank-you'].includes(formState.currentStep);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black">
+      <div className="container mx-auto px-4 py-8">
+        {/* Progress indicator */}
+        {shouldShowProgress && (
+          <FormProgress
+            currentStep={currentStepIndex - 1} // Adjust for welcome step
+            totalSteps={totalSteps}
+          />
+        )}
+
+        {/* Form content */}
+        <div className="max-w-4xl mx-auto">{renderCurrentStep()}</div>
+
+        {/* Navigation */}
+        {shouldShowNavigation && formState.currentStep !== 'verification-agreement' && (
+          <FormNavigation
+            canGoBack={currentStepIndex > 1}
+            canGoNext={true}
+            onBack={goToPreviousStep}
+            onNext={handleNextStep}
+            isLoading={formState.isSubmitting}
+          />
+        )}
+
+        {/* General error display */}
+        {formState.errors.general && (
+          <div className="max-w-4xl mx-auto mt-6">
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center">
+              <p className="text-red-400">{formState.errors.general}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

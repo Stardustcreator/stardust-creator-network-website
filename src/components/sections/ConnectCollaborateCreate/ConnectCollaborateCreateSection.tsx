@@ -39,7 +39,7 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/brand.webp"
+                src="/who we are/brands.jpg"
                 alt="For Brands - Connect with creators"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -72,7 +72,7 @@ export default function ConnectCollaborateCreateSection() {
                   </Heading>
                   <Text
                     variant="body"
-                    color="white"
+                    className="text-white"
                     className="text-lg opacity-95 max-w-md"
                   >
                     Tell us your goals — we&apos;ll curate creators who bring your vision to life.
@@ -96,7 +96,7 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/creators.webp"
+                src="/who we are/creators.jpg"
                 alt="For Creators - Join our network"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -132,7 +132,7 @@ export default function ConnectCollaborateCreateSection() {
                   </Heading>
                   <Text
                     variant="body"
-                    color="white"
+                    className="text-white"
                     className="text-lg opacity-95 max-w-md"
                   >
                     Join our verified network and start collaborating today.

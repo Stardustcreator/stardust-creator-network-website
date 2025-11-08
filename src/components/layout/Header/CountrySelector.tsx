@@ -13,7 +13,7 @@ export default function CountrySelector({
   className = '',
   variant = 'desktop',
 }: CountrySelectorProps) {
-  const { country, setCountry, isAutoDetected, isDetecting } = useCountry();
+  const { country, setCountry, isDetecting } = useCountry();
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -67,8 +67,7 @@ export default function CountrySelector({
   };
 
   const getCountryDisplayText = (countryCode: Country): string => {
-    const name = getCountryName(countryCode);
-    return isAutoDetected ? `${name} (Auto)` : name;
+    return getCountryName(countryCode);
   };
 
   const isDesktop = variant === 'desktop';

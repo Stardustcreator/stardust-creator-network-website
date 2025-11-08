@@ -3,6 +3,7 @@ import { Lato } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import './globals.css';
 
 const lato = Lato({
@@ -12,6 +13,9 @@ const lato = Lato({
   display: 'swap',
   preload: true,
 });
+
+// Google Analytics Measurement ID
+const GA_MEASUREMENT_ID = 'G-8CMEVERXXG';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -106,6 +110,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
+        <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <CountryProvider>{children}</CountryProvider>
         <Analytics />
       </body>
