@@ -73,7 +73,7 @@ export default function Footer() {
             <Heading
               level={3}
               variant="default"
-              className="text-white mb-6"
+              className="!text-white mb-6"
             >
               For Creators
             </Heading>
@@ -118,7 +118,7 @@ export default function Footer() {
             <Heading
               level={3}
               variant="default"
-              className="text-white mb-6"
+              className="!text-white mb-6"
             >
               For Brands
             </Heading>
@@ -155,7 +155,7 @@ export default function Footer() {
             <Heading
               level={3}
               variant="default"
-              className="text-white mb-6"
+              className="!text-white mb-6"
             >
               Company
             </Heading>
