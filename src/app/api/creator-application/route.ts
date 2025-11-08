@@ -38,6 +38,9 @@ function extractUTMParams(url: string | null): {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    
+    // Debug: Log the incoming request data
+    console.log('API received data:', JSON.stringify(body, null, 2));
 
     // Validate the incoming data
     const validatedData = apiCreatorApplicationSchema.parse(body);
@@ -151,6 +154,17 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Creator application submission error:', error);
+    
+    // Debug: Log the full error details
+    if (error && typeof error === 'object') {
+      console.error('Error details:', {
+        name: (error as any).name,
+        message: (error as any).message,
+        stack: (error as any).stack,
+        code: (error as any).code,
+        issues: (error as any).issues
+      });
+    }
 
     // Handle validation errors
     if (error && typeof error === 'object' && 'issues' in error) {

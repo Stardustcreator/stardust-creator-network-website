@@ -53,13 +53,13 @@ export default function CreatorJoinPage() {
               level={2}
               className="text-white text-xl mb-2"
             >
-              Detecting your location...
+              Personalizing...
             </Heading>
             <Text
               variant="body"
               className="text-white opacity-70"
             >
-              We&apos;re finding the best application form for your region
+              Unlocking opportunities tailored to your location
             </Text>
           </div>
         </main>

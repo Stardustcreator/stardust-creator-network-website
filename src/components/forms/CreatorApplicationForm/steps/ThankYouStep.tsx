@@ -6,7 +6,7 @@ interface ThankYouStepProps {
   country: Country;
 }
 
-const getSocialLinks = (country: Country) => {
+const getSocialLinks = (_country: Country) => {
   // This could be country-specific in the future
   return {
     instagram: 'https://instagram.com/stardustcreatornetwork',
@@ -150,7 +150,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="space-y-4 mb-8">
         <Heading
           level={3}
-          className="text-white text-lg mb-6"
+          className="!text-white text-xl mb-6"
         >
           While you wait, here&apos;s how to stay connected:
         </Heading>
@@ -161,21 +161,8 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             href={socialLinks.surveyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center gap-2 justify-center"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center justify-center"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
             Take 2-Minute Survey
           </a>
 
@@ -184,21 +171,8 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             href={socialLinks.waitlistUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2 justify-center"
+            className="bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center justify-center"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
             Join Community Waitlist
           </a>
         </div>
@@ -254,7 +228,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
           variant="caption"
           className="text-white opacity-70"
         >
-          💜 Thank you for choosing Stardust Creator Network. We&apos;re excited to potentially
+          Thank you for choosing Stardust Creator Network. We&apos;re excited to potentially
           welcome you to our community of innovative creators in {country}.
         </Text>
       </div>

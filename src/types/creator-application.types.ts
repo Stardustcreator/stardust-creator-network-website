@@ -170,8 +170,7 @@ export type FormStep =
   | 'creator-identity'
   | 'monetization-experience'
   | 'education-tools-interest'
-  | 'verification-agreement'
-  | 'thank-you';
+  | 'verification-agreement';
 
 export interface FormStepConfig {
   id: FormStep;

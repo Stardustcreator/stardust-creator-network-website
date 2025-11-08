@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import type {
   Country,
   FormStep,
@@ -16,7 +17,6 @@ import CreatorIdentityStep from './steps/CreatorIdentityStep';
 import MonetizationExperienceStep from './steps/MonetizationExperienceStep';
 import EducationToolsInterestStep from './steps/EducationToolsInterestStep';
 import VerificationAgreementStep from './steps/VerificationAgreementStep';
-import ThankYouStep from './steps/ThankYouStep';
 
 // Shared components
 import FormProgress from './FormProgress';
@@ -33,10 +33,10 @@ const FORM_STEPS: FormStep[] = [
   'monetization-experience',
   'education-tools-interest',
   'verification-agreement',
-  'thank-you',
 ];
 
 export default function CreatorApplicationForm({ country }: CreatorApplicationFormProps) {
+  const router = useRouter();
   const [formState, setFormState] = useState<FormState>({
     currentStep: 'welcome',
     data: {},
@@ -47,7 +47,7 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
   });
 
   const currentStepIndex = FORM_STEPS.indexOf(formState.currentStep);
-  const totalSteps = FORM_STEPS.length - 2; // Exclude welcome and thank-you from count
+  const totalSteps = FORM_STEPS.length - 1; // Exclude welcome from count
 
   // Navigate to next step
   const goToNextStep = useCallback(() => {
@@ -178,26 +178,114 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
     setFormState(prev => ({ ...prev, isSubmitting: true }));
 
     try {
-      const response = await fetch('/api/creator-application', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formState.data,
-          location: country,
-          submittedAt: new Date().toISOString(),
-        }),
+      // Debug: Log the form data being submitted
+      const submitData = {
+        ...formState.data,
+        location: country,
+        submittedAt: new Date().toISOString(),
+      };
+      
+      console.log('Submitting form data:', JSON.stringify(submitData, null, 2));
+      
+      // Validate that all required sections exist before submitting
+      const requiredSections = ['personalInformation', 'creatorIdentity', 'monetizationExperience', 'educationToolsInterest', 'verificationAgreement'];
+      const missingSections = requiredSections.filter(section => !submitData[section]);
+      
+      if (missingSections.length > 0) {
+        console.error('Missing form sections:', missingSections);
+        throw new Error(`Please complete all form sections. Missing: ${missingSections.join(', ')}`);
+      }
+      
+      // Log each section to see what's populated
+      requiredSections.forEach(section => {
+        console.log(`${section}:`, submitData[section]);
+      });
+
+      let response;
+      try {
+        response = await fetch('/api/creator-application', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submitData),
+        });
+      } catch (fetchError) {
+        console.error('Fetch request failed:', fetchError);
+        throw new Error(`Network error: ${fetchError instanceof Error ? fetchError.message : 'Unknown error'}`);
+      }
+
+      console.log('Response received:', {
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit application');
+        let errorData;
+        try {
+          const errorText = await response.text();
+          errorData = JSON.parse(errorText);
+        } catch (parseError) {
+          console.error('Failed to parse error response:', parseError);
+          errorData = { error: 'Unable to read error response' };
+        }
+        
+        console.error('API response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorData
+        });
+
+        // Handle specific error cases with user-friendly messages
+        if (response.status === 409 && errorData.code === 'DUPLICATE_EMAIL') {
+          // Set the error on the email field specifically
+          setFormState(prev => ({
+            ...prev,
+            currentStep: 'personal-information', // Navigate back to personal info step
+            errors: {
+              ...prev.errors,
+              personalInformation: {
+                ...prev.errors.personalInformation,
+                email: 'An application with this email address has already been submitted. Please use a different email address or contact us if you believe this is an error.',
+              },
+            },
+            isSubmitting: false,
+          }));
+          return; // Don't throw error, just set field error and return
+        }
+        
+        // Handle validation errors
+        if (response.status === 400 && errorData.details) {
+          const fieldErrors = errorData.details.map((detail: any) => 
+            `${detail.path?.join('.')} - ${detail.message}`
+          ).join('\n');
+          throw new Error(`Please check the following:\n${fieldErrors}`);
+        }
+        
+        // Generic error message with specific details if available
+        const userMessage = errorData.error || `Server error (${response.status})`;
+        throw new Error(`Failed to submit application: ${userMessage}`);
       }
 
-      const result = await response.json();
+      let result;
+      try {
+        result = await response.json();
+      } catch (jsonError) {
+        console.error('Failed to parse JSON response:', jsonError);
+        throw new Error('Invalid response format from server');
+      }
 
       if (result.success) {
-        goToNextStep(); // Go to thank you step
+        // Redirect to country-specific confirmation page for better tracking
+        const confirmationUrl = country === 'Nigeria' 
+          ? '/join/creator/nigeria/confirmation'
+          : country === 'United Kingdom'
+          ? '/join/creator/uk/confirmation'
+          : '/join/creator/nigeria/confirmation'; // Default fallback
+        
+        router.push(confirmationUrl);
       } else {
         throw new Error(result.error || 'Submission failed');
       }
@@ -209,11 +297,10 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
           ...prev.errors,
           general: 'Failed to submit application. Please try again.',
         },
+        isSubmitting: false,
       }));
-    } finally {
-      setFormState(prev => ({ ...prev, isSubmitting: false }));
     }
-  }, [formState.data, country, goToNextStep]);
+  }, [formState.data, country, router]);
 
   // Handle step navigation with validation
   const handleNextStep = useCallback(() => {
@@ -287,16 +374,14 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
           />
         );
 
-      case 'thank-you':
-        return <ThankYouStep country={country} />;
 
       default:
         return null;
     }
   };
 
-  const shouldShowProgress = !['welcome', 'thank-you'].includes(formState.currentStep);
-  const shouldShowNavigation = !['welcome', 'thank-you'].includes(formState.currentStep);
+  const shouldShowProgress = !['welcome'].includes(formState.currentStep);
+  const shouldShowNavigation = !['welcome'].includes(formState.currentStep);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black">

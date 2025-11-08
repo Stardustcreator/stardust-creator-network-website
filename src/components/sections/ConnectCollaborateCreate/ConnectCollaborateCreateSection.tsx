@@ -21,9 +21,9 @@ export default function ConnectCollaborateCreateSection() {
         {/* Section Header */}
         <SectionHeader
           words={[
-            { text: 'Connect.' },
-            { text: 'Collaborate.', className: 'text-gradient-primary' },
-            { text: 'Create.' },
+            { text: 'Connect. ' },
+            { text: 'Collaborate. ', className: 'text-gradient-primary' },
+            { text: 'Create. ' },
           ]}
           subtitle="We connect leading brands with Nigeria and the UK's most dynamic creators — from nano storytellers to macro influencers — to craft authentic campaigns that convert. More countries coming soon."
           headingClassName="text-white"
@@ -137,7 +137,7 @@ export default function ConnectCollaborateCreateSection() {
                   </Text>
                 </div>
                 <Link
-                  href="/creators"
+                  href="/creators/join"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10"
                 >
                   Join as Creator
