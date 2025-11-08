@@ -26,8 +26,7 @@ export default function Footer() {
             </div>
             <Text
               variant="small"
-              className="text-white"
-              className="opacity-60 mb-6"
+              className="text-white opacity-60 mb-6"
             >
               Building the infrastructure that turns creativity into sustainable business.
             </Text>
@@ -206,8 +205,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center pt-12 mt-12 border-t border-white/10">
           <Text
             variant="small"
-            className="text-white"
-            className="opacity-40"
+            className="text-white opacity-40"
           >
             © 2025 Stardust Creator Network. Powered by Intense Group.
           </Text>

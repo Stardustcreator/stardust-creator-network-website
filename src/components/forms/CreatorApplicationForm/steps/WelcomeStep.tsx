@@ -51,16 +51,14 @@ export default function WelcomeStep({ onNext, country }: WelcomeStepProps) {
       <div className="mb-6">
         <Heading
           level={1}
-          className="text-white"
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
+          className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
         >
           Welcome to Stardust Creator Network
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-70 mb-6"
+          className="text-white opacity-70 mb-6"
         >
           {content.subtitle}
         </Text>
@@ -70,8 +68,7 @@ export default function WelcomeStep({ onNext, country }: WelcomeStepProps) {
       <div className="max-w-2xl mx-auto mb-12">
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80 leading-relaxed"
+          className="text-white opacity-80 leading-relaxed"
         >
           {content.description}
         </Text>
@@ -101,8 +98,7 @@ export default function WelcomeStep({ onNext, country }: WelcomeStepProps) {
 
         <Text
           variant="caption"
-          className="text-white"
-          className="opacity-60"
+          className="text-white opacity-60"
         >
           Join the network that&apos;s redefining how creators learn, collaborate, and earn.
         </Text>
@@ -112,8 +108,7 @@ export default function WelcomeStep({ onNext, country }: WelcomeStepProps) {
       <div className="mt-16 pt-8 border-t border-white/10">
         <Text
           variant="caption"
-          className="text-white"
-          className="opacity-50 mb-4"
+          className="text-white opacity-50 mb-4"
         >
           Trusted by creators across {country}
         </Text>

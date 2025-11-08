@@ -28,8 +28,7 @@ export default function IconGridSection() {
           {/* Main Copy */}
           <Text
             variant="large"
-            className="text-white"
-            className="mb-12 max-w-4xl mx-auto opacity-90"
+            className="text-white mb-12 max-w-4xl mx-auto opacity-90"
           >
             The SCN Creator Community will empower creators with access to education, monetization
             playbooks, and peer collaboration, all within a private, growth-focused ecosystem.
@@ -37,8 +36,7 @@ export default function IconGridSection() {
 
           <Text
             variant="body"
-            className="text-white"
-            className="mb-12 max-w-3xl mx-auto opacity-75"
+            className="text-white mb-12 max-w-3xl mx-auto opacity-75"
           >
             Join the waitlist to be first in line when we open doors next month.
           </Text>
@@ -78,10 +76,9 @@ export default function IconGridSection() {
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-3"></div>
             <Text
               variant="small"
-              className="text-white"
+              className="text-white opacity-75"
               weight={500}
               as="span"
-              className="opacity-75"
             >
               Opening Next Month
             </Text>

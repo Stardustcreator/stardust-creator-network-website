@@ -72,16 +72,14 @@ export default function VerificationAgreementStep({
       <div className="text-center mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="text-2xl md:text-3xl mb-2"
+          className="text-white text-2xl md:text-3xl mb-2"
         >
           Verification & Agreement
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80"
+          className="text-white opacity-80"
         >
           We maintain high standards for authenticity and brand safety.
         </Text>
@@ -169,15 +167,13 @@ export default function VerificationAgreementStep({
                 </svg>
                 <Text
                   variant="body"
-                  className="text-white"
-                  className="mb-2"
+                  className="text-white mb-2"
                 >
                   Drop your file here, or <span className="text-purple-400">browse</span>
                 </Text>
                 <Text
                   variant="caption"
-                  className="text-white"
-                  className="opacity-60"
+                  className="text-white opacity-60"
                 >
                   PDF, Images, or Word documents up to 10MB
                 </Text>
@@ -230,15 +226,13 @@ export default function VerificationAgreementStep({
             <div className="flex-1">
               <Text
                 variant="body"
-                className="text-white"
-                className="font-medium"
+                className="text-white font-medium"
               >
                 Confirm authenticity *
               </Text>
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-70 mt-1"
+                className="text-white opacity-70 mt-1"
               >
                 I confirm that I own the social accounts listed and that my content complies with
                 community guidelines.
@@ -286,15 +280,13 @@ export default function VerificationAgreementStep({
             <div className="flex-1">
               <Text
                 variant="body"
-                className="text-white"
-                className="font-medium"
+                className="text-white font-medium"
               >
                 Agree to terms *
               </Text>
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-70 mt-1"
+                className="text-white opacity-70 mt-1"
               >
                 I have read and agree to SCN&apos;s{' '}
                 <a
@@ -360,8 +352,7 @@ export default function VerificationAgreementStep({
 
         <Text
           variant="caption"
-          className="text-white"
-          className="opacity-60 mt-4"
+          className="text-white opacity-60 mt-4"
         >
           By submitting, you&apos;re applying to join the Stardust Creator Network
         </Text>
@@ -384,15 +375,13 @@ export default function VerificationAgreementStep({
           <div>
             <Text
               variant="body"
-              className="text-white"
-              className="opacity-90 mb-1 font-medium"
+              className="text-white opacity-90 mb-1 font-medium"
             >
               Your Data is Secure
             </Text>
             <Text
               variant="caption"
-              className="text-white"
-              className="opacity-70 leading-relaxed"
+              className="text-white opacity-70 leading-relaxed"
             >
               All information is encrypted and stored securely. We never share your personal data
               without explicit consent. Your application will be reviewed by our team within 3-5

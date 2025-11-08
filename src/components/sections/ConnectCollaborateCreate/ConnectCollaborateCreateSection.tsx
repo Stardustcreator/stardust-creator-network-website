@@ -72,8 +72,7 @@ export default function ConnectCollaborateCreateSection() {
                   </Heading>
                   <Text
                     variant="body"
-                    className="text-white"
-                    className="text-lg opacity-95 max-w-md"
+                    className="text-white text-lg opacity-95 max-w-md"
                   >
                     Tell us your goals — we&apos;ll curate creators who bring your vision to life.
                   </Text>
@@ -132,8 +131,7 @@ export default function ConnectCollaborateCreateSection() {
                   </Heading>
                   <Text
                     variant="body"
-                    className="text-white"
-                    className="text-lg opacity-95 max-w-md"
+                    className="text-white text-lg opacity-95 max-w-md"
                   >
                     Join our verified network and start collaborating today.
                   </Text>

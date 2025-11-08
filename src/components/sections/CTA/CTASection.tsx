@@ -3,7 +3,7 @@ import { SectionHeader } from '@/components/shared';
 
 export default function CTASection() {
   return (
-    <section className="py-32 bg-linear-to-b from-black via-purple-950/20 to-black relative overflow-hidden">
+    <section className="py-32 bg-gradient-to-b from-black via-purple-950/20 to-black relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
@@ -19,10 +19,9 @@ export default function CTASection() {
               <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
               <Text
                 variant="small"
-                className="text-white"
+                className="text-white opacity-75"
                 weight={600}
                 as="span"
-                className="opacity-75"
               >
                 Powered by Intense Group
               </Text>
@@ -49,16 +48,14 @@ export default function CTASection() {
             <div className="text-center mb-6">
               <Text
                 variant="large"
-                className="text-white"
+                className="text-white text-xl md:text-2xl lg:text-3xl mb-2"
                 weight={600}
-                className="text-xl md:text-2xl lg:text-3xl mb-2"
               >
                 Stay in the Loop
               </Text>
               <Text
                 variant="body"
-                className="text-white"
-                className="opacity-75"
+                className="text-white opacity-75"
               >
                 Get updates on new features, creator spotlights, and industry insights.
               </Text>
@@ -73,7 +70,7 @@ export default function CTASection() {
               />
               <button
                 type="submit"
-                className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full text-button transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
               >
                 Subscribe
               </button>
@@ -81,8 +78,7 @@ export default function CTASection() {
 
             <Text
               variant="caption"
-              className="text-white"
-              className="text-center mt-4 opacity-60"
+              className="text-white text-center mt-4 opacity-60"
             >
               No spam, unsubscribe at any time.
             </Text>

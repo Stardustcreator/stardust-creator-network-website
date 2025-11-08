@@ -83,16 +83,14 @@ export default function CreatorJoinPage() {
 
               <Heading
                 level={1}
-                className="text-white"
-                className="text-3xl md:text-4xl mb-4"
+                className="text-white text-3xl md:text-4xl mb-4"
               >
                 Choose Your Region
               </Heading>
 
               <Text
                 variant="large"
-                className="text-white"
-                className="opacity-80"
+                className="text-white opacity-80"
               >
                 Select your location to access the most relevant application form and opportunities
               </Text>
@@ -110,15 +108,13 @@ export default function CreatorJoinPage() {
                     <div>
                       <Heading
                         level={3}
-                        className="text-white"
-                        className="text-lg mb-1"
+                        className="text-white text-lg mb-1"
                       >
                         Nigeria
                       </Heading>
                       <Text
                         variant="body"
-                        className="text-white"
-                        className="opacity-70"
+                        className="text-white opacity-70"
                       >
                         Join Nigeria&apos;s leading creator network
                       </Text>
@@ -150,15 +146,13 @@ export default function CreatorJoinPage() {
                     <div>
                       <Heading
                         level={3}
-                        className="text-white"
-                        className="text-lg mb-1"
+                        className="text-white text-lg mb-1"
                       >
                         United Kingdom
                       </Heading>
                       <Text
                         variant="body"
-                        className="text-white"
-                        className="opacity-70"
+                        className="text-white opacity-70"
                       >
                         Join the UK&apos;s innovative creator network
                       </Text>
@@ -187,15 +181,13 @@ export default function CreatorJoinPage() {
                     <div>
                       <Heading
                         level={3}
-                        className="text-white"
-                        className="text-lg mb-1"
+                        className="text-white text-lg mb-1"
                       >
                         Other Regions
                       </Heading>
                       <Text
                         variant="body"
-                        className="text-white"
-                        className="opacity-70"
+                        className="text-white opacity-70"
                       >
                         Coming soon to more countries
                       </Text>
@@ -212,8 +204,7 @@ export default function CreatorJoinPage() {
             <div className="text-center">
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-60"
+                className="text-white opacity-60"
               >
                 Don&apos;t see your region?{' '}
                 <a

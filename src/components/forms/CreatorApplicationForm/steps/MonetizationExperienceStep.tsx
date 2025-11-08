@@ -75,16 +75,14 @@ export default function MonetizationExperienceStep({
       <div className="text-center mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="text-2xl md:text-3xl mb-2"
+          className="text-white text-2xl md:text-3xl mb-2"
         >
           Monetization & Brand Experience
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80"
+          className="text-white opacity-80"
         >
           We&apos;d love to understand how you collaborate and earn.
         </Text>
@@ -282,15 +280,13 @@ export default function MonetizationExperienceStep({
           <div>
             <Text
               variant="body"
-              className="text-white"
-              className="opacity-90 mb-1 font-medium"
+              className="text-white opacity-90 mb-1 font-medium"
             >
               Honest Information Helps
             </Text>
             <Text
               variant="caption"
-              className="text-white"
-              className="opacity-70 leading-relaxed"
+              className="text-white opacity-70 leading-relaxed"
             >
               Being transparent about your experience and rates helps us match you with the right
               opportunities. Don&apos;t worry if you&apos;re just starting out - we work with

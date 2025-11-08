@@ -125,7 +125,6 @@ export const creatorIdentitySchema = z.object({
 
 // Dynamic fee range schema based on country
 export const createMonetizationExperienceSchema = (country: Country) => {
-
   return z.object({
     workedWithBrands: z.boolean({
       message: 'Please indicate if you have worked with brands before',
@@ -135,12 +134,8 @@ export const createMonetizationExperienceSchema = (country: Country) => {
       .string()
       .max(100, 'Brand name is too long')
       .optional()
-      .refine((val, ctx) => {
-        // Required if workedWithBrands is true
-        const workedWithBrands = ctx.parent?.workedWithBrands;
-        if (workedWithBrands && (!val || val.trim().length === 0)) {
-          return false;
-        }
+      .refine(val => {
+        // This validation will be handled at the form level since we need access to other fields
         return true;
       }, "Please provide an example of a brand you've worked with"),
 

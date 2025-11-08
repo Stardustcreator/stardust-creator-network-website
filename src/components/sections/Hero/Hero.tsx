@@ -82,8 +82,7 @@ export default function Hero() {
               nigeria={
                 <Text
                   variant="large"
-                  className="text-white"
-                  className="max-w-3xl mb-8"
+                  className="text-white max-w-3xl mb-8"
                 >
                   Stardust Creator Network connects creators and brands in Nigeria today, and is
                   building the infrastructure that will power tomorrow&apos;s creative businesses.
@@ -92,8 +91,7 @@ export default function Hero() {
               uk={
                 <Text
                   variant="large"
-                  className="text-white"
-                  className="max-w-3xl mb-8"
+                  className="text-white max-w-3xl mb-8"
                 >
                   Stardust Creator Network connects creators and brands in the UK today, and is
                   building the infrastructure that will power tomorrow&apos;s creative businesses.
@@ -102,8 +100,7 @@ export default function Hero() {
               fallback={
                 <Text
                   variant="large"
-                  className="text-white"
-                  className="max-w-3xl mb-8"
+                  className="text-white max-w-3xl mb-8"
                 >
                   Stardust Creator Network connects creators and brands today, and is building the
                   infrastructure that will power tomorrow&apos;s creative businesses.

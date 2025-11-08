@@ -44,16 +44,14 @@ export default function PersonalInformationStep({
       <div className="text-center mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="text-2xl md:text-3xl mb-2"
+          className="text-white text-2xl md:text-3xl mb-2"
         >
           Personal Information
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80"
+          className="text-white opacity-80"
         >
           Let&apos;s start with the basics.
         </Text>
@@ -232,15 +230,13 @@ export default function PersonalInformationStep({
           <div>
             <Text
               variant="body"
-              className="text-white"
-              className="opacity-90 mb-1 font-medium"
+              className="text-white opacity-90 mb-1 font-medium"
             >
               Your Privacy Matters
             </Text>
             <Text
               variant="caption"
-              className="text-white"
-              className="opacity-70 leading-relaxed"
+              className="text-white opacity-70 leading-relaxed"
             >
               We use this information to personalize your experience and connect you with relevant
               opportunities. Your data is protected and will never be shared without your consent.

@@ -42,16 +42,14 @@ export default function EducationToolsInterestStep({
       <div className="text-center mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="text-2xl md:text-3xl mb-2"
+          className="text-white text-2xl md:text-3xl mb-2"
         >
           Education & Tools Interest
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80"
+          className="text-white opacity-80"
         >
           Help us understand what kind of creator tools you&apos;d love most.
         </Text>
@@ -124,8 +122,7 @@ export default function EducationToolsInterestStep({
           <div className="text-center mt-4">
             <Text
               variant="caption"
-              className="text-white"
-              className="opacity-60"
+              className="text-white opacity-60"
             >
               {data.creatorOSFeatures?.length || 0} of 5 features selected
             </Text>
@@ -200,15 +197,13 @@ export default function EducationToolsInterestStep({
           <div>
             <Text
               variant="body"
-              className="text-white"
-              className="opacity-90 mb-1 font-medium"
+              className="text-white opacity-90 mb-1 font-medium"
             >
               Shaping the Future Together
             </Text>
             <Text
               variant="caption"
-              className="text-white"
-              className="opacity-70 leading-relaxed"
+              className="text-white opacity-70 leading-relaxed"
             >
               Your feedback helps us build tools that actually solve creators&apos; biggest
               challenges. We&apos;re committed to creating solutions that make your creative

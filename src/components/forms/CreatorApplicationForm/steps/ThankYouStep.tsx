@@ -59,16 +59,14 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="mb-4 text-3xl md:text-4xl"
+          className="text-white mb-4 text-3xl md:text-4xl"
         >
           You&apos;re officially part of the Stardust orbit ✨
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80 mb-6"
+          className="text-white opacity-80 mb-6"
         >
           Thank you for applying to join the Stardust Creator Network!
         </Text>
@@ -78,8 +76,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-8">
         <Heading
           level={2}
-          className="text-white"
-          className="text-xl mb-6"
+          className="text-white text-xl mb-6"
         >
           What happens next?
         </Heading>
@@ -92,15 +89,13 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             <div>
               <Text
                 variant="body"
-                className="text-white"
-                className="font-medium mb-1"
+                className="text-white font-medium mb-1"
               >
                 Review Process
               </Text>
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-70"
+                className="text-white opacity-70"
               >
                 Our team reviews new creators weekly and will assess your application within 3-5
                 business days.
@@ -115,15 +110,13 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             <div>
               <Text
                 variant="body"
-                className="text-white"
-                className="font-medium mb-1"
+                className="text-white font-medium mb-1"
               >
                 Onboarding
               </Text>
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-70"
+                className="text-white opacity-70"
               >
                 If selected, you&apos;ll receive onboarding details via email with access to our
                 creator portal.
@@ -138,15 +131,13 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             <div>
               <Text
                 variant="body"
-                className="text-white"
-                className="font-medium mb-1"
+                className="text-white font-medium mb-1"
               >
                 Start Collaborating
               </Text>
               <Text
                 variant="caption"
-                className="text-white"
-                className="opacity-70"
+                className="text-white opacity-70"
               >
                 Get first access to brand collaborations, community invites, and creator tools.
               </Text>
@@ -159,8 +150,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="space-y-4 mb-8">
         <Heading
           level={3}
-          className="text-white"
-          className="text-lg mb-6"
+          className="text-white text-lg mb-6"
         >
           While you wait, here&apos;s how to stay connected:
         </Heading>
@@ -218,8 +208,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="border-t border-white/10 pt-8">
         <Text
           variant="body"
-          className="text-white"
-          className="opacity-80 mb-4"
+          className="text-white opacity-80 mb-4"
         >
           Follow us for creator tips, updates, and community highlights:
         </Text>
@@ -263,8 +252,7 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
       <div className="mt-8 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
         <Text
           variant="caption"
-          className="text-white"
-          className="opacity-70"
+          className="text-white opacity-70"
         >
           💜 Thank you for choosing Stardust Creator Network. We&apos;re excited to potentially
           welcome you to our community of innovative creators in {country}.

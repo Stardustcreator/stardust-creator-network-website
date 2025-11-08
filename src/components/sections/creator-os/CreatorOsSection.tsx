@@ -18,10 +18,9 @@ export default function CreatorOsSection() {
             <br />
             <Text
               variant="large"
-              className="text-white"
+              className="text-white text-xl md:text-2xl lg:text-3xl"
               weight={600}
               as="span"
-              className="text-xl md:text-2xl lg:text-3xl"
             >
               Coming 2026
             </Text>
@@ -30,8 +29,7 @@ export default function CreatorOsSection() {
           {/* Main Copy */}
           <Text
             variant="large"
-            className="text-white"
-            className="mb-12 max-w-4xl mx-auto opacity-90"
+            className="text-white mb-12 max-w-4xl mx-auto opacity-90"
           >
             We&apos;re building Stardust Creator OS, the operating system for modern creators.
             Create and sell digital products, courses, memberships, or event tickets. Manage
@@ -40,8 +38,7 @@ export default function CreatorOsSection() {
 
           <Text
             variant="body"
-            className="text-white"
-            className="mb-12 max-w-3xl mx-auto opacity-75"
+            className="text-white mb-12 max-w-3xl mx-auto opacity-75"
           >
             Help us shape it. Take our 2-minute survey and tell us what your dream creator workspace
             looks like.
@@ -60,10 +57,9 @@ export default function CreatorOsSection() {
             <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse mr-3"></div>
             <Text
               variant="small"
-              className="text-white"
+              className="text-white opacity-75"
               weight={500}
               as="span"
-              className="opacity-75"
             >
               In Development - Coming 2026
             </Text>

@@ -84,16 +84,14 @@ export default function CreatorIdentityStep({
       <div className="text-center mb-8">
         <Heading
           level={1}
-          className="text-white"
-          className="text-2xl md:text-3xl mb-2"
+          className="text-white text-2xl md:text-3xl mb-2"
         >
           Creator Identity
         </Heading>
 
         <Text
           variant="large"
-          className="text-white"
-          className="opacity-80"
+          className="text-white opacity-80"
         >
           Tell us about your creative world.
         </Text>
