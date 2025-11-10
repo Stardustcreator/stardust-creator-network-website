@@ -3,16 +3,18 @@
 import { useEffect } from 'react';
 import type { Country } from '@/types/creator-application.types';
 
+type AnalyticsValue = string | number | boolean | null | undefined | Record<string, unknown>;
+
 interface ConversionTrackerProps {
   event: string;
   country: Country;
-  properties?: Record<string, any>;
+  properties?: Record<string, AnalyticsValue>;
 }
 
-export default function ConversionTracker({ 
-  event, 
-  country, 
-  properties = {} 
+export default function ConversionTracker({
+  event,
+  country,
+  properties = {},
 }: ConversionTrackerProps) {
   useEffect(() => {
     // Track the conversion event with country-specific properties
@@ -69,17 +71,9 @@ export default function ConversionTracker({
 declare global {
   interface Window {
     posthog?: {
-      capture: (event: string, properties: Record<string, any>) => void;
+      capture: (event: string, properties: Record<string, AnalyticsValue>) => void;
     };
-    gtag?: (
-      command: string,
-      event: string,
-      properties: Record<string, any>
-    ) => void;
-    fbq?: (
-      command: string,
-      event: string,
-      properties: Record<string, any>
-    ) => void;
+    gtag?: (command: string, event: string, properties: Record<string, AnalyticsValue>) => void;
+    fbq?: (command: string, event: string, properties: Record<string, AnalyticsValue>) => void;
   }
 }

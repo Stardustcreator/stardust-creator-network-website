@@ -1,6 +1,6 @@
 import { Text } from '@/components/typography';
 import { SectionHeader } from '@/components/shared';
-import ImagePlaceholderCard from './ImagePlaceholderCard';
+import SplitScreenCarousel from './SplitScreenCarousel';
 
 export default function IconGridSection() {
   return (
@@ -42,26 +42,9 @@ export default function IconGridSection() {
             Join the waitlist to be first in line when we open doors next month.
           </Text>
 
-          {/* Community Preview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 max-w-4xl mx-auto">
-            <ImagePlaceholderCard
-              title="Learning Hub"
-              description="Educational Resources"
-              placeholder="LH"
-              size="medium"
-            />
-            <ImagePlaceholderCard
-              title="Creator Network"
-              description="Community Connections"
-              placeholder="CN"
-              size="medium"
-            />
-            <ImagePlaceholderCard
-              title="Growth Tools"
-              description="Monetization Playbooks"
-              placeholder="GT"
-              size="medium"
-            />
+          {/* Split Screen Carousel */}
+          <div className="mb-16">
+            <SplitScreenCarousel />
           </div>
 
           {/* Call-to-Action */}
