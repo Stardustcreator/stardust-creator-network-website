@@ -30,17 +30,20 @@ export default function proxy(request: NextRequest) {
   );
 
   // Content Security Policy (CSP)
-  // Note: This is a basic CSP. You may need to adjust based on your specific needs
+  // Comprehensive CSP that allows Google Tag Manager, Analytics, and other required services
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https:;
-    font-src 'self' https://fonts.gstatic.com;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com;
+    script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://tagmanager.google.com;
+    img-src 'self' blob: data: https: https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com;
+    font-src 'self' data: https://fonts.gstatic.com;
+    connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
+    frame-src 'self' https://vercel.live https://www.googletagmanager.com https://td.doubleclick.net;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-ancestors 'none';
+    frame-ancestors 'self';
     upgrade-insecure-requests;
   `
     .replace(/\s{2,}/g, ' ')
