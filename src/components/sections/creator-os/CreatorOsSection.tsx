@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
 
 export default function CreatorOsSection() {
@@ -25,6 +26,29 @@ export default function CreatorOsSection() {
               Coming 2026
             </Text>
           </Heading>
+
+          {/* Visual Divider - Feature Preview Image */}
+          <div className="group relative w-full my-16">
+            {/* Animated Border Glow */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 animate-gradient-x"></div>
+
+            {/* Image Container */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 blur-3xl"></div>
+              <div className="relative aspect-video w-full">
+                <Image
+                  src="/creatorOS.jpg"
+                  alt="Stardust CreatorOS platform preview showing dashboard and features for modern creators"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  priority={false}
+                />
+                {/* Purple Color Overlay */}
+                <div className="absolute inset-0 bg-purple-600/30 mix-blend-multiply"></div>
+              </div>
+            </div>
+          </div>
 
           {/* Main Copy */}
           <Text

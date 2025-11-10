@@ -71,13 +71,12 @@ export default function SectionHeader({
         {words.map((word, index) => (
           <span
             key={`${word.text}-${index}`}
-            className={`${getAnimationClasses(index)} ${word.className || ''}`}
+            className={`${getAnimationClasses(index)} ${word.className || ''} ${index < words.length - 1 ? 'mr-2' : ''}`}
             style={{
               transitionDelay: isIntersecting ? `${index * 100}ms` : '0ms',
             }}
           >
             {word.text}
-            {index < words.length - 1 && ' '}
           </span>
         ))}
       </Heading>

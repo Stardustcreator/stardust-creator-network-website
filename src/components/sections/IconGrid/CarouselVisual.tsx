@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { CarouselSlide } from './carousel-data';
 
 interface CarouselVisualProps {
@@ -6,6 +7,34 @@ interface CarouselVisualProps {
 }
 
 export default function CarouselVisual({ slide, isActive }: CarouselVisualProps) {
+  if (slide.image) {
+    return (
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Full Section Image Display */}
+        <div
+          className={`absolute inset-0 transition-all duration-700 ease-out ${
+            isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+          }`}
+        >
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={slide.id === 'learning-hub'}
+          />
+        </div>
+
+        {/* Brand-Colored Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-purple-500/20 to-pink-500/20" />
+
+        {/* Subtle Darkening for Depth */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full h-full min-h-[400px] md:min-h-[500px] flex items-center justify-center p-8 md:p-12">
       {/* Background Abstract Patterns */}
@@ -28,7 +57,7 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
           isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
         }`}
       >
-        {/* Large Gradient Badge */}
+        {/* Large Gradient Badge Placeholder */}
         <div
           className={`w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br ${slide.gradientFrom} ${slide.gradientVia} ${slide.gradientTo} rounded-3xl md:rounded-[3rem] flex items-center justify-center shadow-2xl transform transition-transform duration-500 hover:scale-105`}
         >
@@ -53,12 +82,6 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
             isActive ? 'translate-x-0 translate-y-0' : '-translate-x-4 -translate-y-4'
           }`}
         />
-      </div>
-
-      {/* Placeholder for Future Images/Illustrations */}
-      <div className="absolute inset-0 pointer-events-none opacity-0">
-        {/* This div can be replaced with actual images/illustrations in the future */}
-        {/* Structure: <Image src={slide.image} alt={slide.title} fill /> */}
       </div>
     </div>
   );
