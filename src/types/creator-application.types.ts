@@ -115,7 +115,7 @@ export type FeeRange = NigeriaFeeRange | UKFeeRange;
 export interface PersonalInformation {
   fullName: string;
   email: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   country: Country;
   city: string;
   ageRange: AgeRange;

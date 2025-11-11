@@ -254,11 +254,9 @@ export default function BrandCompanyInformationStep({
           {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
         </div>
 
-        {/* Phone (Optional) */}
+        {/* Phone */}
         <div>
-          <label className="block text-white text-sm font-medium mb-2">
-            Phone <span className="text-gray-400">(Optional)</span>
-          </label>
+          <label className="block text-white text-sm font-medium mb-2">Phone *</label>
           <input
             type="tel"
             value={data.phoneNumber || ''}

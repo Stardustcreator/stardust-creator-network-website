@@ -103,9 +103,7 @@ export default function PersonalInformationStep({
 
         {/* Phone Number */}
         <div>
-          <label className="block text-white text-sm font-medium mb-2">
-            Phone Number <span className="text-white/50">(Optional)</span>
-          </label>
+          <label className="block text-white text-sm font-medium mb-2">Phone Number *</label>
           <input
             type="tel"
             value={data.phoneNumber || ''}

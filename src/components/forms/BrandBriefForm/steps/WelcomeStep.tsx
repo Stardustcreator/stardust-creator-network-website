@@ -12,7 +12,6 @@ const getLocationContent = (country: Country) => {
     case 'Nigeria':
       return {
         welcomeMessage: "Connect your brand with Nigeria's top creators",
-        subtitle: "Let's build something extraordinary.",
         description:
           'Stardust Creator Network connects brands with verified creators across Nigeria, delivering storytelling that drives awareness, engagement, and sales.',
         briefText:
@@ -22,7 +21,6 @@ const getLocationContent = (country: Country) => {
     case 'United Kingdom':
       return {
         welcomeMessage: "Connect your brand with the UK's top creators",
-        subtitle: "Let's build something extraordinary.",
         description:
           'Stardust Creator Network connects brands with verified creators across the UK, delivering storytelling that drives awareness, engagement, and sales.',
         briefText:

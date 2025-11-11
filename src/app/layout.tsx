@@ -91,6 +91,11 @@ export default function RootLayout({
       suppressHydrationWarning={true}
     >
       <head>
+        {/* Google Site Verification */}
+        <meta
+          name="google-site-verification"
+          content="sIXklRTJlN89f-fY2f1_Yd5lpiyuixk00AHGF7KKOII"
+        />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{

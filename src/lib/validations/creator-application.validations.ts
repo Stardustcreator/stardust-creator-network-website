@@ -50,9 +50,8 @@ export const personalInformationSchema = z.object({
 
   phoneNumber: z
     .string()
-    .optional()
+    .min(1, 'Phone number is required')
     .refine(val => {
-      if (!val) return true; // Optional field
       // Basic international phone number validation
       return /^\+?[\d\s\-\(\)]+$/.test(val) && val.replace(/\D/g, '').length >= 10;
     }, 'Please enter a valid phone number'),
@@ -95,8 +94,8 @@ export const creatorIdentitySchema = z.object({
     .min(2, 'Creator handle must be at least 2 characters')
     .max(30, 'Creator handle must be less than 30 characters')
     .regex(
-      /^[a-zA-Z0-9._-]+$/,
-      'Creator handle can only contain letters, numbers, dots, underscores, and hyphens'
+      /^[a-zA-Z0-9@._-]+$/,
+      'Creator handle can only contain letters, numbers, @ symbol, dots, underscores, and hyphens'
     ),
 
   primaryPlatforms: z

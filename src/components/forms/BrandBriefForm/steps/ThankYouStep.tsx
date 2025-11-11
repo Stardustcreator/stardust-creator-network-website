@@ -190,10 +190,10 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
         </Text>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
           <a
-            href="mailto:partnerships@stardustcreatornetwork.com"
+            href="mailto:hello@stardustcreatornetwork.com"
             className="text-purple-400 hover:text-purple-300 transition-colors"
           >
-            partnerships@stardustcreatornetwork.com
+            hello@stardustcreatornetwork.com
           </a>
           <span className="hidden sm:block text-gray-600">•</span>
           <a

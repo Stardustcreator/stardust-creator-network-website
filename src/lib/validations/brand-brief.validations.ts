@@ -65,9 +65,8 @@ export const brandCompanyInformationSchema = z.object({
 
   phoneNumber: z
     .string()
-    .optional()
+    .min(1, 'Phone number is required')
     .refine(val => {
-      if (!val) return true; // Optional field
       // Basic international phone number validation
       return /^\+?[\d\s\-\(\)]+$/.test(val) && val.replace(/\D/g, '').length >= 10;
     }, 'Please enter a valid phone number'),
@@ -124,7 +123,6 @@ export const creatorPreferencesSchema = z.object({
 
 // Dynamic budget range schema based on country
 export const createBudgetPaymentPreferenceSchema = (_country: Country) => {
-  // eslint-disable-line @typescript-eslint/no-unused-vars
   return z.object({
     estimatedBudget: z.string({
       message: 'Please select your estimated campaign budget',

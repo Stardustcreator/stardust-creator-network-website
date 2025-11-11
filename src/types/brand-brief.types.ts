@@ -161,7 +161,7 @@ export interface BrandCompanyInformation {
   businessType: BusinessType;
   contactPerson: string;
   email: string;
-  phoneNumber?: string;
+  phoneNumber: string;
 }
 
 export interface CampaignObjectives {
