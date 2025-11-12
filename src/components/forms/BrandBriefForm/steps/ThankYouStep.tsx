@@ -197,10 +197,10 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
           </a>
           <span className="hidden sm:block text-gray-600">•</span>
           <a
-            href="tel:+2341234567890"
+            href="tel:+2348120364960"
             className="text-purple-400 hover:text-purple-300 transition-colors"
           >
-            {country === 'Nigeria' ? '+234 (XXX) XXX-XXXX' : '+44 (XXX) XXX-XXXX'}
+            {country === 'Nigeria' ? '+234 812 036 4960' : '+44 (XXX) XXX-XXXX'}
           </a>
         </div>
       </div>

@@ -39,22 +39,69 @@ function extractUTMParams(url: string | null): {
 export async function POST(request: NextRequest) {
   // Wrap everything in try-catch to ensure we always return JSON
   try {
-    let body;
-    try {
-      body = await request.json();
-    } catch (jsonError) {
-      console.error('Failed to parse request body as JSON:', jsonError);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid request format. Expected JSON.',
-        },
-        { status: 400 }
-      );
+    let body: unknown;
+    let mediaKitFile: File | null = null;
+
+    // Check if request is FormData (file upload) or JSON
+    const contentType = request.headers.get('content-type') || '';
+
+    if (contentType.includes('multipart/form-data')) {
+      // Handle FormData request with file
+      const formData = await request.formData();
+      const file = formData.get('mediaKit');
+      const formDataString = formData.get('formData');
+
+      if (file instanceof File) {
+        mediaKitFile = file;
+      }
+
+      if (!formDataString || typeof formDataString !== 'string') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Invalid request format. Missing form data.',
+          },
+          { status: 400 }
+        );
+      }
+
+      try {
+        body = JSON.parse(formDataString);
+      } catch (parseError) {
+        console.error('Failed to parse form data JSON:', parseError);
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Invalid request format. Form data is not valid JSON.',
+          },
+          { status: 400 }
+        );
+      }
+    } else {
+      // Handle JSON request
+      try {
+        body = await request.json();
+      } catch (jsonError) {
+        console.error('Failed to parse request body as JSON:', jsonError);
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Invalid request format. Expected JSON.',
+          },
+          { status: 400 }
+        );
+      }
     }
 
     // Debug: Log the incoming request data
     console.log('API received data:', JSON.stringify(body, null, 2));
+    if (mediaKitFile) {
+      console.log('Media kit file received:', {
+        name: mediaKitFile.name,
+        size: mediaKitFile.size,
+        type: mediaKitFile.type,
+      });
+    }
 
     // Validate the incoming data
     const validatedData = apiCreatorApplicationSchema.parse(body);
@@ -89,6 +136,67 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Upload media kit file to Supabase Storage if present
+    let mediaKitUrl: string | undefined;
+    if (mediaKitFile) {
+      try {
+        // Generate a unique filename using timestamp and original filename
+        const timestamp = Date.now();
+        const sanitizedFileName = mediaKitFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const filePath = `${timestamp}-${sanitizedFileName}`;
+
+        // Convert File to ArrayBuffer for Supabase upload
+        const fileBuffer = await mediaKitFile.arrayBuffer();
+
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+          .from('creator-media-kits')
+          .upload(filePath, fileBuffer, {
+            contentType: mediaKitFile.type,
+            upsert: false,
+          });
+
+        if (uploadError) {
+          console.error('File upload error:', uploadError);
+          return NextResponse.json(
+            {
+              success: false,
+              error: 'Failed to upload media kit file. Please try again.',
+              details: process.env.NODE_ENV === 'development' ? uploadError.message : undefined,
+            },
+            { status: 500 }
+          );
+        }
+
+        // Get the public URL for the uploaded file
+        const { data: urlData } = supabaseClient.storage
+          .from('creator-media-kits')
+          .getPublicUrl(filePath);
+
+        mediaKitUrl = urlData.publicUrl;
+
+        console.log('Media kit uploaded successfully:', {
+          path: filePath,
+          url: mediaKitUrl,
+        });
+      } catch (uploadError) {
+        console.error('File upload exception:', uploadError);
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Failed to process media kit file. Please try again.',
+            details:
+              process.env.NODE_ENV === 'development'
+                ? uploadError instanceof Error
+                  ? uploadError.message
+                  : 'Unknown upload error'
+                : undefined,
+          },
+          { status: 500 }
+        );
+      }
+    }
+
     // Prepare data for database insertion
     const registrationData: CreatorRegistrationRecord = {
       // Personal Information
@@ -102,10 +210,12 @@ export async function POST(request: NextRequest) {
       // Creator Identity
       creator_handle: validatedData.creatorIdentity.creatorHandle,
       primary_platforms: validatedData.creatorIdentity.primaryPlatforms,
-      social_links: validatedData.creatorIdentity.socialLinks.map(link => ({
-        platform: link.platform,
-        url: link.url,
-      })),
+      social_links: validatedData.creatorIdentity.socialLinks.map(
+        (link: { platform: string; url: string }) => ({
+          platform: link.platform,
+          url: link.url,
+        })
+      ),
       audience_size: validatedData.creatorIdentity.audienceSize,
       content_categories: validatedData.creatorIdentity.contentCategories,
       creator_type: validatedData.creatorIdentity.creatorType,
@@ -122,6 +232,7 @@ export async function POST(request: NextRequest) {
       community_interest: validatedData.educationToolsInterest.communityInterest,
 
       // Verification & Agreement
+      media_kit_url: mediaKitUrl,
       authenticity_confirmed: validatedData.verificationAgreement.authenticityConfirmed,
       terms_agreed: validatedData.verificationAgreement.termsAgreed,
 

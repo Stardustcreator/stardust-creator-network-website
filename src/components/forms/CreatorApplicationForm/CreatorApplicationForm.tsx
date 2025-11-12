@@ -211,15 +211,43 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
         console.log(`${section}:`, submitData[section]);
       });
 
+      // Check if there's a file to upload
+      const mediaKitFile = submitData.verificationAgreement?.mediaKit;
+      const hasFile = mediaKitFile instanceof File;
+
       let response;
       try {
-        response = await fetch('/api/creator-application', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submitData),
-        });
+        if (hasFile) {
+          // Use FormData when there's a file
+          const formData = new FormData();
+
+          // Add the file
+          formData.append('mediaKit', mediaKitFile);
+
+          // Add all other form data as JSON string
+          const { mediaKit, ...formDataWithoutFile } = submitData.verificationAgreement || {};
+          const formDataToSend = {
+            ...submitData,
+            verificationAgreement: {
+              ...formDataWithoutFile,
+            },
+          };
+          formData.append('formData', JSON.stringify(formDataToSend));
+
+          response = await fetch('/api/creator-application', {
+            method: 'POST',
+            body: formData,
+          });
+        } else {
+          // Use JSON when there's no file
+          response = await fetch('/api/creator-application', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(submitData),
+          });
+        }
       } catch (fetchError) {
         console.error('Fetch request failed:', fetchError);
         throw new Error(

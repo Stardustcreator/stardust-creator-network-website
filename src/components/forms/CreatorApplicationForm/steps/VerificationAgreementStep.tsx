@@ -175,7 +175,7 @@ export default function VerificationAgreementStep({
                   variant="caption"
                   className="text-white opacity-60"
                 >
-                  PDF, Images, or Word documents up to 10MB
+                  PDF, Images, or Word documents up to 50MB
                 </Text>
                 <input
                   type="file"

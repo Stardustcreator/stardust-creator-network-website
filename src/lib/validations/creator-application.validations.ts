@@ -105,8 +105,9 @@ export const creatorIdentitySchema = z.object({
 
   socialLinks: z
     .array(socialLinkSchema)
-    .min(1, 'Please provide at least one social media link')
-    .max(10, 'Please provide no more than 10 social media links'),
+    .min(1, "We'd love to see your social pages! Please add at least one link to get started.")
+    .max(10, 'Please provide no more than 10 social media links')
+    .default([]),
 
   audienceSize: z.enum(AUDIENCE_SIZES, {
     message: 'Please select your audience size',
