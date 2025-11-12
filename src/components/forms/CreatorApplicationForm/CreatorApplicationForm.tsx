@@ -238,10 +238,28 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
         let errorData;
         try {
           const errorText = await response.text();
-          errorData = JSON.parse(errorText);
+
+          // Check if response is HTML (Next.js error page) instead of JSON
+          if (errorText.trim().startsWith('<!DOCTYPE') || errorText.trim().startsWith('<html')) {
+            console.error('Server returned HTML error page instead of JSON:', {
+              status: response.status,
+              statusText: response.statusText,
+              preview: errorText.substring(0, 200),
+            });
+            errorData = {
+              error: `Server error (${response.status}). Please try again later.`,
+              isHtmlResponse: true,
+            };
+          } else {
+            // Try to parse as JSON
+            errorData = JSON.parse(errorText);
+          }
         } catch (parseError) {
           console.error('Failed to parse error response:', parseError);
-          errorData = { error: 'Unable to read error response' };
+          errorData = {
+            error: `Server error (${response.status}). Please try again later.`,
+            parseError: true,
+          };
         }
 
         console.error('API response error:', {

@@ -5,24 +5,54 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Environment variables validation
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Lazy initialization function for Supabase client
+// This prevents errors at module load time and allows proper error handling in route handlers
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl) {
-  throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable');
+  if (!supabaseUrl) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable');
+  }
+
+  if (!supabaseServiceRoleKey) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
+  }
+
+  // Create Supabase client with service role key for server-side operations
+  // This bypasses Row Level Security (RLS) and should only be used in secure server environments
+  return createClient(supabaseUrl, supabaseServiceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
 }
 
-if (!supabaseServiceRoleKey) {
-  throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
+// Export a getter function that creates the client on first access
+// This allows errors to be caught in route handlers instead of at module load time
+
+type SupabaseClient = ReturnType<typeof createClient>;
+let supabaseAdminInstance: SupabaseClient | null = null;
+
+export function getSupabaseAdmin(): SupabaseClient {
+  if (!supabaseAdminInstance) {
+    // Type assertion needed because Supabase types are complex and we don't have generated types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    supabaseAdminInstance = getSupabaseClient() as any;
+  }
+  // Type assertion needed because Supabase types are complex and we don't have generated types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return supabaseAdminInstance as any;
 }
 
-// Create Supabase client with service role key for server-side operations
-// This bypasses Row Level Security (RLS) and should only be used in secure server environments
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
+// For backward compatibility, export as a getter property
+// This allows existing code to continue working
+export const supabaseAdmin = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const client = getSupabaseAdmin();
+    const value = (client as unknown as Record<string | symbol, unknown>)[prop];
+    return typeof value === 'function' ? value.bind(client) : value;
   },
 });
 

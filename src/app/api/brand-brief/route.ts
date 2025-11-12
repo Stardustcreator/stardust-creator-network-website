@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -177,22 +177,49 @@ export async function POST(request: NextRequest) {
     // Determine which table to use based on country
     const tableName = getBrandBriefTable(validatedData.brandCompanyInformation.country);
 
+    // Initialize Supabase client (may throw if env vars are missing)
+    let supabaseClient: ReturnType<typeof getSupabaseAdmin>;
+    try {
+      supabaseClient = getSupabaseAdmin();
+    } catch (supabaseInitError) {
+      console.error('Failed to initialize Supabase client:', supabaseInitError);
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Server configuration error. Please contact support.',
+          details:
+            process.env.NODE_ENV === 'development'
+              ? supabaseInitError instanceof Error
+                ? supabaseInitError.message
+                : 'Supabase client initialization failed'
+              : undefined,
+        },
+        { status: 500 }
+      );
+    }
+
     // Debug: Log the data being inserted
     console.log('Inserting brand brief data into table:', tableName);
     console.log('Brief data:', JSON.stringify(briefData, null, 2));
 
     // Insert into Supabase using the appropriate country-specific table
-    const { data, error } = await supabaseAdmin
+    // Type assertion needed because Supabase types require generated database types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = (await (supabaseClient as any)
       .from(tableName)
       .insert([briefData])
       .select('id, brief_status, created_at')
-      .single();
+      .single()) as {
+      data: { id: string; brief_status: string; created_at: string } | null;
+      error: unknown;
+    };
 
     if (error) {
       console.error('Supabase insertion error:', error);
 
       // Handle duplicate email error
-      if (error.code === '23505' && error.message?.includes('email')) {
+      const dbError = error as { code?: string; message?: string };
+      if (dbError.code === '23505' && dbError.message?.includes('email')) {
         return NextResponse.json(
           {
             success: false,
@@ -204,7 +231,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Handle other constraint errors
-      if (error.code === '23505') {
+      if (dbError.code === '23505') {
         return NextResponse.json(
           {
             success: false,
@@ -220,7 +247,18 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Failed to save brand brief. Please try again.',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+          details: process.env.NODE_ENV === 'development' ? dbError.message : undefined,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!data) {
+      console.error('Database insertion returned no data');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to create brand brief record. Please try again.',
         },
         { status: 500 }
       );

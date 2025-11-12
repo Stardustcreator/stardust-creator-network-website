@@ -286,6 +286,17 @@ Copy `.env.example` to `.env.local` and configure:
 - CMS configuration (Contentful, Sanity, etc.)
 - Authentication providers (NextAuth.js)
 
+### Google Sheets Integration (Nigeria Creator Applications)
+
+For syncing Nigeria creator applications to Google Sheets:
+
+- `GOOGLE_SHEETS_SPREADSHEET_ID`: The ID of your Google Sheet (from the URL)
+- `GOOGLE_SHEETS_SHEET_NAME`: The name of the sheet tab (default: "Nigeria Applications")
+- `GOOGLE_SERVICE_ACCOUNT_EMAIL`: Service account email from Google Cloud
+- `GOOGLE_PRIVATE_KEY`: Private key from the service account JSON (with `\n` preserved)
+
+See [docs/google-sheets-setup.md](docs/google-sheets-setup.md) for detailed setup instructions.
+
 ## Troubleshooting
 
 ### Common Issues
