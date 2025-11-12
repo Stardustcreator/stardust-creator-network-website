@@ -88,7 +88,9 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="#"
+            href="https://growthauthority.co.uk/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center justify-center px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105"
           >
             Join Growth Authority Waitlist

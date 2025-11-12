@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { detectUserCountry } from '@/lib/services/geolocation.service';
 
 export type Country = 'nigeria' | 'uk';
@@ -27,6 +28,35 @@ export function CountryProvider({ children }: CountryProviderProps) {
   const [isAutoDetected, setIsAutoDetected] = useState(false);
   const [isDetecting, setIsDetecting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
+
+  // Function to extract country from URL pathname
+  const getCountryFromPath = (path: string): Country | null => {
+    // Check if path contains /uk/ or ends with /uk
+    if (path.includes('/uk/') || path.endsWith('/uk')) {
+      return 'uk';
+    }
+    // Check if path contains /nigeria/ or ends with /nigeria
+    if (path.includes('/nigeria/') || path.endsWith('/nigeria')) {
+      return 'nigeria';
+    }
+    return null;
+  };
+
+  // Update country when pathname changes
+  useEffect(() => {
+    if (!pathname || typeof window === 'undefined' || !isMounted) return;
+
+    const countryFromPath = getCountryFromPath(pathname);
+    if (countryFromPath && countryFromPath !== country) {
+      // Updating state based on URL pathname is necessary for country detection
+      /* eslint-disable react-hooks/set-state-in-effect */
+      setIsAutoDetected(false); // URL-based selection is not auto-detected
+      setCountryState(countryFromPath);
+      /* eslint-enable react-hooks/set-state-in-effect */
+      // Don't save to localStorage here - let user's manual selection override
+    }
+  }, [pathname, isMounted, country]);
 
   // Load country from localStorage and perform auto-detection on mount
   useEffect(() => {
@@ -39,6 +69,18 @@ export function CountryProvider({ children }: CountryProviderProps) {
       }
 
       if (typeof window === 'undefined' || !mounted) return;
+
+      // First, check if URL path indicates a country (highest priority)
+      const countryFromPath = getCountryFromPath(window.location.pathname);
+      if (countryFromPath) {
+        if (mounted) {
+          setCountryState(countryFromPath);
+          setIsAutoDetected(false);
+          setIsDetecting(false);
+          // Don't overwrite localStorage - let user's manual selection persist
+        }
+        return;
+      }
 
       // Check if user has manually selected a country
       const storedCountry = localStorage.getItem(STORAGE_KEY);
