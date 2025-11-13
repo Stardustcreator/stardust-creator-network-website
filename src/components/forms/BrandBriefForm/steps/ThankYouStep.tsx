@@ -1,6 +1,10 @@
+'use client';
+
+import { useState } from 'react';
 import { Heading } from '@/components/typography/Heading';
 import { Text } from '@/components/typography/Text';
 import type { Country } from '@/types/brand-brief.types';
+import CreatorSurvey from '@/components/forms/CreatorSurvey/CreatorSurvey';
 
 interface ThankYouStepProps {
   country: Country;
@@ -40,6 +44,7 @@ const getLocationContent = (country: Country) => {
 
 export default function ThankYouStep({ country }: ThankYouStepProps) {
   const content = getLocationContent(country);
+  const [showSurvey, setShowSurvey] = useState(false);
 
   return (
     <div className="max-w-3xl mx-auto text-center py-16">
@@ -179,6 +184,45 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
               Start your collaboration with handpicked creators who align with your brand
             </Text>
           </div>
+        </div>
+      </div>
+
+      {/* Creator Survey Section */}
+      <div className="mt-12 mb-8">
+        <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-xl p-8">
+          <Heading
+            as="h3"
+            level={3}
+            className="text-white mb-4 text-xl"
+          >
+            Help Us Build Better Tools for Creators
+          </Heading>
+          <Text
+            variant="body"
+            className="text-blue-200 mb-6"
+          >
+            Take a 2-minute survey to help us understand creator needs and shape the future of
+            Stardust Creator Network. Your feedback will help us prioritize features and build tools
+            that matter most to creators like you.
+          </Text>
+          {!showSurvey ? (
+            <button
+              type="button"
+              onClick={() => setShowSurvey(true)}
+              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
+            >
+              Take the 2-Minute Survey
+            </button>
+          ) : (
+            <div className="mt-6">
+              <CreatorSurvey
+                onComplete={() => {
+                  // Survey completed - could show a thank you message or close
+                  setShowSurvey(false);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
 

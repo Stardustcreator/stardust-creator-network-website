@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 
 export default function CreatorOsSection() {
@@ -70,10 +71,13 @@ export default function CreatorOsSection() {
 
           {/* Call-to-Action */}
           <div className="flex justify-center">
-            <button className="group relative inline-flex items-center justify-center px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25">
+            <Link
+              href="/creators/survey"
+              className="group relative inline-flex items-center justify-center px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+            >
               <span className="relative z-10">Take the 2-Minute Survey</span>
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
-            </button>
+            </Link>
           </div>
 
           {/* Coming Soon Badge */}

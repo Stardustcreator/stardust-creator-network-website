@@ -9,7 +9,7 @@ interface ThankYouStepProps {
 const getSocialLinks = () => {
   // This could be country-specific in the future
   return {
-    surveyUrl: 'https://forms.gle/creator-os-survey', // Placeholder URL
+    surveyUrl: '/creators/survey',
     waitlistUrl: 'https://stardustcreatornetwork.com/community-waitlist', // Placeholder URL
   };
 };
@@ -158,8 +158,6 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
           {/* Survey CTA */}
           <a
             href={socialLinks.surveyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center justify-center"
           >
             Take 2-Minute Survey
