@@ -40,9 +40,10 @@ export const generateStructuredData = {
     url: site.url,
     description: site.defaultDescription,
     sameAs: [
-      // Add your social media URLs here
-      // "https://twitter.com/StardustCreators",
-      // "https://linkedin.com/company/stardust-creator-network",
+      'https://www.instagram.com/stardustcreatornetwork/',
+      'https://www.tiktok.com/@stardustcreatornetwork',
+      'https://www.youtube.com/@StardustCreatorNetwork',
+      'https://www.linkedin.com/company/stardust-creator-network',
     ],
     logo: {
       '@type': 'ImageObject',
