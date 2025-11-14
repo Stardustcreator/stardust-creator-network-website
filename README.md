@@ -302,6 +302,18 @@ Setup guides:
 - Brand briefs: [docs/google-sheets-brand-brief-setup.md](docs/google-sheets-brand-brief-setup.md)
 - Email notifications for brand briefs: [docs/google-sheets-brand-brief-email-setup.md](docs/google-sheets-brand-brief-email-setup.md)
 
+### Mailchimp Integration
+
+For adding creator applicants to your Mailchimp audience list with the "join-as-creator" tag:
+
+- `MAILCHIMP_API_KEY`: Your Mailchimp API key (format: `abc123def456-us12`)
+- `MAILCHIMP_SERVER_PREFIX`: Server prefix from your API key (e.g., `us12`)
+- `MAILCHIMP_AUDIENCE_ID`: The ID of your Mailchimp audience list (format: `a1b2c3d4e5`)
+
+Setup guide:
+
+- [docs/mailchimp-integration-setup.md](docs/mailchimp-integration-setup.md)
+
 ## Troubleshooting
 
 ### Common Issues

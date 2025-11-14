@@ -6,6 +6,7 @@ import {
   type CreatorRegistrationRecord,
 } from '@/lib/supabase';
 import { appendToGoogleSheets } from '@/lib/services/google-sheets.service';
+import { addCreatorToMailchimp } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -315,6 +316,18 @@ export async function POST(request: NextRequest) {
         // Don't re-throw - this is intentionally non-blocking
       });
     }
+
+    // Sync to Mailchimp audience with "join-as-creator" tag
+    // This runs asynchronously and won't block the response if it fails
+    addCreatorToMailchimp({
+      email: validatedData.personalInformation.email,
+      fullName: validatedData.personalInformation.fullName,
+      phoneNumber: validatedData.personalInformation.phoneNumber,
+    }).catch(error => {
+      // Error is already logged in the service, but we log here for API context
+      console.error('Mailchimp sync failed (non-blocking):', error);
+      // Don't re-throw - this is intentionally non-blocking
+    });
 
     // TODO: Send confirmation email
     // TODO: Notify admin team
