@@ -286,16 +286,21 @@ Copy `.env.example` to `.env.local` and configure:
 - CMS configuration (Contentful, Sanity, etc.)
 - Authentication providers (NextAuth.js)
 
-### Google Sheets Integration (Nigeria Creator Applications)
+### Google Sheets Integration
 
-For syncing Nigeria creator applications to Google Sheets:
+For syncing Nigeria creator applications and brand briefs to Google Sheets:
 
 - `GOOGLE_SHEETS_SPREADSHEET_ID`: The ID of your Google Sheet (from the URL)
-- `GOOGLE_SHEETS_SHEET_NAME`: The name of the sheet tab (default: "Nigeria Applications")
+- `GOOGLE_SHEETS_SHEET_NAME`: The name of the sheet tab for creator applications (default: "Nigeria Applications")
+- `GOOGLE_SHEETS_BRAND_SHEET_NAME`: The name of the sheet tab for brand briefs (default: "brands registration ng")
 - `GOOGLE_SERVICE_ACCOUNT_EMAIL`: Service account email from Google Cloud
 - `GOOGLE_PRIVATE_KEY`: Private key from the service account JSON (with `\n` preserved)
 
-See [docs/google-sheets-setup.md](docs/google-sheets-setup.md) for detailed setup instructions.
+Setup guides:
+
+- Creator applications: [docs/google-sheets-setup.md](docs/google-sheets-setup.md)
+- Brand briefs: [docs/google-sheets-brand-brief-setup.md](docs/google-sheets-brand-brief-setup.md)
+- Email notifications for brand briefs: [docs/google-sheets-brand-brief-email-setup.md](docs/google-sheets-brand-brief-email-setup.md)
 
 ## Troubleshooting
 

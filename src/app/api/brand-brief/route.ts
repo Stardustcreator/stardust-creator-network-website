@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
 import { getSupabaseAdmin } from '@/lib/supabase';
+import { appendBrandBriefToGoogleSheets } from '@/lib/services/google-sheets.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -265,6 +266,17 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Brand brief submitted successfully:', data);
+
+    // Sync to Google Sheets (non-blocking - errors are logged but don't fail the request)
+    // Only sync for Nigeria briefs (can be extended to other countries as needed)
+    if (validatedData.brandCompanyInformation.country === 'Nigeria') {
+      try {
+        await appendBrandBriefToGoogleSheets(briefData);
+      } catch (sheetsError) {
+        // Log but don't fail the request if Google Sheets sync fails
+        console.error('Failed to sync brand brief to Google Sheets:', sheetsError);
+      }
+    }
 
     // Return success response
     return NextResponse.json({
