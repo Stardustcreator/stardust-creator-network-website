@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { appendBrandBriefToGoogleSheets } from '@/lib/services/google-sheets.service';
+import { addBrandToMailchimp } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -277,6 +278,19 @@ export async function POST(request: NextRequest) {
         console.error('Failed to sync brand brief to Google Sheets:', sheetsError);
       }
     }
+
+    // Sync to Mailchimp audience with "Brands-Find-Creators" tag
+    // This runs asynchronously and won't block the response if it fails
+    addBrandToMailchimp({
+      email: validatedData.brandCompanyInformation.email,
+      contactPerson: validatedData.brandCompanyInformation.contactPerson,
+      phoneNumber: validatedData.brandCompanyInformation.phoneNumber,
+      brandName: validatedData.brandCompanyInformation.brandName,
+    }).catch(error => {
+      // Error is already logged in the service, but we log here for API context
+      console.error('Mailchimp sync failed (non-blocking):', error);
+      // Don't re-throw - this is intentionally non-blocking
+    });
 
     // Return success response
     return NextResponse.json({

@@ -304,15 +304,22 @@ Setup guides:
 
 ### Mailchimp Integration
 
-For adding creator applicants to your Mailchimp audience list with the "join-as-creator" tag:
+For syncing creator applicants and brand briefs to your Mailchimp audience list:
 
 - `MAILCHIMP_API_KEY`: Your Mailchimp API key (format: `abc123def456-us12`)
 - `MAILCHIMP_SERVER_PREFIX`: Server prefix from your API key (e.g., `us12`)
 - `MAILCHIMP_AUDIENCE_ID`: The ID of your Mailchimp audience list (format: `a1b2c3d4e5`)
 
-Setup guide:
+Both forms sync to the same audience but with different tags:
 
-- [docs/mailchimp-integration-setup.md](docs/mailchimp-integration-setup.md)
+- Creator applications: tagged with `join-as-creator`
+- Brand briefs: tagged with `Brands-Find-Creators`
+
+Setup guides:
+
+- General setup: [docs/mailchimp-integration-setup.md](docs/mailchimp-integration-setup.md)
+- Brand brief integration: [docs/mailchimp-brand-brief-integration.md](docs/mailchimp-brand-brief-integration.md)
+- Quick start: [docs/mailchimp-quick-start.md](docs/mailchimp-quick-start.md)
 
 ## Troubleshooting
 

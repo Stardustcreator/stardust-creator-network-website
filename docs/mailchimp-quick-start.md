@@ -1,6 +1,6 @@
 # Mailchimp Integration Quick Start
 
-Quick reference for setting up Mailchimp integration with the "Join as a Creator" form.
+Quick reference for setting up Mailchimp integration with both the "Join as a Creator" and "Brand Brief" forms.
 
 ## What You Need
 
@@ -24,20 +24,49 @@ For Vercel (production), add the same three variables in: Settings → Environme
 
 ## What Gets Synced
 
-When someone completes the creator application form:
+Both forms sync to the **same Mailchimp audience** but with different tags:
+
+### Join as a Creator Form
 
 - Email address
 - First name (from full name)
 - Last name (from full name)
 - Phone number
-- Tag: `join-as-creator`
+- **Tag**: `join-as-creator`
+
+### Brand Brief Form
+
+- Email address
+- First name (from contact person)
+- Last name (from contact person)
+- Phone number
+- Brand/company name
+- **Tag**: `Brands-Find-Creators`
+
+## Required Mailchimp Merge Fields
+
+Make sure these fields exist in your Mailchimp audience:
+
+- **FNAME** (First Name) - Usually exists by default
+- **LNAME** (Last Name) - Usually exists by default
+- **PHONE** (Phone Number) - May need to add
+- **BRAND** (Brand Name) - May need to add for brand briefs
 
 ## Testing
 
 1. Add the environment variables
 2. Restart your dev server: `npm run dev`
-3. Submit a test application
-4. Check Mailchimp - contact should appear with the `join-as-creator` tag
+3. Submit a test creator application
+4. Submit a test brand brief
+5. Check Mailchimp - both contacts should appear with their respective tags
+
+## Segmenting Your Audience
+
+In Mailchimp, create segments to view each group:
+
+**Creators**: Filter by tag `join-as-creator`
+**Brands**: Filter by tag `Brands-Find-Creators`
+**All Leads**: Filter by tags containing either value
 
 ## Troubleshooting
 
@@ -48,12 +77,15 @@ Common issues:
 - "Configuration missing" → Check environment variables are set
 - "401 Unauthorized" → API key is incorrect
 - "404 Not Found" → Audience ID or Server Prefix is wrong
-- "Merge field error" → Add PHONE field in Mailchimp (Audience → Settings → Audience fields)
+- "Merge field error" → Add missing fields (PHONE, BRAND) in Mailchimp
 
 ## Full Documentation
 
-For detailed setup instructions: [mailchimp-integration-setup.md](mailchimp-integration-setup.md)
+For detailed instructions:
+
+- General setup: [mailchimp-integration-setup.md](mailchimp-integration-setup.md)
+- Brand brief details: [mailchimp-brand-brief-integration.md](mailchimp-brand-brief-integration.md)
 
 ## Need Help?
 
-The integration is non-blocking - if Mailchimp fails, form submissions still work. Check logs to debug issues without disrupting users.
+Both integrations are non-blocking - if Mailchimp fails, form submissions still work. Check logs to debug issues without disrupting users.
