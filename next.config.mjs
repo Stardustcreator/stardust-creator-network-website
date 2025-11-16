@@ -118,7 +118,7 @@ const nextConfig = {
               "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://*.facebook.com",
               "font-src 'self' data: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.gstatic.com",
               "connect-src 'self' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com https://*.facebook.com https://*.sanity.io https://*.api.sanity.io https://*.run.app https://*.conversionsapigateway.com",
-              "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net",
+              "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://*.sanity.io https://*.sanity.studio",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
