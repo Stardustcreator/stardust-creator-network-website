@@ -17,4 +17,8 @@ export const navigationItems: NavigationItem[] = [
     label: 'CreatorOS',
     href: '/#creator-os',
   },
+  {
+    label: 'Blog',
+    href: '/blog',
+  },
 ];
