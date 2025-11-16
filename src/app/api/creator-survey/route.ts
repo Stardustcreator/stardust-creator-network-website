@@ -175,10 +175,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert into Supabase
-    // Note: You'll need to create a table called 'creator_surveys' in your Supabase database
+    // Note: You'll need to create a table called 'scn_creator_surveys' in your Supabase database
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = (await (supabaseClient as any)
-      .from('creator_surveys')
+      .from('scn_creator_surveys')
       .insert([surveyData])
       .select('id, submitted_at')
       .single()) as {
