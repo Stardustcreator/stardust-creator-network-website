@@ -20,11 +20,13 @@
     "sitemap": "next-sitemap",
     "clean": "rimraf .next out dist",
     "analyze": "cross-env ANALYZE=true npm run build",
-    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build"
+    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build",
+    "studio:deploy": "dotenv -e .env.local -- sanity deploy"
   },
   "dependencies": {
     "@portabletext/react": "^5.0.0",
     "@portabletext/types": "^3.0.0",
+    "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.15.0",
     "@sentry/nextjs": "^10.23.0",
@@ -51,6 +53,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.0",
     "cross-env": "^7.0.3",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
     "husky": "^9.1.7",
