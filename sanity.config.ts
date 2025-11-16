@@ -1,7 +1,7 @@
-'use client';
-
 /**
- * This configuration is used to for the Sanity Studio that’s mounted on the `\src\app\studio\[[...tool]]\page.tsx` route
+ * This configuration is used for the standalone Sanity Studio
+ * Deploy with: npx sanity deploy
+ * Access at: https://stardustcreatornetwork.sanity.studio (after deployment)
  */
 
 import { visionTool } from '@sanity/vision';
@@ -14,7 +14,6 @@ import { schema } from './src/sanity/schemaTypes';
 import { structure } from './src/sanity/structure';
 
 export default defineConfig({
-  basePath: '/studio',
   projectId,
   dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
