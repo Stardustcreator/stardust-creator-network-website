@@ -61,16 +61,28 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
 }
 
 /**
- * Add or update a member in Mailchimp audience with the "join-as-creator" tag
+ * Add or update a member in Mailchimp audience with custom tags
  */
-export async function addCreatorToMailchimp(data: {
-  email: string;
-  fullName: string;
-  phoneNumber: string;
-}): Promise<void> {
+export async function addCreatorToMailchimp(
+  data: {
+    email: string;
+    fullName: string;
+    phoneNumber: string;
+  },
+  options: {
+    tags?: string[];
+    isPartialSubmission?: boolean;
+  } = {}
+): Promise<void> {
   try {
     const config = getMailchimpConfig();
     const { firstName, lastName } = splitFullName(data.fullName);
+
+    // Determine tags based on submission type
+    const defaultTags = options.isPartialSubmission
+      ? ['partial-creator-signup']
+      : ['join-as-creator'];
+    const tags = options.tags || defaultTags;
 
     // Prepare member data
     const memberData: MailchimpMember = {
@@ -81,7 +93,7 @@ export async function addCreatorToMailchimp(data: {
         LNAME: lastName,
         PHONE: data.phoneNumber,
       },
-      tags: ['join-as-creator'],
+      tags,
     };
 
     // Create subscriber hash for the email (required by Mailchimp API)
@@ -128,17 +140,29 @@ export async function addCreatorToMailchimp(data: {
 }
 
 /**
- * Add or update a brand contact in Mailchimp audience with the "Brands-Find-Creators" tag
+ * Add or update a brand contact in Mailchimp audience with custom tags
  */
-export async function addBrandToMailchimp(data: {
-  email: string;
-  contactPerson: string;
-  phoneNumber?: string;
-  brandName: string;
-}): Promise<void> {
+export async function addBrandToMailchimp(
+  data: {
+    email: string;
+    contactPerson: string;
+    phoneNumber?: string;
+    brandName: string;
+  },
+  options: {
+    tags?: string[];
+    isPartialSubmission?: boolean;
+  } = {}
+): Promise<void> {
   try {
     const config = getMailchimpConfig();
     const { firstName, lastName } = splitFullName(data.contactPerson);
+
+    // Determine tags based on submission type
+    const defaultTags = options.isPartialSubmission
+      ? ['partial-brand-inquiry']
+      : ['Brands-Find-Creators'];
+    const tags = options.tags || defaultTags;
 
     // Prepare member data
     const memberData: MailchimpMember = {
@@ -150,7 +174,7 @@ export async function addBrandToMailchimp(data: {
         PHONE: data.phoneNumber || '',
         BRAND: data.brandName,
       },
-      tags: ['Brands-Find-Creators'],
+      tags,
     };
 
     // Create subscriber hash for the email (required by Mailchimp API)
@@ -195,6 +219,71 @@ export async function addBrandToMailchimp(data: {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
     throw error; // Re-throw so calling code can decide whether to block or continue
+  }
+}
+
+/**
+ * Update tags for an existing member (used to upgrade from partial to complete)
+ */
+export async function updateMailchimpTags(data: {
+  email: string;
+  tagsToRemove?: string[];
+  tagsToAdd: string[];
+}): Promise<void> {
+  try {
+    const config = getMailchimpConfig();
+    const crypto = await import('crypto');
+    const subscriberHash = crypto.createHash('md5').update(data.email.toLowerCase()).digest('hex');
+
+    // Remove old tags if specified
+    if (data.tagsToRemove && data.tagsToRemove.length > 0) {
+      const removeTagsUrl = `https://${config.serverPrefix}.api.mailchimp.com/3.0/lists/${config.audienceId}/members/${subscriberHash}/tags`;
+
+      const removeResponse = await fetch(removeTagsUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(`anystring:${config.apiKey}`).toString('base64')}`,
+        },
+        body: JSON.stringify({
+          tags: data.tagsToRemove.map(tag => ({ name: tag, status: 'inactive' })),
+        }),
+      });
+
+      if (!removeResponse.ok) {
+        console.error('Failed to remove old tags:', await removeResponse.text());
+      }
+    }
+
+    // Add new tags
+    const addTagsUrl = `https://${config.serverPrefix}.api.mailchimp.com/3.0/lists/${config.audienceId}/members/${subscriberHash}/tags`;
+
+    const addResponse = await fetch(addTagsUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${Buffer.from(`anystring:${config.apiKey}`).toString('base64')}`,
+      },
+      body: JSON.stringify({
+        tags: data.tagsToAdd.map(tag => ({ name: tag, status: 'active' })),
+      }),
+    });
+
+    if (!addResponse.ok) {
+      throw new Error(`Failed to add new tags: ${addResponse.status} ${addResponse.statusText}`);
+    }
+
+    console.log('Successfully updated Mailchimp tags:', {
+      email: data.email,
+      removed: data.tagsToRemove,
+      added: data.tagsToAdd,
+    });
+  } catch (error) {
+    console.error('Failed to update Mailchimp tags:', {
+      email: data.email,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+    throw error;
   }
 }
 

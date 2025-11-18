@@ -70,6 +70,10 @@ export const brandCompanyInformationSchema = z.object({
       // Basic international phone number validation
       return /^\+?[\d\s\-\(\)]+$/.test(val) && val.replace(/\D/g, '').length >= 10;
     }, 'Please enter a valid phone number'),
+
+  marketingConsent: z.boolean().refine(val => val === true, {
+    message: 'You must agree to receive updates from Stardust Creator Network to continue',
+  }),
 });
 
 // Campaign Objectives Schema
@@ -122,6 +126,7 @@ export const creatorPreferencesSchema = z.object({
 });
 
 // Dynamic budget range schema based on country
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createBudgetPaymentPreferenceSchema = (_country: Country) => {
   return z.object({
     estimatedBudget: z.string({

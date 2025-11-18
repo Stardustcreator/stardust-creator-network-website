@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { appendBrandBriefToGoogleSheets } from '@/lib/services/google-sheets.service';
-import { addBrandToMailchimp } from '@/lib/services/mailchimp.service';
+import { addBrandToMailchimp, updateMailchimpTags } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -121,6 +121,39 @@ export async function POST(request: NextRequest) {
     const clientIP = getClientIP(request);
     const utmParams = extractUTMParams(referrer || null);
 
+    // Determine which table to use based on country
+    const tableName = getBrandBriefTable(validatedData.brandCompanyInformation.country);
+
+    // Initialize Supabase client (may throw if env vars are missing)
+    let supabaseClient: ReturnType<typeof getSupabaseAdmin>;
+    try {
+      supabaseClient = getSupabaseAdmin();
+    } catch (supabaseInitError) {
+      console.error('Failed to initialize Supabase client:', supabaseInitError);
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Server configuration error. Please contact support.',
+          details:
+            process.env.NODE_ENV === 'development'
+              ? supabaseInitError instanceof Error
+                ? supabaseInitError.message
+                : 'Supabase client initialization failed'
+              : undefined,
+        },
+        { status: 500 }
+      );
+    }
+
+    // Check if there's an existing draft
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: existingDraft } = (await (supabaseClient as any)
+      .from(tableName)
+      .select('id')
+      .eq('email', validatedData.brandCompanyInformation.email)
+      .eq('brief_status', 'draft')
+      .single()) as { data: { id: string } | null };
+
     // Prepare data for database insertion
     const briefData: BrandBriefRecord = {
       // Brand Company Information
@@ -176,45 +209,46 @@ export async function POST(request: NextRequest) {
       ...utmParams,
     };
 
-    // Determine which table to use based on country
-    const tableName = getBrandBriefTable(validatedData.brandCompanyInformation.country);
+    let data: { id: string; brief_status: string; created_at: string } | null;
+    let error: unknown;
 
-    // Initialize Supabase client (may throw if env vars are missing)
-    let supabaseClient: ReturnType<typeof getSupabaseAdmin>;
-    try {
-      supabaseClient = getSupabaseAdmin();
-    } catch (supabaseInitError) {
-      console.error('Failed to initialize Supabase client:', supabaseInitError);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Server configuration error. Please contact support.',
-          details:
-            process.env.NODE_ENV === 'development'
-              ? supabaseInitError instanceof Error
-                ? supabaseInitError.message
-                : 'Supabase client initialization failed'
-              : undefined,
-        },
-        { status: 500 }
-      );
+    if (existingDraft) {
+      // Update existing draft to submitted status
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (await (supabaseClient as any)
+        .from(tableName)
+        .update(briefData)
+        .eq('id', existingDraft.id)
+        .select('id, brief_status, created_at')
+        .single()) as {
+        data: { id: string; brief_status: string; created_at: string } | null;
+        error: unknown;
+      };
+
+      data = result.data;
+      error = result.error;
+
+      console.log('Draft converted to submitted:', { id: existingDraft.id });
+    } else {
+      // Debug: Log the data being inserted
+      console.log('Inserting brand brief data into table:', tableName);
+      console.log('Brief data:', JSON.stringify(briefData, null, 2));
+
+      // Insert into Supabase using the appropriate country-specific table
+      // Type assertion needed because Supabase types require generated database types
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (await (supabaseClient as any)
+        .from(tableName)
+        .insert([briefData])
+        .select('id, brief_status, created_at')
+        .single()) as {
+        data: { id: string; brief_status: string; created_at: string } | null;
+        error: unknown;
+      };
+
+      data = result.data;
+      error = result.error;
     }
-
-    // Debug: Log the data being inserted
-    console.log('Inserting brand brief data into table:', tableName);
-    console.log('Brief data:', JSON.stringify(briefData, null, 2));
-
-    // Insert into Supabase using the appropriate country-specific table
-    // Type assertion needed because Supabase types require generated database types
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = (await (supabaseClient as any)
-      .from(tableName)
-      .insert([briefData])
-      .select('id, brief_status, created_at')
-      .single()) as {
-      data: { id: string; brief_status: string; created_at: string } | null;
-      error: unknown;
-    };
 
     if (error) {
       console.error('Supabase insertion error:', error);
@@ -280,17 +314,32 @@ export async function POST(request: NextRequest) {
     }
 
     // Sync to Mailchimp audience with "Brands-Find-Creators" tag
+    // This will upgrade from "partial-brand-inquiry" if they were early captured
     // This runs asynchronously and won't block the response if it fails
-    addBrandToMailchimp({
-      email: validatedData.brandCompanyInformation.email,
-      contactPerson: validatedData.brandCompanyInformation.contactPerson,
-      phoneNumber: validatedData.brandCompanyInformation.phoneNumber,
-      brandName: validatedData.brandCompanyInformation.brandName,
-    }).catch(error => {
-      // Error is already logged in the service, but we log here for API context
-      console.error('Mailchimp sync failed (non-blocking):', error);
-      // Don't re-throw - this is intentionally non-blocking
-    });
+    addBrandToMailchimp(
+      {
+        email: validatedData.brandCompanyInformation.email,
+        contactPerson: validatedData.brandCompanyInformation.contactPerson,
+        phoneNumber: validatedData.brandCompanyInformation.phoneNumber,
+        brandName: validatedData.brandCompanyInformation.brandName,
+      },
+      {
+        isPartialSubmission: false, // Full submission
+      }
+    )
+      .then(() => {
+        // After successful sync, upgrade tags from partial to complete
+        return updateMailchimpTags({
+          email: validatedData.brandCompanyInformation.email,
+          tagsToRemove: ['partial-brand-inquiry'],
+          tagsToAdd: ['Brands-Find-Creators'],
+        });
+      })
+      .catch(error => {
+        // Error is already logged in the service, but we log here for API context
+        console.error('Mailchimp sync/tag update failed (non-blocking):', error);
+        // Don't re-throw - this is intentionally non-blocking
+      });
 
     // Return success response
     return NextResponse.json({

@@ -25,7 +25,7 @@ export default function BrandCompanyInformationStep({
   country,
 }: BrandCompanyInformationStepProps) {
   const handleInputChange = useCallback(
-    (field: keyof BrandCompanyInformation, value: string) => {
+    (field: keyof BrandCompanyInformation, value: string | boolean) => {
       updateFormData('brandCompanyInformation', { [field]: value });
     },
     [updateFormData]
@@ -273,6 +273,72 @@ export default function BrandCompanyInformationStep({
             `}
           />
           {errors.phoneNumber && <p className="text-red-400 text-sm mt-1">{errors.phoneNumber}</p>}
+        </div>
+
+        {/* Marketing Consent */}
+        <div className="mt-6">
+          <label className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={data.marketingConsent || false}
+              onChange={e => handleInputChange('marketingConsent', e.target.checked)}
+              className={`
+                mt-1 w-5 h-5 rounded border-2 bg-white/5 cursor-pointer
+                checked:bg-purple-500 checked:border-purple-500
+                focus:outline-none focus:ring-2 focus:ring-purple-400/50
+                transition-all
+                ${
+                  errors.marketingConsent
+                    ? 'border-red-500/50'
+                    : 'border-white/20 group-hover:border-purple-400/50'
+                }
+              `}
+            />
+            <span className="flex-1">
+              <Text
+                variant="body"
+                className="text-white opacity-90 leading-relaxed"
+              >
+                I agree to receive updates, opportunities, and resources from Stardust Creator
+                Network via email. You can unsubscribe at any time. *
+              </Text>
+            </span>
+          </label>
+          {errors.marketingConsent && (
+            <p className="text-red-400 text-sm mt-2 ml-8">{errors.marketingConsent}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Privacy Notice */}
+      <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+        <div className="flex items-start gap-3">
+          <svg
+            className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <div>
+            <Text
+              variant="body"
+              className="text-white opacity-90 mb-1 font-medium"
+            >
+              Your Privacy Matters
+            </Text>
+            <Text
+              variant="caption"
+              className="text-white opacity-70 leading-relaxed"
+            >
+              We use this information to match you with the best creators and opportunities. Your
+              data is protected and will never be shared without your consent.
+            </Text>
+          </div>
         </div>
       </div>
     </div>

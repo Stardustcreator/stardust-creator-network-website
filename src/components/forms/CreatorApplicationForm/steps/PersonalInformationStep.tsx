@@ -25,7 +25,7 @@ export default function PersonalInformationStep({
   country,
 }: PersonalInformationStepProps) {
   const handleInputChange = useCallback(
-    (field: keyof PersonalInformation, value: string) => {
+    (field: keyof PersonalInformation, value: string | boolean) => {
       updateFormData('personalInformation', { [field]: value });
     },
     [updateFormData]
@@ -208,6 +208,40 @@ export default function PersonalInformationStep({
             ))}
           </select>
           {errors.ageRange && <p className="text-red-400 text-sm mt-1">{errors.ageRange}</p>}
+        </div>
+
+        {/* Marketing Consent */}
+        <div className="mt-6">
+          <label className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={data.marketingConsent || false}
+              onChange={e => handleInputChange('marketingConsent', e.target.checked)}
+              className={`
+                mt-1 w-5 h-5 rounded border-2 bg-white/5 cursor-pointer
+                checked:bg-purple-500 checked:border-purple-500
+                focus:outline-none focus:ring-2 focus:ring-purple-400/50
+                transition-all
+                ${
+                  errors.marketingConsent
+                    ? 'border-red-500/50'
+                    : 'border-white/20 group-hover:border-purple-400/50'
+                }
+              `}
+            />
+            <span className="flex-1">
+              <Text
+                variant="body"
+                className="text-white opacity-90 leading-relaxed"
+              >
+                I agree to receive updates, opportunities, and resources from Stardust Creator
+                Network via email. You can unsubscribe at any time. *
+              </Text>
+            </span>
+          </label>
+          {errors.marketingConsent && (
+            <p className="text-red-400 text-sm mt-2 ml-8">{errors.marketingConsent}</p>
+          )}
         </div>
       </div>
 

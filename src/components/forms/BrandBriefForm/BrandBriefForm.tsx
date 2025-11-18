@@ -24,6 +24,7 @@ import AgreementSubmissionStep from './steps/AgreementSubmissionStep';
 // Shared components (reuse from creator form)
 import FormProgress from '../CreatorApplicationForm/FormProgress';
 import FormNavigation from '../CreatorApplicationForm/FormNavigation';
+import DraftResumeModal from '../DraftResumeModal';
 
 interface BrandBriefFormProps {
   country: Country;
@@ -50,12 +51,140 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
     isValid: false,
     completedSteps: new Set(),
   });
+  const [earlyCaptured, setEarlyCaptured] = useState(false);
+  const [draftModalOpen, setDraftModalOpen] = useState(false);
+  const [draftData, setDraftData] = useState<{
+    id: string;
+    country: string;
+    lastUpdated: string;
+    data: BrandBriefFormData;
+  } | null>(null);
+  const [draftChecked, setDraftChecked] = useState(false);
 
   const currentStepIndex = FORM_STEPS.indexOf(formState.currentStep);
   const totalSteps = FORM_STEPS.length - 1; // Exclude welcome from count
 
+  // Check for existing draft when email is provided
+  const checkForDraft = useCallback(
+    async (email: string) => {
+      if (draftChecked) return; // Only check once
+
+      try {
+        const response = await fetch(`/api/brand-brief/draft?email=${encodeURIComponent(email)}`);
+        const result = await response.json();
+
+        if (result.success && result.hasDraft) {
+          setDraftData(result.draft);
+          setDraftModalOpen(true);
+        }
+        setDraftChecked(true);
+      } catch (error) {
+        console.error('Error checking for draft:', error);
+        setDraftChecked(true);
+      }
+    },
+    [draftChecked]
+  );
+
+  // Auto-save draft after completing each section
+  const saveDraft = useCallback(async () => {
+    if (!formState.data.brandCompanyInformation?.email) {
+      return; // Need email to save draft
+    }
+
+    try {
+      await fetch('/api/brand-brief/draft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formState.data.brandCompanyInformation.email,
+          country,
+          formData: formState.data,
+        }),
+      });
+      console.log('Draft saved successfully');
+    } catch (error) {
+      console.warn('Failed to save draft:', error);
+    }
+  }, [formState.data, country]);
+
+  // Handle draft resume
+  const handleResumeDraft = useCallback(() => {
+    if (draftData) {
+      setFormState(prev => ({
+        ...prev,
+        data: draftData.data,
+        currentStep: 'brand-company-information', // Start from where they have data
+      }));
+      setDraftModalOpen(false);
+    }
+  }, [draftData]);
+
+  // Handle start fresh
+  const handleStartFresh = useCallback(() => {
+    setDraftModalOpen(false);
+    setDraftData(null);
+  }, []);
+
+  // Early capture contact information to Mailchimp
+  const performEarlyCapture = useCallback(async () => {
+    if (earlyCaptured || !formState.data.brandCompanyInformation) {
+      return; // Already captured or no data
+    }
+
+    const brandInfo = formState.data.brandCompanyInformation;
+
+    // Only capture if user has consented
+    if (!brandInfo.marketingConsent) {
+      return;
+    }
+
+    // Check for existing draft when we have email
+    if (!draftChecked) {
+      await checkForDraft(brandInfo.email);
+    }
+
+    try {
+      const response = await fetch('/api/early-capture/brand', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: brandInfo.email,
+          contactPerson: brandInfo.contactPerson,
+          phoneNumber: brandInfo.phoneNumber,
+          brandName: brandInfo.brandName,
+          marketingConsent: brandInfo.marketingConsent,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Early capture successful');
+        setEarlyCaptured(true);
+      } else {
+        console.warn('Early capture failed, but continuing with form');
+      }
+    } catch (error) {
+      // Don't block form progression if early capture fails
+      console.warn('Early capture error:', error);
+    }
+  }, [earlyCaptured, formState.data.brandCompanyInformation, draftChecked, checkForDraft]);
+
   // Navigate to next step
-  const goToNextStep = useCallback(() => {
+  const goToNextStep = useCallback(async () => {
+    // Perform early capture when moving from brand-company-information step
+    if (formState.currentStep === 'brand-company-information') {
+      await performEarlyCapture();
+    }
+
+    // Save draft after completing any section (except welcome)
+    if (formState.currentStep !== 'welcome' && formState.data.brandCompanyInformation?.email) {
+      await saveDraft();
+    }
+
     const nextIndex = currentStepIndex + 1;
     if (nextIndex < FORM_STEPS.length) {
       setFormState(prev => ({
@@ -64,7 +193,13 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
         completedSteps: new Set([...prev.completedSteps, prev.currentStep]),
       }));
     }
-  }, [currentStepIndex]);
+  }, [
+    currentStepIndex,
+    formState.currentStep,
+    formState.data.brandCompanyInformation?.email,
+    performEarlyCapture,
+    saveDraft,
+  ]);
 
   // Navigate to previous step
   const goToPreviousStep = useCallback(() => {
@@ -454,6 +589,16 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
               <p className="text-red-400">{formState.errors.general}</p>
             </div>
           </div>
+        )}
+
+        {/* Draft Resume Modal */}
+        {draftData && (
+          <DraftResumeModal
+            isOpen={draftModalOpen}
+            lastUpdated={draftData.lastUpdated}
+            onResume={handleResumeDraft}
+            onStartFresh={handleStartFresh}
+          />
         )}
       </div>
     </div>

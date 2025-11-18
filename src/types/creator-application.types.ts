@@ -119,6 +119,7 @@ export interface PersonalInformation {
   country: Country;
   city: string;
   ageRange: AgeRange;
+  marketingConsent: boolean;
 }
 
 export interface SocialLinks {

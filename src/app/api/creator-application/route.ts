@@ -6,7 +6,7 @@ import {
   type CreatorRegistrationRecord,
 } from '@/lib/supabase';
 import { appendToGoogleSheets } from '@/lib/services/google-sheets.service';
-import { addCreatorToMailchimp } from '@/lib/services/mailchimp.service';
+import { addCreatorToMailchimp, updateMailchimpTags } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
         const fileBuffer = await mediaKitFile.arrayBuffer();
 
         // Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        const { error: uploadError } = await supabaseClient.storage
           .from('creator-media-kits')
           .upload(filePath, fileBuffer, {
             contentType: mediaKitFile.type,
@@ -197,6 +197,15 @@ export async function POST(request: NextRequest) {
         );
       }
     }
+
+    // Check if there's an existing draft
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: existingDraft } = (await (supabaseClient as any)
+      .from(tableName)
+      .select('id')
+      .eq('email', validatedData.personalInformation.email)
+      .eq('application_status', 'draft')
+      .single()) as { data: { id: string } | null };
 
     // Prepare data for database insertion
     const registrationData: CreatorRegistrationRecord = {
@@ -246,14 +255,36 @@ export async function POST(request: NextRequest) {
       ...utmParams,
     };
 
-    // Insert data into Supabase
-    // Type assertion needed because Supabase types require generated database types
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: insertedData, error: insertError } = (await (supabaseClient as any)
-      .from(tableName)
-      .insert([registrationData])
-      .select('id, created_at')
-      .single()) as { data: { id: string; created_at: string } | null; error: unknown };
+    let insertedData: { id: string; created_at: string } | null;
+    let insertError: unknown;
+
+    if (existingDraft) {
+      // Update existing draft to submitted status
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (await (supabaseClient as any)
+        .from(tableName)
+        .update(registrationData)
+        .eq('id', existingDraft.id)
+        .select('id, created_at')
+        .single()) as { data: { id: string; created_at: string } | null; error: unknown };
+
+      insertedData = result.data;
+      insertError = result.error;
+
+      console.log('Draft converted to submitted:', { id: existingDraft.id });
+    } else {
+      // Insert data into Supabase
+      // Type assertion needed because Supabase types require generated database types
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (await (supabaseClient as any)
+        .from(tableName)
+        .insert([registrationData])
+        .select('id, created_at')
+        .single()) as { data: { id: string; created_at: string } | null; error: unknown };
+
+      insertedData = result.data;
+      insertError = result.error;
+    }
 
     if (insertError) {
       console.error('Database insertion error:', insertError);
@@ -318,16 +349,31 @@ export async function POST(request: NextRequest) {
     }
 
     // Sync to Mailchimp audience with "join-as-creator" tag
+    // This will upgrade from "partial-creator-signup" if they were early captured
     // This runs asynchronously and won't block the response if it fails
-    addCreatorToMailchimp({
-      email: validatedData.personalInformation.email,
-      fullName: validatedData.personalInformation.fullName,
-      phoneNumber: validatedData.personalInformation.phoneNumber,
-    }).catch(error => {
-      // Error is already logged in the service, but we log here for API context
-      console.error('Mailchimp sync failed (non-blocking):', error);
-      // Don't re-throw - this is intentionally non-blocking
-    });
+    addCreatorToMailchimp(
+      {
+        email: validatedData.personalInformation.email,
+        fullName: validatedData.personalInformation.fullName,
+        phoneNumber: validatedData.personalInformation.phoneNumber,
+      },
+      {
+        isPartialSubmission: false, // Full submission
+      }
+    )
+      .then(() => {
+        // After successful sync, upgrade tags from partial to complete
+        return updateMailchimpTags({
+          email: validatedData.personalInformation.email,
+          tagsToRemove: ['partial-creator-signup'],
+          tagsToAdd: ['join-as-creator'],
+        });
+      })
+      .catch(error => {
+        // Error is already logged in the service, but we log here for API context
+        console.error('Mailchimp sync/tag update failed (non-blocking):', error);
+        // Don't re-throw - this is intentionally non-blocking
+      });
 
     // TODO: Send confirmation email
     // TODO: Notify admin team

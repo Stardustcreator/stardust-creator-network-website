@@ -22,6 +22,7 @@ import VerificationAgreementStep from './steps/VerificationAgreementStep';
 // Shared components
 import FormProgress from './FormProgress';
 import FormNavigation from './FormNavigation';
+import DraftResumeModal from '../DraftResumeModal';
 
 interface CreatorApplicationFormProps {
   country: Country;
@@ -46,12 +47,141 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
     isValid: false,
     completedSteps: new Set(),
   });
+  const [earlyCaptured, setEarlyCaptured] = useState(false);
+  const [draftModalOpen, setDraftModalOpen] = useState(false);
+  const [draftData, setDraftData] = useState<{
+    id: string;
+    country: string;
+    lastUpdated: string;
+    data: CreatorApplicationFormData;
+  } | null>(null);
+  const [draftChecked, setDraftChecked] = useState(false);
 
   const currentStepIndex = FORM_STEPS.indexOf(formState.currentStep);
   const totalSteps = FORM_STEPS.length - 1; // Exclude welcome from count
 
+  // Check for existing draft when email is provided
+  const checkForDraft = useCallback(
+    async (email: string) => {
+      if (draftChecked) return; // Only check once
+
+      try {
+        const response = await fetch(
+          `/api/creator-application/draft?email=${encodeURIComponent(email)}`
+        );
+        const result = await response.json();
+
+        if (result.success && result.hasDraft) {
+          setDraftData(result.draft);
+          setDraftModalOpen(true);
+        }
+        setDraftChecked(true);
+      } catch (error) {
+        console.error('Error checking for draft:', error);
+        setDraftChecked(true);
+      }
+    },
+    [draftChecked]
+  );
+
+  // Auto-save draft after completing each section
+  const saveDraft = useCallback(async () => {
+    if (!formState.data.personalInformation?.email) {
+      return; // Need email to save draft
+    }
+
+    try {
+      await fetch('/api/creator-application/draft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formState.data.personalInformation.email,
+          country,
+          formData: formState.data,
+        }),
+      });
+      console.log('Draft saved successfully');
+    } catch (error) {
+      console.warn('Failed to save draft:', error);
+    }
+  }, [formState.data, country]);
+
+  // Early capture contact information to Mailchimp
+  const performEarlyCapture = useCallback(async () => {
+    if (earlyCaptured || !formState.data.personalInformation) {
+      return; // Already captured or no data
+    }
+
+    const personalInfo = formState.data.personalInformation;
+
+    // Only capture if user has consented
+    if (!personalInfo.marketingConsent) {
+      return;
+    }
+
+    // Check for existing draft when we have email
+    if (!draftChecked) {
+      await checkForDraft(personalInfo.email);
+    }
+
+    try {
+      const response = await fetch('/api/early-capture/creator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: personalInfo.email,
+          fullName: personalInfo.fullName,
+          phoneNumber: personalInfo.phoneNumber,
+          marketingConsent: personalInfo.marketingConsent,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Early capture successful');
+        setEarlyCaptured(true);
+      } else {
+        console.warn('Early capture failed, but continuing with form');
+      }
+    } catch (error) {
+      // Don't block form progression if early capture fails
+      console.warn('Early capture error:', error);
+    }
+  }, [earlyCaptured, formState.data.personalInformation, draftChecked, checkForDraft]);
+
+  // Handle draft resume
+  const handleResumeDraft = useCallback(() => {
+    if (draftData) {
+      setFormState(prev => ({
+        ...prev,
+        data: draftData.data,
+        currentStep: 'personal-information', // Start from where they have data
+      }));
+      setDraftModalOpen(false);
+    }
+  }, [draftData]);
+
+  // Handle start fresh
+  const handleStartFresh = useCallback(() => {
+    setDraftModalOpen(false);
+    setDraftData(null);
+  }, []);
+
   // Navigate to next step
-  const goToNextStep = useCallback(() => {
+  const goToNextStep = useCallback(async () => {
+    // Perform early capture when moving from personal-information step
+    if (formState.currentStep === 'personal-information') {
+      await performEarlyCapture();
+    }
+
+    // Save draft after completing any section (except welcome)
+    if (formState.currentStep !== 'welcome' && formState.data.personalInformation?.email) {
+      await saveDraft();
+    }
+
     const nextIndex = currentStepIndex + 1;
     if (nextIndex < FORM_STEPS.length) {
       setFormState(prev => ({
@@ -60,7 +190,13 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
         completedSteps: new Set([...prev.completedSteps, prev.currentStep]),
       }));
     }
-  }, [currentStepIndex]);
+  }, [
+    currentStepIndex,
+    formState.currentStep,
+    formState.data.personalInformation?.email,
+    performEarlyCapture,
+    saveDraft,
+  ]);
 
   // Navigate to previous step
   const goToPreviousStep = useCallback(() => {
@@ -225,7 +361,8 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
           formData.append('mediaKit', mediaKitFile);
 
           // Add all other form data as JSON string
-          const { mediaKit, ...formDataWithoutFile } = submitData.verificationAgreement || {};
+          const { mediaKit: _mediaKit, ...formDataWithoutFile } =
+            submitData.verificationAgreement || {};
           const formDataToSend = {
             ...submitData,
             verificationAgreement: {
@@ -477,6 +614,16 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
               <p className="text-red-400">{formState.errors.general}</p>
             </div>
           </div>
+        )}
+
+        {/* Draft Resume Modal */}
+        {draftData && (
+          <DraftResumeModal
+            isOpen={draftModalOpen}
+            lastUpdated={draftData.lastUpdated}
+            onResume={handleResumeDraft}
+            onStartFresh={handleStartFresh}
+          />
         )}
       </div>
     </div>

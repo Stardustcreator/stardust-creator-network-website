@@ -162,6 +162,7 @@ export interface BrandCompanyInformation {
   contactPerson: string;
   email: string;
   phoneNumber: string;
+  marketingConsent: boolean;
 }
 
 export interface CampaignObjectives {

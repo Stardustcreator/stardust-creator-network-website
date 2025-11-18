@@ -21,6 +21,8 @@ import {
 } from '@/types/creator-application.types';
 
 // Helper function to get fee ranges based on country
+// Currently unused but kept for future dynamic fee range selection
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getFeeRanges(country: Country) {
   switch (country) {
     case 'Nigeria':
@@ -71,6 +73,10 @@ export const personalInformationSchema = z.object({
 
   ageRange: z.enum(AGE_RANGES, {
     message: 'Please select your age range',
+  }),
+
+  marketingConsent: z.boolean().refine(val => val === true, {
+    message: 'You must agree to receive updates from Stardust Creator Network to continue',
   }),
 });
 
@@ -124,6 +130,7 @@ export const creatorIdentitySchema = z.object({
 });
 
 // Dynamic fee range schema based on country
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createMonetizationExperienceSchema = (country: Country) => {
   return z.object({
     workedWithBrands: z.boolean({
@@ -134,7 +141,7 @@ export const createMonetizationExperienceSchema = (country: Country) => {
       .string()
       .max(100, 'Brand name is too long')
       .optional()
-      .refine(val => {
+      .refine(() => {
         // This validation will be handled at the form level since we need access to other fields
         return true;
       }, "Please provide an example of a brand you've worked with"),

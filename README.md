@@ -186,20 +186,67 @@ The middleware automatically adds:
 
 ## Content Management
 
+### Sanity Studio (CMS)
+
+This project includes a fully integrated Sanity Studio for managing blog content. The studio is a powerful content editor that allows you to create, edit, and organize blog posts with a user-friendly interface.
+
+#### Accessing the Studio
+
+**Local Development:**
+
+```bash
+npm run dev
+# Visit http://localhost:3000/studio
+```
+
+**Production:**
+Once deployed, access your studio at: `https://your-domain.com/studio`
+
+#### Features
+
+- Rich text editor for blog posts
+- Image upload and management
+- Author management
+- Real-time collaboration
+- Content versioning and history
+- Visual content preview
+
+#### Configuration
+
+The studio requires these environment variables:
+
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`: Your Sanity project ID
+- `NEXT_PUBLIC_SANITY_DATASET`: Dataset name (usually "production")
+- `NEXT_PUBLIC_SANITY_API_VERSION`: API version (defaults to "2024-01-01")
+
+Get your project ID from [Sanity.io Manage](https://www.sanity.io/manage).
+
+#### Schema
+
+The content schema is defined in `src/sanity/schemaTypes/`:
+
+- `post.ts`: Blog post schema with title, content, images, and metadata
+- `author.ts`: Author schema with name, bio, and profile image
+
+#### Usage in Code
+
+```typescript
+import { client } from '@/sanity/lib/client';
+
+// Fetch all posts
+const posts = await client.fetch('*[_type == "post"]');
+
+// Fetch single post by slug
+const post = await client.fetch('*[_type == "post" && slug.current == $slug][0]', { slug });
+```
+
+For more details, see [Blog Integration Documentation](docs/blog-sanity-integration-summary.md).
+
 ### File-Based Content
 
-- Store content in `src/content/` as MDX files
+- Store additional content in `src/content/` as MDX files
 - Use frontmatter for metadata
 - Automatic slug generation from filenames
-
-### Headless CMS Integration
-
-Ready for integration with:
-
-- **Contentful**: Structured content with rich media
-- **Sanity**: Real-time collaboration and rich editing
-- **Strapi**: Self-hosted with full control
-- **Hygraph**: GraphQL-native headless CMS
 
 ## Testing
 
@@ -273,17 +320,22 @@ This is a standard Next.js application and can be deployed to:
 
 ## Environment Variables
 
-Copy `.env.example` to `.env.local` and configure:
+Create a `.env.local` file in the project root with the following variables:
 
 ### Required
 
-- `SITE_URL`: Your site's base URL
+- `SITE_URL`: Your site's base URL (e.g., http://localhost:3000 for development)
 
-### Optional
+### Sanity CMS (Required for Blog Features)
 
-- `SENTRY_DSN`: Error tracking
-- Analytics keys (Google Analytics, PostHog, etc.)
-- CMS configuration (Contentful, Sanity, etc.)
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`: Your Sanity project ID from https://www.sanity.io/manage
+- `NEXT_PUBLIC_SANITY_DATASET`: Dataset name (usually "production")
+- `NEXT_PUBLIC_SANITY_API_VERSION`: API version (optional, defaults to "2024-01-01")
+
+### Optional Services
+
+- `SENTRY_DSN`: Error tracking with Sentry
+- Analytics keys (Vercel Analytics, Google Analytics, etc.)
 - Authentication providers (NextAuth.js)
 
 ### Google Sheets Integration
