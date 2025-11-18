@@ -304,11 +304,13 @@ export async function POST(request: NextRequest) {
 
     // Sync to Google Sheets (non-blocking - errors are logged but don't fail the request)
     // Only sync for Nigeria briefs (can be extended to other countries as needed)
+    // Failed syncs are now tracked in the database for automatic retry
     if (validatedData.brandCompanyInformation.country === 'Nigeria') {
       try {
-        await appendBrandBriefToGoogleSheets(briefData);
+        await appendBrandBriefToGoogleSheets(briefData, data.id);
       } catch (sheetsError) {
         // Log but don't fail the request if Google Sheets sync fails
+        // The failure is now tracked in google_sheets_sync_failures table
         console.error('Failed to sync brand brief to Google Sheets:', sheetsError);
       }
     }

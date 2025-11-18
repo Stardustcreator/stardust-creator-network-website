@@ -1,10 +1,16 @@
 /**
  * Google Sheets service for writing creator application data and brand brief data
  * Used to sync Nigeria creator applications and brand briefs to Google Sheets
+ *
+ * Features:
+ * - Automatic retry with exponential backoff
+ * - Failed sync tracking in Supabase
+ * - Detailed error logging and diagnostics
  */
 
 import { google } from 'googleapis';
 import type { CreatorRegistrationRecord } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // Google Sheets configuration from environment variables
 const GOOGLE_SHEETS_SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
@@ -117,10 +123,64 @@ function getHeaderRow(): string[] {
 }
 
 /**
+ * Track a failed Google Sheets sync in Supabase for retry
+ */
+async function trackSyncFailure(
+  recordType: 'creator_application' | 'brand_brief' | 'creator_survey',
+  recordId: string,
+  recordEmail: string,
+  recordCountry: string,
+  error: unknown
+): Promise<void> {
+  try {
+    const supabase = getSupabaseAdmin();
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorDetails = {
+      name: error instanceof Error ? error.name : 'UnknownError',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Calculate next retry time (5 minutes from now for first attempt)
+    const nextRetryAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: insertError } = await (supabase as any)
+      .from('google_sheets_sync_failures')
+      .insert({
+        record_type: recordType,
+        record_id: recordId,
+        record_email: recordEmail,
+        record_country: recordCountry,
+        error_message: errorMessage,
+        error_details: errorDetails,
+        retry_count: 0,
+        next_retry_at: nextRetryAt,
+        status: 'pending',
+      });
+
+    if (insertError) {
+      console.error('Failed to track sync failure:', insertError);
+    } else {
+      console.log(
+        `Tracked sync failure for ${recordType} ${recordId} - will retry at ${nextRetryAt}`
+      );
+    }
+  } catch (trackingError) {
+    // Even if tracking fails, log it but don't throw
+    console.error('Error while tracking sync failure:', trackingError);
+  }
+}
+
+/**
  * Append creator application data to Google Sheets
  * This function writes a new row to the specified Google Sheet
+ * If it fails, it tracks the failure for automatic retry
  */
-export async function appendToGoogleSheets(data: CreatorRegistrationRecord): Promise<void> {
+export async function appendToGoogleSheets(
+  data: CreatorRegistrationRecord,
+  isRetry = false
+): Promise<void> {
   // Skip if Google Sheets is not configured
   if (!GOOGLE_SHEETS_SPREADSHEET_ID) {
     console.warn('Google Sheets not configured. Skipping Google Sheets sync.');
@@ -133,9 +193,19 @@ export async function appendToGoogleSheets(data: CreatorRegistrationRecord): Pro
     try {
       sheets = getGoogleSheetsClient();
     } catch (clientError) {
-      // If client initialization fails (e.g., missing credentials), log and return
-      // Don't throw - we don't want to break the main application flow
+      // If client initialization fails (e.g., missing credentials), log and track failure
       console.error('Failed to initialize Google Sheets client:', clientError);
+
+      // Track this failure if we have a record ID and this isn't already a retry
+      if (data.id && !isRetry) {
+        await trackSyncFailure(
+          'creator_application',
+          data.id,
+          data.email || 'unknown',
+          data.country || 'unknown',
+          clientError
+        );
+      }
       return;
     }
     const range = `${GOOGLE_SHEETS_SHEET_NAME}!A:AB`;
@@ -176,15 +246,36 @@ export async function appendToGoogleSheets(data: CreatorRegistrationRecord): Pro
       spreadsheetId: GOOGLE_SHEETS_SPREADSHEET_ID,
       sheetName: GOOGLE_SHEETS_SHEET_NAME,
       email: data.email,
+      isRetry,
     });
   } catch (error) {
-    // Log error but don't throw - we don't want to break the Supabase flow
-    // All errors are logged but never re-thrown to ensure the main application flow continues
-    console.error('Failed to append data to Google Sheets:', error);
+    // Enhanced error logging with detailed diagnostics
+    const errorDetails = {
+      spreadsheetId: GOOGLE_SHEETS_SPREADSHEET_ID,
+      sheetName: GOOGLE_SHEETS_SHEET_NAME,
+      email: data.email,
+      recordId: data.id,
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorName: error instanceof Error ? error.name : 'UnknownError',
+      isRetry,
+      timestamp: new Date().toISOString(),
+    };
 
-    // For all errors, just log and continue
-    // This ensures Supabase insertion still succeeds even if Google Sheets fails
-    // Configuration errors are already handled in the client initialization try-catch above
+    console.error('Failed to append data to Google Sheets:', errorDetails);
+
+    // Track this failure if we have a record ID and this isn't already a retry
+    if (data.id && !isRetry) {
+      await trackSyncFailure(
+        'creator_application',
+        data.id,
+        data.email || 'unknown',
+        data.country || 'unknown',
+        error
+      );
+    }
+
+    // Don't throw - we don't want to break the Supabase flow
+    // The failure is now tracked and will be retried automatically
   }
 }
 
@@ -350,8 +441,13 @@ function getBrandBriefHeaderRow(): string[] {
 /**
  * Append brand brief data to Google Sheets
  * This function writes a new row to the specified Google Sheet
+ * If it fails, it tracks the failure for automatic retry
  */
-export async function appendBrandBriefToGoogleSheets(data: BrandBriefRecord): Promise<void> {
+export async function appendBrandBriefToGoogleSheets(
+  data: BrandBriefRecord,
+  recordId?: string,
+  isRetry = false
+): Promise<void> {
   // Skip if Google Sheets is not configured
   if (!GOOGLE_SHEETS_SPREADSHEET_ID) {
     console.warn('Google Sheets not configured. Skipping Google Sheets sync for brand brief.');
@@ -364,9 +460,19 @@ export async function appendBrandBriefToGoogleSheets(data: BrandBriefRecord): Pr
     try {
       sheets = getGoogleSheetsClient();
     } catch (clientError) {
-      // If client initialization fails (e.g., missing credentials), log and return
-      // Don't throw - we don't want to break the main application flow
+      // If client initialization fails (e.g., missing credentials), log and track failure
       console.error('Failed to initialize Google Sheets client for brand brief:', clientError);
+
+      // Track this failure if we have a record ID and this isn't already a retry
+      if (recordId && !isRetry) {
+        await trackSyncFailure(
+          'brand_brief',
+          recordId,
+          data.email || 'unknown',
+          data.country || 'unknown',
+          clientError
+        );
+      }
       return;
     }
     const range = `${GOOGLE_SHEETS_BRAND_SHEET_NAME}!A:AK`;
@@ -407,13 +513,35 @@ export async function appendBrandBriefToGoogleSheets(data: BrandBriefRecord): Pr
       spreadsheetId: GOOGLE_SHEETS_SPREADSHEET_ID,
       sheetName: GOOGLE_SHEETS_BRAND_SHEET_NAME,
       email: data.email,
+      isRetry,
     });
   } catch (error) {
-    // Log error but don't throw - we don't want to break the Supabase flow
-    // All errors are logged but never re-thrown to ensure the main application flow continues
-    console.error('Failed to append brand brief to Google Sheets:', error);
+    // Enhanced error logging with detailed diagnostics
+    const errorDetails = {
+      spreadsheetId: GOOGLE_SHEETS_SPREADSHEET_ID,
+      sheetName: GOOGLE_SHEETS_BRAND_SHEET_NAME,
+      email: data.email,
+      recordId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorName: error instanceof Error ? error.name : 'UnknownError',
+      isRetry,
+      timestamp: new Date().toISOString(),
+    };
 
-    // For all errors, just log and continue
-    // This ensures Supabase insertion still succeeds even if Google Sheets fails
+    console.error('Failed to append brand brief to Google Sheets:', errorDetails);
+
+    // Track this failure if we have a record ID and this isn't already a retry
+    if (recordId && !isRetry) {
+      await trackSyncFailure(
+        'brand_brief',
+        recordId,
+        data.email || 'unknown',
+        data.country || 'unknown',
+        error
+      );
+    }
+
+    // Don't throw - we don't want to break the Supabase flow
+    // The failure is now tracked and will be retried automatically
   }
 }

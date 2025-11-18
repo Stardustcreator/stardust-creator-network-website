@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/google-sheets/retry-failed-syncs",
+      "schedule": "*/10 * * * *"
+    }
+  ]
+}
