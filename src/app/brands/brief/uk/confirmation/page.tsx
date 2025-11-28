@@ -1,19 +1,16 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { generateMetaTags } from '@/lib/seo';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import ThankYouStep from '@/components/forms/BrandBriefForm/steps/ThankYouStep';
 import ConversionTracker from '@/components/analytics/ConversionTracker';
 
-export const metadata: Metadata = {
-  title: 'Brief Submitted - Stardust Creator Network UK',
+export const metadata: Metadata = generateMetaTags({
+  title: 'UK Brand Campaign Submission Confirmation | Stardust Creator Network',
   description:
-    'Thank you for submitting your brand brief to Stardust Creator Network UK. Our partnerships team will contact you within 72 hours.',
-  openGraph: {
-    title: 'Brief Submitted - Stardust Creator Network UK',
-    description: 'Thank you for submitting your brand brief to Stardust Creator Network UK.',
-    type: 'website',
-  },
-};
+    'Your brand campaign brief for the UK has been successfully submitted. Our partnerships team will review your request and contact you within 72 hours to match you with the perfect UK influencers.',
+  url: '/brands/brief/uk/confirmation',
+});
 
 export default function UKBrandBriefConfirmationPage() {
   return (

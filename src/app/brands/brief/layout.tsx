@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import { generateMetaTags } from '@/lib/seo';
 
-// SEO metadata for the brand brief section
 export const metadata: Metadata = generateMetaTags({
-  title: 'Find Creators | Stardust Creator Network',
+  title: 'Start a Brand Campaign with Creators | Stardust Creator Network',
   description:
-    'Connect your brand with verified creators who move culture. Complete our quick brief to get matched with creators across Nigeria and the UK who drive real results.',
+    'Start your brand campaign with verified creators in Nigeria and the UK. Connect with top influencers who drive authentic engagement and real results for your brand. Choose your region to begin.',
   url: '/brands/brief',
 });
 
 export default function BrandBriefLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <>{children}</>;
 }

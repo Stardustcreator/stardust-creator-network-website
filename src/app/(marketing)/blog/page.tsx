@@ -6,24 +6,14 @@ import BlogGrid from '@/components/blog/BlogGrid';
 import { getAllPosts } from '@/lib/services/sanity-blog.service';
 import { BlogCategory } from '@/types/blog.types';
 
-export const metadata: Metadata = {
-  title: 'Blog - Creator Insights & Strategies | Stardust Creator Network',
+import { generateMetaTags } from '@/lib/seo';
+
+export const metadata: Metadata = generateMetaTags({
+  title: 'Influencer Marketing Insights | Stardust Creator Network Blog',
   description:
-    'Expert insights, strategies, and stories from the forefront of the creator economy. Learn how to build authentic partnerships, grow your brand, and thrive as a creator.',
-  openGraph: {
-    title: 'Blog - Creator Insights & Strategies | Stardust Creator Network',
-    description:
-      'Expert insights, strategies, and stories from the forefront of the creator economy.',
-    type: 'website',
-    url: 'https://stardustcreatornetwork.com/blog',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog - Creator Insights & Strategies | Stardust Creator Network',
-    description:
-      'Expert insights, strategies, and stories from the forefront of the creator economy.',
-  },
-};
+    'Discover expert influencer marketing insights, strategies, and trends. Learn how to build authentic brand-creator partnerships, optimize campaigns, and grow your influence in Nigeria and the UK.',
+  url: '/blog',
+});
 
 // Revalidate this page every 30 seconds
 export const revalidate = 30;
