@@ -6,9 +6,9 @@ import Footer from '@/components/layout/Footer/Footer';
 
 // Page-specific SEO metadata for UK
 export const metadata: Metadata = generateMetaTags({
-  title: 'Find Creators - United Kingdom | Stardust Creator Network',
+  title: 'Hire UK Influencers for Campaigns | Stardust Creator Network',
   description:
-    "Connect your brand with the UK's top verified creators. Complete our quick brief to get matched with creators who move culture and drive real results for your campaigns.",
+    "Hire UK influencers for your brand campaigns. Connect with the United Kingdom's top verified creators who drive authentic engagement and real results. Submit your brief and get matched with the perfect creators for your campaign.",
   url: '/brands/brief/uk',
 });
 

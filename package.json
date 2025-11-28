@@ -20,6 +20,11 @@
     "sitemap": "next-sitemap",
     "clean": "rimraf .next out dist",
     "analyze": "cross-env ANALYZE=true npm run build",
+    "analyze:bundles": "cross-env ANALYZE=true npm run build",
+    "check:unused-deps": "depcheck --ignores='@types/*,eslint-*,prettier,@axe-core/*,playwright,vitest,husky,lint-staged,rimraf,cross-env,dotenv-cli'",
+    "check:unused-imports": "unimport --check",
+    "analyze:unused": "node scripts/analyze-unused.js",
+    "optimize": "npm run check:unused-deps && npm run build",
     "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build",
     "studio:deploy": "dotenv -e .env.local -- sanity deploy"
   },
@@ -47,12 +52,14 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
+    "@next/bundle-analyzer": "^16.0.5",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.0",
     "cross-env": "^7.0.3",
+    "depcheck": "^1.4.7",
     "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
@@ -63,6 +70,7 @@
     "rimraf": "^6.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "unimport": "^5.5.0",
     "vitest": "^4.0.7"
   },
   "lint-staged": {
