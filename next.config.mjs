@@ -1,3 +1,9 @@
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Performance optimizations
@@ -173,7 +179,9 @@ const nextConfig = {
   },
 
   // Note: ESLint configuration moved to eslint.config.mjs
-  // SWC minifier is enabled by default in Next.js 16
+  // SWC minifier is enabled by default in Next.js 16 (no config needed)
+  // Tailwind CSS 4 automatically purges unused CSS
+  // Compression and font optimization are enabled by default in Next.js 16
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

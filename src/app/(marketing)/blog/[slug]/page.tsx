@@ -34,9 +34,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       };
     }
 
+    // Include primary keyword in description for SEO
+    const description = post.excerpt
+      ? `${post.excerpt} Discover influencer marketing tips, trends, and strategies.`
+      : 'Discover influencer marketing tips, trends, and strategies from Stardust Creator Network.';
+
     const metadata = generateMetaTags({
       title: post.title,
-      description: post.excerpt,
+      description,
       image: post.featuredImage,
       url: `/blog/${post.slug}`,
       type: 'article',

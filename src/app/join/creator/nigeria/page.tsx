@@ -6,9 +6,9 @@ import Footer from '@/components/layout/Footer/Footer';
 
 // Page-specific SEO metadata for Nigeria
 export const metadata: Metadata = generateMetaTags({
-  title: 'Join as a Creator - Nigeria | Stardust Creator Network',
+  title: 'Apply as Nigerian Creator | Stardust Creator Network',
   description:
-    "Join Nigeria's leading creator network. Connect with top brands, learn new skills, and access creator tools designed to help you earn smarter. Apply now to become a verified Stardust creator.",
+    "Apply as a Nigerian creator and join Nigeria's leading influencer network. Connect with top brands, access exclusive campaigns, and grow your creator career with verified opportunities in Nigeria.",
   url: '/join/creator/nigeria',
 });
 

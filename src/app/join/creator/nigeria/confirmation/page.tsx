@@ -1,29 +1,27 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { generateMetaTags } from '@/lib/seo';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import ThankYouStep from '@/components/forms/CreatorApplicationForm/steps/ThankYouStep';
 import ConversionTracker from '@/components/analytics/ConversionTracker';
 
-export const metadata: Metadata = {
-  title: 'Application Submitted - Stardust Creator Network Nigeria',
-  description: 'Thank you for applying to join the Stardust Creator Network in Nigeria. Your application has been successfully submitted.',
-  openGraph: {
-    title: 'Application Submitted - Stardust Creator Network Nigeria',
-    description: 'Thank you for applying to join the Stardust Creator Network in Nigeria.',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = generateMetaTags({
+  title: 'Nigeria Creator Application Confirmation | Stardust Creator Network',
+  description:
+    'Your application to join Stardust Creator Network as a Nigerian creator has been successfully submitted. Our team will review your application and contact you soon with next steps.',
+  url: '/join/creator/nigeria/confirmation',
+});
 
 export default function NigeriaCreatorConfirmationPage() {
   return (
     <>
-      <ConversionTracker 
+      <ConversionTracker
         event="creator_application_completed"
         country="Nigeria"
         properties={{
           page: 'confirmation',
           location: 'Nigeria',
-          source: 'stardust_creator_network'
+          source: 'stardust_creator_network',
         }}
       />
       <Header />
