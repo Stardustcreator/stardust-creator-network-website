@@ -3,12 +3,12 @@ import { Text } from '@/components/typography';
 
 export default function PlatformLogosSection() {
   const brands = [
-    { name: 'Honeywell', logo: '/brand logos/honeywell.png' },
-    { name: 'Chevrolet', logo: '/brand logos/chevrolet.png' },
-    { name: 'FMN', logo: '/brand logos/fmn.png' },
-    { name: 'Golden Penny', logo: '/brand logos/golden penny.png' },
-    { name: 'Daily Trust', logo: '/brand logos/daily trust.png' },
-    { name: 'Leadway', logo: '/brand logos/leadway.png' },
+    { name: 'Honeywell', logo: '/brand logos/honeywell.webp' },
+    { name: 'Chevrolet', logo: '/brand logos/chevrolet.webp' },
+    { name: 'FMN', logo: '/brand logos/fmn.webp' },
+    { name: 'Golden Penny', logo: '/brand logos/golden penny.webp' },
+    { name: 'Daily Trust', logo: '/brand logos/daily trust.webp' },
+    { name: 'Leadway', logo: '/brand logos/leadway.webp' },
   ];
 
   // Create a logo component to avoid repetition

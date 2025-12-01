@@ -38,7 +38,7 @@ export default function CreatorOsSection() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 blur-3xl"></div>
               <div className="relative aspect-video w-full">
                 <Image
-                  src="/creatorOS.jpg"
+                  src="/creatorOS.webp"
                   alt="Stardust CreatorOS platform preview showing dashboard and features for modern creators"
                   fill
                   className="object-cover"

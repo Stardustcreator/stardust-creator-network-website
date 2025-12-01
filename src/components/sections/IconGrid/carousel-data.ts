@@ -25,7 +25,7 @@ export const carouselSlides: CarouselSlide[] = [
     gradientFrom: 'from-purple-500',
     gradientVia: 'via-pink-500',
     gradientTo: 'to-orange-500',
-    image: '/creator community/learning-hub.jpg',
+    image: '/creator community/learning-hub.webp',
   },
   {
     id: 'creator-network',
@@ -41,7 +41,7 @@ export const carouselSlides: CarouselSlide[] = [
     gradientFrom: 'from-blue-500',
     gradientVia: 'via-purple-500',
     gradientTo: 'to-pink-500',
-    image: '/creator community/creator-network.jpg',
+    image: '/creator community/creator-network.webp',
   },
   {
     id: 'growth-tools',
@@ -57,6 +57,6 @@ export const carouselSlides: CarouselSlide[] = [
     gradientFrom: 'from-green-500',
     gradientVia: 'via-emerald-500',
     gradientTo: 'to-teal-500',
-    image: '/creator community/growth tools.jpg',
+    image: '/creator community/growth tools.webp',
   },
 ];
