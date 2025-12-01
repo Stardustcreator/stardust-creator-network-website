@@ -171,3 +171,4 @@ When you run `npm run build`:
 - [Next.js Optimization Docs](https://nextjs.org/docs/app/building-your-application/optimizing)
 - [Tailwind CSS Optimization](https://tailwindcss.com/docs/optimizing-for-production)
 - [Bundle Analyzer Guide](https://www.npmjs.com/package/@next/bundle-analyzer)
+

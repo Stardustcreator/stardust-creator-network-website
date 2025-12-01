@@ -46,7 +46,7 @@ export default function TimelineDeliverablesStep({
     [data, updateFormData]
   );
 
-  // Get today's date for min date
+  // Get today's date for min date - use UTC to ensure consistency between server and client
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -58,7 +58,7 @@ export default function TimelineDeliverablesStep({
         </div>
 
         <Heading
-          level={1}
+          level={2}
           className="text-white text-2xl md:text-3xl mb-2"
         >
           Timeline & Deliverables

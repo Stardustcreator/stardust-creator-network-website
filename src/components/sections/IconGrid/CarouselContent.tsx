@@ -17,8 +17,7 @@ export default function CarouselContent({ slide, isActive }: CarouselContentProp
         }`}
       >
         <Heading
-          as="h3"
-          level={2}
+          level={3}
           className="!text-white mb-2 text-3xl md:text-4xl lg:text-5xl text-left"
         >
           {slide.title}

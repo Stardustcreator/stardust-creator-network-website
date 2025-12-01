@@ -41,7 +41,7 @@ export default function EducationToolsInterestStep({
       {/* Section Header */}
       <div className="text-center mb-8">
         <Heading
-          level={1}
+          level={2}
           className="text-white text-2xl md:text-3xl mb-2"
         >
           Education & Tools Interest
