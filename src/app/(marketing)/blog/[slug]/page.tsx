@@ -15,7 +15,7 @@ interface BlogPostPageProps {
 export async function generateStaticParams() {
   try {
     const slugs = await getAllPostSlugs();
-    return slugs.map(slug => ({
+    return slugs.map((slug: string) => ({
       slug,
     }));
   } catch (error) {

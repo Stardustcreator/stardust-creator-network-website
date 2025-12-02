@@ -39,7 +39,7 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/brands.jpg"
+                src="/who we are/brands.webp"
                 alt="For Brands - Connect with creators"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -95,7 +95,7 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/creators.jpg"
+                src="/who we are/creators.webp"
                 alt="For Creators - Join our network"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"

@@ -46,16 +46,46 @@ module.exports = {
   additionalPaths: async () => {
     const result = [];
 
-    // Add blog posts dynamically (example)
-    // const blogPosts = await fetchBlogPosts();
-    // blogPosts.forEach((post) => {
-    //   result.push({
-    //     loc: `/blog/${post.slug}`,
-    //     changefreq: 'weekly',
-    //     priority: 0.8,
-    //     lastmod: new Date(post.updatedAt).toISOString(),
-    //   });
-    // });
+    try {
+      // Add blog posts dynamically from Sanity CMS
+      const { createClient } = require('next-sanity');
+      
+      // Get Sanity config from environment variables
+      const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'zif8hf3j';
+      const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+      const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-11-16';
+      
+      const sanityClient = createClient({
+        projectId,
+        dataset,
+        apiVersion,
+        useCdn: false, // Use false for build-time generation
+      });
+
+      const blogPosts = await sanityClient.fetch(
+        `*[_type == "post" && defined(slug.current)] {
+          "slug": slug.current,
+          publishedAt,
+          _updatedAt
+        }`
+      );
+
+      blogPosts.forEach((post) => {
+        result.push({
+          loc: `/blog/${post.slug}`,
+          changefreq: 'weekly',
+          priority: 0.8,
+          lastmod: post._updatedAt || post.publishedAt || new Date().toISOString(),
+        });
+      });
+    } catch (error) {
+      console.error('Error fetching blog posts for sitemap:', error);
+      // Continue without blog posts if there's an error
+    }
+
+    // Note: Legal pages and case studies will be automatically included
+    // if they exist as static pages in the app directory.
+    // Only add them here if they are dynamic routes that need explicit inclusion.
 
     return result;
   },

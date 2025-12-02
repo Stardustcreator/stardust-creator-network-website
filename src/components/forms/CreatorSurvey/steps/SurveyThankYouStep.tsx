@@ -23,8 +23,7 @@ export default function SurveyThankYouStep() {
 
       {/* Main Message */}
       <Heading
-        as="h1"
-        level={1}
+        level={2}
         className="text-white mb-6 text-3xl md:text-4xl"
       >
         Thank You!

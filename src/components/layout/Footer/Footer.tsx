@@ -97,9 +97,10 @@ export default function Footer() {
           {/* For Creators */}
           <div>
             <Heading
-              level={3}
+              level={4}
               variant="default"
-              className="!text-white text-xl mb-6"
+              className="!text-white text-xs font-semibold mb-4"
+              as="h4"
             >
               For Creators
             </Heading>
@@ -142,9 +143,10 @@ export default function Footer() {
           {/* For Brands */}
           <div>
             <Heading
-              level={3}
+              level={4}
               variant="default"
-              className="!text-white text-xl mb-6"
+              className="!text-white text-xs font-semibold mb-4"
+              as="h4"
             >
               For Brands
             </Heading>
@@ -179,9 +181,10 @@ export default function Footer() {
           {/* Company */}
           <div>
             <Heading
-              level={3}
+              level={4}
               variant="default"
-              className="!text-white text-xl mb-6"
+              className="!text-white text-xs font-semibold mb-4"
+              as="h4"
             >
               Company
             </Heading>

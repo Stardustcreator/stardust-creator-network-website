@@ -126,5 +126,5 @@ export async function getPostBySlug(slug: string, options = { next: { revalidate
 
 export async function getAllPostSlugs() {
   const slugs = await client.fetch<{ slug: string }[]>(POST_SLUGS_QUERY);
-  return slugs.map(s => s.slug);
+  return slugs.map((s: { slug: string }) => s.slug);
 }

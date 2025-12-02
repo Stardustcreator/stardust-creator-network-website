@@ -92,11 +92,13 @@ export default function StatisticsDashboardSection() {
     >
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Section Label */}
-          <div className="mb-8"></div>
+          {/* Section Heading */}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-12 sr-only">
+            Our Mission and Vision
+          </h2>
 
           {/* Main Content */}
-          <div className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed">
+          <div className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed" role="doc-subtitle">
             {WORDS.map((word, index) => (
               <span
                 key={index}

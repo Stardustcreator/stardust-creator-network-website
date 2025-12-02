@@ -59,7 +59,7 @@ export default function BudgetPaymentPreferenceStep({
         </div>
 
         <Heading
-          level={1}
+          level={2}
           className="text-white text-2xl md:text-3xl mb-2"
         >
           Budget & Payment Preference
