@@ -35,7 +35,7 @@ export default function Footer() {
                 href="https://www.instagram.com/stardustcreatornetwork/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                className="text-white hover:text-purple-400 transition-colors"
                 aria-label="Instagram"
               >
                 <svg
@@ -50,7 +50,7 @@ export default function Footer() {
                 href="https://www.tiktok.com/@stardustcreatornetwork"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                className="text-white hover:text-purple-400 transition-colors"
                 aria-label="TikTok"
               >
                 <svg
@@ -65,7 +65,7 @@ export default function Footer() {
                 href="https://www.youtube.com/@StardustCreatorNetwork"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                className="text-white hover:text-purple-400 transition-colors"
                 aria-label="YouTube"
               >
                 <svg
@@ -80,7 +80,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/company/stardust-creator-network"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                className="text-white hover:text-purple-400 transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg
