@@ -84,8 +84,9 @@ export default function Hero() {
                   variant="large"
                   className="text-white max-w-3xl mb-8"
                 >
-                  Stardust Creator Network connects creators and brands in Nigeria today, and is
-                  building the infrastructure that will power tomorrow&apos;s creative businesses.
+                  Stardust Creator Network connects the creator community with brand partnerships in
+                  Nigeria today, building the infrastructure that enables creator monetization and
+                  powers tomorrow&apos;s creative ecosystem.
                 </Text>
               }
               uk={
@@ -93,8 +94,9 @@ export default function Hero() {
                   variant="large"
                   className="text-white max-w-3xl mb-8"
                 >
-                  Stardust Creator Network connects creators and brands in the UK today, and is
-                  building the infrastructure that will power tomorrow&apos;s creative businesses.
+                  Stardust Creator Network connects the creator community with brand partnerships in
+                  the UK today, building the infrastructure that enables creator monetization and
+                  powers tomorrow&apos;s creative ecosystem.
                 </Text>
               }
               fallback={
@@ -102,8 +104,9 @@ export default function Hero() {
                   variant="large"
                   className="text-white max-w-3xl mb-8"
                 >
-                  Stardust Creator Network connects creators and brands today, and is building the
-                  infrastructure that will power tomorrow&apos;s creative businesses.
+                  Stardust Creator Network connects the creator community with brand partnerships
+                  today, building the infrastructure that enables creator monetization and powers
+                  tomorrow&apos;s creative ecosystem.
                 </Text>
               }
             />

@@ -17,29 +17,29 @@ export default function LocationSpecificContent({
   fallback,
   className = '',
 }: LocationSpecificContentProps) {
-  // Hooks must be called at top level, but we'll ignore the values until after mount
   const { country, isDetecting } = useCountry();
   const [isMounted, setIsMounted] = useState(false);
 
   // Ensure we only render country-specific content after hydration completes
   // This is necessary for preventing hydration mismatch in Next.js
   useEffect(() => {
-    // Updating state based on URL pathname is necessary for country detection
-    /* eslint-disable react-hooks/set-state-in-effect */
-    setIsMounted(true);
-    /* eslint-enable react-hooks/set-state-in-effect */
+    // Use requestAnimationFrame to ensure this runs after the first paint
+    // This guarantees the server-rendered fallback matches the initial client render
+    const timer = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(timer);
   }, []);
 
-  // During SSR and initial client render, ALWAYS render fallback to ensure perfect match
-  // This prevents hydration errors - both server and client will render the same fallback initially
-  // After mount, we'll update to show country-specific content
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const isHydrated = typeof window !== 'undefined' && isMounted;
-  if (!isHydrated) {
+  // During SSR and initial client render (before mount), ALWAYS render fallback
+  // This ensures perfect match between server and client initial render
+  const shouldRenderFallback = typeof window === 'undefined' || !isMounted;
+
+  if (shouldRenderFallback) {
     const fallbackContent = fallback || <div className="bg-white/10 rounded h-8 w-32" />;
     return (
-      <div 
-        className={className} 
+      <div
+        className={className}
         suppressHydrationWarning
         key="location-fallback"
       >
@@ -51,7 +51,10 @@ export default function LocationSpecificContent({
   // Show loading state during detection
   if (isDetecting) {
     return (
-      <div className={`animate-pulse ${className}`}>
+      <div
+        className={`animate-pulse ${className}`}
+        suppressHydrationWarning
+      >
         {fallback || <div className="bg-white/10 rounded h-8 w-32" />}
       </div>
     );
@@ -72,14 +75,13 @@ export default function LocationSpecificContent({
 
   const content = getContentForCountry(country);
 
-  // Always render something to prevent hydration mismatch
-  // Use suppressHydrationWarning to prevent React warnings during the transition from fallback to country-specific content
-  // Use a key to force React to treat this as a controlled update
+  // Render country-specific content after mount
+  // Use suppressHydrationWarning to prevent React warnings during the transition
   return (
-    <div 
-      className={className} 
+    <div
+      className={className}
       suppressHydrationWarning
-      key="location-content"
+      key={`location-content-${country}`}
     >
       {content ?? fallback}
     </div>
