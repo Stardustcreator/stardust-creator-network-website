@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useCountry, type Country } from '@/lib/contexts/CountryContext';
 import type { ReactNode } from 'react';
 
@@ -20,15 +20,13 @@ export default function LocationSpecificContent({
   const { country, isDetecting } = useCountry();
   const [isMounted, setIsMounted] = useState(false);
 
-  // Ensure we only render country-specific content after hydration completes
-  // This is necessary for preventing hydration mismatch in Next.js
-  useEffect(() => {
-    // Use requestAnimationFrame to ensure this runs after the first paint
-    // This guarantees the server-rendered fallback matches the initial client render
-    const timer = requestAnimationFrame(() => {
-      setIsMounted(true);
-    });
-    return () => cancelAnimationFrame(timer);
+  // Use useLayoutEffect to ensure state update happens synchronously after DOM mutations
+  // but before browser paint, ensuring server and client render match initially
+  useLayoutEffect(() => {
+    // Only set mounted after the first render is complete
+    // This ensures the initial client render matches the server render
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
   }, []);
 
   // During SSR and initial client render (before mount), ALWAYS render fallback
