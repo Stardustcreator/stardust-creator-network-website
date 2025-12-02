@@ -18,7 +18,7 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
         >
           <Image
             src={slide.image}
-            alt={slide.title}
+            alt={slide.alt || slide.title}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
