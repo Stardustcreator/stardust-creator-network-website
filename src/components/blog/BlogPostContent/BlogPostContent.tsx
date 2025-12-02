@@ -126,7 +126,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white mb-2">About {post.author.name}</h3>
+              <h2 className="text-2xl font-bold text-white mb-2">About {post.author.name}</h2>
               <p className="text-white/70 mb-2">{post.author.role}</p>
               <p className="text-white/80">{post.author.bio}</p>
             </div>
@@ -136,7 +136,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
 
       {/* CTA */}
       <div className="mt-16 p-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl text-center">
-        <h3 className="text-2xl font-bold text-white mb-4">Ready to Join the Creator Economy?</h3>
+        <h2 className="text-2xl font-bold text-white mb-4">Ready to Join the Creator Economy?</h2>
         <p className="text-white/80 mb-6 max-w-2xl mx-auto">
           Whether you&apos;re a brand looking for creators or a creator ready to collaborate,
           Stardust Creator Network connects you with the right partnerships.
