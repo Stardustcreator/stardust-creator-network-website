@@ -115,16 +115,16 @@ function transformSanityPost(post: SanityBlogPost): BlogPost & { body: PortableT
 }
 
 export async function getAllPosts(options = { next: { revalidate: 30 } }) {
-  const posts = await client.fetch<SanityBlogPost[]>(POSTS_QUERY, {}, options);
+  const posts = (await client.fetch(POSTS_QUERY, {}, options)) as SanityBlogPost[];
   return posts.map(transformSanityPost);
 }
 
 export async function getPostBySlug(slug: string, options = { next: { revalidate: 30 } }) {
-  const post = await client.fetch<SanityBlogPost>(POST_BY_SLUG_QUERY, { slug }, options);
+  const post = (await client.fetch(POST_BY_SLUG_QUERY, { slug }, options)) as SanityBlogPost | null;
   return post ? transformSanityPost(post) : null;
 }
 
 export async function getAllPostSlugs() {
-  const slugs = await client.fetch<{ slug: string }[]>(POST_SLUGS_QUERY);
+  const slugs = (await client.fetch(POST_SLUGS_QUERY)) as { slug: string }[];
   return slugs.map((s: { slug: string }) => s.slug);
 }
