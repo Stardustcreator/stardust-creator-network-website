@@ -11,6 +11,7 @@ The sitemap is **automatically generated** during every build:
 ```
 
 This means:
+
 - ✅ Sitemap updates automatically on every deployment
 - ✅ New pages are automatically included
 - ✅ Blog posts are fetched dynamically from Sanity CMS
@@ -19,7 +20,9 @@ This means:
 ## What's Included in the Sitemap
 
 ### Static Pages (Auto-Detected)
+
 Next.js automatically detects and includes all static pages in the `src/app` directory:
+
 - Homepage (`/`)
 - Blog listing (`/blog`)
 - Brand brief pages (`/brands/brief/*`)
@@ -30,6 +33,7 @@ Next.js automatically detects and includes all static pages in the `src/app` dir
 ### Dynamic Pages (Explicitly Added)
 
 #### Blog Posts
+
 - **Source**: Sanity CMS
 - **Fetch**: All posts with valid slugs are fetched during build
 - **Priority**: 0.8
@@ -37,12 +41,14 @@ Next.js automatically detects and includes all static pages in the `src/app` dir
 - **Last Modified**: Uses `_updatedAt` or `publishedAt` from Sanity
 
 #### Legal Pages & Case Studies
+
 - These will be automatically included if they exist as static pages
 - If created as dynamic routes, they should be added to `additionalPaths` in `next-sitemap.config.js`
 
 ## Excluded Pages
 
 The following paths are excluded from the sitemap:
+
 - `/admin/*` - Admin pages
 - `/api/*` - API routes
 - `/dashboard/*` - Dashboard pages
@@ -68,6 +74,7 @@ The sitemap is configured in `next-sitemap.config.js`:
 ## How to Verify
 
 1. **Check sitemap generation**:
+
    ```bash
    npm run sitemap
    ```
@@ -86,7 +93,7 @@ If you add new dynamic routes (like case studies or legal pages), update `next-s
 ```javascript
 additionalPaths: async () => {
   const result = [];
-  
+
   // Add your dynamic routes here
   // Example:
   // const caseStudies = await fetchCaseStudies();
@@ -98,9 +105,9 @@ additionalPaths: async () => {
   //     lastmod: study.updatedAt,
   //   });
   // });
-  
+
   return result;
-}
+};
 ```
 
 ## Current Status
@@ -109,7 +116,7 @@ additionalPaths: async () => {
 ✅ **Static Pages**: Automatically detected by Next.js  
 ✅ **Auto-Update**: Runs on every build  
 ⏳ **Legal Pages**: Will be auto-included when created  
-⏳ **Case Studies**: Will be auto-included when created  
+⏳ **Case Studies**: Will be auto-included when created
 
 ## Troubleshooting
 
@@ -129,4 +136,3 @@ additionalPaths: async () => {
 1. Ensure the page exists in `src/app` directory
 2. Check that the path is not in the `exclude` array
 3. Verify the page is a valid route (not a layout or component)
-

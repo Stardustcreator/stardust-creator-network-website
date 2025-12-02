@@ -11,4 +11,3 @@ export const metadata: Metadata = generateMetaTags({
 export default function CreatorJoinLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
-

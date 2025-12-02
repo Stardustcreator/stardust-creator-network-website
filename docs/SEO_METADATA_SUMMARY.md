@@ -133,4 +133,3 @@ This document lists all pages with their primary SEO keywords and metadata descr
 - `src/app/brands/brief/layout.tsx` - Brand brief region selector metadata
 - `src/app/creators/join/layout.tsx` - Creator join region selector metadata
 - `src/app/creators/survey/layout.tsx` - Creator survey metadata
-
