@@ -30,7 +30,7 @@ export default function Footer() {
             >
               Building the infrastructure that turns creativity into sustainable business.
             </Text>
-            <div className="flex gap-4">
+            <div className="flex gap-5">
               <Link
                 href="https://www.instagram.com/stardustcreatornetwork/"
                 target="_blank"
@@ -39,7 +39,7 @@ export default function Footer() {
                 aria-label="Instagram"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -54,7 +54,7 @@ export default function Footer() {
                 aria-label="TikTok"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -69,7 +69,7 @@ export default function Footer() {
                 aria-label="YouTube"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -84,7 +84,7 @@ export default function Footer() {
                 aria-label="LinkedIn"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
