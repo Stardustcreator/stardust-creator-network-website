@@ -8,11 +8,16 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, featured = false }: BlogCardProps) {
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  // Format date consistently for SSR and client to prevent hydration mismatch
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+    const day = date.getUTCDate();
+    return `${month} ${day}, ${year}`;
+  };
+
+  const formattedDate = formatDate(post.publishedAt);
 
   if (featured) {
     return (

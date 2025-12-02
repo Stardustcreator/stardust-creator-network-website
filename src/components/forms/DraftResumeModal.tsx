@@ -5,6 +5,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Text } from '@/components/typography/Text';
 import { Heading } from '@/components/typography/Heading';
 
@@ -21,31 +22,41 @@ export default function DraftResumeModal({
   onResume,
   onStartFresh,
 }: DraftResumeModalProps) {
-  if (!isOpen) return null;
+  const [formattedDate, setFormattedDate] = useState<string>('recently');
+  const [isMounted, setIsMounted] = useState(false);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  // Format date on client-side only to prevent hydration mismatch
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+    
+    const date = new Date(lastUpdated);
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
     if (diffInHours < 1) {
-      return 'less than an hour ago';
+      setFormattedDate('less than an hour ago');
     } else if (diffInHours < 24) {
       const hours = Math.floor(diffInHours);
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      setFormattedDate(`${hours} hour${hours > 1 ? 's' : ''} ago`);
     } else {
       const days = Math.floor(diffInHours / 24);
       if (days < 7) {
-        return `${days} day${days > 1 ? 's' : ''} ago`;
+        setFormattedDate(`${days} day${days > 1 ? 's' : ''} ago`);
       } else {
-        return date.toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
-        });
+        const year = date.getUTCFullYear();
+        const nowYear = now.getUTCFullYear();
+        const month = date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' });
+        const day = date.getUTCDate();
+        const dateStr = year !== nowYear 
+          ? `${month} ${day}, ${year}`
+          : `${month} ${day}`;
+        setFormattedDate(dateStr);
       }
     }
-  };
+  }, [lastUpdated]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
@@ -91,7 +102,7 @@ export default function DraftResumeModal({
             variant="body"
             className="text-purple-300 text-center font-semibold mb-6"
           >
-            {formatDate(lastUpdated)}
+            {isMounted ? formattedDate : 'recently'}
           </Text>
 
           <Text
