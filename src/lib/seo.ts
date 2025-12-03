@@ -23,7 +23,12 @@ export const site = {
 export function absoluteUrl(path = '') {
   // Remove leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return new URL(cleanPath, site.url).toString();
+  // Use the specified base URL for Open Graph and structured data
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? site.url
+      : 'https://stardust-creator-network-webs-git-6c1669-intense-group-projects.vercel.app';
+  return new URL(cleanPath, baseUrl).toString();
 }
 
 /**

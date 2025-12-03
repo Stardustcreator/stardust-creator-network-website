@@ -9,9 +9,10 @@ import { BlogCategory } from '@/types/blog.types';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
 export const metadata: Metadata = generateMetaTags({
-  title: 'Influencer Marketing Insights | Stardust Creator Network Blog',
+  title: 'Stardust Blog – Tips, Insights & Creator Stories',
   description:
-    'Discover expert influencer marketing insights, strategies, and trends. Learn how to build authentic brand-creator partnerships, optimize campaigns, and grow your influence in Nigeria and the UK.',
+    'Read expert guides, success stories, and actionable insights for creators looking to grow their audience and revenue.',
+  image: '/creator community/creator-network.webp',
   url: '/blog',
 });
 

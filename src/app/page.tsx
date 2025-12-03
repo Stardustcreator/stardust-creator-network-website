@@ -14,9 +14,10 @@ import CTASection from '@/components/sections/CTA/CTASection';
 
 // Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
-  title: 'Influencer Marketing Platform Nigeria & UK | Stardust Creator Network',
+  title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
-    "Stardust Creator Network is the leading influencer marketing platform connecting brands with verified creators in Nigeria and the UK. Discover authentic partnerships, data-driven campaigns, and grow your brand with Africa's most vibrant creator network.",
+    'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
+  image: '/who we are/creators.webp',
   url: '/',
 });
 
