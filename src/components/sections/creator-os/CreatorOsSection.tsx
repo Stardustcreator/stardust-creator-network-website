@@ -44,6 +44,7 @@ export default function CreatorOsSection() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                   priority={false}
+                  suppressHydrationWarning
                 />
                 {/* Purple Color Overlay */}
                 <div className="absolute inset-0 bg-purple-600/30 mix-blend-multiply"></div>

@@ -1,9 +1,14 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import { BlogPost, BlogCategory } from '@/types/blog.types';
 import BlogCard from '@/components/blog/BlogCard';
-import BlogFilters from '@/components/blog/BlogFilters';
+
+// Lazy load BlogFilters - only needed when user interacts with filters
+const BlogFilters = dynamic(() => import('@/components/blog/BlogFilters/BlogFilters'), {
+  ssr: true, // Keep SSR for SEO, but code-split the component
+});
 
 interface BlogGridProps {
   posts: BlogPost[];

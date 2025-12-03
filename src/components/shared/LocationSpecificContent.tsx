@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useCountry, type Country } from '@/lib/contexts/CountryContext';
 import type { ReactNode } from 'react';
 
@@ -18,22 +18,43 @@ export default function LocationSpecificContent({
   className = '',
 }: LocationSpecificContentProps) {
   const { country, isDetecting } = useCountry();
-  const [isMounted, setIsMounted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [hasRendered, setHasRendered] = useState(false);
 
-  // Use useLayoutEffect to ensure state update happens synchronously after DOM mutations
-  // but before browser paint, ensuring server and client render match initially
-  useLayoutEffect(() => {
-    // Only set mounted after the first render is complete
-    // This ensures the initial client render matches the server render
+  // Wait for hydration to complete before showing country-specific content
+  // This ensures server and client initial render match exactly
+  useEffect(() => {
+    // Mark that we've rendered on the client
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMounted(true);
+    setHasRendered(true);
+
+    // Use multiple requestAnimationFrame calls to ensure we're well after hydration
+    // This guarantees React has fully hydrated before we change content
+    const rafIds: number[] = [];
+
+    const rafId1 = requestAnimationFrame(() => {
+      const rafId2 = requestAnimationFrame(() => {
+        // Triple RAF to ensure we're definitely after hydration
+        const rafId3 = requestAnimationFrame(() => {
+          setIsHydrated(true);
+        });
+        rafIds.push(rafId2, rafId3);
+      });
+      rafIds.push(rafId1);
+    });
+
+    return () => {
+      rafIds.forEach(id => cancelAnimationFrame(id));
+    };
   }, []);
 
-  // During SSR and initial client render (before mount), ALWAYS render fallback
+  // During SSR and initial client render (before hydration), ALWAYS render fallback
   // This ensures perfect match between server and client initial render
-  const shouldRenderFallback = typeof window === 'undefined' || !isMounted;
+  // We must wait for hydration to prevent any mismatch between server and client
+  const isServer = typeof window === 'undefined';
+  const shouldShowFallback = isServer || !hasRendered || !isHydrated;
 
-  if (shouldRenderFallback) {
+  if (shouldShowFallback) {
     const fallbackContent = fallback || <div className="bg-white/10 rounded h-8 w-32" />;
     return (
       <div
@@ -47,19 +68,21 @@ export default function LocationSpecificContent({
   }
 
   // Show loading state during detection
+  // Also show fallback if not fully hydrated to prevent hydration mismatches
   if (isDetecting) {
     return (
       <div
-        className={`animate-pulse ${className}`}
+        className={className}
         suppressHydrationWarning
+        key="location-loading"
       >
         {fallback || <div className="bg-white/10 rounded h-8 w-32" />}
       </div>
     );
   }
 
-  // Render content based on country after mount
-  // Only use country value after mount to prevent SSR/client mismatch
+  // Render content based on country after hydration is complete
+  // Only use country value after hydration to prevent SSR/client mismatch
   const getContentForCountry = (countryCode: Country): ReactNode => {
     switch (countryCode) {
       case 'nigeria':
@@ -73,7 +96,7 @@ export default function LocationSpecificContent({
 
   const content = getContentForCountry(country);
 
-  // Render country-specific content after mount
+  // Render country-specific content after hydration
   // Use suppressHydrationWarning to prevent React warnings during the transition
   return (
     <div

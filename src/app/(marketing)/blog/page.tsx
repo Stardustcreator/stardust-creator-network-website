@@ -53,9 +53,10 @@ export default async function BlogPage() {
 
   return (
     <>
-      {/* Breadcrumb Structured Data */}
+      {/* Breadcrumb Structured Data - Deferred, non-blocking */}
       <script
         type="application/ld+json"
+        defer
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbData),
         }}

@@ -90,8 +90,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      {/* Article Structured Data - Deferred, non-blocking */}
       <script
         type="application/ld+json"
+        defer
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <Header />

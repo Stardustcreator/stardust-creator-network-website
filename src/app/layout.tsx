@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
+import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import './globals.css';
 
 const lato = Lato({
@@ -96,34 +97,10 @@ export default function RootLayout({
           name="google-site-verification"
           content="sIXklRTJlN89f-fY2f1_Yd5lpiyuixk00AHGF7KKOII"
         />
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WKTV2K2D');`,
-          }}
-        />
-        {/* Meta Pixel Code */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '831463455966535');
-fbq('track', 'PageView');`,
-          }}
-        />
-        {/* Structured Data */}
+        {/* Structured Data - Deferred, non-blocking */}
         <script
           type="application/ld+json"
+          defer
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               generateStructuredData.organization(),
@@ -143,6 +120,35 @@ fbq('track', 'PageView');`,
         />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
+        {/* Google Tag Manager - Loads after page is interactive */}
+        <Script
+          id="google-tag-manager"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WKTV2K2D');`,
+          }}
+        />
+        {/* Meta Pixel - Loads after page is interactive */}
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '831463455966535');
+fbq('track', 'PageView');`,
+          }}
+        />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -154,6 +160,7 @@ fbq('track', 'PageView');`,
         </noscript>
         {/* Meta Pixel (noscript) */}
         <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             height="1"
             width="1"
@@ -162,9 +169,12 @@ fbq('track', 'PageView');`,
             alt=""
           />
         </noscript>
+        {/* Google Analytics - Loads after page is interactive */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
+        {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
-        <Analytics />
+        {/* Vercel Analytics - Lazy loaded, non-essential */}
+        <VercelAnalytics />
       </body>
     </html>
   );

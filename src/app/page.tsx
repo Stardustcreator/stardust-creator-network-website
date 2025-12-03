@@ -26,12 +26,44 @@ export default function Home() {
 
   return (
     <>
-      {/* Breadcrumb Structured Data */}
+      {/* Breadcrumb Structured Data - Deferred, non-blocking */}
       <script
         type="application/ld+json"
+        defer
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbData),
         }}
+      />
+      {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
+      <link
+        rel="preload"
+        href="/who%20we%20are/brands.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/who%20we%20are/creators.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/learning-hub.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/creator-network.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/growth%20tools.webp"
+        as="image"
+        fetchPriority="high"
       />
       {/* Header */}
       <Header />

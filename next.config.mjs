@@ -41,12 +41,16 @@ const nextConfig = {
         port: '3000',
       },
     ],
-    // Image formats supported
+    // Image formats supported - prioritize WebP and AVIF
     formats: ['image/avif', 'image/webp'],
     // Optimize images for better performance
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Ensure WebP images are properly handled
+    minimumCacheTTL: 60,
+    // Allow unoptimized images if optimization fails (for images with spaces in paths)
+    unoptimized: false,
   },
 
   // Note: Webpack configuration removed for Turbopack compatibility

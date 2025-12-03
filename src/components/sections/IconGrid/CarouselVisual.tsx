@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { CarouselSlide } from './carousel-data';
+import { encodeImagePath } from '@/lib/utils';
 
 interface CarouselVisualProps {
   slide: CarouselSlide;
@@ -17,12 +18,15 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
           }`}
         >
           <Image
-            src={slide.image}
+            src={encodeImagePath(slide.image)}
             alt={slide.alt || slide.title}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority={slide.id === 'learning-hub'}
+            priority
+            suppressHydrationWarning
+            unoptimized
+            fetchPriority="high"
           />
         </div>
 
