@@ -6,7 +6,7 @@ import BlogGrid from '@/components/blog/BlogGrid';
 import { getAllPosts } from '@/lib/services/sanity-blog.service';
 import { BlogCategory } from '@/types/blog.types';
 
-import { generateMetaTags } from '@/lib/seo';
+import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
 export const metadata: Metadata = generateMetaTags({
   title: 'Influencer Marketing Insights | Stardust Creator Network Blog',
@@ -45,8 +45,20 @@ export default async function BlogPage() {
   const posts = await getAllPosts();
   const categories = calculateCategories(posts);
 
+  const breadcrumbData = generateStructuredData.breadcrumb([
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+  ]);
+
   return (
     <>
+      {/* Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData),
+        }}
+      />
       <Header />
       <main className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black pt-24 pb-20">
         <BlogHeader />

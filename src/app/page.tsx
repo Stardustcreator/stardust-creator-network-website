@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { generateMetaTags } from '@/lib/seo';
+import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
 // Components
 import Header from '@/components/layout/Header/Header';
@@ -21,8 +21,17 @@ export const metadata: Metadata = generateMetaTags({
 });
 
 export default function Home() {
+  const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
+
   return (
     <>
+      {/* Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData),
+        }}
+      />
       {/* Header */}
       <Header />
 

@@ -104,6 +104,25 @@ export const generateStructuredData = {
       : undefined,
     keywords: params.tags?.join(', '),
   }),
+
+  /**
+   * BreadcrumbList schema for navigation
+   */
+  breadcrumb: (items: Array<{ name: string; url: string }>) => {
+    const baseUrl =
+      'https://stardust-creator-network-webs-git-6c1669-intense-group-projects.vercel.app';
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: `${baseUrl}${item.url}`,
+      })),
+    };
+  },
 };
 
 /**
