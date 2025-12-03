@@ -45,12 +45,7 @@ export const generateStructuredData = {
       'https://www.youtube.com/@StardustCreatorNetwork',
       'https://www.linkedin.com/company/stardust-creator-network',
     ],
-    logo: {
-      '@type': 'ImageObject',
-      url: absoluteUrl('/logo.png'),
-      width: 512,
-      height: 512,
-    },
+    logo: [absoluteUrl('/logos/scn logo black.png'), absoluteUrl('/logos/scn logo white.png')],
   }),
 
   /**
@@ -95,7 +90,7 @@ export const generateStructuredData = {
       name: site.name,
       logo: {
         '@type': 'ImageObject',
-        url: absoluteUrl('/logo.png'),
+        url: absoluteUrl('/logos/scn logo black.png'),
       },
     },
     datePublished: params.publishedTime,
