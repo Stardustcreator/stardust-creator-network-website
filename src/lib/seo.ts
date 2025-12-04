@@ -157,8 +157,12 @@ export function generateMetaTags(params: {
   } = params;
 
   // Check if title already includes the site name to avoid duplication
+  // Check for exact match, or if title starts with site name (with any separator), or includes it with a pipe
   const titleAlreadyIncludesSiteName =
-    title === site.name || title.includes(`| ${site.name}`) || title.startsWith(`${site.name} |`);
+    title === site.name ||
+    title.startsWith(site.name) ||
+    title.includes(`| ${site.name}`) ||
+    title.endsWith(`${site.name}`);
 
   const metaTags = {
     title: titleAlreadyIncludesSiteName ? title : `${title} | ${site.name}`,
