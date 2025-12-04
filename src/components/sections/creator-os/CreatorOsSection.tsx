@@ -39,11 +39,12 @@ export default function CreatorOsSection() {
               <div className="relative aspect-video w-full">
                 <Image
                   src="/creatorOS.webp"
-                  alt="Stardust CreatorOS platform preview showing dashboard and features for modern creators"
+                  alt="Content creator reviewing engagement results after a successful brand partnership and monetization opportunity in the creator community"
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                   priority={false}
+                  suppressHydrationWarning
                 />
                 {/* Purple Color Overlay */}
                 <div className="absolute inset-0 bg-purple-600/30 mix-blend-multiply"></div>

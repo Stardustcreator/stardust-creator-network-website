@@ -8,6 +8,7 @@ export interface CarouselSlide {
   gradientVia: string;
   gradientTo: string;
   image?: string;
+  alt?: string;
 }
 
 export const carouselSlides: CarouselSlide[] = [
@@ -26,6 +27,7 @@ export const carouselSlides: CarouselSlide[] = [
     gradientVia: 'via-pink-500',
     gradientTo: 'to-orange-500',
     image: '/creator community/learning-hub.webp',
+    alt: 'UK content creators exploring tools and resources in the creator community for growth and creator monetization',
   },
   {
     id: 'creator-network',
@@ -42,6 +44,7 @@ export const carouselSlides: CarouselSlide[] = [
     gradientVia: 'via-purple-500',
     gradientTo: 'to-pink-500',
     image: '/creator community/creator-network.webp',
+    alt: 'Friends taking photos together at a creator community event, celebrating collaboration and networking',
   },
   {
     id: 'growth-tools',
@@ -58,5 +61,6 @@ export const carouselSlides: CarouselSlide[] = [
     gradientVia: 'via-emerald-500',
     gradientTo: 'to-teal-500',
     image: '/creator community/growth tools.webp',
+    alt: 'Happy content creator enjoying music while engaging with the creative ecosystem',
   },
 ];

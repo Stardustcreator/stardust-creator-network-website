@@ -23,7 +23,12 @@ export const site = {
 export function absoluteUrl(path = '') {
   // Remove leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return new URL(cleanPath, site.url).toString();
+  // Use the specified base URL for Open Graph and structured data
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? site.url
+      : 'https://stardust-creator-network-webs-git-6c1669-intense-group-projects.vercel.app';
+  return new URL(cleanPath, baseUrl).toString();
 }
 
 /**
@@ -45,12 +50,7 @@ export const generateStructuredData = {
       'https://www.youtube.com/@StardustCreatorNetwork',
       'https://www.linkedin.com/company/stardust-creator-network',
     ],
-    logo: {
-      '@type': 'ImageObject',
-      url: absoluteUrl('/logo.png'),
-      width: 512,
-      height: 512,
-    },
+    logo: [absoluteUrl('/logos/scn logo black.png'), absoluteUrl('/logos/scn logo white.png')],
   }),
 
   /**
@@ -95,7 +95,7 @@ export const generateStructuredData = {
       name: site.name,
       logo: {
         '@type': 'ImageObject',
-        url: absoluteUrl('/logo.png'),
+        url: absoluteUrl('/logos/scn logo black.png'),
       },
     },
     datePublished: params.publishedTime,
@@ -109,6 +109,25 @@ export const generateStructuredData = {
       : undefined,
     keywords: params.tags?.join(', '),
   }),
+
+  /**
+   * BreadcrumbList schema for navigation
+   */
+  breadcrumb: (items: Array<{ name: string; url: string }>) => {
+    const baseUrl =
+      'https://stardust-creator-network-webs-git-6c1669-intense-group-projects.vercel.app';
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: `${baseUrl}${item.url}`,
+      })),
+    };
+  },
 };
 
 /**

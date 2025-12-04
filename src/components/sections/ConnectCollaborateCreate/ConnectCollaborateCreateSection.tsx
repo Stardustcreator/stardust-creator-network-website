@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
 import { SectionHeader } from '@/components/shared';
+import { encodeImagePath } from '@/lib/utils';
 
 export default function ConnectCollaborateCreateSection() {
   return (
@@ -39,12 +40,15 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/brands.webp"
-                alt="For Brands - Connect with creators"
+                src={encodeImagePath('/who we are/brands.webp')}
+                alt="Two Nigerian creators discussing the potential of the creator community in Nigeria and strategies for growth"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
+                fetchPriority="high"
+                suppressHydrationWarning
+                unoptimized
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/60 via-purple-700/50 to-purple-900/70 group-hover:from-purple-600/70 group-hover:via-purple-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>
@@ -95,12 +99,15 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/who we are/creators.webp"
-                alt="For Creators - Join our network"
+                src={encodeImagePath('/who we are/creators.webp')}
+                alt="Content creators producing content after securing a brand partnership in the creator community"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
+                fetchPriority="high"
+                suppressHydrationWarning
+                unoptimized
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-pink-600/60 via-pink-700/50 to-purple-900/70 group-hover:from-pink-600/70 group-hover:via-pink-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>

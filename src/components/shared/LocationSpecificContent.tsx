@@ -17,29 +17,48 @@ export default function LocationSpecificContent({
   fallback,
   className = '',
 }: LocationSpecificContentProps) {
-  // Hooks must be called at top level, but we'll ignore the values until after mount
   const { country, isDetecting } = useCountry();
-  const [isMounted, setIsMounted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [hasRendered, setHasRendered] = useState(false);
 
-  // Ensure we only render country-specific content after hydration completes
-  // This is necessary for preventing hydration mismatch in Next.js
+  // Wait for hydration to complete before showing country-specific content
+  // This ensures server and client initial render match exactly
   useEffect(() => {
-    // Updating state based on URL pathname is necessary for country detection
-    /* eslint-disable react-hooks/set-state-in-effect */
-    setIsMounted(true);
-    /* eslint-enable react-hooks/set-state-in-effect */
+    // Mark that we've rendered on the client
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setHasRendered(true);
+
+    // Use multiple requestAnimationFrame calls to ensure we're well after hydration
+    // This guarantees React has fully hydrated before we change content
+    const rafIds: number[] = [];
+
+    const rafId1 = requestAnimationFrame(() => {
+      const rafId2 = requestAnimationFrame(() => {
+        // Triple RAF to ensure we're definitely after hydration
+        const rafId3 = requestAnimationFrame(() => {
+          setIsHydrated(true);
+        });
+        rafIds.push(rafId2, rafId3);
+      });
+      rafIds.push(rafId1);
+    });
+
+    return () => {
+      rafIds.forEach(id => cancelAnimationFrame(id));
+    };
   }, []);
 
-  // During SSR and initial client render, ALWAYS render fallback to ensure perfect match
-  // This prevents hydration errors - both server and client will render the same fallback initially
-  // After mount, we'll update to show country-specific content
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const isHydrated = typeof window !== 'undefined' && isMounted;
-  if (!isHydrated) {
+  // During SSR and initial client render (before hydration), ALWAYS render fallback
+  // This ensures perfect match between server and client initial render
+  // We must wait for hydration to prevent any mismatch between server and client
+  const isServer = typeof window === 'undefined';
+  const shouldShowFallback = isServer || !hasRendered || !isHydrated;
+
+  if (shouldShowFallback) {
     const fallbackContent = fallback || <div className="bg-white/10 rounded h-8 w-32" />;
     return (
-      <div 
-        className={className} 
+      <div
+        className={className}
         suppressHydrationWarning
         key="location-fallback"
       >
@@ -49,16 +68,21 @@ export default function LocationSpecificContent({
   }
 
   // Show loading state during detection
+  // Also show fallback if not fully hydrated to prevent hydration mismatches
   if (isDetecting) {
     return (
-      <div className={`animate-pulse ${className}`}>
+      <div
+        className={className}
+        suppressHydrationWarning
+        key="location-loading"
+      >
         {fallback || <div className="bg-white/10 rounded h-8 w-32" />}
       </div>
     );
   }
 
-  // Render content based on country after mount
-  // Only use country value after mount to prevent SSR/client mismatch
+  // Render content based on country after hydration is complete
+  // Only use country value after hydration to prevent SSR/client mismatch
   const getContentForCountry = (countryCode: Country): ReactNode => {
     switch (countryCode) {
       case 'nigeria':
@@ -72,14 +96,13 @@ export default function LocationSpecificContent({
 
   const content = getContentForCountry(country);
 
-  // Always render something to prevent hydration mismatch
-  // Use suppressHydrationWarning to prevent React warnings during the transition from fallback to country-specific content
-  // Use a key to force React to treat this as a controlled update
+  // Render country-specific content after hydration
+  // Use suppressHydrationWarning to prevent React warnings during the transition
   return (
-    <div 
-      className={className} 
+    <div
+      className={className}
       suppressHydrationWarning
-      key="location-content"
+      key={`location-content-${country}`}
     >
       {content ?? fallback}
     </div>

@@ -9,13 +9,14 @@ interface GoogleAnalyticsProps {
 export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   return (
     <>
+      {/* Google Analytics - Loads after page is interactive, non-blocking */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
       <Script
         id="google-analytics"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       >
         {`
           window.dataLayer = window.dataLayer || [];

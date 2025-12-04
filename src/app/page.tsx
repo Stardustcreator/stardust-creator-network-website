@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { generateMetaTags } from '@/lib/seo';
+import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
 // Components
 import Header from '@/components/layout/Header/Header';
@@ -14,15 +14,57 @@ import CTASection from '@/components/sections/CTA/CTASection';
 
 // Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
-  title: 'Influencer Marketing Platform Nigeria & UK | Stardust Creator Network',
+  title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
-    "Stardust Creator Network is the leading influencer marketing platform connecting brands with verified creators in Nigeria and the UK. Discover authentic partnerships, data-driven campaigns, and grow your brand with Africa's most vibrant creator network.",
+    'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
+  image: '/who we are/creators.webp',
   url: '/',
 });
 
 export default function Home() {
+  const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
+
   return (
     <>
+      {/* Breadcrumb Structured Data - Deferred, non-blocking */}
+      <script
+        type="application/ld+json"
+        defer
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData),
+        }}
+      />
+      {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
+      <link
+        rel="preload"
+        href="/who%20we%20are/brands.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/who%20we%20are/creators.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/learning-hub.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/creator-network.webp"
+        as="image"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/creator%20community/growth%20tools.webp"
+        as="image"
+        fetchPriority="high"
+      />
       {/* Header */}
       <Header />
 
