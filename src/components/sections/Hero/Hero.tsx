@@ -12,11 +12,11 @@ export default function Hero() {
     <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
       {/* Mobile Background Image */}
       <Image
-        src="/hero background picture.png"
+        src="/hero.webp"
         alt="Galaxy-inspired background with vibrant lighting effects"
         fill
         priority
-        sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, 100vw"
+        sizes="100vw"
         className="z-0 object-cover md:hidden"
       />
 
@@ -30,16 +30,16 @@ export default function Hero() {
         preload="metadata"
       >
         <source
-          src="/hero%20background.mp4"
-          type="video/mp4"
+          src="/output.webm"
+          type="video/webm"
         />
         {/* Fallback for browsers that don't support video */}
         <Image
-          src="/hero background picture.png"
+          src="/hero.webp"
           alt="Galaxy-inspired background with vibrant lighting effects"
           fill
           priority
-          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+          sizes="100vw"
           className="absolute inset-0 w-full h-full object-cover"
         />
       </video>

@@ -73,7 +73,6 @@ export default function NavigationBar({
                 width={logoWidth}
                 height={logoHeight}
                 className="object-contain"
-                sizes="(max-width: 480px) 100px, (max-width: 768px) 110px, 120px"
                 priority
               />
             </Link>
@@ -106,7 +105,6 @@ export default function NavigationBar({
                 width={logoWidth}
                 height={logoHeight}
                 className="object-contain"
-                sizes="(max-width: 480px) 100px, (max-width: 768px) 110px, 120px"
                 priority
               />
             </Link>

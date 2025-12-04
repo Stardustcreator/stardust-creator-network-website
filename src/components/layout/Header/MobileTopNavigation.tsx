@@ -119,7 +119,6 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
               width={120}
               height={48}
               className="object-contain"
-              sizes="(max-width: 480px) 100px, (max-width: 768px) 110px, 120px"
               priority
             />
           </Link>
