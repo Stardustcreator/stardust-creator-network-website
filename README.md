@@ -278,6 +278,7 @@ npm run e2e:ui                 # Interactive test runner
 1. Connect your GitHub repository to Vercel
 2. Set environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
+4. Ensure your git author email matches your Vercel account for successful deployments
 
 ### Other Platforms
 
