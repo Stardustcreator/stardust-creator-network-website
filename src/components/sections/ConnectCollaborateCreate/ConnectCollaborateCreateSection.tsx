@@ -44,7 +44,7 @@ export default function ConnectCollaborateCreateSection() {
                 alt="Two Nigerian creators discussing the potential of the creator community in Nigeria and strategies for growth"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 loading="lazy"
                 suppressHydrationWarning
                 unoptimized
@@ -102,7 +102,7 @@ export default function ConnectCollaborateCreateSection() {
                 alt="Content creators producing content after securing a brand partnership in the creator community"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 loading="lazy"
                 suppressHydrationWarning
                 unoptimized

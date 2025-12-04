@@ -42,7 +42,7 @@ export default function CreatorOsSection() {
                   alt="Content creator reviewing engagement results after a successful brand partnership and monetization opportunity in the creator community"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, (max-width: 1200px) 80vw, 1200px"
                   loading="lazy"
                   suppressHydrationWarning
                 />

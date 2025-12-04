@@ -16,7 +16,7 @@ export default function Hero() {
         alt="Galaxy-inspired background with vibrant lighting effects"
         fill
         priority
-        sizes="100vw"
+        sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, 100vw"
         className="z-0 object-cover md:hidden"
       />
 
@@ -39,7 +39,7 @@ export default function Hero() {
           alt="Galaxy-inspired background with vibrant lighting effects"
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
           className="absolute inset-0 w-full h-full object-cover"
         />
       </video>

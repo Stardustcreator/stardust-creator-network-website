@@ -17,6 +17,7 @@ const components: PortableTextComponents = {
               alt={value.alt || 'Blog post image'}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
               loading="lazy"
             />
           </div>

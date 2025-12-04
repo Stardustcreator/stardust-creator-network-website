@@ -22,7 +22,7 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
             alt={slide.alt || slide.title}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
             loading="lazy"
             suppressHydrationWarning
             unoptimized

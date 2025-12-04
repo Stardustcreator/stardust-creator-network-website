@@ -24,6 +24,7 @@ export default function PlatformLogosSection() {
           width={112}
           height={80}
           className="object-contain max-w-full max-h-full transition-all duration-300"
+          sizes="(max-width: 480px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 112px, 112px"
           loading="lazy"
         />
       </div>

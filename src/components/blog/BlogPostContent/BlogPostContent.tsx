@@ -70,6 +70,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               alt={post.author.name}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 64px, 64px"
               loading="lazy"
             />
           </div>
@@ -87,6 +88,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
           alt={post.title}
           fill
           className="object-cover"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 896px"
           priority
         />
       </div>

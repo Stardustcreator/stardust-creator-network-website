@@ -33,6 +33,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 50vw"
               loading="lazy"
             />
             <div className="absolute top-4 left-4">
@@ -64,6 +65,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   alt={post.author.name}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 480px) 48px, 48px"
                   loading="lazy"
                 />
               </div>
@@ -90,6 +92,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           alt={post.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -121,6 +124,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.author.name}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 40px, 40px"
+              loading="lazy"
             />
           </div>
           <div>
