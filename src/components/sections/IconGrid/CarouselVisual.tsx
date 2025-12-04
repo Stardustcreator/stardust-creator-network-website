@@ -23,10 +23,9 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            loading="lazy"
             suppressHydrationWarning
             unoptimized
-            fetchPriority="high"
           />
         </div>
 

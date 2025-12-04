@@ -17,6 +17,7 @@ const components: PortableTextComponents = {
               alt={value.alt || 'Blog post image'}
               fill
               className="object-cover"
+              loading="lazy"
             />
           </div>
           {value.caption && (

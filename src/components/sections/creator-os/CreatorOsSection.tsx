@@ -43,7 +43,7 @@ export default function CreatorOsSection() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                  priority={false}
+                  loading="lazy"
                   suppressHydrationWarning
                 />
                 {/* Purple Color Overlay */}

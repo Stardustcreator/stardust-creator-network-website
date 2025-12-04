@@ -70,6 +70,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               alt={post.author.name}
               fill
               className="object-cover"
+              loading="lazy"
             />
           </div>
           <div>

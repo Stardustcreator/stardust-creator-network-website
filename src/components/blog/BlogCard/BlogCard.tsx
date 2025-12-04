@@ -33,6 +33,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
             />
             <div className="absolute top-4 left-4">
               <span className="inline-block px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-full">
@@ -63,6 +64,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   alt={post.author.name}
                   fill
                   className="object-cover"
+                  loading="lazy"
                 />
               </div>
               <div>
@@ -88,6 +90,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           alt={post.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute top-4 left-4">

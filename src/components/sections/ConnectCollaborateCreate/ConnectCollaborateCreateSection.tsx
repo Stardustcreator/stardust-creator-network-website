@@ -45,8 +45,7 @@ export default function ConnectCollaborateCreateSection() {
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-                fetchPriority="high"
+                loading="lazy"
                 suppressHydrationWarning
                 unoptimized
               />
@@ -104,8 +103,7 @@ export default function ConnectCollaborateCreateSection() {
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-                fetchPriority="high"
+                loading="lazy"
                 suppressHydrationWarning
                 unoptimized
               />
