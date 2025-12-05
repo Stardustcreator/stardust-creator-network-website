@@ -246,7 +246,7 @@ export default function Footer() {
               href="/legal/terms"
               className="text-gray-500 hover:text-purple-400 transition-colors text-sm"
             >
-              Terms
+              Terms of Service
             </Link>
           </div>
         </div>
