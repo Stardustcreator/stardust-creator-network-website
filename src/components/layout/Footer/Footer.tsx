@@ -193,7 +193,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/about"
+                  href="/#who-we-are"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   About
@@ -209,18 +209,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/creator-os"
+                  href="/#creator-os"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   CreatorOS
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Contact
                 </Link>
               </li>
             </ul>
