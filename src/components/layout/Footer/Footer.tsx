@@ -28,7 +28,7 @@ export default function Footer() {
             </div>
             <Text
               variant="small"
-              className="text-white opacity-60 mb-6"
+              className="text-white/80 mb-6"
             >
               Building the infrastructure that turns creativity into sustainable business.
             </Text>
