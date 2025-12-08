@@ -11,6 +11,7 @@ export const metadata: Metadata = generateMetaTags({
   title: 'Terms of Service – Stardust Creator Network',
   description:
     'Read the Terms of Service for Stardust Creator Network. Learn about platform rules, user rights, content ownership, and guidelines for creators and brands.',
+  image: '/who we are/creators.webp',
   url: '/legal/terms',
 });
 

@@ -12,6 +12,7 @@ export const metadata: Metadata = generateMetaTags({
   title: 'Privacy Policy – Stardust Creator Network',
   description:
     'Learn how Stardust Creator Network protects your personal information. We collect minimal data to improve your experience and ensure secure collaboration between creators and brands.',
+  image: '/who we are/creators.webp',
   url: '/legal/privacy',
 });
 
