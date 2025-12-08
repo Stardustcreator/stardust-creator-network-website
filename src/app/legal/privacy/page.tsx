@@ -6,6 +6,7 @@ import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 import PrivacyPolicyContent from '@/components/legal/PrivacyPolicyContent';
 import PrivacyPolicyNigeria from '@/components/legal/PrivacyPolicyNigeria';
 import PrivacyPolicyUK from '@/components/legal/PrivacyPolicyUK';
+import PrivacyPolicySidebar from '@/components/legal/PrivacyPolicySidebar';
 
 export const metadata: Metadata = generateMetaTags({
   title: 'Privacy Policy – Stardust Creator Network',
@@ -32,34 +33,49 @@ export default function PrivacyPolicyPage() {
       />
       <Header />
       <main className="min-h-screen bg-black">
-        {/* Header Message Section */}
-        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <Heading
-              level={1}
-              variant="gradient"
-              className="text-center mb-6 animate-[fadeInUp_0.8s_ease-out]"
-            >
-              Your Privacy Matters – How Stardust Creator Network Protects Your Information
-            </Heading>
-            <Text
-              variant="body"
-              color="white"
-              className="text-center text-white/80 max-w-2xl mx-auto leading-relaxed"
-            >
-              We are committed to transparency and protecting your personal data. This policy
-              explains how we collect, use, and safeguard your information.
-            </Text>
+        {/* Title Section */}
+        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 py-8 md:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+            <div className="max-w-4xl">
+              <Heading
+                level={1}
+                variant="gradient"
+                className="mb-3 md:mb-4 text-3xl sm:text-4xl md:text-5xl leading-tight"
+              >
+                Privacy{' '}
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Policy
+                </span>
+              </Heading>
+              <Text
+                variant="body"
+                color="white"
+                className="text-white/80 text-base sm:text-lg leading-relaxed"
+              >
+                Thanks for using Stardust Creator Network! Our Privacy Policy details how we handle
+                your info. By using Stardust Creator Network, you agree to these practices.
+              </Text>
+            </div>
           </div>
         </section>
 
-        {/* Privacy Policy Content */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <PrivacyPolicyContent
-              nigeriaContent={<PrivacyPolicyNigeria />}
-              ukContent={<PrivacyPolicyUK />}
-            />
+        {/* Privacy Policy Content with Sidebar */}
+        <section className="py-8 md:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
+              {/* Left Sidebar Navigation - Hidden on mobile, shown in content area */}
+              <aside className="lg:col-span-1">
+                <PrivacyPolicySidebar />
+              </aside>
+
+              {/* Main Content */}
+              <div className="lg:col-span-3">
+                <PrivacyPolicyContent
+                  nigeriaContent={<PrivacyPolicyNigeria />}
+                  ukContent={<PrivacyPolicyUK />}
+                />
+              </div>
+            </div>
           </div>
         </section>
       </main>
