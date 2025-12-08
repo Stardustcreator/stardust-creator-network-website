@@ -33,9 +33,12 @@ export default function PrivacyPolicyPage() {
         }}
       />
       <Header />
-      <main className="min-h-screen bg-black">
+      <main
+        id="main-content"
+        className="min-h-screen bg-black"
+      >
         {/* Title Section */}
-        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 py-8 md:py-12 lg:py-16">
+        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 pt-32 md:pt-40 lg:pt-48 pb-8 md:pb-12 lg:pb-16">
           <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
             <div className="max-w-4xl">
               <Heading

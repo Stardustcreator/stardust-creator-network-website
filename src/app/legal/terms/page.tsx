@@ -6,6 +6,7 @@ import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 import TermsOfServiceContent from '@/components/legal/TermsOfServiceContent';
 import TermsOfServiceNigeria from '@/components/legal/TermsOfServiceNigeria';
 import TermsOfServiceUK from '@/components/legal/TermsOfServiceUK';
+import TermsOfServiceSidebar from '@/components/legal/TermsOfServiceSidebar';
 
 export const metadata: Metadata = generateMetaTags({
   title: 'Terms of Service – Stardust Creator Network',
@@ -32,35 +33,54 @@ export default function TermsOfServicePage() {
         }}
       />
       <Header />
-      <main className="min-h-screen bg-black">
-        {/* Header Message Section */}
-        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <Heading
-              level={1}
-              variant="gradient"
-              className="text-center mb-6 animate-[fadeInUp_0.8s_ease-out]"
-            >
-              Terms of Service – Your Rights and Responsibilities on Stardust Creator Network
-            </Heading>
-            <Text
-              variant="body"
-              color="white"
-              className="text-center text-white/80 max-w-2xl mx-auto leading-relaxed"
-            >
-              Understand the rules, rights, and responsibilities that govern your use of our
-              platform. These terms ensure a safe and collaborative environment for all users.
-            </Text>
+      <main
+        id="main-content"
+        className="min-h-screen bg-black"
+      >
+        {/* Title Section */}
+        <section className="bg-gradient-to-br from-purple-900/20 via-black to-black border-b border-white/10 pt-32 md:pt-40 lg:pt-48 pb-8 md:pb-12 lg:pb-16">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+            <div className="max-w-4xl">
+              <Heading
+                level={1}
+                variant="gradient"
+                className="mb-3 md:mb-4 text-3xl sm:text-4xl md:text-5xl leading-tight"
+              >
+                Terms of{' '}
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Service
+                </span>
+              </Heading>
+              <Text
+                variant="body"
+                color="white"
+                className="text-white/80 text-base sm:text-lg leading-relaxed"
+              >
+                Thanks for using Stardust Creator Network! These Terms of Service outline the rules
+                and guidelines for using our platform. By using Stardust Creator Network, you agree
+                to these terms.
+              </Text>
+            </div>
           </div>
         </section>
 
-        {/* Terms of Service Content */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <TermsOfServiceContent
-              nigeriaContent={<TermsOfServiceNigeria />}
-              ukContent={<TermsOfServiceUK />}
-            />
+        {/* Terms of Service Content with Sidebar */}
+        <section className="py-8 md:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
+              {/* Left Sidebar Navigation - Hidden on mobile, shown in content area */}
+              <aside className="lg:col-span-1">
+                <TermsOfServiceSidebar />
+              </aside>
+
+              {/* Main Content */}
+              <div className="lg:col-span-3">
+                <TermsOfServiceContent
+                  nigeriaContent={<TermsOfServiceNigeria />}
+                  ukContent={<TermsOfServiceUK />}
+                />
+              </div>
+            </div>
           </div>
         </section>
       </main>
