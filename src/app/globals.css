@@ -447,6 +447,42 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Accessibility: Focus States for Keyboard Navigation */
+/* Ensure all interactive elements have visible focus indicators */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-bright-purple);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline for mouse users, keep for keyboard */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for buttons */
+button:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--color-bright-purple),
+    0 0 0 4px rgba(165, 28, 255, 0.2);
+}
+
+/* Enhanced focus for links */
+a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--color-bright-purple);
+  text-underline-offset: 2px;
+}
+
 /* Collapsible Navigation Enhancements */
 .nav-collapsed {
   transform: translateY(-100%);

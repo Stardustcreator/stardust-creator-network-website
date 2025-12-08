@@ -70,11 +70,13 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               alt={post.author.name}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 64px, 64px"
+              loading="lazy"
             />
           </div>
           <div>
             <p className="text-white font-semibold text-lg">{post.author.name}</p>
-            <p className="text-white/60">{post.author.role}</p>
+            <p className="text-white/80">{post.author.role}</p>
           </div>
         </div>
       </div>
@@ -86,6 +88,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
           alt={post.title}
           fill
           className="object-cover"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 896px"
           priority
         />
       </div>
@@ -110,7 +113,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
           {post.tags.map(tag => (
             <span
               key={tag}
-              className="px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 text-white/70 text-sm rounded-full"
+              className="px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 text-white/80 text-sm rounded-full"
             >
               #{tag.toLowerCase().replace(/\s+/g, '')}
             </span>
@@ -132,7 +135,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">About {post.author.name}</h2>
-              <p className="text-white/70 mb-2">{post.author.role}</p>
+              <p className="text-white/80 mb-2">{post.author.role}</p>
               <p className="text-white/80">{post.author.bio}</p>
             </div>
           </div>

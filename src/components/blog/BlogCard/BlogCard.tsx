@@ -33,6 +33,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 50vw"
+              loading="lazy"
             />
             <div className="absolute top-4 left-4">
               <span className="inline-block px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-full">
@@ -63,6 +65,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   alt={post.author.name}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 480px) 48px, 48px"
+                  loading="lazy"
                 />
               </div>
               <div>
@@ -88,6 +92,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           alt={post.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute top-4 left-4">
@@ -109,7 +115,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           {post.title}
         </h3>
 
-        <p className="text-white/70 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
+        <p className="text-white/80 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
 
         <div className="flex items-center gap-3 pt-4 border-t border-white/10">
           <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/20">
@@ -118,6 +124,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.author.name}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 40px, 40px"
+              loading="lazy"
             />
           </div>
           <div>

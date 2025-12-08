@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 
 export default function Error({
@@ -47,12 +46,14 @@ export default function Error({
           >
             Try Again
           </button>
-          <Link
-            href="/"
+          <button
+            onClick={() => {
+              window.location.href = '/';
+            }}
             className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all duration-300"
           >
             Go Home
-          </Link>
+          </button>
         </div>
         {error.digest && (
           <Text

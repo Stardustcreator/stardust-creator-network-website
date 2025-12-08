@@ -69,7 +69,10 @@ export default function Home() {
       <Header />
 
       {/* Main Content */}
-      <main className="bg-black">
+      <main
+        id="main-content"
+        className="bg-black"
+      >
         {/* Hero Section */}
         <Hero />
 
