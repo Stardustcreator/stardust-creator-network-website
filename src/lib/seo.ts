@@ -7,11 +7,11 @@ export const site = {
   name: 'Stardust Creator Network',
   url:
     process.env.NODE_ENV === 'production'
-      ? 'https://www.stardust-creator-network.com'
+      ? 'https://www.stardustcreatornetwork.com'
       : 'http://localhost:3000',
   defaultDescription:
     'Empowering creators with innovative tools, resources, and community connections to build, grow, and monetize their digital presence.',
-  defaultImage: '/og-default.jpg',
+  defaultImage: '/who we are/creators.webp',
   twitterHandle: '@StardustCreators',
 } as const;
 
@@ -21,14 +21,24 @@ export const site = {
  * @returns Complete URL with protocol and domain
  */
 export function absoluteUrl(path = '') {
-  // Remove leading slash if present to avoid double slashes
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   // Use the specified base URL for Open Graph and structured data
   const baseUrl =
     process.env.NODE_ENV === 'production'
       ? site.url
-      : 'https://stardust-creator-network-webs-git-6c1669-intense-group-projects.vercel.app';
-  return new URL(cleanPath, baseUrl).toString();
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000';
+
+  // Ensure path starts with / for proper URL construction
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Encode the path to handle spaces and special characters
+  const encodedPath = cleanPath
+    .split('/')
+    .map(segment => encodeURIComponent(segment))
+    .join('/');
+
+  return new URL(encodedPath, baseUrl).toString();
 }
 
 /**
@@ -164,6 +174,9 @@ export function generateMetaTags(params: {
     title.includes(`| ${site.name}`) ||
     title.endsWith(`${site.name}`);
 
+  // Ensure image URL is absolute and properly encoded
+  const imageUrl = absoluteUrl(image);
+
   const metaTags = {
     title: titleAlreadyIncludesSiteName ? title : `${title} | ${site.name}`,
     description,
@@ -174,10 +187,10 @@ export function generateMetaTags(params: {
       siteName: site.name,
       images: [
         {
-          url: absoluteUrl(image),
+          url: imageUrl,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: title || site.name,
         },
       ],
       type,
@@ -201,7 +214,7 @@ export function generateMetaTags(params: {
       site: site.twitterHandle,
       title,
       description,
-      images: [absoluteUrl(image)],
+      images: [imageUrl],
       ...(author && {
         creator: `@${author}`,
       }),

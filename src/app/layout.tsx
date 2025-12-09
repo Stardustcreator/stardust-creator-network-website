@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     images: [
       {
-        url: absoluteUrl('/og-default.jpg'),
+        url: absoluteUrl('/who we are/creators.webp'),
         width: 1200,
         height: 630,
         alt: `${site.name} - Empowering Digital Creators`,
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     title: site.name,
     description: site.defaultDescription,
     site: site.twitterHandle,
-    images: [absoluteUrl('/og-default.jpg')],
+    images: [absoluteUrl('/who we are/creators.webp')],
   },
   robots: {
     index: true,

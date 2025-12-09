@@ -21,8 +21,4 @@ export const navigationItems: NavigationItem[] = [
     label: 'Blog',
     href: '/blog',
   },
-  {
-    label: 'Privacy Policy',
-    href: '/legal/privacy',
-  },
 ];
