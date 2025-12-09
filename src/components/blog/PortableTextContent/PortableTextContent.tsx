@@ -17,10 +17,12 @@ const components: PortableTextComponents = {
               alt={value.alt || 'Blog post image'}
               fill
               className="object-cover"
+              sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
+              loading="lazy"
             />
           </div>
           {value.caption && (
-            <figcaption className="text-center text-white/60 text-sm mt-3">
+            <figcaption className="text-center text-white/80 text-sm mt-3">
               {value.caption}
             </figcaption>
           )}

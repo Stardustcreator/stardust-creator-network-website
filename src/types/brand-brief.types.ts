@@ -81,7 +81,7 @@ export const PLATFORMS = [
 ] as const;
 
 // Nigeria-specific budget ranges
-export const NIGERIA_BUDGET_RANGES = ['₦1M–₦5M', '₦5M–₦10M', '₦10M+'] as const;
+export const NIGERIA_BUDGET_RANGES = ['₦2.5M–₦5M', '₦5M–₦10M', '₦10M+'] as const;
 
 // UK-specific budget ranges
 export const UK_BUDGET_RANGES = ['£5k–£10k', '£10k–£50k', '£50k–£100k', '£100k+'] as const;

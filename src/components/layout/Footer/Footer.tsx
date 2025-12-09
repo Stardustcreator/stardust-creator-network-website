@@ -22,11 +22,13 @@ export default function Footer() {
                 width={100}
                 height={40}
                 className="object-contain"
+                sizes="(max-width: 480px) 80px, (max-width: 768px) 90px, 100px"
+                loading="lazy"
               />
             </div>
             <Text
               variant="small"
-              className="text-white opacity-60 mb-6"
+              className="text-white/80 mb-6"
             >
               Building the infrastructure that turns creativity into sustainable business.
             </Text>
@@ -191,7 +193,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/about"
+                  href="/#who-we-are"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   About
@@ -207,18 +209,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/creator-os"
+                  href="/#creator-os"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   CreatorOS
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Contact
                 </Link>
               </li>
             </ul>
@@ -244,7 +238,7 @@ export default function Footer() {
               href="/legal/terms"
               className="text-gray-500 hover:text-purple-400 transition-colors text-sm"
             >
-              Terms
+              Terms of Service
             </Link>
           </div>
         </div>

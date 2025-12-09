@@ -55,7 +55,7 @@ export default function BudgetPaymentPreferenceStep({
       {/* Section Header */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 rounded-full px-3 py-1 mb-4">
-          <span className="text-purple-300 text-sm font-medium">Section 4</span>
+          <span className="text-purple-200 text-sm font-medium">Section 4</span>
         </div>
 
         <Heading
@@ -67,7 +67,7 @@ export default function BudgetPaymentPreferenceStep({
 
         <Text
           variant="large"
-          className="text-white opacity-80"
+          className="text-white/90"
         >
           Let&apos;s align on scale and structure.
         </Text>
@@ -83,9 +83,13 @@ export default function BudgetPaymentPreferenceStep({
           <select
             value={data.estimatedBudget || ''}
             onChange={e => handleInputChange('estimatedBudget', e.target.value)}
+            aria-label="Estimated Campaign Budget"
+            aria-required="true"
+            aria-invalid={!!errors.estimatedBudget}
+            aria-describedby={errors.estimatedBudget ? 'budget-error' : undefined}
             className={`
               w-full bg-white/5 backdrop-blur-md border rounded-lg px-4 py-3 text-white 
-              focus:outline-none focus:ring-2 focus:ring-purple-400/50 transition-all appearance-none
+              focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:ring-offset-2 focus:ring-offset-black transition-all appearance-none
               ${
                 errors.estimatedBudget
                   ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/50'
@@ -110,7 +114,13 @@ export default function BudgetPaymentPreferenceStep({
             ))}
           </select>
           {errors.estimatedBudget && (
-            <p className="text-red-400 text-sm mt-1">{errors.estimatedBudget}</p>
+            <p
+              id="budget-error"
+              className="text-red-400 text-sm mt-1"
+              role="alert"
+            >
+              {errors.estimatedBudget}
+            </p>
           )}
         </div>
 
@@ -138,7 +148,8 @@ export default function BudgetPaymentPreferenceStep({
                   value={model}
                   checked={data.paymentModel === model}
                   onChange={e => handleInputChange('paymentModel', e.target.value)}
-                  className="w-4 h-4 mt-0.5 text-purple-500 focus:ring-purple-400"
+                  aria-label={`Payment model: ${model}`}
+                  className="w-4 h-4 mt-0.5 text-purple-500 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
                 />
                 <div className="flex-1">
                   <span className="text-white text-sm font-medium">{model}</span>
@@ -159,7 +170,7 @@ export default function BudgetPaymentPreferenceStep({
           <div className="mb-3">
             <Text
               variant="small"
-              className="text-gray-400"
+              className="text-gray-300"
             >
               Would you consider a monthly retainer for continuous creator partnerships?
             </Text>
@@ -183,7 +194,8 @@ export default function BudgetPaymentPreferenceStep({
                   value={option}
                   checked={data.ongoingCollaboration === option}
                   onChange={e => handleInputChange('ongoingCollaboration', e.target.value)}
-                  className="w-4 h-4 mt-0.5 text-purple-500 focus:ring-purple-400"
+                  aria-label={`Ongoing collaboration: ${option}`}
+                  className="w-4 h-4 mt-0.5 text-purple-500 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
                 />
                 <div className="flex-1">
                   <span className="text-white text-sm font-medium">{option}</span>
@@ -200,7 +212,10 @@ export default function BudgetPaymentPreferenceStep({
       {/* Info Box */}
       <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
         <div className="flex items-start space-x-3">
-          <div className="w-5 h-5 bg-blue-500/20 rounded-full flex-shrink-0 mt-0.5">
+          <div
+            className="w-5 h-5 bg-blue-500/20 rounded-full flex-shrink-0 mt-0.5"
+            aria-hidden="true"
+          >
             <div className="w-2 h-2 bg-blue-400 rounded-full mx-auto mt-1.5"></div>
           </div>
           <div>
@@ -212,7 +227,7 @@ export default function BudgetPaymentPreferenceStep({
             </Text>
             <Text
               variant="small"
-              className="text-blue-300/80"
+              className="text-blue-200"
             >
               Your budget information helps us match you with creators whose rates align with your
               investment level, ensuring better campaign outcomes for everyone.

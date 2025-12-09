@@ -8,6 +8,43 @@ interface TopNavigationProps {
   className?: string;
 }
 
+// Stable className constants to prevent hydration mismatches
+// Using template literals to ensure exact string matching
+const linkClassName = [
+  'text-white/90',
+  'hover:text-white',
+  'hover:bg-white/10',
+  'hover:backdrop-blur-sm',
+  'hover:border',
+  'hover:border-white/20',
+  'font-medium',
+  'transition-all',
+  'duration-300',
+  'py-2',
+  'px-4',
+  'rounded-full',
+  'whitespace-nowrap',
+  'focus-visible:outline-2',
+  'focus-visible:outline-purple-400',
+  'focus-visible:outline-offset-2',
+].join(' ');
+
+const dropdownLinkClassName = [
+  'block',
+  'px-4',
+  'py-2',
+  'text-white/90',
+  'hover:text-white',
+  'hover:bg-white/20',
+  'transition-all',
+  'duration-200',
+  'rounded-lg',
+  'mx-2',
+  'focus-visible:outline-2',
+  'focus-visible:outline-purple-400',
+  'focus-visible:outline-offset-2',
+].join(' ');
+
 export function TopNavigation({ className = '' }: TopNavigationProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
@@ -24,7 +61,7 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
                 onMouseEnter={() => setActiveDropdown(item.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button className="flex items-center gap-1 text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap">
+                <button className="flex items-center gap-1 text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2">
                   {item.label}
                   <svg
                     className="w-4 h-4 transition-transform group-hover:rotate-180"
@@ -54,7 +91,8 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
                       <Link
                         key={child.label}
                         href={child.href}
-                        className="block px-4 py-2 text-white/90 hover:text-white hover:bg-white/20 transition-all duration-200 rounded-lg mx-2"
+                        className={dropdownLinkClassName}
+                        suppressHydrationWarning
                       >
                         {child.label}
                       </Link>
@@ -65,7 +103,8 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
             ) : (
               <Link
                 href={item.href}
-                className="text-white/90 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20 font-medium transition-all duration-300 py-2 px-4 rounded-full whitespace-nowrap"
+                className={linkClassName}
+                suppressHydrationWarning
               >
                 {item.label}
               </Link>

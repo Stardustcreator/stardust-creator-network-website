@@ -45,7 +45,10 @@ export function CountryProvider({ children }: CountryProviderProps) {
 
   // Update country when pathname changes
   useEffect(() => {
-    if (!pathname || typeof window === 'undefined' || !isMounted) return;
+    if (!isMounted || typeof window === 'undefined') return;
+
+    // Safely check pathname - it might be undefined during router initialization
+    if (!pathname) return;
 
     const countryFromPath = getCountryFromPath(pathname);
     if (countryFromPath && countryFromPath !== country) {

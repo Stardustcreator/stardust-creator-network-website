@@ -19,7 +19,7 @@ export default function CTASection() {
               <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
               <Text
                 variant="small"
-                className="text-white opacity-75"
+                className="text-white/90"
                 weight={600}
                 as="span"
               >
@@ -55,7 +55,7 @@ export default function CTASection() {
               </Text>
               <Text
                 variant="body"
-                className="text-white opacity-75"
+                className="text-white/90"
               >
                 Get updates on new features, creator spotlights, and industry insights.
               </Text>
@@ -70,7 +70,7 @@ export default function CTASection() {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-purple-400/50"
               >
                 Subscribe
               </button>
@@ -78,7 +78,7 @@ export default function CTASection() {
 
             <Text
               variant="caption"
-              className="text-white text-center mt-4 opacity-60"
+              className="text-white/80 text-center mt-4"
             >
               No spam, unsubscribe at any time.
             </Text>
