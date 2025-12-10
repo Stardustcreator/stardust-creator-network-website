@@ -66,14 +66,3 @@ export default function ConversionTracker({
   // This component doesn't render anything
   return null;
 }
-
-// Extend the Window interface for TypeScript
-declare global {
-  interface Window {
-    posthog?: {
-      capture: (event: string, properties: Record<string, AnalyticsValue>) => void;
-    };
-    gtag?: (command: string, event: string, properties: Record<string, AnalyticsValue>) => void;
-    fbq?: (command: string, event: string, properties: Record<string, AnalyticsValue>) => void;
-  }
-}

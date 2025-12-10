@@ -192,5 +192,9 @@ declare global {
       parameters?: Record<string, AnalyticsValue>
     ) => void;
     dataLayer?: Array<Record<string, AnalyticsValue>>;
+    posthog?: {
+      capture: (event: string, properties: Record<string, AnalyticsValue>) => void;
+    };
+    fbq?: (command: string, event: string, properties?: Record<string, AnalyticsValue>) => void;
   }
 }
