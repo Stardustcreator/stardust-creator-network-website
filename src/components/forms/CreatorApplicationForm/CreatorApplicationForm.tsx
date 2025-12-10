@@ -10,6 +10,7 @@ import type {
   MonetizationExperience,
 } from '@/types/creator-application.types';
 import { createCompleteFormSchema } from '@/lib/validations/creator-application.validations';
+import { trackFormSubmit } from '@/lib/analytics/eventTracking.utils';
 
 // Step components
 import WelcomeStep from './steps/WelcomeStep';
@@ -477,6 +478,12 @@ export default function CreatorApplicationForm({ country }: CreatorApplicationFo
       }
 
       if (result.success) {
+        // Track form submission event
+        trackFormSubmit('creator_application_form', 'creator_signup', {
+          country,
+          form_id: result.id || 'unknown',
+        });
+
         // Redirect to country-specific confirmation page for better tracking
         const confirmationUrl =
           country === 'Nigeria'

@@ -5,6 +5,7 @@ import { Heading } from '@/components/typography/Heading';
 import { Text } from '@/components/typography/Text';
 import type { Country } from '@/types/brand-brief.types';
 import CreatorSurvey from '@/components/forms/CreatorSurvey/CreatorSurvey';
+import { trackBookCampaignClick, trackOutboundClick } from '@/lib/analytics/eventTracking.utils';
 
 interface ThankYouStepProps {
   country: Country;
@@ -96,6 +97,13 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
             href="https://growthauthority.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() =>
+              trackOutboundClick(
+                'https://growthauthority.co.uk/',
+                'Join Growth Authority Waitlist',
+                { location: 'brand_brief_thank_you' }
+              )
+            }
             className="group inline-flex items-center justify-center px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105"
           >
             Join Growth Authority Waitlist
@@ -103,6 +111,10 @@ export default function ThankYouStep({ country }: ThankYouStepProps) {
 
           <a
             href="#"
+            onClick={e => {
+              e.preventDefault();
+              trackBookCampaignClick('brand_brief_thank_you');
+            }}
             className="group inline-flex items-center justify-center px-6 py-3 border border-purple-400/50 text-purple-300 font-semibold rounded-lg hover:bg-purple-500/10 transition-all duration-300"
           >
             Book a Brand Strategy Call

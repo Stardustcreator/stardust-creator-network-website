@@ -5,6 +5,7 @@ import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
+import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
 import './globals.css';
 
 const lato = Lato({
@@ -171,6 +172,8 @@ fbq('track', 'PageView');`,
         </noscript>
         {/* Google Analytics - Loads after page is interactive */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
+        {/* Outbound Link Tracking - Tracks external link clicks */}
+        <OutboundLinkTracker />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
         {/* Vercel Analytics - Lazy loaded, non-essential */}

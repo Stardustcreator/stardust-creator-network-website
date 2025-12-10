@@ -10,6 +10,7 @@ import type {
   BudgetPaymentPreference,
 } from '@/types/brand-brief.types';
 import { createCompleteBrandBriefFormSchema } from '@/lib/validations/brand-brief.validations';
+import { trackFormSubmit } from '@/lib/analytics/eventTracking.utils';
 
 // Step components
 import WelcomeStep from './steps/WelcomeStep';
@@ -434,6 +435,12 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
       }
 
       if (result.success) {
+        // Track form submission event
+        trackFormSubmit('brand_brief_form', 'brand_brief', {
+          country,
+          form_id: result.id || 'unknown',
+        });
+
         // Redirect to country-specific confirmation page for better tracking
         const confirmationUrl =
           country === 'Nigeria'
