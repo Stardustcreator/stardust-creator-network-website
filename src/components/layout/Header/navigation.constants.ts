@@ -18,6 +18,10 @@ export const navigationItems: NavigationItem[] = [
     href: '/#creator-os',
   },
   {
+    label: 'Case Studies',
+    href: '/case-studies',
+  },
+  {
     label: 'Blog',
     href: '/blog',
   },
