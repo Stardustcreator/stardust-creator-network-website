@@ -97,9 +97,75 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
               variant="small"
               className="text-white/80 font-semibold mb-3 uppercase tracking-wider"
             >
-              Monthly Interactions Results
+              {caseStudy.metrics.views ? 'Interactive result' : 'Monthly Interactions Results'}
             </Text>
             <div className="grid grid-cols-2 gap-3">
+              {/* New metrics format (Views, Likes, Comments, Saves) */}
+              {caseStudy.metrics.views && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1"
+                  >
+                    Views
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold"
+                  >
+                    {caseStudy.metrics.views}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.likes && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1"
+                  >
+                    Likes
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold"
+                  >
+                    {caseStudy.metrics.likes}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.comments && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1"
+                  >
+                    Comments
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold"
+                  >
+                    {caseStudy.metrics.comments}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.saves && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1"
+                  >
+                    Saves
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold"
+                  >
+                    {caseStudy.metrics.saves}
+                  </Text>
+                </div>
+              )}
+              {/* Legacy metrics format */}
               {caseStudy.metrics.totalImpression && (
                 <div>
                   <Text

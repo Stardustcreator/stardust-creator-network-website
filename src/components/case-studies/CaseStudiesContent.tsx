@@ -15,35 +15,35 @@ import { caseStudies } from '@/lib/data/case-studies.data';
  * - Expandable detail modal
  */
 
-// Array of all influencer images for the header grid
+// Array of all influencer images for the header grid (27 images total)
 const headerImages = [
-  '/case-studies/Influencer 1.webp',
-  '/case-studies/Influencer 2webp.webp',
   '/case-studies/Influencer 3.webp',
-  '/case-studies/Influencer 4.webp',
-  '/case-studies/Chef Lizz.webp',
-  '/case-studies/Influencer 6.webp',
   '/case-studies/Influencer 7.webp',
-  '/case-studies/Influencer 8.webp',
-  '/case-studies/d360 Cuisine.webp',
-  '/case-studies/Influencer 10.webp',
   '/case-studies/Influencer 11.webp',
   '/case-studies/Influencer 12.webp',
   '/case-studies/Influencer 13.webp',
-  '/case-studies/omoye Cooks.webp',
-  '/case-studies/Influencer 15.webp',
-  '/case-studies/T-Spices.webp',
   '/case-studies/Influencer 17.webp',
-  '/case-studies/Joy Etor.webp',
   '/case-studies/Influencer 19.webp',
   '/case-studies/Influencer 20.webp',
-  '/case-studies/Riaz Kitchen.webp',
-  '/case-studies/Influencer 22.webp',
   '/case-studies/Influencer 23.webp',
-  '/case-studies/SB-Treats.webp',
   '/case-studies/Influencer 25.webp',
   '/case-studies/Influencer 26.webp',
-  '/case-studies/Influencer 27.webp',
+  '/case-studies/Chef Lizz.webp',
+  '/case-studies/d360 Cuisine.webp',
+  '/case-studies/omoye Cooks.webp',
+  '/case-studies/T-Spices.webp',
+  '/case-studies/Joy Etor.webp',
+  '/case-studies/Riaz Kitchen.webp',
+  '/case-studies/SB-Treats.webp',
+  '/case-studies/Aramide\u2019s Kitchen.webp',
+  '/case-studies/Asy Munchies.webp',
+  "/case-studies/Cara's Kitchen.webp",
+  '/case-studies/Chef AHR.webp',
+  '/case-studies/Fabulous Nosh Kitchen.webp',
+  '/case-studies/Favimore Kitchen.webp',
+  '/case-studies/Foodies Delecty.webp',
+  '/case-studies/Ifeth Delight.webp',
+  "/case-studies/Omoye's Cooks.webp",
 ];
 
 export default function CaseStudiesContent() {
@@ -76,7 +76,9 @@ export default function CaseStudiesContent() {
                 sizes="(max-width: 640px) 33.33vw, (max-width: 768px) 16.66vw, 11.11vw"
                 className="object-cover w-full h-full"
                 priority={index < 9}
-                unoptimized={imagePath.includes(' ')}
+                unoptimized={
+                  imagePath.includes(' ') || imagePath.includes('\u2019') || imagePath.includes("'")
+                }
               />
             </div>
           ))}
