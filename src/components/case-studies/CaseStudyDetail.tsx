@@ -238,8 +238,8 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         {/* Gradient overlay for text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                         {/* Name at bottom center */}
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                          <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                          <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                             {imageName}
                           </p>
                         </div>
@@ -253,10 +253,10 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             {/* Campaign Influencers - Only show for relaunch campaign */}
             {!isAlwaysOnCaseStudy && !isLeadwayCaseStudy && (
               <section className="space-y-6 pt-4 border-t border-white/10">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
                   Campaign Influencers
                 </h3>
-                <div className="grid grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                   {/* First Row */}
                   {/* Omoye Cooks */}
                   <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
@@ -264,15 +264,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/omoye Cooks.webp"
                       alt="Omoye Cooks"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Omoye Cooks
                       </p>
                     </div>
@@ -284,15 +284,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/d360 Cuisine.webp"
                       alt="D360 Cuisine"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         D360 Cuisine
                       </p>
                     </div>
@@ -304,15 +304,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Chef Lizz.webp"
                       alt="Chef Lizz"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Chef Lizz
                       </p>
                     </div>
@@ -324,15 +324,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/T-Spices.webp"
                       alt="T-Spices"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         T-Spices
                       </p>
                     </div>
@@ -345,15 +345,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Joy Etor.webp"
                       alt="Joy Etor"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Joy Etor
                       </p>
                     </div>
@@ -365,15 +365,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Riaz Kitchen.webp"
                       alt="Riaz Kitchen"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Riaz Kitchen
                       </p>
                     </div>
@@ -385,15 +385,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/SB-Treats.webp"
                       alt="SB-Treats"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         SB-Treats
                       </p>
                     </div>
@@ -405,15 +405,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Tife Paraeo.webp"
                       alt="Tife Paraeo"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Tife Paraeo
                       </p>
                     </div>
@@ -426,15 +426,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Asy Munchies.webp"
                       alt="Asy Munchies"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Asy Munchies
                       </p>
                     </div>
@@ -446,15 +446,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Cara's Kitchen.webp"
                       alt="Cara's Kitchen"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Cara&apos;s Kitchen
                       </p>
                     </div>
@@ -466,15 +466,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Matse.webp"
                       alt="Matse"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Matse
                       </p>
                     </div>
@@ -486,15 +486,15 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       src="/case-studies/Your Food Girl.webp"
                       alt="Your Food Girl"
                       fill
-                      sizes="(max-width: 640px) 25vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                       unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                     {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                      <p className="text-white text-sm md:text-base font-semibold drop-shadow-lg">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
                         Your Food Girl
                       </p>
                     </div>
@@ -721,8 +721,8 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 </h3>
 
                 {/* Image Section - Under heading */}
-                <div className="mb-8">
-                  <div className="relative w-full h-[500px] md:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
+                <div className="mb-6 sm:mb-8">
+                  <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
                     <Image
                       src="/case-studies/Influncer t.webp"
                       alt="Omoba"
