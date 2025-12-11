@@ -97,7 +97,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
               variant="small"
               className="text-white/80 font-semibold mb-3 uppercase tracking-wider"
             >
-              Interactive result
+              Monthly Interactions Results
             </Text>
             <div className="grid grid-cols-2 gap-3">
               {caseStudy.metrics.totalImpression && (

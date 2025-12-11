@@ -29,5 +29,21 @@ export const caseStudies: CaseStudy[] = [
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
     // content will be added later
   },
+  {
+    id: 'honeywell-always-on-influencer-marketing',
+    title: 'HONEYWELL ALWAYS ON INFLUENCER MARKETING ENGAGEMENT',
+    images: [], // No product images
+    logo: '/case-studies/logo honeywell.webp',
+    excerpt:
+      'An always-on influencer marketing strategy that drives consistent engagement and brand awareness through strategic creator partnerships.',
+    client: 'Honeywell',
+    industry: 'Technology',
+    metrics: {
+      totalImpression: '6.4m',
+      reach: '4.65m',
+      engagementRate: '3.69%',
+    },
+    tags: ['Technology', 'Always-On', 'Influencer Marketing'],
+  },
   // Add more case studies here as needed
 ];
