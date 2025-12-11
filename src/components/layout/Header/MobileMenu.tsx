@@ -2,27 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-
-interface NavigationItem {
-  label: string;
-  href: string;
-  children?: NavigationItem[];
-}
-
-const navigationItems: NavigationItem[] = [
-  {
-    label: 'Who We Are',
-    href: '/#who-we-are',
-  },
-  {
-    label: 'Stardust Creator Community',
-    href: '/#stardust-creator-community',
-  },
-  {
-    label: 'CreatorOS',
-    href: '/#creator-os',
-  },
-];
+import { navigationItems } from './navigation.constants';
 
 interface MobileMenuProps {
   isOpen: boolean;

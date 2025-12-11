@@ -1,7 +1,47 @@
+'use client';
+
+import { FormEvent, useState } from 'react';
 import { Text } from '@/components/typography';
 import { SectionHeader } from '@/components/shared';
+import { trackFormSubmit } from '@/lib/analytics/eventTracking.utils';
 
 export default function CTASection() {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Track newsletter signup event
+      trackFormSubmit('newsletter_signup', 'newsletter', {
+        email,
+        location: 'cta_section',
+      });
+
+      // Here you would typically send the email to your newsletter service
+      // For now, we'll just track the event
+      console.log('Newsletter signup:', email);
+
+      // Reset form
+      setEmail('');
+
+      // Show success message (optional)
+      alert('Thank you for subscribing!');
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section className="py-32 bg-gradient-to-b from-black via-purple-950/20 to-black relative overflow-hidden">
       {/* Background Elements */}
@@ -61,18 +101,25 @@ export default function CTASection() {
               </Text>
             </div>
 
-            <form className="flex flex-col sm:flex-row gap-4">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-4"
+            >
               <input
                 type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 transition-all"
                 required
+                disabled={isSubmitting}
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-purple-400/50"
+                disabled={isSubmitting}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-purple-400/50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Subscribe
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
 
