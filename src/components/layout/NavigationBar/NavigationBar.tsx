@@ -56,7 +56,7 @@ export default function NavigationBar({
         <div className="flex items-center justify-center px-6 py-4">
           {/* Single Glassmorphic Container for Everything */}
           <div
-            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border border-white/20 rounded-full px-8 py-4 shadow-lg shadow-black/25 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
+            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border border-white/20 rounded-full px-6 py-4 shadow-lg shadow-black/25 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
               isScrolled
                 ? 'bg-white/15 shadow-xl shadow-black/40'
                 : 'bg-white/10 shadow-lg shadow-black/25'
@@ -65,7 +65,7 @@ export default function NavigationBar({
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center text-white hover:opacity-80 transition-opacity"
+              className="flex items-center text-white hover:opacity-80 transition-opacity flex-shrink-0"
             >
               <Image
                 src={logoSrc}
@@ -78,12 +78,12 @@ export default function NavigationBar({
             </Link>
 
             {/* Navigation Pills */}
-            <div className="flex items-center justify-center flex-1 mx-8">
+            <div className="flex items-center justify-center flex-1 mx-2 min-w-0 overflow-visible">
               <TopNavigation />
             </div>
 
             {/* Country Selector */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <CountrySelector variant="desktop" />
             </div>
           </div>

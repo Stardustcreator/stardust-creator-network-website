@@ -50,7 +50,7 @@ export function TopNavigation({ className = '' }: TopNavigationProps) {
 
   return (
     <nav className={`flex items-center ${className}`}>
-      <ul className="flex items-center gap-2">
+      <ul className="flex items-center gap-1.5 flex-wrap">
         {navigationItems.map(item => (
           <li
             key={item.label}
