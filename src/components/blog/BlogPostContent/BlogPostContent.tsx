@@ -73,14 +73,6 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
                 className="object-cover"
                 sizes="(max-width: 480px) 64px, 64px"
                 loading="lazy"
-                onError={e => {
-                  // Fallback to a placeholder if image fails to load
-                  const target = e.target as HTMLImageElement;
-                  target.src =
-                    'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64"%3E%3Crect fill="%239C27B0" width="64" height="64"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="24" font-weight="bold"%3E' +
-                    (post.author.name.charAt(0).toUpperCase() || 'A') +
-                    '%3C/text%3E%3C/svg%3E';
-                }}
               />
             </div>
           )}
@@ -142,14 +134,6 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
                   alt={post.author.name}
                   fill
                   className="object-cover"
-                  onError={e => {
-                    // Fallback to a placeholder if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    target.src =
-                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80"%3E%3Crect fill="%239C27B0" width="80" height="80"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="32" font-weight="bold"%3E' +
-                      (post.author.name.charAt(0).toUpperCase() || 'A') +
-                      '%3C/text%3E%3C/svg%3E';
-                  }}
                 />
               </div>
             )}
