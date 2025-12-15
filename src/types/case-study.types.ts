@@ -7,6 +7,10 @@ export interface CaseStudyMetrics {
   reach?: string;
   totalEngagement?: string;
   engagementRate?: string;
+  views?: string;
+  likes?: string;
+  comments?: string;
+  saves?: string;
 }
 
 export interface CaseStudy {

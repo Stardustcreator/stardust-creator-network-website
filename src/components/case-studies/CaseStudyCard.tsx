@@ -95,22 +95,88 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
           <div className="mb-4">
             <Text
               variant="small"
-              className="text-white/80 font-semibold mb-3 uppercase tracking-wider"
+              className="text-white/80 font-semibold mb-3 uppercase tracking-wider text-xs sm:text-sm"
             >
-              Interactive result
+              {caseStudy.metrics.views ? 'Interactive result' : 'Monthly Interactions Results'}
             </Text>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              {/* New metrics format (Views, Likes, Comments, Saves) */}
+              {caseStudy.metrics.views && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Views
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.views}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.likes && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Likes
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.likes}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.comments && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Comments
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.comments}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.saves && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Saves
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.saves}
+                  </Text>
+                </div>
+              )}
+              {/* Legacy metrics format */}
               {caseStudy.metrics.totalImpression && (
                 <div>
                   <Text
                     variant="small"
-                    className="text-white/60 mb-1"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
                   >
                     Total Impression
                   </Text>
                   <Text
                     variant="body"
-                    className="text-white font-semibold"
+                    className="text-white font-semibold text-sm sm:text-base"
                   >
                     {caseStudy.metrics.totalImpression}
                   </Text>
@@ -120,13 +186,13 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                 <div>
                   <Text
                     variant="small"
-                    className="text-white/60 mb-1"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
                   >
                     Reach
                   </Text>
                   <Text
                     variant="body"
-                    className="text-white font-semibold"
+                    className="text-white font-semibold text-sm sm:text-base"
                   >
                     {caseStudy.metrics.reach}
                   </Text>
@@ -136,13 +202,13 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                 <div>
                   <Text
                     variant="small"
-                    className="text-white/60 mb-1"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
                   >
                     Total Engagement
                   </Text>
                   <Text
                     variant="body"
-                    className="text-white font-semibold"
+                    className="text-white font-semibold text-sm sm:text-base"
                   >
                     {caseStudy.metrics.totalEngagement}
                   </Text>
@@ -152,13 +218,13 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                 <div>
                   <Text
                     variant="small"
-                    className="text-white/60 mb-1"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
                   >
                     Engagement Rate
                   </Text>
                   <Text
                     variant="body"
-                    className="text-white font-semibold"
+                    className="text-white font-semibold text-sm sm:text-base"
                   >
                     {caseStudy.metrics.engagementRate}
                   </Text>
@@ -186,7 +252,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
         <div>
           <Link
             href={`/case-studies/${caseStudy.id}`}
-            className="block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 text-center"
+            className="block w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 text-center text-sm sm:text-base"
           >
             View Case Study
           </Link>

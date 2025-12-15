@@ -10,6 +10,7 @@ import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollab
 import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
 import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
 import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
+import CaseStudiesSection from '@/components/sections/CaseStudies/CaseStudiesSection';
 import CTASection from '@/components/sections/CTA/CTASection';
 
 // Page-specific SEO metadata
@@ -90,6 +91,9 @@ export default function Home() {
 
         {/* Credibility & Vision Statement */}
         <StatisticsDashboardSection />
+
+        {/* Case Studies Section */}
+        <CaseStudiesSection />
 
         {/* Trusted by Leading Brands */}
         <PlatformLogosSection />

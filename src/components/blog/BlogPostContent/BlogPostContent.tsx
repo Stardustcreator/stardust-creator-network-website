@@ -64,16 +64,18 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
 
         {/* Author Info */}
         <div className="flex items-center gap-4 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
-          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
-            <Image
-              src={post.author.avatar}
-              alt={post.author.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 480px) 64px, 64px"
-              loading="lazy"
-            />
-          </div>
+          {post.author.avatar && (
+            <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+              <Image
+                src={post.author.avatar}
+                alt={post.author.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 480px) 64px, 64px"
+                loading="lazy"
+              />
+            </div>
+          )}
           <div>
             <p className="text-white font-semibold text-lg">{post.author.name}</p>
             <p className="text-white/80">{post.author.role}</p>
@@ -125,14 +127,16 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
       {post.author.bio && (
         <div className="p-8 bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-sm border border-white/10 rounded-3xl">
           <div className="flex items-start gap-6">
-            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
-              <Image
-                src={post.author.avatar}
-                alt={post.author.name}
-                fill
-                className="object-cover"
-              />
-            </div>
+            {post.author.avatar && (
+              <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+                <Image
+                  src={post.author.avatar}
+                  alt={post.author.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">About {post.author.name}</h2>
               <p className="text-white/80 mb-2">{post.author.role}</p>

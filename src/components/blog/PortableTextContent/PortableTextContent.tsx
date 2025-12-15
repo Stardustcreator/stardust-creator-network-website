@@ -8,26 +8,34 @@ const components: PortableTextComponents = {
   types: {
     image: ({ value }) => {
       if (!value?.asset) return null;
-      const imageUrl = urlFor(value).width(800).height(450).url();
-      return (
-        <figure className="my-8">
-          <div className="relative w-full h-[450px] rounded-2xl overflow-hidden">
-            <Image
-              src={imageUrl || ''}
-              alt={value.alt || 'Blog post image'}
-              fill
-              className="object-cover"
-              sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
-              loading="lazy"
-            />
-          </div>
-          {value.caption && (
-            <figcaption className="text-center text-white/80 text-sm mt-3">
-              {value.caption}
-            </figcaption>
-          )}
-        </figure>
-      );
+
+      try {
+        const imageUrl = urlFor(value).width(800).height(450).url();
+        if (!imageUrl) return null;
+
+        return (
+          <figure className="my-8">
+            <div className="relative w-full h-[450px] rounded-2xl overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt={value.alt || 'Blog post image'}
+                fill
+                className="object-cover"
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
+                loading="lazy"
+              />
+            </div>
+            {value.caption && (
+              <figcaption className="text-center text-white/80 text-sm mt-3">
+                {value.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      } catch (error) {
+        console.warn('Failed to resolve image URL in PortableText:', error);
+        return null;
+      }
     },
   },
   block: {

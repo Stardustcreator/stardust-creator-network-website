@@ -84,14 +84,44 @@ const POST_SLUGS_QUERY = `*[_type == "post"] {
 
 function transformSanityImageUrl(image: unknown): string {
   if (!image) return '';
-  return urlFor(image).width(1200).height(630).url() || '';
+
+  // Check if image has an asset reference
+  if (typeof image === 'object' && image !== null) {
+    const img = image as { asset?: { _ref?: string; _type?: string } };
+    if (!img.asset || !img.asset._ref) {
+      return '';
+    }
+  }
+
+  try {
+    const url = urlFor(image).width(1200).height(630).url();
+    return url || '';
+  } catch (error) {
+    console.warn('Failed to resolve image URL:', error);
+    return '';
+  }
 }
 
 function transformSanityAuthor(author: SanityBlogPost['author']): BlogAuthor {
+  // Use a default placeholder avatar if author avatar is missing or invalid
+  let avatarUrl = '';
+
+  // Check if avatar exists and has an asset before trying to transform
+  if (author.avatar && typeof author.avatar === 'object' && 'asset' in author.avatar) {
+    avatarUrl = transformSanityImageUrl(author.avatar);
+  }
+
+  // Generate a data URI placeholder with the author's initial if no avatar
+  const defaultAvatar =
+    avatarUrl ||
+    `data:image/svg+xml,${encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect fill="#9C27B0" width="64" height="64"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="24" font-weight="bold">${(author.name?.charAt(0) || 'A').toUpperCase()}</text></svg>`
+    )}`;
+
   return {
     name: author.name,
-    role: author.role,
-    avatar: transformSanityImageUrl(author.avatar),
+    role: author.role || 'Author',
+    avatar: avatarUrl || defaultAvatar,
     bio: author.bio,
   };
 }
