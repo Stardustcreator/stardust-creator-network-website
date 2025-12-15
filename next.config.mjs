@@ -63,6 +63,18 @@ const nextConfig = {
   // Redirects for SEO (add your legacy URLs here)
   async redirects() {
     return [
+      // Redirect non-www to www for canonical URLs
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'stardustcreatornetwork.com',
+          },
+        ],
+        destination: 'https://www.stardustcreatornetwork.com/:path*',
+        permanent: true,
+      },
       // Example redirect from old URL structure
       // {
       //   source: '/old-path/:slug',
