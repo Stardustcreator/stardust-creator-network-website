@@ -34,6 +34,7 @@ export interface SanityBlogPost extends SanityDocument {
   readTime: number;
   featured?: boolean;
   publishedAt: string;
+  _updatedAt?: string;
 }
 
 const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
@@ -54,7 +55,8 @@ const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
   keywords,
   readTime,
   featured,
-  publishedAt
+  publishedAt,
+  _updatedAt
 }`;
 
 const POST_BY_SLUG_QUERY = `*[_type == "post" && slug.current == $slug][0] {
@@ -75,7 +77,8 @@ const POST_BY_SLUG_QUERY = `*[_type == "post" && slug.current == $slug][0] {
   keywords,
   readTime,
   featured,
-  publishedAt
+  publishedAt,
+  _updatedAt
 }`;
 
 const POST_SLUGS_QUERY = `*[_type == "post"] {
@@ -135,6 +138,7 @@ function transformSanityPost(post: SanityBlogPost): BlogPost & { body: PortableT
     body: post.body, // Raw body for PortableText
     author: transformSanityAuthor(post.author),
     publishedAt: post.publishedAt,
+    updatedAt: post._updatedAt,
     readTime: post.readTime,
     category: post.category as BlogCategory,
     tags: post.tags || [],
@@ -145,8 +149,34 @@ function transformSanityPost(post: SanityBlogPost): BlogPost & { body: PortableT
 }
 
 export async function getAllPosts(options = { next: { revalidate: 30 } }) {
-  const posts = (await client.fetch(POSTS_QUERY, {}, options)) as SanityBlogPost[];
-  return posts.map(transformSanityPost);
+  try {
+    const posts = (await client.fetch(POSTS_QUERY, {}, options)) as SanityBlogPost[];
+    console.log(`Fetched ${posts.length} posts from Sanity`);
+
+    if (posts.length === 0) {
+      console.warn('No blog posts found in Sanity CMS. Make sure you have published posts.');
+      return [];
+    }
+
+    // Transform posts and filter out any that fail transformation
+    const transformedPosts = posts
+      .map(post => {
+        try {
+          return transformSanityPost(post);
+        } catch (error) {
+          console.error(`Error transforming post "${post.title || post._id}":`, error);
+          return null;
+        }
+      })
+      .filter((post): post is BlogPost & { body: PortableTextBlock[] } => post !== null);
+
+    console.log(`Successfully transformed ${transformedPosts.length} of ${posts.length} posts`);
+
+    return transformedPosts;
+  } catch (error) {
+    console.error('Error fetching blog posts from Sanity:', error);
+    throw error;
+  }
 }
 
 export async function getPostBySlug(slug: string, options = { next: { revalidate: 30 } }) {

@@ -43,7 +43,17 @@ function calculateCategories(posts: Array<{ category: string }>) {
 }
 
 export default async function BlogPage() {
-  const posts = await getAllPosts();
+  let posts = [];
+  let error = null;
+
+  try {
+    posts = await getAllPosts();
+    console.log('Blog posts fetched:', posts.length);
+  } catch (err) {
+    console.error('Error fetching blog posts:', err);
+    error = err instanceof Error ? err.message : 'Failed to fetch blog posts';
+  }
+
   const categories = calculateCategories(posts);
 
   const breadcrumbData = generateStructuredData.breadcrumb([
@@ -64,10 +74,22 @@ export default async function BlogPage() {
       <Header />
       <main className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black pt-24 pb-20">
         <BlogHeader />
-        <BlogGrid
-          posts={posts}
-          categories={categories}
-        />
+        {error ? (
+          <div className="max-w-7xl mx-auto px-6 py-20">
+            <div className="text-center p-8 bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-2xl">
+              <p className="text-red-400 text-lg mb-2">Error loading blog posts</p>
+              <p className="text-white/60 text-sm">{error}</p>
+              <p className="text-white/40 text-xs mt-4">
+                Please check your Sanity CMS configuration and ensure posts exist.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <BlogGrid
+            posts={posts}
+            categories={categories}
+          />
+        )}
       </main>
       <Footer />
     </>
