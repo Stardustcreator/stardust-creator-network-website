@@ -15,6 +15,13 @@ module.exports = {
     '/500',
     '/_*',
     '/og/*', // Exclude OG image generation routes
+    '/*.png', // Exclude image files
+    '/*.jpg',
+    '/*.jpeg',
+    '/*.webp',
+    '/*.svg',
+    '/*.gif',
+    '/*.ico',
   ],
 
   // Transform function to customize URLs in sitemap
