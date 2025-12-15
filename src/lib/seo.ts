@@ -121,6 +121,90 @@ export const generateStructuredData = {
   }),
 
   /**
+   * BlogPosting schema for blog posts (Google Rich Results compliant)
+   * Follows Schema.org BlogPosting specification and Google's guidelines
+   * Automatically works for all blog posts - handles missing optional fields gracefully
+   */
+  blogPosting: (params: {
+    title: string;
+    description: string;
+    author: string;
+    publishedTime: string;
+    modifiedTime?: string;
+    url: string;
+    imageUrl?: string;
+    tags?: string[];
+  }) => {
+    // Validate required fields
+    if (
+      !params.title ||
+      !params.description ||
+      !params.author ||
+      !params.publishedTime ||
+      !params.url
+    ) {
+      console.warn('BlogPosting schema: Missing required fields', {
+        hasTitle: !!params.title,
+        hasDescription: !!params.description,
+        hasAuthor: !!params.author,
+        hasPublishedTime: !!params.publishedTime,
+        hasUrl: !!params.url,
+      });
+    }
+
+    // Ensure canonical URL is absolute
+    const canonicalUrl = params.url.startsWith('http') ? params.url : absoluteUrl(params.url);
+
+    // Ensure image URL is absolute if provided and not empty
+    const imageUrl = params.imageUrl?.trim()
+      ? params.imageUrl.startsWith('http')
+        ? params.imageUrl
+        : absoluteUrl(params.imageUrl)
+      : undefined;
+
+    // Use publishedTime as fallback for modifiedTime if not provided
+    const modifiedTime = params.modifiedTime || params.publishedTime;
+
+    // Filter out empty tags and ensure they're strings
+    const validTags =
+      params.tags?.filter(tag => tag && typeof tag === 'string' && tag.trim().length > 0) || [];
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: params.title.trim(),
+      description: params.description.trim(),
+      author: {
+        '@type': 'Person',
+        name: params.author.trim(),
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: site.name,
+        logo: {
+          '@type': 'ImageObject',
+          url: absoluteUrl('/logos/scn logo black.png'),
+        },
+      },
+      datePublished: params.publishedTime,
+      dateModified: modifiedTime,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalUrl,
+      },
+      ...(imageUrl && {
+        image: {
+          '@type': 'ImageObject',
+          url: imageUrl,
+        },
+      }),
+      ...(validTags.length > 0 && {
+        keywords: validTags.join(', '),
+      }),
+    };
+  },
+
+  /**
    * BreadcrumbList schema for navigation
    */
   breadcrumb: (items: Array<{ name: string; url: string }>) => {

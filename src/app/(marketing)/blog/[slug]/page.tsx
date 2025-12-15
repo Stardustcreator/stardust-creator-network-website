@@ -80,24 +80,44 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const structuredData = generateStructuredData.article({
-    title: post.title,
-    description: post.excerpt,
-    author: post.author.name,
-    publishedTime: post.publishedAt,
-    url: `/blog/${post.slug}`,
-    imageUrl: post.featuredImage,
-    tags: [...post.tags, ...(post.keywords || [])],
-  });
+  // Generate BlogPosting structured data for SEO
+  // This automatically works for all blog posts - no manual configuration needed
+  let structuredData;
+  try {
+    // Ensure description is never empty (required by Schema.org)
+    const description =
+      post.excerpt?.trim() || post.title || 'Blog post from Stardust Creator Network';
+
+    // Ensure we have a valid author name
+    const authorName = post.author?.name?.trim() || 'Stardust Creator Network Team';
+
+    structuredData = generateStructuredData.blogPosting({
+      title: post.title,
+      description,
+      author: authorName,
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt || post.publishedAt, // Use updatedAt if available, otherwise fallback to publishedAt
+      url: `/blog/${post.slug}`,
+      imageUrl: post.featuredImage || undefined, // Only include if image exists
+      tags: [...(post.tags || []), ...(post.keywords || [])].filter(Boolean), // Filter out empty tags
+    });
+  } catch (error) {
+    console.error('Error generating BlogPosting structured data:', error);
+    // Page will still render even if structured data fails
+    structuredData = null;
+  }
 
   return (
     <>
-      {/* Article Structured Data - Deferred, non-blocking */}
-      <script
-        type="application/ld+json"
-        defer
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      {/* BlogPosting Structured Data (JSON-LD) - Google Rich Results compliant */}
+      {/* Automatically generated for every blog post - no manual setup required */}
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          defer
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
       <Header />
       <main className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black pt-32 pb-20">
         <BlogPostContent post={post} />
