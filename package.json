@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -25,7 +25,7 @@
     "check:unused-imports": "unimport --check",
     "analyze:unused": "node scripts/analyze-unused.js",
     "optimize": "npm run check:unused-deps && npm run build",
-    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build",
+    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && NODE_OPTIONS=--max-old-space-size=4096 npm run build",
     "studio:deploy": "dotenv -e .env.local -- sanity deploy"
   },
   "dependencies": {

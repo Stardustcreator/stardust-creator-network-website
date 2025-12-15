@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
+import type { PortableTextBlock } from '@portabletext/types';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import BlogHeader from '@/components/blog/BlogHeader';
 import BlogGrid from '@/components/blog/BlogGrid';
 import { getAllPosts } from '@/lib/services/sanity-blog.service';
-import { BlogCategory } from '@/types/blog.types';
+import type { BlogPost, BlogCategory } from '@/types/blog.types';
 
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
@@ -43,8 +44,8 @@ function calculateCategories(posts: Array<{ category: string }>) {
 }
 
 export default async function BlogPage() {
-  let posts = [];
-  let error = null;
+  let posts: (BlogPost & { body: PortableTextBlock[] })[] = [];
+  let error: string | null = null;
 
   try {
     posts = await getAllPosts();
