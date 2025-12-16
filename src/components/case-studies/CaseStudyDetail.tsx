@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Heading } from '@/components/typography';
 import { caseStudies } from '@/lib/data/case-studies.data';
 
@@ -809,6 +810,52 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 </div>
               </section>
             )}
+
+            {/* CTA Section - Brand Brief Conversion */}
+            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+              <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
+                <Heading
+                  level={2}
+                  className="text-white text-2xl md:text-3xl mb-4"
+                >
+                  Ready to Create Similar Results?
+                </Heading>
+                <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
+                  Let&apos;s discuss your campaign goals and connect you with the right creators to
+                  bring your vision to life.
+                </p>
+                <Link
+                  href="/brands/brief"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                >
+                  Start Your Campaign
+                </Link>
+              </div>
+            </section>
+
+            {/* Related Content Section */}
+            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+              <Heading
+                level={3}
+                className="text-white text-xl md:text-2xl mb-6"
+              >
+                Explore More
+              </Heading>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/case-studies"
+                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                >
+                  View All Case Studies
+                </Link>
+                <Link
+                  href="/blog"
+                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                >
+                  Read Our Blog
+                </Link>
+              </div>
+            </section>
           </div>
         </div>
       </section>

@@ -73,12 +73,18 @@ export default function ConnectCollaborateCreateSection() {
                   >
                     For Brands
                   </Heading>
-                  <Text
-                    variant="body"
-                    className="text-white text-lg opacity-95 max-w-md"
-                  >
-                    Tell us your goals — we&apos;ll curate creators who bring your vision to life.
-                  </Text>
+                  <div className="text-white text-lg opacity-95 max-w-md">
+                    <p>
+                      Tell us your goals — we&apos;ll curate creators who bring your vision to life.{' '}
+                      <Link
+                        href="/case-studies"
+                        className="text-purple-300 hover:text-purple-200 underline transition-colors"
+                      >
+                        See our success stories
+                      </Link>
+                      .
+                    </p>
+                  </div>
                 </div>
                 <Link
                   href="/brands"

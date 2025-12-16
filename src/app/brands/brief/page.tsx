@@ -90,10 +90,26 @@ export default function BrandBriefPage() {
 
               <Text
                 variant="large"
-                className="text-white opacity-80"
+                className="text-white opacity-80 mb-4"
               >
                 Select your location to connect with verified creators in your market
               </Text>
+
+              {/* Case Studies Link */}
+              <div className="mt-6">
+                <Text
+                  variant="body"
+                  className="text-white/70"
+                >
+                  See how we&apos;ve helped brands succeed.{' '}
+                  <Link
+                    href="/case-studies"
+                    className="text-purple-300 hover:text-purple-200 underline transition-colors"
+                  >
+                    View our case studies
+                  </Link>
+                </Text>
+              </div>
             </div>
 
             {/* Location Selection */}

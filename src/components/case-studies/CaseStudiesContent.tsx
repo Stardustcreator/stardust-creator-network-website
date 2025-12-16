@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 import CaseStudyCard from '@/components/case-studies/CaseStudyCard';
 import { caseStudies } from '@/lib/data/case-studies.data';
@@ -135,6 +136,34 @@ export default function CaseStudiesContent() {
               >
                 No case studies available yet. Check back soon!
               </Text>
+            </div>
+          )}
+
+          {/* CTA Section - Brand Brief Conversion */}
+          {studies.length > 0 && (
+            <div className="mt-16 md:mt-20">
+              <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto">
+                <Heading
+                  level={2}
+                  variant="gradient"
+                  className="text-2xl md:text-3xl mb-4"
+                >
+                  Ready to Work With Us?
+                </Heading>
+                <Text
+                  variant="large"
+                  className="text-white/80 mb-6 max-w-2xl mx-auto"
+                >
+                  See how we&apos;ve helped brands succeed. Let&apos;s create your own success
+                  story.
+                </Text>
+                <Link
+                  href="/brands/brief"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                >
+                  Start Your Campaign
+                </Link>
+              </div>
             </div>
           )}
         </div>
