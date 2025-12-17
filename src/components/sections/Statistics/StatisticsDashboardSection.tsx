@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 const WORDS = [
   { text: 'Backed', isHighlight: false },
@@ -98,7 +99,10 @@ export default function StatisticsDashboardSection() {
           </h2>
 
           {/* Main Content */}
-          <div className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed" role="doc-subtitle">
+          <div
+            className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
+            role="doc-subtitle"
+          >
             {WORDS.map((word, index) => (
               <span
                 key={index}
@@ -135,6 +139,34 @@ export default function StatisticsDashboardSection() {
             `}
           >
             <div className="w-24 h-1 bg-linear-to-r from-purple-500 to-pink-500 rounded-full"></div>
+          </div>
+
+          {/* Learn More Link */}
+          <div
+            className={`
+              mt-8 transition-all duration-1000 delay-500
+              ${visibleWords >= WORDS.length ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'}
+            `}
+          >
+            <Link
+              href="/case-studies"
+              className="inline-flex items-center gap-2 text-purple-300 hover:text-purple-200 transition-colors text-lg"
+            >
+              Learn more about our work
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </Link>
           </div>
         </div>
       </div>

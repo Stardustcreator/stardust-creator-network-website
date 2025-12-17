@@ -146,6 +146,28 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
         </div>
       )}
 
+      {/* Related Resources Section */}
+      <div className="mt-12 p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl">
+        <h2 className="text-2xl font-bold text-white mb-4">Related Resources</h2>
+        <p className="text-white/80 mb-6">
+          Explore how we&apos;ve helped brands succeed with authentic creator partnerships.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link
+            href="/case-studies"
+            className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-white/10 text-white rounded-xl hover:bg-gradient-to-r hover:from-purple-500/30 hover:to-pink-500/30 hover:border-white/20 transition-all text-center"
+          >
+            View Case Studies
+          </Link>
+          <Link
+            href="/blog"
+            className="flex-1 px-6 py-4 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+          >
+            Read More Articles
+          </Link>
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="mt-16 p-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl text-center">
         <h2 className="text-2xl font-bold text-white mb-4">Ready to Join the Creator Economy?</h2>
