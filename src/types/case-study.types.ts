@@ -11,6 +11,10 @@ export interface CaseStudyMetrics {
   likes?: string;
   comments?: string;
   saves?: string;
+  // Campaign metrics (for performance-focused campaigns)
+  impressionShare?: string;
+  costPerAcquisition?: string;
+  returnOnAdSpend?: string;
 }
 
 export interface CaseStudy {

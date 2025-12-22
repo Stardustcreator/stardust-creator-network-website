@@ -28,7 +28,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
   return (
     <div
       ref={elementRef}
-      className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden transition-all duration-500 ease-out ${
+      className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden transition-all duration-500 ease-out flex flex-col h-full ${
         isIntersecting ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
       }`}
       style={{
@@ -45,7 +45,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
       />
 
       {/* Card Content */}
-      <div className="relative z-20 p-6 md:p-8">
+      <div className="relative z-20 p-6 md:p-8 flex flex-col flex-grow">
         {/* Case Study Tag */}
         <div className="mb-4">
           <span className="inline-block px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white/90 text-xs font-semibold uppercase tracking-wider">
@@ -57,7 +57,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
         <div className="mb-6">
           {/* Title - White text */}
           <div className="mb-4">
-            <h3 className="text-white text-xl md:text-2xl lg:text-3xl leading-tight font-bold line-clamp-2">
+            <h3 className="text-white text-xl md:text-2xl lg:text-3xl leading-tight font-bold line-clamp-2 whitespace-pre-line">
               {caseStudy.title}
             </h3>
           </div>
@@ -97,7 +97,11 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
               variant="small"
               className="text-white/80 font-semibold mb-3 uppercase tracking-wider text-xs sm:text-sm"
             >
-              {caseStudy.metrics.views ? 'Interactive result' : 'Monthly Interactions Results'}
+              {caseStudy.metrics.impressionShare
+                ? 'Campaign Metrics'
+                : caseStudy.metrics.views
+                  ? 'Interactive result'
+                  : 'Monthly Interactions Results'}
             </Text>
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {/* New metrics format (Views, Likes, Comments, Saves) */}
@@ -230,6 +234,55 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                   </Text>
                 </div>
               )}
+              {/* Campaign metrics format (Impression Share, CPA, ROAS) */}
+              {caseStudy.metrics.impressionShare && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Impression Share
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.impressionShare}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.costPerAcquisition && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Cost Per Acquisition
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.costPerAcquisition}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.returnOnAdSpend && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    ROAS
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.returnOnAdSpend}
+                  </Text>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -248,8 +301,8 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
           </div>
         )}
 
-        {/* View Case Study Button */}
-        <div>
+        {/* View Case Study Button - Pushed to bottom */}
+        <div className="mt-auto pt-4">
           <Link
             href={`/case-studies/${caseStudy.id}`}
             className="block w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 text-center text-sm sm:text-base"

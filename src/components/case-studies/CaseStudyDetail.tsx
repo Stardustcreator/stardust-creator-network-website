@@ -3,6 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Heading } from '@/components/typography';
 import { caseStudies } from '@/lib/data/case-studies.data';
+import YouTubeEmbed from '@/components/shared/YouTubeEmbed';
+import TwitterEmbed from '@/components/shared/TwitterEmbed';
+import InstagramEmbed from '@/components/shared/InstagramEmbed';
 
 interface CaseStudyDetailProps {
   slug: string;
@@ -18,11 +21,17 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
   // Check if this is the always-on case study (no images required)
   const isAlwaysOnCaseStudy = caseStudy.id === 'honeywell-always-on-influencer-marketing';
   const isLeadwayCaseStudy = caseStudy.id === 'leadway-travel-insurance-campaign';
+  const isNoLoseGuardCaseStudy = caseStudy.id === 'leadway-no-lose-guard-campaign';
+  const isAxaAutoflexCaseStudy = caseStudy.id === 'axa-mansard-autoflex-campaign';
+  const isCleamaxCaseStudy = caseStudy.id === 'cleamax-campaign';
 
   // Ensure we have required data (only check images for case studies that require them)
   if (
     !isAlwaysOnCaseStudy &&
     !isLeadwayCaseStudy &&
+    !isNoLoseGuardCaseStudy &&
+    !isAxaAutoflexCaseStudy &&
+    !isCleamaxCaseStudy &&
     (!caseStudy.images || caseStudy.images.length === 0)
   ) {
     return (
@@ -55,7 +64,329 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="max-w-4xl mx-auto space-y-8 md:space-y-12">
             {/* Campaign Overview - Standard layout */}
-            {isLeadwayCaseStudy ? (
+            {isNoLoseGuardCaseStudy ? (
+              <>
+                {/* The Problem Section */}
+                <section className="mt-8 space-y-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    The Problem
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    In a world where people act as though they have everything figured out, people
+                    believe they can manage uncertainties when they arise. However, in reality, they
+                    rarely have concrete plans in place and often rely on their friends and family
+                    to get through challenging times. Leadway recognized this problem and chose to
+                    solve it.
+                  </p>
+                </section>
+
+                {/* Our Solution Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Our Solution
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    We developed a 360 marketing campaign with the creative idea &apos;No
+                    Looseguard&apos; letting the audience know that life can come at them at anytime
+                    and should prepare ahead instead of waiting for these unfortunate events to
+                    strike causing them financial losses.
+                  </p>
+
+                  {/* YouTube Videos */}
+                  <div className="space-y-6 mt-8">
+                    <YouTubeEmbed
+                      videoId="https://www.youtube.com/watch?v=fr9yh0vtZ2Q"
+                      title="No Looseguard Campaign Video 1"
+                      className="w-full"
+                    />
+                    <YouTubeEmbed
+                      videoId="https://youtu.be/0pO31atWgYw?si=t1f7w_SldG45O0GC"
+                      title="No Looseguard Campaign Video 2"
+                      className="w-full"
+                    />
+                  </div>
+                </section>
+
+                {/* The Results Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-4 border-t border-white/10">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    The Results
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    The &apos;No Looseguard&apos; campaign has successfully ignited a vital
+                    conversation about preparedness in the face of life&apos;s uncertainties. With
+                    millions of impressions and widespread online discussion, the campaign is
+                    clearly resonating with audiences and effectively raising awareness about the
+                    importance of planning ahead with Leadway.
+                  </p>
+
+                  {/* Campaign Metrics */}
+                  {caseStudy.metrics && (
+                    <div className="mt-8 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {caseStudy.metrics.impressionShare && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.impressionShare}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Impression Share
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.costPerAcquisition && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.costPerAcquisition}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Cost Per Acquisition
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.returnOnAdSpend && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.returnOnAdSpend}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">ROAS</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </>
+            ) : isAxaAutoflexCaseStudy ? (
+              <>
+                {/* Campaign Overview Section */}
+                <section className="mt-8 space-y-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Campaign Overview
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg mb-6">
+                    AXA Mansard is a one-stop, non-banking financial services platform for health,
+                    life, motor, travel, health insurance and investment.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg mb-6">
+                    The client reached out to us to help promote a variation of its comprehensive
+                    motor insurance aimed at providing flexibility to vehicle owners who are price
+                    sensitive but still need to have comprehensive insurance.
+                  </p>
+
+                  {/* The Goal */}
+                  <div className="mt-6">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                      The Goal was to:
+                    </h3>
+                    <ul className="space-y-3 text-white/80 leading-relaxed text-base md:text-lg">
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">•</span>
+                        <span>Increase Website Traffic</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">•</span>
+                        <span>Generate Leads</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">•</span>
+                        <span>Increase Social Media Engagement</span>
+                      </li>
+                    </ul>
+                  </div>
+                </section>
+
+                {/* Our Strategy Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Our Strategy
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    We developed{' '}
+                    <span className="text-purple-400 font-semibold">#ChooseWhatMatters</span> as the
+                    theme for our awareness and lead generation campaign for AutoFlex. The reason
+                    behind the theme was to portray AutoFlex for what it was, which is a flexible
+                    auto insurance plan that allows vehicle owners to select only the insurance
+                    coverages and benefits that are important to them along with the mandatory
+                    third-party coverage.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    We knew we were also targeting a young demographic who are digital natives and
+                    price sensitive, so our strategy was to reach, engage and convert them through:
+                  </p>
+                  <ul className="space-y-3 text-white/80 leading-relaxed text-base md:text-lg mt-4">
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-3 mt-1">•</span>
+                      <span>
+                        <strong className="text-white">Gamification:</strong> Owambe Driver
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-3 mt-1">•</span>
+                      <span>
+                        <strong className="text-white">Authentic Engaging Content:</strong> Autoflex
+                        Video Skit
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-3 mt-1">•</span>
+                      <span>
+                        <strong className="text-white">Banner and Motion Graphic Ads</strong>
+                      </span>
+                    </li>
+                  </ul>
+                </section>
+
+                {/* Influencer Marketing Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6 border-t border-white/10">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Influencer Marketing
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    To help increase awareness and better educate the audience, a video skit was
+                    developed to pass the message in an authentic, fun and relatable way to increase
+                    chances of generating leads.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    <strong className="text-white">Timini Egbuson</strong> was the influencer
+                    engaged to star in the video. The video discussed the essence of the product and
+                    showed a quick demo of how users can purchase an AutoFlex plan.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    This video was deployed across Facebook and Instagram to generate leads. On
+                    Twitter, the video was used to direct traffic to the website.
+                  </p>
+
+                  {/* Twitter Video Embed */}
+                  <div className="mt-8">
+                    <TwitterEmbed
+                      tweetUrl="https://x.com/AXAMansard/status/1358775318430027777?s=20"
+                      className="w-full"
+                    />
+                  </div>
+                </section>
+
+                {/* Campaign Metrics Section */}
+                {caseStudy.metrics && (
+                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-4 border-t border-white/10">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                      Campaign Results
+                    </h2>
+                    <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {caseStudy.metrics.impressionShare && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.impressionShare}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Impression Share
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.costPerAcquisition && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.costPerAcquisition}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Cost Per Acquisition
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.returnOnAdSpend && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.returnOnAdSpend}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">ROAS</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+              </>
+            ) : isCleamaxCaseStudy ? (
+              <>
+                {/* Campaign Overview Section */}
+                <section className="mt-8 space-y-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Campaign Overview
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Cleamax Industries Limited is a manufacturer of great quality, high performing
+                    cleaning products, including the Cleanmax moisturizing anti-bacterial handwash,
+                    dishwash liquid, scouring powder and anti-bacterial no-rinse cleaner.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    The brief was for Intense to grow product awareness, customer base, and drive
+                    sales.
+                  </p>
+                </section>
+
+                {/* Our Approach Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6 border-t border-white/10">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Our Approach
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    To achieve the set objectives, we employed a number of tactics which included a
+                    TVC, digital Ads and Influencer marketing all in a bid to drive awareness and
+                    conversions.
+                  </p>
+
+                  {/* Instagram Embed */}
+                  <div className="mt-8">
+                    <InstagramEmbed
+                      postUrl="https://www.instagram.com/p/B39vNXXFViR/"
+                      className="w-full"
+                    />
+                  </div>
+                </section>
+
+                {/* Campaign Metrics Section */}
+                {caseStudy.metrics && (
+                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-4 border-t border-white/10">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                      Campaign Results
+                    </h2>
+                    <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {caseStudy.metrics.impressionShare && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.impressionShare}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Impression Share
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.costPerAcquisition && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.costPerAcquisition}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">
+                              Cost Per Acquisition
+                            </div>
+                          </div>
+                        )}
+                        {caseStudy.metrics.returnOnAdSpend && (
+                          <div className="text-center md:text-left">
+                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                              {caseStudy.metrics.returnOnAdSpend}
+                            </div>
+                            <div className="text-white/70 text-sm md:text-base">ROAS</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+              </>
+            ) : isLeadwayCaseStudy ? (
               <section className="mt-8 space-y-4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
                   Campaign Overview
@@ -96,111 +427,117 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             )}
 
             {/* Strategy & Execution - Grid Layout for Leadway, Standard for others */}
-            {isLeadwayCaseStudy ? (
-              <section className="pt-8 md:pt-12 mt-8 md:mt-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                  {/* Content - Left Side */}
-                  <div className="space-y-3 order-2 lg:order-1 lg:pt-8 md:pt-6">
-                    <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3 md:mb-4">
-                      Strategy & Execution
-                    </h2>
-                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                      Layi Wasabi&apos;s comedy-education blend made complex topics digestible for
-                      millennials/Gen Z. His consistent 2.7%+ engagement rates were ideal for
-                      explaining insurance benefits. We deployed his signature comedic storytelling
-                      across Instagram and TikTok to maximize reach and platform-specific
-                      engagement.
-                    </p>
-                  </div>
-
-                  {/* Image - Right Side */}
-                  {caseStudy.images && caseStudy.images.length > 0 && (
-                    <div className="order-1 lg:order-2">
-                      <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
-                        <Image
-                          src={caseStudy.images[0]}
-                          alt={caseStudy.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                          className="object-cover"
-                          quality={95}
-                          priority
-                          unoptimized={caseStudy.images[0].includes(' ')}
-                        />
-                        {/* Subtle gradient overlay for depth */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
+              <>
+                {isLeadwayCaseStudy ? (
+                  <section className="pt-8 md:pt-12 mt-8 md:mt-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                      {/* Content - Left Side */}
+                      <div className="space-y-3 order-2 lg:order-1 lg:pt-8 md:pt-6">
+                        <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3 md:mb-4">
+                          Strategy & Execution
+                        </h2>
+                        <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                          Layi Wasabi&apos;s comedy-education blend made complex topics digestible
+                          for millennials/Gen Z. His consistent 2.7%+ engagement rates were ideal
+                          for explaining insurance benefits. We deployed his signature comedic
+                          storytelling across Instagram and TikTok to maximize reach and
+                          platform-specific engagement.
+                        </p>
                       </div>
+
+                      {/* Image - Right Side */}
+                      {caseStudy.images && caseStudy.images.length > 0 && (
+                        <div className="order-1 lg:order-2">
+                          <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
+                            <Image
+                              src={caseStudy.images[0]}
+                              alt={caseStudy.title}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 50vw"
+                              className="object-cover"
+                              quality={95}
+                              priority
+                              unoptimized={caseStudy.images[0].includes(' ')}
+                            />
+                            {/* Subtle gradient overlay for depth */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </section>
-            ) : (
-              <section className="space-y-4">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
-                  Strategy & Execution
-                </h3>
-                {isAlwaysOnCaseStudy ? (
-                  <div className="space-y-4 text-white/80 leading-relaxed text-base md:text-lg">
-                    <p>
-                      We implemented a strategic monthly influencer engagement program across
-                      Honeywell&apos;s diverse product range. This always-on approach enabled food
-                      content creators to develop compelling recipes and content that naturally
-                      highlighted each product&apos;s unique selling propositions.
-                    </p>
-                    <p>
-                      The long-term monthly engagement model was specifically designed to foster
-                      deeper relationships with our influencer network, positioning them as
-                      authentic brand ambassadors and creating ongoing value beyond individual
-                      campaign activations.
-                    </p>
-                  </div>
+                  </section>
                 ) : (
-                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                    The team created and executed a full blown marketing campaign to announce the
-                    relaunch, it featured a full content strategy, launch event, digital,
-                    experiential and influencer marketing. selected food and lifestyle creators
-                    received a box from Honeywell branded &quot;You&apos;ve Been Served&quot;.
-                  </p>
+                  <section className="space-y-4">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                      Strategy & Execution
+                    </h3>
+                    {isAlwaysOnCaseStudy ? (
+                      <div className="space-y-4 text-white/80 leading-relaxed text-base md:text-lg">
+                        <p>
+                          We implemented a strategic monthly influencer engagement program across
+                          Honeywell&apos;s diverse product range. This always-on approach enabled
+                          food content creators to develop compelling recipes and content that
+                          naturally highlighted each product&apos;s unique selling propositions.
+                        </p>
+                        <p>
+                          The long-term monthly engagement model was specifically designed to foster
+                          deeper relationships with our influencer network, positioning them as
+                          authentic brand ambassadors and creating ongoing value beyond individual
+                          campaign activations.
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                        The team created and executed a full blown marketing campaign to announce
+                        the relaunch, it featured a full content strategy, launch event, digital,
+                        experiential and influencer marketing. selected food and lifestyle creators
+                        received a box from Honeywell branded &quot;You&apos;ve Been Served&quot;.
+                      </p>
+                    )}
+                  </section>
                 )}
-              </section>
+              </>
             )}
 
-            {/* Services Provided */}
-            <section className="space-y-4">
-              <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
-                Services Provided
-              </h3>
-              <ul className="space-y-2 text-white/80">
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Influencers sourcing and engagement</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Content strategy management</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Creative direction</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Timeline management</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Legal and usage rights management</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Payment management</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-purple-400 mr-2">•</span>
-                  <span>Campaign tracking and reporting</span>
-                </li>
-              </ul>
-            </section>
+            {/* Services Provided - Skip for No Lose Guard and AXA Autoflex campaigns */}
+            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
+              <section className="space-y-4">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                  Services Provided
+                </h3>
+                <ul className="space-y-2 text-white/80">
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Influencers sourcing and engagement</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Content strategy management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Creative direction</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Timeline management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Legal and usage rights management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Payment management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-400 mr-2">•</span>
+                    <span>Campaign tracking and reporting</span>
+                  </li>
+                </ul>
+              </section>
+            )}
 
             {/* Campaign Influencers - Show for both campaigns */}
             {isAlwaysOnCaseStudy && caseStudy.images && caseStudy.images.length > 0 && (
@@ -252,320 +589,327 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             )}
 
             {/* Campaign Influencers - Only show for relaunch campaign */}
-            {!isAlwaysOnCaseStudy && !isLeadwayCaseStudy && (
-              <section className="space-y-6 pt-4 border-t border-white/10">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
-                  Campaign Influencers
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-                  {/* First Row */}
-                  {/* Omoye Cooks */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/omoye Cooks.webp"
-                      alt="Omoye Cooks"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Omoye Cooks
-                      </p>
+            {!isAlwaysOnCaseStudy &&
+              !isLeadwayCaseStudy &&
+              !isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy && (
+                <section className="space-y-6 pt-4 border-t border-white/10">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
+                    Campaign Influencers
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+                    {/* First Row */}
+                    {/* Omoye Cooks */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/omoye Cooks.webp"
+                        alt="Omoye Cooks"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Omoye Cooks
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* D360 Cuisine */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/d360 Cuisine.webp"
-                      alt="D360 Cuisine"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        D360 Cuisine
-                      </p>
+                    {/* D360 Cuisine */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/d360 Cuisine.webp"
+                        alt="D360 Cuisine"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          D360 Cuisine
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Chef Lizz */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Chef Lizz.webp"
-                      alt="Chef Lizz"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Chef Lizz
-                      </p>
+                    {/* Chef Lizz */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Chef Lizz.webp"
+                        alt="Chef Lizz"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Chef Lizz
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* T-Spices */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/T-Spices.webp"
-                      alt="T-Spices"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        T-Spices
-                      </p>
+                    {/* T-Spices */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/T-Spices.webp"
+                        alt="T-Spices"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          T-Spices
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Second Row */}
-                  {/* Joy Etor */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Joy Etor.webp"
-                      alt="Joy Etor"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Joy Etor
-                      </p>
+                    {/* Second Row */}
+                    {/* Joy Etor */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Joy Etor.webp"
+                        alt="Joy Etor"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Joy Etor
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Riaz Kitchen */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Riaz Kitchen.webp"
-                      alt="Riaz Kitchen"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Riaz Kitchen
-                      </p>
+                    {/* Riaz Kitchen */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Riaz Kitchen.webp"
+                        alt="Riaz Kitchen"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Riaz Kitchen
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* SB-Treats */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/SB-Treats.webp"
-                      alt="SB-Treats"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        SB-Treats
-                      </p>
+                    {/* SB-Treats */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/SB-Treats.webp"
+                        alt="SB-Treats"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          SB-Treats
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Tife Paraeo */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Tife Paraeo.webp"
-                      alt="Tife Paraeo"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Tife Paraeo
-                      </p>
+                    {/* Tife Paraeo */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Tife Paraeo.webp"
+                        alt="Tife Paraeo"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Tife Paraeo
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Third Row */}
-                  {/* Asy Munchies */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Asy Munchies.webp"
-                      alt="Asy Munchies"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Asy Munchies
-                      </p>
+                    {/* Third Row */}
+                    {/* Asy Munchies */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Asy Munchies.webp"
+                        alt="Asy Munchies"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Asy Munchies
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Cara's Kitchen */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Cara's Kitchen.webp"
-                      alt="Cara's Kitchen"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Cara&apos;s Kitchen
-                      </p>
+                    {/* Cara's Kitchen */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Cara's Kitchen.webp"
+                        alt="Cara's Kitchen"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Cara&apos;s Kitchen
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Matse */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Matse.webp"
-                      alt="Matse"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Matse
-                      </p>
+                    {/* Matse */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Matse.webp"
+                        alt="Matse"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Matse
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Your Food Girl */}
-                  <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
-                    <Image
-                      src="/case-studies/Your Food Girl.webp"
-                      alt="Your Food Girl"
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                      unoptimized
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                    {/* Name at bottom center */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
-                      <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
-                        Your Food Girl
-                      </p>
+                    {/* Your Food Girl */}
+                    <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
+                      <Image
+                        src="/case-studies/Your Food Girl.webp"
+                        alt="Your Food Girl"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        unoptimized
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      {/* Name at bottom center */}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                        <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                          Your Food Girl
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </section>
-            )}
+                </section>
+              )}
 
             {/* Platforms & Location - Only show for non-Leadway case studies */}
-            {!isLeadwayCaseStudy && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {/* Platforms */}
-                <section className="space-y-4">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Platforms</h3>
-                  <div className="flex items-center gap-4">
-                    {/* Instagram Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="Instagram"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+            {!isLeadwayCaseStudy &&
+              !isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  {/* Platforms */}
+                  <section className="space-y-4">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Platforms</h3>
+                    <div className="flex items-center gap-4">
+                      {/* Instagram Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="Instagram"
                       >
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                      </svg>
-                    </a>
-                    {/* TikTok Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="TikTok"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                      </a>
+                      {/* TikTok Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="TikTok"
                       >
-                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-                      </svg>
-                    </a>
-                    {/* YouTube Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="YouTube"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                        </svg>
+                      </a>
+                      {/* YouTube Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="YouTube"
                       >
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                      </svg>
-                    </a>
-                  </div>
-                </section>
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                      </a>
+                    </div>
+                  </section>
 
-                {/* Location */}
-                <section className="space-y-4">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Location</h3>
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">🇳🇬</span>
-                    <p className="text-white/80 text-base md:text-lg">Nigeria</p>
-                  </div>
-                </section>
-              </div>
-            )}
+                  {/* Location */}
+                  <section className="space-y-4">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Location</h3>
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">🇳🇬</span>
+                      <p className="text-white/80 text-base md:text-lg">Nigeria</p>
+                    </div>
+                  </section>
+                </div>
+              )}
 
             {/* Results - For Leadway case study */}
             {isLeadwayCaseStudy && (
@@ -610,30 +954,32 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
               </section>
             )}
 
-            {/* Impact */}
-            <section className="space-y-4 pt-4 border-t border-white/10">
-              <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
-              <div className="space-y-3">
-                {isAlwaysOnCaseStudy ? (
-                  <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                    Over 6M organic views Monthly
-                  </p>
-                ) : isLeadwayCaseStudy ? (
-                  <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                    450+ policy inquiries within 48 hours
-                  </p>
-                ) : (
-                  <>
+            {/* Impact - Skip for No Lose Guard and AXA Autoflex campaigns (have Results section instead) */}
+            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
+              <section className="space-y-4 pt-4 border-t border-white/10">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
+                <div className="space-y-3">
+                  {isAlwaysOnCaseStudy ? (
                     <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                      Over 1M organic views without paid boost, sparking nationwide conversations.
+                      Over 6M organic views Monthly
                     </p>
-                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                      Exceptional value for mass education
+                  ) : isLeadwayCaseStudy ? (
+                    <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                      450+ policy inquiries within 48 hours
                     </p>
-                  </>
-                )}
-              </div>
-            </section>
+                  ) : (
+                    <>
+                      <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                        Over 1M organic views without paid boost, sparking nationwide conversations.
+                      </p>
+                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                        Exceptional value for mass education
+                      </p>
+                    </>
+                  )}
+                </div>
+              </section>
+            )}
 
             {/* Honeywell Relaunch Sustenance X Folagade Banks - Only for relaunch campaign */}
             {caseStudy.id === 'honeywell-relaunch-campaign' && (
@@ -837,7 +1183,8 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
               <Heading
                 level={3}
-                className="text-white text-xl md:text-2xl mb-6"
+                variant="default"
+                className="!text-white text-xl md:text-2xl mb-6"
               >
                 Explore More
               </Heading>
