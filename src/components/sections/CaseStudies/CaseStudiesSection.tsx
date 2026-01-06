@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
 import { encodeImagePath } from '@/lib/utils';
+import { caseStudies } from '@/lib/data/case-studies.data';
 
 /**
  * Case Studies Section Component
@@ -15,6 +16,7 @@ import { encodeImagePath } from '@/lib/utils';
 export default function CaseStudiesSection() {
   const imagePath = '/case-studies/case-study image.webp';
   const encodedImagePath = encodeImagePath(imagePath);
+  const totalCaseStudies = caseStudies.length;
 
   const bulletPoints = [
     'Strategic creator selection and authentic brand partnerships',
@@ -27,7 +29,7 @@ export default function CaseStudiesSection() {
     { value: '76m+', label: 'Total Impressions' },
     { value: '30m+', label: 'Total Reach' },
     { value: '5m+', label: 'Total Engagement' },
-    { value: '3', label: 'Case Studies' },
+    { value: totalCaseStudies.toString(), label: 'Case Studies' },
   ];
 
   return (
