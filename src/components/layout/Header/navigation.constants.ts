@@ -28,6 +28,10 @@ export const navigationItems: NavigationItem[] = [
     href: '/case-studies',
   },
   {
+    label: 'Our Creatives',
+    href: '/our-creatives',
+  },
+  {
     label: 'Blog',
     href: '/blog',
   },

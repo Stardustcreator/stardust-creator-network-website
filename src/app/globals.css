@@ -660,3 +660,57 @@ body {
 .rotateX-90 {
   transform: rotateX(90deg);
 }
+
+/* Lightbox animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Creatives showcase fade in/out animations - 5 seconds per image with seamless crossfade */
+@keyframes fade-creative {
+  0% {
+    opacity: 0;
+  }
+  0.5% {
+    opacity: 1;
+  }
+  49.5% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fade-creative-left {
+  animation: fade-creative 10s ease-in-out infinite;
+}
+
+.animate-fade-creative-right {
+  animation: fade-creative 10s ease-in-out infinite;
+  animation-delay: 2.5s; /* Offset right side for visual variety */
+}
+
+.animate-fade-creative-left:hover,
+.animate-fade-creative-right:hover {
+  animation-play-state: paused;
+}

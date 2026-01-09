@@ -149,10 +149,10 @@ export default function StatisticsDashboardSection() {
             `}
           >
             <Link
-              href="/case-studies"
+              href="/our-team"
               className="inline-flex items-center gap-2 text-purple-300 hover:text-purple-200 transition-colors text-lg"
             >
-              Learn more about our work
+              See our team
               <svg
                 className="w-5 h-5"
                 fill="none"

@@ -9,6 +9,7 @@ import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLo
 import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection';
 import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
 import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
+import CreativesShowcaseSection from '@/components/sections/CreativesShowcase/CreativesShowcaseSection';
 import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
 import CaseStudiesSection from '@/components/sections/CaseStudies/CaseStudiesSection';
 import CTASection from '@/components/sections/CTA/CTASection';
@@ -88,6 +89,9 @@ export default function Home() {
 
         {/* Creator Showcase with Analytics */}
         <CreatorOsSection />
+
+        {/* Creatives Showcase */}
+        <CreativesShowcaseSection />
 
         {/* Credibility & Vision Statement */}
         <StatisticsDashboardSection />
