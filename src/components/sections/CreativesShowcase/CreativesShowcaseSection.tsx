@@ -17,9 +17,15 @@ import { Heading } from '@/components/typography';
 const leftImages = [
   '/creatives/SCN-1Artboard 1 copy 3.webp',
   '/creatives/SCN-1Artboard 1 copy 5.webp',
+  // Duplicate for seamless loop
+  '/creatives/SCN-1Artboard 1 copy 3.webp',
+  '/creatives/SCN-1Artboard 1 copy 5.webp',
 ];
 
 const rightImages = [
+  '/creatives/SCN-1Artboard 1 copy 7.webp',
+  '/creatives/SCN-1Artboard 1 copy 11.webp',
+  // Duplicate for seamless loop
   '/creatives/SCN-1Artboard 1 copy 7.webp',
   '/creatives/SCN-1Artboard 1 copy 11.webp',
 ];
@@ -51,12 +57,13 @@ export default function CreativesShowcaseSection() {
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-l-2xl md:rounded-r-none bg-white/5 border-r-0 border border-white/10">
             {leftImages.map((image, index) => (
               <div
-                key={image}
+                key={`left-${index}`}
                 className={`absolute inset-0 animate-fade-creative-left flex items-center justify-center`}
                 style={{
-                  animationDelay: `${index * 4.7}s`,
+                  animationDelay: `${index * 2.5}s`,
                   animationDuration: '10s',
                   zIndex: leftImages.length - index, // Ensure proper stacking
+                  opacity: index === 0 ? 1 : 0, // First image starts visible
                 }}
               >
                 <Image
@@ -75,12 +82,13 @@ export default function CreativesShowcaseSection() {
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-r-2xl md:rounded-l-none bg-white/5 border-l-0 border border-white/10">
             {rightImages.map((image, index) => (
               <div
-                key={image}
+                key={`right-${index}`}
                 className={`absolute inset-0 animate-fade-creative-right flex items-center justify-center`}
                 style={{
-                  animationDelay: `${index * 4.7}s`,
+                  animationDelay: `${index * 2.5}s`,
                   animationDuration: '10s',
                   zIndex: rightImages.length - index, // Ensure proper stacking
+                  opacity: index === 0 ? 1 : 0, // First image starts visible
                 }}
               >
                 <Image
