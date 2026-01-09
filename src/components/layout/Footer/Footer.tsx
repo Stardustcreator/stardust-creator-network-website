@@ -163,7 +163,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/brands/campaigns"
+                  href="/case-studies"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Campaign Examples
