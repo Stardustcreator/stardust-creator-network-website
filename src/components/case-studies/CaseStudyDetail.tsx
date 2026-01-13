@@ -451,14 +451,20 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         <div className="order-1 lg:order-2">
                           <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
                             <Image
-                              src={caseStudy.images[0]}
+                              src={
+                                caseStudy.images[0].includes(' ')
+                                  ? caseStudy.images[0]
+                                      .split('/')
+                                      .map(part => (part ? encodeURIComponent(part) : ''))
+                                      .join('/')
+                                  : caseStudy.images[0]
+                              }
                               alt={caseStudy.title}
                               fill
                               sizes="(max-width: 1024px) 100vw, 50vw"
                               className="object-cover"
-                              quality={95}
+                              quality={85}
                               priority
-                              unoptimized={caseStudy.images[0].includes(' ')}
                             />
                             {/* Subtle gradient overlay for depth */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -562,16 +568,21 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer"
                       >
                         <Image
-                          src={imagePath}
+                          src={
+                            imagePath.includes(' ') ||
+                            imagePath.includes("'") ||
+                            imagePath.includes('\u2019')
+                              ? imagePath
+                                  .split('/')
+                                  .map(part => (part ? encodeURIComponent(part) : ''))
+                                  .join('/')
+                              : imagePath
+                          }
                           alt={imageName}
                           fill
                           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33.33vw, 20vw"
                           className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                          unoptimized={
-                            imagePath.includes(' ') ||
-                            imagePath.includes("'") ||
-                            imagePath.includes('\u2019')
-                          }
+                          quality={75}
                         />
                         {/* Gradient overlay for text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -603,12 +614,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Omoye Cooks */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/omoye Cooks.webp"
+                        src="/case-studies/omoye%20Cooks.webp"
                         alt="Omoye Cooks"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -623,12 +634,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* D360 Cuisine */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/d360 Cuisine.webp"
+                        src="/case-studies/d360%20Cuisine.webp"
                         alt="D360 Cuisine"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -643,12 +654,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Chef Lizz */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Chef Lizz.webp"
+                        src="/case-studies/Chef%20Lizz.webp"
                         alt="Chef Lizz"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -668,7 +679,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -684,12 +695,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Joy Etor */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Joy Etor.webp"
+                        src="/case-studies/Joy%20Etor.webp"
                         alt="Joy Etor"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -704,12 +715,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Riaz Kitchen */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Riaz Kitchen.webp"
+                        src="/case-studies/Riaz%20Kitchen.webp"
                         alt="Riaz Kitchen"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -729,7 +740,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -744,12 +755,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Tife Paraeo */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Tife Paraeo.webp"
+                        src="/case-studies/Tife%20Paraeo.webp"
                         alt="Tife Paraeo"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -765,12 +776,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Asy Munchies */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Asy Munchies.webp"
+                        src="/case-studies/Asy%20Munchies.webp"
                         alt="Asy Munchies"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -785,12 +796,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Cara's Kitchen */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Cara's Kitchen.webp"
+                        src="/case-studies/Cara%27s%20Kitchen.webp"
                         alt="Cara's Kitchen"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -810,7 +821,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -825,12 +836,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Your Food Girl */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Your Food Girl.webp"
+                        src="/case-studies/Your%20Food%20Girl.webp"
                         alt="Your Food Girl"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -1071,14 +1082,13 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 <div className="mb-6 sm:mb-8">
                   <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
                     <Image
-                      src="/case-studies/Influncer t.webp"
+                      src="/case-studies/Influncer%20t.webp"
                       alt="Omoba"
                       fill
                       sizes="100vw"
                       className="object-cover"
-                      quality={100}
+                      quality={85}
                       priority
-                      unoptimized
                     />
                     {/* Black overlay */}
                     <div className="absolute inset-0 bg-black/40" />

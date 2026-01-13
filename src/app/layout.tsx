@@ -10,10 +10,11 @@ import './globals.css';
 
 const lato = Lato({
   variable: '--font-lato',
-  subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '700', '900'],
+  subsets: ['latin'],
+  weight: ['400', '700'],
   display: 'swap',
   preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 // Google Analytics Measurement ID
@@ -119,12 +120,32 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* Preconnect to analytics domains (non-blocking) */}
+        <link
+          rel="dns-prefetch"
+          href="https://www.googletagmanager.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://www.google-analytics.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://connect.facebook.net"
+        />
+        {/* Preload critical hero image */}
+        <link
+          rel="preload"
+          href="/hero.webp"
+          as="image"
+          type="image/webp"
+        />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
-        {/* Google Tag Manager - Loads after page is interactive */}
+        {/* Google Tag Manager - Loads lazily to improve initial page load */}
         <Script
           id="google-tag-manager"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -133,10 +154,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-WKTV2K2D');`,
           }}
         />
-        {/* Meta Pixel - Loads after page is interactive */}
+        {/* Meta Pixel - Loads lazily to improve initial page load */}
         <Script
           id="meta-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

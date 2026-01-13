@@ -24,8 +24,7 @@ export default function CarouselVisual({ slide, isActive }: CarouselVisualProps)
             className="object-cover"
             sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
             loading="lazy"
-            suppressHydrationWarning
-            unoptimized
+            quality={85}
           />
         </div>
 

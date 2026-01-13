@@ -20,14 +20,14 @@ export default function Hero() {
         className="z-0 object-cover md:hidden"
       />
 
-      {/* Video Background */}
+      {/* Video Background - Lazy loaded for better performance */}
       <video
         className="absolute top-0 left-0 w-full h-full min-w-full min-h-full object-cover z-0 hidden md:block"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
       >
         <source
           src="/output.webm"

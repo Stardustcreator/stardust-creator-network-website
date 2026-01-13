@@ -41,14 +41,17 @@ const nextConfig = {
         port: '3000',
       },
     ],
-    // Image formats supported - prioritize WebP and AVIF
+    // Image formats supported - prioritize AVIF and WebP for better compression
     formats: ['image/avif', 'image/webp'],
     // Optimize images for better performance
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Ensure WebP images are properly handled
-    minimumCacheTTL: 60,
+    // Increase cache TTL for better performance
+    minimumCacheTTL: 31536000, // 1 year
+    // Optimize image quality vs size balance
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Allow unoptimized images if optimization fails (for images with spaces in paths)
     unoptimized: false,
   },
@@ -169,7 +172,17 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=86400, s-maxage=31536000'
+            value: 'public, max-age=31536000, immutable'
+          },
+        ],
+      },
+      {
+        // Cache video files
+        source: '/(.*)\\.(webm|mp4|mov)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
           },
         ],
       },

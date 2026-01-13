@@ -1,18 +1,38 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
-// Components
+// Critical above-the-fold components (load immediately)
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLogosSection';
-import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection';
-import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
-import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
-import CreativesShowcaseSection from '@/components/sections/CreativesShowcase/CreativesShowcaseSection';
-import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
-import CaseStudiesSection from '@/components/sections/CaseStudies/CaseStudiesSection';
-import CTASection from '@/components/sections/CTA/CTASection';
+
+// Lazy load below-the-fold sections for better initial load performance
+const ConnectCollaborateCreateSection = dynamic(
+  () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
+  { ssr: true }
+);
+const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
+  ssr: true,
+});
+const CreatorOsSection = dynamic(
+  () => import('@/components/sections/creator-os/CreatorOsSection'),
+  { ssr: true }
+);
+const CreativesShowcaseSection = dynamic(
+  () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
+  { ssr: true }
+);
+const StatisticsDashboardSection = dynamic(
+  () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
+  { ssr: true }
+);
+const CaseStudiesSection = dynamic(
+  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
+  { ssr: true }
+);
+const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), { ssr: true });
 
 // Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
