@@ -143,8 +143,8 @@ export default function OurCreativesContent() {
       {/* Creatives Gallery Section */}
       <section className="py-12 md:py-16 lg:py-20 bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          {/* Modern Grid Layout - Complete Rows */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-0">
+          {/* Modern Grid Layout - 4 columns for larger images */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
             {creativeDesigns.map((design, index) => (
               <div
                 key={design.id}
@@ -161,7 +161,7 @@ export default function OurCreativesContent() {
                     src={design.image}
                     alt={design.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                     loading={index < 8 ? 'eager' : 'lazy'}
                   />

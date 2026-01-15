@@ -215,6 +215,14 @@ export default function Footer() {
                   CreatorOS
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/our-creatives"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                >
+                  Our Creatives
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

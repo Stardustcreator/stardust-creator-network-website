@@ -27,51 +27,6 @@ export const caseStudies: CaseStudy[] = [
       engagementRate: '7.2%',
     },
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    // content will be added later
-  },
-  {
-    id: 'honeywell-always-on-influencer-marketing',
-    title: 'HONEYWELL ALWAYS ON INFLUENCER MARKETING ENGAGEMENT',
-    images: [
-      '/case-studies/Aramide\u2019s Kitchen.webp',
-      '/case-studies/Ifeth Delight.webp',
-      '/case-studies/Fabulous Nosh Kitchen.webp',
-      '/case-studies/Riaz Kitchens.webp',
-      "/case-studies/Omoye's Cooks.webp",
-      '/case-studies/Foodies Delecty.webp',
-      '/case-studies/Chef AHR.webp',
-      '/case-studies/Favimore Kitchen.webp',
-      '/case-studies/Redgrape Cafe.webp',
-      '/case-studies/Chef Lola.webp',
-    ],
-    logo: '/case-studies/logo honeywell.webp',
-    excerpt:
-      'An always-on influencer marketing strategy that drives consistent engagement and brand awareness through strategic creator partnerships.',
-    client: 'Honeywell',
-    industry: 'Technology',
-    metrics: {
-      totalImpression: '6.4m',
-      reach: '4.65m',
-      engagementRate: '3.69%',
-    },
-    tags: ['Technology', 'Always-On', 'Influencer Marketing'],
-  },
-  {
-    id: 'leadway-travel-insurance-campaign',
-    title: 'LEADWAY TRAVEL INSURANCE CAMPAIGN',
-    images: ['/case-studies/laye.webp'],
-    logo: '/case-studies/leaday.webp',
-    excerpt:
-      'A strategic travel insurance campaign that connected Leadway with audiences to drive awareness and engagement.',
-    client: 'Leadway',
-    industry: 'Insurance',
-    metrics: {
-      views: '300k+',
-      likes: '11.8K',
-      comments: '160K',
-      saves: '344',
-    },
-    tags: ['Insurance', 'Travel', 'Brand Awareness'],
   },
   {
     id: 'leadway-no-lose-guard-campaign',

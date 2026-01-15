@@ -2,26 +2,45 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
 import TypewriterText from './TypewriterText';
 import { Heading, Text } from '@/components/typography';
 import { LocationSpecificContent } from '@/components/shared';
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  useEffect(() => {
+    // Load video only when hero section is visible (it always is, but this ensures it loads after initial render)
+    // Use a small delay to prioritize image loading first
+    const timer = setTimeout(() => {
+      setShouldLoadVideo(true);
+      if (videoRef.current) {
+        videoRef.current.load();
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
-      {/* Mobile Background Image */}
+      {/* Mobile Background Image - LCP element, highest priority */}
       <Image
         src="/hero.webp"
         alt="Galaxy-inspired background with vibrant lighting effects"
         fill
         priority
+        fetchPriority="high"
         sizes="100vw"
         className="z-0 object-cover md:hidden"
       />
 
-      {/* Video Background - Lazy loaded for better performance */}
+      {/* Video Background - Loaded after initial render for better performance */}
       <video
+        ref={videoRef}
         className="absolute top-0 left-0 w-full h-full min-w-full min-h-full object-cover z-0 hidden md:block"
         autoPlay
         muted
@@ -29,16 +48,19 @@ export default function Hero() {
         playsInline
         preload="none"
       >
-        <source
-          src="/output.webm"
-          type="video/webm"
-        />
+        {shouldLoadVideo && (
+          <source
+            src="/output.webm"
+            type="video/webm"
+          />
+        )}
         {/* Fallback for browsers that don't support video */}
         <Image
           src="/hero.webp"
           alt="Galaxy-inspired background with vibrant lighting effects"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="absolute inset-0 w-full h-full object-cover"
         />

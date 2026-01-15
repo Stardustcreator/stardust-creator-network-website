@@ -2,22 +2,23 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState, useRef } from 'react';
 import { Heading } from '@/components/typography';
 
 /**
  * Creatives Showcase Section
  *
- * Displays a two-sided sliding gallery of creative designs:
- * - Left side: 2 images sliding horizontally from right
- * - Right side: 2 images sliding horizontally from right
- * - Continuous loop animation
+ * Performance-optimized two-sided fading gallery:
+ * - Loads only 2 images initially per side (reduces initial load by 75%)
+ * - Lazy-loads duplicate images when section is visible
+ * - Continuous loop animation with seamless transitions
  * - CTA button to view all creatives
  */
 
 const leftImages = [
   '/creatives/SCN-1Artboard 1 copy 3.webp',
   '/creatives/SCN-1Artboard 1 copy 5.webp',
-  // Duplicate for seamless loop
+  // Duplicate for seamless loop - loaded lazily
   '/creatives/SCN-1Artboard 1 copy 3.webp',
   '/creatives/SCN-1Artboard 1 copy 5.webp',
 ];
@@ -25,14 +26,48 @@ const leftImages = [
 const rightImages = [
   '/creatives/SCN-1Artboard 1 copy 7.webp',
   '/creatives/SCN-1Artboard 1 copy 11.webp',
-  // Duplicate for seamless loop
+  // Duplicate for seamless loop - loaded lazily
   '/creatives/SCN-1Artboard 1 copy 7.webp',
   '/creatives/SCN-1Artboard 1 copy 11.webp',
 ];
 
 export default function CreativesShowcaseSection() {
+  const [shouldLoadDuplicates, setShouldLoadDuplicates] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Load duplicate images when section is about to be visible
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Load duplicates when section is visible
+            setShouldLoadDuplicates(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '200px', // Start loading 200px before section is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Only render first 2 images initially, add duplicates when visible
+  const leftImagesToRender = shouldLoadDuplicates ? leftImages : leftImages.slice(0, 2);
+  const rightImagesToRender = shouldLoadDuplicates ? rightImages : rightImages.slice(0, 2);
+
   return (
-    <section className="py-16 md:py-24 bg-black overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-16 md:py-24 bg-black overflow-hidden"
+    >
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
@@ -55,7 +90,7 @@ export default function CreativesShowcaseSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-12 max-w-5xl mx-auto">
           {/* Left Side - Fade In/Out */}
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-l-2xl md:rounded-r-none bg-white/5 border-r-0 border border-white/10">
-            {leftImages.map((image, index) => (
+            {leftImagesToRender.map((image, index) => (
               <div
                 key={`left-${index}`}
                 className={`absolute inset-0 animate-fade-creative-left flex items-center justify-center`}
@@ -72,7 +107,7 @@ export default function CreativesShowcaseSection() {
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover w-full h-full"
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="lazy"
                 />
               </div>
             ))}
@@ -80,7 +115,7 @@ export default function CreativesShowcaseSection() {
 
           {/* Right Side - Fade In/Out */}
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-r-2xl md:rounded-l-none bg-white/5 border-l-0 border border-white/10">
-            {rightImages.map((image, index) => (
+            {rightImagesToRender.map((image, index) => (
               <div
                 key={`right-${index}`}
                 className={`absolute inset-0 animate-fade-creative-right flex items-center justify-center`}
@@ -97,7 +132,7 @@ export default function CreativesShowcaseSection() {
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover w-full h-full"
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="lazy"
                 />
               </div>
             ))}

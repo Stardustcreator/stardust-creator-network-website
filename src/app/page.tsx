@@ -56,37 +56,8 @@ export default function Home() {
           __html: JSON.stringify(breadcrumbData),
         }}
       />
-      {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
-      <link
-        rel="preload"
-        href="/who%20we%20are/office-teamwork-session.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/who%20we%20are/creators.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/learning-hub.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/creator-network.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/growth%20tools.webp"
-        as="image"
-        fetchPriority="high"
-      />
+      {/* Preload only the LCP image (hero) - other images will lazy load */}
+      {/* Hero image is already preloaded in layout.tsx, no need to duplicate */}
       {/* Header */}
       <Header />
 

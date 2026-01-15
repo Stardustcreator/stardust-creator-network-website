@@ -133,12 +133,13 @@ export default function RootLayout({
           rel="dns-prefetch"
           href="https://connect.facebook.net"
         />
-        {/* Preload critical hero image */}
+        {/* Preload critical hero image (LCP element) */}
         <link
           rel="preload"
           href="/hero.webp"
           as="image"
           type="image/webp"
+          fetchPriority="high"
         />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
