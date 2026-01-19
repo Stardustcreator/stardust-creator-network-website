@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
 import { getSupabaseAdmin } from '@/lib/supabase';
-import { appendBrandBriefToGoogleSheets } from '@/lib/services/google-sheets.service';
-import { addBrandToMailchimp, updateMailchimpTags } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -302,46 +300,9 @@ export async function POST(request: NextRequest) {
 
     console.log('Brand brief submitted successfully:', data);
 
-    // Sync to Google Sheets (non-blocking - errors are logged but don't fail the request)
-    // Only sync for Nigeria briefs (can be extended to other countries as needed)
-    // Failed syncs are now tracked in the database for automatic retry
-    if (validatedData.brandCompanyInformation.country === 'Nigeria') {
-      try {
-        await appendBrandBriefToGoogleSheets(briefData, data.id);
-      } catch (sheetsError) {
-        // Log but don't fail the request if Google Sheets sync fails
-        // The failure is now tracked in google_sheets_sync_failures table
-        console.error('Failed to sync brand brief to Google Sheets:', sheetsError);
-      }
-    }
-
-    // Sync to Mailchimp audience with "Brands-Find-Creators" tag
-    // This will upgrade from "partial-brand-inquiry" if they were early captured
-    // This runs asynchronously and won't block the response if it fails
-    addBrandToMailchimp(
-      {
-        email: validatedData.brandCompanyInformation.email,
-        contactPerson: validatedData.brandCompanyInformation.contactPerson,
-        phoneNumber: validatedData.brandCompanyInformation.phoneNumber,
-        brandName: validatedData.brandCompanyInformation.brandName,
-      },
-      {
-        isPartialSubmission: false, // Full submission
-      }
-    )
-      .then(() => {
-        // After successful sync, upgrade tags from partial to complete
-        return updateMailchimpTags({
-          email: validatedData.brandCompanyInformation.email,
-          tagsToRemove: ['partial-brand-inquiry'],
-          tagsToAdd: ['Brands-Find-Creators'],
-        });
-      })
-      .catch(error => {
-        // Error is already logged in the service, but we log here for API context
-        console.error('Mailchimp sync/tag update failed (non-blocking):', error);
-        // Don't re-throw - this is intentionally non-blocking
-      });
+    // Note: Google Sheets and Mailchimp syncs are handled by scheduled cron jobs
+    // This keeps form submissions fast and reliable
+    // Syncs run every 4 hours via /api/cron/sync-google-sheets and /api/cron/sync-mailchimp
 
     // Return success response
     return NextResponse.json({

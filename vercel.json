@@ -1,8 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/google-sheets/retry-failed-syncs",
-      "schedule": "*/10 * * * *"
+      "path": "/api/cron/sync-google-sheets",
+      "schedule": "0 */4 * * *"
+    },
+    {
+      "path": "/api/cron/sync-mailchimp",
+      "schedule": "15 */4 * * *"
     }
   ]
 }

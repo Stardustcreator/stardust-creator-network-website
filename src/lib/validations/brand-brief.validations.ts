@@ -25,6 +25,26 @@ import {
   type Country,
 } from '@/types/brand-brief.types';
 
+const FREE_EMAIL_DOMAINS = [
+  'gmail.com',
+  'yahoo.com',
+  'ymail.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'proton.me',
+  'protonmail.com',
+  'gmx.com',
+  'mail.com',
+  'zoho.com',
+  'yandex.com',
+] as const;
+
 // Brand / Company Information Schema
 export const brandCompanyInformationSchema = z.object({
   brandName: z
@@ -61,7 +81,11 @@ export const brandCompanyInformationSchema = z.object({
   email: z
     .string()
     .email('Please enter a valid email address')
-    .max(254, 'Email address is too long'),
+    .max(254, 'Email address is too long')
+    .refine(email => {
+      const domain = email.split('@')[1]?.toLowerCase();
+      return !!domain && !(FREE_EMAIL_DOMAINS as readonly string[]).includes(domain);
+    }, 'Please use your business email (no Gmail/Yahoo/Outlook or similar)'),
 
   phoneNumber: z
     .string()

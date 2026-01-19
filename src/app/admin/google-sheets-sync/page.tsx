@@ -1,65 +1,83 @@
 /**
- * Admin Dashboard: Google Sheets Sync Status
+ * Admin Dashboard: Sync Status
  *
  * Displays:
- * - Summary statistics of sync failures
- * - List of recent failed syncs
- * - Manual retry button
+ * - Google Sheets sync status for creators and brands
+ * - Mailchimp sync status for creators and brands
+ * - Manual sync trigger buttons
  *
- * This page helps admins monitor and manage Google Sheets sync failures.
- * Access should be restricted to authorized admins only.
+ * Syncs run automatically every 4 hours via Vercel Cron.
+ * This page helps admins monitor sync status and trigger manual syncs if needed.
  */
 
 'use client';
 
 import { useState, useEffect } from 'react';
 
-interface SyncStats {
-  pending: number;
-  retrying: number;
-  succeeded: number;
-  failed_permanently: number;
-  total: number;
+interface GoogleSheetsSyncStats {
+  creators: {
+    synced: number;
+    unsynced: number;
+    total: number;
+  };
+  brands: {
+    synced: number;
+    unsynced: number;
+    total: number;
+  };
 }
 
-interface SyncFailure {
-  id: string;
-  record_type: string;
-  record_id: string;
-  record_email: string;
-  record_country: string;
-  retry_count: number;
-  error_message: string;
-  status: string;
-  created_at: string;
-  next_retry_at: string | null;
+interface MailchimpSyncStats {
+  creators: {
+    nigeria: { synced: number; unsynced: number; total: number };
+    uk: { synced: number; unsynced: number; total: number };
+  };
+  brands: {
+    nigeria: { synced: number; unsynced: number; total: number };
+    uk: { synced: number; unsynced: number; total: number };
+  };
 }
 
-interface SyncData {
-  stats: SyncStats;
-  recentFailures: SyncFailure[];
+interface SyncResult {
+  success: boolean;
+  message?: string;
+  total?: {
+    processed: number;
+    succeeded: number;
+    failed: number;
+  };
+  errors?: Array<{ id: string; error: string }>;
 }
 
-export default function GoogleSheetsSyncAdminPage() {
-  const [syncData, setSyncData] = useState<SyncData | null>(null);
+export default function SyncStatusAdminPage() {
+  const [googleSheetsStats, setGoogleSheetsStats] = useState<GoogleSheetsSyncStats | null>(null);
+  const [mailchimpStats, setMailchimpStats] = useState<MailchimpSyncStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [retrying, setRetrying] = useState(false);
+  const [syncing, setSyncing] = useState<'google-sheets' | 'mailchimp' | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [retryResult, setRetryResult] = useState<string | null>(null);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
 
-  // Fetch sync status
+  // Fetch sync statuses
   const fetchSyncStatus = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('/api/google-sheets/retry-failed-syncs');
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch sync status');
+      // Fetch both statuses in parallel
+      const [googleSheetsResponse, mailchimpResponse] = await Promise.all([
+        fetch('/api/cron/sync-google-sheets'),
+        fetch('/api/cron/sync-mailchimp'),
+      ]);
+
+      if (googleSheetsResponse.ok) {
+        const data = await googleSheetsResponse.json();
+        setGoogleSheetsStats(data.stats);
       }
 
-      const data = await response.json();
-      setSyncData(data);
+      if (mailchimpResponse.ok) {
+        const data = await mailchimpResponse.json();
+        setMailchimpStats(data.stats);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load sync status');
     } finally {
@@ -67,32 +85,49 @@ export default function GoogleSheetsSyncAdminPage() {
     }
   };
 
-  // Manual retry trigger
-  const triggerRetry = async () => {
+  // Trigger manual Google Sheets sync
+  const triggerGoogleSheetsSync = async () => {
     try {
-      setRetrying(true);
-      setRetryResult(null);
+      setSyncing('google-sheets');
+      setSyncResult(null);
       setError(null);
 
-      const response = await fetch('/api/google-sheets/retry-failed-syncs', {
+      const response = await fetch('/api/cron/sync-google-sheets', {
         method: 'POST',
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to trigger retry');
-      }
-
       const result = await response.json();
-      setRetryResult(
-        `Processed: ${result.processed} | Succeeded: ${result.succeeded} | Failed: ${result.failed} | Permanently Failed: ${result.permanentlyFailed || 0}`
-      );
+      setSyncResult(result);
 
-      // Refresh data after retry
+      // Refresh status after sync
       await fetchSyncStatus();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to trigger retry');
+      setError(err instanceof Error ? err.message : 'Failed to trigger Google Sheets sync');
     } finally {
-      setRetrying(false);
+      setSyncing(null);
+    }
+  };
+
+  // Trigger manual Mailchimp sync
+  const triggerMailchimpSync = async () => {
+    try {
+      setSyncing('mailchimp');
+      setSyncResult(null);
+      setError(null);
+
+      const response = await fetch('/api/cron/sync-mailchimp', {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+      setSyncResult(result);
+
+      // Refresh status after sync
+      await fetchSyncStatus();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to trigger Mailchimp sync');
+    } finally {
+      setSyncing(null);
     }
   };
 
@@ -101,37 +136,11 @@ export default function GoogleSheetsSyncAdminPage() {
     fetchSyncStatus();
   }, []);
 
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  // Calculate time until next retry
-  const getTimeUntilRetry = (nextRetryAt: string | null) => {
-    if (!nextRetryAt) return 'N/A';
-
-    const now = new Date().getTime();
-    const retryTime = new Date(nextRetryAt).getTime();
-    const diffMinutes = Math.round((retryTime - now) / 1000 / 60);
-
-    if (diffMinutes < 0) return 'Ready now';
-    if (diffMinutes === 0) return 'Less than 1 minute';
-    if (diffMinutes < 60) return `${diffMinutes} minutes`;
-    if (diffMinutes < 1440) return `${Math.round(diffMinutes / 60)} hours`;
-    return `${Math.round(diffMinutes / 1440)} days`;
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Google Sheets Sync Status</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Sync Status Dashboard</h1>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-gray-600">Loading...</p>
           </div>
@@ -144,23 +153,14 @@ export default function GoogleSheetsSyncAdminPage() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Google Sheets Sync Status</h1>
-          <div className="flex gap-4">
-            <button
-              onClick={fetchSyncStatus}
-              disabled={loading}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Refresh
-            </button>
-            <button
-              onClick={triggerRetry}
-              disabled={retrying || !syncData?.stats.pending}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {retrying ? 'Retrying...' : 'Retry Failed Syncs'}
-            </button>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-900">Sync Status Dashboard</h1>
+          <button
+            onClick={fetchSyncStatus}
+            disabled={loading}
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Refresh
+          </button>
         </div>
 
         {error && (
@@ -169,164 +169,268 @@ export default function GoogleSheetsSyncAdminPage() {
           </div>
         )}
 
-        {retryResult && (
-          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
-            <p className="text-green-800">Retry Results: {retryResult}</p>
+        {syncResult && (
+          <div
+            className={`mb-6 border rounded-lg p-4 ${syncResult.success ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}
+          >
+            <p className={syncResult.success ? 'text-green-800' : 'text-red-800'}>
+              {syncResult.message}
+              {syncResult.total && (
+                <span className="ml-2">
+                  | Processed: {syncResult.total.processed} | Succeeded:{' '}
+                  {syncResult.total.succeeded} | Failed: {syncResult.total.failed}
+                </span>
+              )}
+            </p>
+            {syncResult.errors && syncResult.errors.length > 0 && (
+              <div className="mt-2 text-sm text-red-700">
+                Errors:
+                <ul className="list-disc list-inside">
+                  {syncResult.errors.slice(0, 5).map((err, i) => (
+                    <li key={i}>
+                      {err.id}: {err.error}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
 
-        {syncData && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">Pending</h3>
-                <p className="text-3xl font-bold text-yellow-600">{syncData.stats.pending}</p>
-              </div>
+        {/* Google Sheets Section */}
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-900">Google Sheets Sync</h2>
+            <button
+              onClick={triggerGoogleSheetsSync}
+              disabled={syncing !== null}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {syncing === 'google-sheets' ? 'Syncing...' : 'Run Sync Now'}
+            </button>
+          </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">Retrying</h3>
-                <p className="text-3xl font-bold text-blue-600">{syncData.stats.retrying}</p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">Succeeded</h3>
-                <p className="text-3xl font-bold text-green-600">{syncData.stats.succeeded}</p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">Failed</h3>
-                <p className="text-3xl font-bold text-red-600">
-                  {syncData.stats.failed_permanently}
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">Total</h3>
-                <p className="text-3xl font-bold text-gray-900">{syncData.stats.total}</p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Recent Failed Syncs</h2>
-              </div>
-
-              {syncData.recentFailures.length === 0 ? (
-                <div className="p-6 text-center text-gray-600">
-                  No failed syncs found. All systems operational.
+          {googleSheetsStats && (
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Creators */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    Creator Applications (Nigeria)
+                  </h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Synced</p>
+                      <p className="text-2xl font-bold text-green-600">
+                        {googleSheetsStats.creators.synced}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Pending</p>
+                      <p className="text-2xl font-bold text-yellow-600">
+                        {googleSheetsStats.creators.unsynced}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Total</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {googleSheetsStats.creators.total}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Type
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Country
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Retries
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Next Retry
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Error
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Created
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {syncData.recentFailures.map(failure => (
-                        <tr
-                          key={failure.id}
-                          className="hover:bg-gray-50"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {failure.record_type.replace('_', ' ')}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {failure.record_email}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {failure.record_country}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {failure.retry_count} / 5
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                                failure.status === 'pending'
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : failure.status === 'failed_permanently'
-                                    ? 'bg-red-100 text-red-800'
-                                    : 'bg-gray-100 text-gray-800'
-                              }`}
-                            >
-                              {failure.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {getTimeUntilRetry(failure.next_retry_at)}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate"
-                            title={failure.error_message}
-                          >
-                            {failure.error_message}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {formatDate(failure.created_at)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+
+                {/* Brands */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Brand Briefs (Nigeria)</h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Synced</p>
+                      <p className="text-2xl font-bold text-green-600">
+                        {googleSheetsStats.brands.synced}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Pending</p>
+                      <p className="text-2xl font-bold text-yellow-600">
+                        {googleSheetsStats.brands.unsynced}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Total</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {googleSheetsStats.brands.total}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
+          )}
+        </div>
 
-            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">How It Works</h3>
-              <ul className="text-blue-800 space-y-2">
-                <li>Failed Google Sheets syncs are automatically tracked in the database</li>
-                <li>Syncs are retried with exponential backoff: 5m, 15m, 1h, 4h, 24h</li>
-                <li>After 5 failed attempts, syncs are marked as permanently failed</li>
-                <li>
-                  Set up a cron job to call the retry endpoint automatically every 5-10 minutes
-                </li>
-                <li>You can manually trigger retries using the button above</li>
-              </ul>
-            </div>
+        {/* Mailchimp Section */}
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-900">Mailchimp Sync</h2>
+            <button
+              onClick={triggerMailchimpSync}
+              disabled={syncing !== null}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {syncing === 'mailchimp' ? 'Syncing...' : 'Run Sync Now'}
+            </button>
+          </div>
 
-            <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-yellow-900 mb-2">Setup Cron Job</h3>
-              <p className="text-yellow-800 mb-3">
-                For automatic retries, set up a cron job on your platform (e.g., Vercel Cron, GitHub
-                Actions) to call:
-              </p>
-              <code className="block bg-yellow-100 p-3 rounded text-sm text-yellow-900 overflow-x-auto">
-                POST https://your-domain.com/api/google-sheets/retry-failed-syncs
-                <br />
-                Authorization: Bearer YOUR_CRON_SECRET
-              </code>
-              <p className="text-yellow-800 mt-3 text-sm">
-                Set the CRON_SECRET environment variable to secure this endpoint.
-              </p>
+          {mailchimpStats && (
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Creators */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Creator Applications</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-2">Nigeria</p>
+                      <div className="grid grid-cols-3 gap-2 text-sm">
+                        <div>
+                          <p className="text-gray-600">Synced</p>
+                          <p className="font-bold text-green-600">
+                            {mailchimpStats.creators.nigeria.synced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Pending</p>
+                          <p className="font-bold text-yellow-600">
+                            {mailchimpStats.creators.nigeria.unsynced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Total</p>
+                          <p className="font-bold text-gray-900">
+                            {mailchimpStats.creators.nigeria.total}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-2">UK</p>
+                      <div className="grid grid-cols-3 gap-2 text-sm">
+                        <div>
+                          <p className="text-gray-600">Synced</p>
+                          <p className="font-bold text-green-600">
+                            {mailchimpStats.creators.uk.synced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Pending</p>
+                          <p className="font-bold text-yellow-600">
+                            {mailchimpStats.creators.uk.unsynced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Total</p>
+                          <p className="font-bold text-gray-900">
+                            {mailchimpStats.creators.uk.total}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Brands */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Brand Briefs</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-2">Nigeria</p>
+                      <div className="grid grid-cols-3 gap-2 text-sm">
+                        <div>
+                          <p className="text-gray-600">Synced</p>
+                          <p className="font-bold text-green-600">
+                            {mailchimpStats.brands.nigeria.synced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Pending</p>
+                          <p className="font-bold text-yellow-600">
+                            {mailchimpStats.brands.nigeria.unsynced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Total</p>
+                          <p className="font-bold text-gray-900">
+                            {mailchimpStats.brands.nigeria.total}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-2">UK</p>
+                      <div className="grid grid-cols-3 gap-2 text-sm">
+                        <div>
+                          <p className="text-gray-600">Synced</p>
+                          <p className="font-bold text-green-600">
+                            {mailchimpStats.brands.uk.synced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Pending</p>
+                          <p className="font-bold text-yellow-600">
+                            {mailchimpStats.brands.uk.unsynced}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Total</p>
+                          <p className="font-bold text-gray-900">
+                            {mailchimpStats.brands.uk.total}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
+
+        {/* Info Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">How It Works</h3>
+          <ul className="text-blue-800 space-y-2">
+            <li>
+              <strong>Automatic Syncs:</strong> Run every 4 hours via Vercel Cron
+            </li>
+            <li>
+              <strong>Google Sheets:</strong> Syncs at minute 0 (12:00, 4:00, 8:00, etc.)
+            </li>
+            <li>
+              <strong>Mailchimp:</strong> Syncs at minute 15 (12:15, 4:15, 8:15, etc.)
+            </li>
+            <li>
+              <strong>Manual Sync:</strong> Use the buttons above to trigger an immediate sync
+            </li>
+            <li>
+              <strong>Pending Records:</strong> Records submitted but not yet synced will be
+              processed in the next cron run
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Cron Schedule</h3>
+          <div className="text-gray-700 space-y-2">
+            <p>
+              <code className="bg-gray-200 px-2 py-1 rounded text-sm">0 */4 * * *</code> - Google
+              Sheets sync (every 4 hours at minute 0)
+            </p>
+            <p>
+              <code className="bg-gray-200 px-2 py-1 rounded text-sm">15 */4 * * *</code> -
+              Mailchimp sync (every 4 hours at minute 15)
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

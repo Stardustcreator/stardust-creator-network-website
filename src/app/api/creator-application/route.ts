@@ -5,8 +5,6 @@ import {
   getCreatorRegistrationTable,
   type CreatorRegistrationRecord,
 } from '@/lib/supabase';
-import { appendToGoogleSheets } from '@/lib/services/google-sheets.service';
-import { addCreatorToMailchimp, updateMailchimpTags } from '@/lib/services/mailchimp.service';
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -329,51 +327,9 @@ export async function POST(request: NextRequest) {
       submittedAt: insertedData.created_at,
     });
 
-    // Sync to Google Sheets for Nigeria submissions only
-    // This runs asynchronously and won't block the response if it fails
-    if (validatedData.personalInformation.country === 'Nigeria') {
-      // Add the database ID and timestamp to the registration data for Google Sheets
-      const sheetsData: CreatorRegistrationRecord = {
-        ...registrationData,
-        id: insertedData.id,
-        created_at: insertedData.created_at,
-      };
-
-      // Append to Google Sheets (non-blocking - errors are logged but don't affect response)
-      // Wrap in try-catch to prevent any unhandled promise rejections
-      appendToGoogleSheets(sheetsData).catch(error => {
-        // Error is already logged in the service, but we log here for API context
-        console.error('Google Sheets sync failed (non-blocking):', error);
-        // Don't re-throw - this is intentionally non-blocking
-      });
-    }
-
-    // Sync to Mailchimp audience with "join-as-creator" tag
-    // This will upgrade from "partial-creator-signup" if they were early captured
-    // This runs asynchronously and won't block the response if it fails
-    addCreatorToMailchimp(
-      {
-        email: validatedData.personalInformation.email,
-        fullName: validatedData.personalInformation.fullName,
-        phoneNumber: validatedData.personalInformation.phoneNumber,
-      },
-      {
-        isPartialSubmission: false, // Full submission
-      }
-    )
-      .then(() => {
-        // After successful sync, upgrade tags from partial to complete
-        return updateMailchimpTags({
-          email: validatedData.personalInformation.email,
-          tagsToRemove: ['partial-creator-signup'],
-          tagsToAdd: ['join-as-creator'],
-        });
-      })
-      .catch(error => {
-        // Error is already logged in the service, but we log here for API context
-        console.error('Mailchimp sync/tag update failed (non-blocking):', error);
-        // Don't re-throw - this is intentionally non-blocking
-      });
+    // Note: Google Sheets and Mailchimp syncs are handled by scheduled cron jobs
+    // This keeps form submissions fast and reliable
+    // Syncs run every 4 hours via /api/cron/sync-google-sheets and /api/cron/sync-mailchimp
 
     // TODO: Send confirmation email
     // TODO: Notify admin team
