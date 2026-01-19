@@ -7,7 +7,7 @@ export interface NavigationItem {
 export const navigationItems: NavigationItem[] = [
   {
     label: 'Who We Are',
-    href: '/our-team',
+    href: '/#who-we-are',
   },
   {
     label: 'Stardust Creator Community',
