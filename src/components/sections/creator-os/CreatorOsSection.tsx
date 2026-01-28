@@ -38,7 +38,7 @@ export default function CreatorOsSection() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 blur-3xl"></div>
               <div className="relative aspect-video w-full">
                 <Image
-                  src="/creatorOS.webp"
+                  src="/vlogger-explaining-features-studio-flash-light-modifier-sitting-desk-with-microphone-vlogging-studio-portrait-photography-equipment-reviewer-presenting-beauty-dish-honeycomb-grid.webp"
                   alt="Content creator reviewing engagement results after a successful brand partnership and monetization opportunity in the creator community"
                   fill
                   className="object-cover"

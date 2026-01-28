@@ -38,7 +38,7 @@ export default function Home() {
       {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
       <link
         rel="preload"
-        href="/who%20we%20are/brands.webp"
+        href="/who%20we%20are/office-teamwork-session.webp"
         as="image"
         fetchPriority="high"
       />
