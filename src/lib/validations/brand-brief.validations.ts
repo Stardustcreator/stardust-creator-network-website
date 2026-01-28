@@ -81,11 +81,7 @@ export const brandCompanyInformationSchema = z.object({
   email: z
     .string()
     .email('Please enter a valid email address')
-    .max(254, 'Email address is too long')
-    .refine(email => {
-      const domain = email.split('@')[1]?.toLowerCase();
-      return !!domain && !FREE_EMAIL_DOMAINS.includes(domain);
-    }, 'Please use your business email (no Gmail/Yahoo/Outlook or similar)'),
+    .max(254, 'Email address is too long'),
 
   phoneNumber: z
     .string()
