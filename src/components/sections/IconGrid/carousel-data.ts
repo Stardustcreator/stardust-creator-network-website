@@ -8,6 +8,7 @@ export interface CarouselSlide {
   gradientVia: string;
   gradientTo: string;
   image?: string;
+  images?: string[];
   alt?: string;
 }
 

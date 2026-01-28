@@ -65,7 +65,11 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
           {/* Logo - Smaller size */}
           {caseStudy.logo && (
             <div className="mb-4 flex justify-start">
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/10 rounded-xl p-2 border-2 border-white/20 shadow-xl">
+              <div
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl p-2 border-2 border-white/20 shadow-xl ${
+                  caseStudy.id === 'vava-furniture-campaign' ? 'bg-white' : 'bg-white/10'
+                }`}
+              >
                 <Image
                   src={
                     caseStudy.logo.includes(' ')

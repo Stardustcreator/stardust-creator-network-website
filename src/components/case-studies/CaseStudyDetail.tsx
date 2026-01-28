@@ -18,17 +18,22 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
     notFound();
   }
 
-  const isHoneywellRelaunchCaseStudy = caseStudy.id === 'honeywell-relaunch-campaign';
+  // Check if this is the always-on case study (no images required)
+  const isAlwaysOnCaseStudy = caseStudy.id === 'honeywell-always-on-influencer-marketing';
+  const isLeadwayCaseStudy = caseStudy.id === 'leadway-travel-insurance-campaign';
   const isNoLoseGuardCaseStudy = caseStudy.id === 'leadway-no-lose-guard-campaign';
   const isAxaAutoflexCaseStudy = caseStudy.id === 'axa-mansard-autoflex-campaign';
   const isCleamaxCaseStudy = caseStudy.id === 'cleamax-campaign';
+  const isVavaFurnitureCaseStudy = caseStudy.id === 'vava-furniture-campaign';
 
   // Ensure we have required data (only check images for case studies that require them)
   if (
-    !isHoneywellRelaunchCaseStudy &&
+    !isAlwaysOnCaseStudy &&
+    !isLeadwayCaseStudy &&
     !isNoLoseGuardCaseStudy &&
     !isAxaAutoflexCaseStudy &&
     !isCleamaxCaseStudy &&
+    !isVavaFurnitureCaseStudy &&
     (!caseStudy.images || caseStudy.images.length === 0)
   ) {
     return (
@@ -383,29 +388,108 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   </section>
                 )}
               </>
-            ) : isHoneywellRelaunchCaseStudy ? (
+            ) : isLeadwayCaseStudy ? (
+              <section className="mt-8 space-y-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                  Campaign Overview
+                </h2>
+                <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                  Young Nigerians traveling abroad lacked travel insurance awareness, viewing it as
+                  unnecessary expense. Leadway needed to educate this demographic while positioning
+                  themselves as the accessible, trusted choice for protection.
+                </p>
+              </section>
+            ) : isVavaFurnitureCaseStudy ? (
               <>
-                {/* ============================================ */}
-                {/* HONEYWELL RELAUNCH CAMPAIGN SECTION */}
-                {/* ============================================ */}
-                <div className="mt-8 pt-8 border-t border-white/20">
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl mb-8 text-white font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    Honeywell Relaunch Campaign
+                <section className="mt-8 space-y-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Campaign Overview
                   </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Vava furniture, although being one of the top furniture brands in the country,
+                    faced issues with awareness in comparison to its competitors. To combat this and
+                    gain more awareness and sales, Vava tasked Intense with coming up with a plan to
+                    increase awareness for the brand and generate sales.
+                  </p>
+                </section>
 
-                  {/* Campaign Overview */}
-                  <section className="space-y-4">
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
-                      Campaign Overview
+                {/* Our Solution Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Our Solution
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    To achieve the brand&apos;s goals, we launched a 3-month 360 marketing campaign
+                    with the creative idea &apos;Vava For Everyone&apos;, letting the audience know
+                    that Vava had a furniture piece for every lifestyle and setting. To amplify our
+                    messaging, the campaign was deployed across digital and traditional channels
+                    which included Television, Radio
+                  </p>
+
+                  {/* YouTube Video */}
+                  <div className="mt-8">
+                    <YouTubeEmbed
+                      videoId="IMdnRyZLgIw"
+                      title="Vava For Everyone Campaign Video"
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Campaign Metrics */}
+                  <div className="mt-8 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 text-center">
+                      CAMPAIGN METRICS
                     </h3>
-                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                      Honeywell redesigned their product packaging but customers thought the new
-                      packs were counterfeit, leading to widespread confusion and sales decline.
-                      With Nigeria in the heat of a counterfeit product crisis, the brand needed
-                      immediate damage control and consumer education to restore trust.
-                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          71%
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Achieved Impression Share
+                        </div>
+                      </div>
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          N6,100
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Cost Per Acquisition
+                        </div>
+                      </div>
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          12.8x
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Return On Ad Spend (ROAS)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Section - Brand Brief Conversion */}
+                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                    <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
+                      <Heading
+                        level={2}
+                        className="text-white text-2xl md:text-3xl mb-4"
+                      >
+                        Ready to Create Similar Results?
+                      </Heading>
+                      <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
+                        Let&apos;s discuss your campaign goals and connect you with the right
+                        creators to bring your vision to life.
+                      </p>
+                      <Link
+                        href="/brands/brief"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                      >
+                        Start Your Campaign
+                      </Link>
+                    </div>
                   </section>
-                </div>
+                </section>
               </>
             ) : (
               <section className="mt-8 space-y-4">
@@ -416,41 +500,224 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
                     Campaign Overview
                   </h3>
-                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                    Honeywell redesigned their product packaging but customers thought the new packs
-                    were counterfeit, leading to widespread confusion and sales decline. With
-                    Nigeria in the heat of a counterfeit product crisis, the brand needed immediate
-                    damage control and consumer education to restore trust.
-                  </p>
+                  {isAlwaysOnCaseStudy ? (
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      To showcase the versatility of Honeywell&apos;s product portfolio and drive
+                      meaningful organic engagement across the brand&apos;s social media platforms,
+                      we developed a comprehensive influencer marketing strategy. The campaign was
+                      designed to establish sustainable growth and achieve top-of-mind awareness
+                      while maintaining brand authenticity and cost-effectiveness.
+                    </p>
+                  ) : (
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Honeywell redesigned their product packaging but customers thought the new
+                      packs were counterfeit, leading to widespread confusion and sales decline.
+                      With Nigeria in the heat of a counterfeit product crisis, the brand needed
+                      immediate damage control and consumer education to restore trust.
+                    </p>
+                  )}
                 </div>
               </section>
             )}
 
-            {/* Strategy & Execution - Standard for others */}
+            {/* Strategy & Execution - Grid Layout for Leadway, Standard for others */}
             {!isNoLoseGuardCaseStudy &&
-              !isHoneywellRelaunchCaseStudy &&
               !isAxaAutoflexCaseStudy &&
-              !isCleamaxCaseStudy && (
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
                 <>
-                  <section className="space-y-4">
-                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
-                      Strategy & Execution
-                    </h3>
-                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                      The team created and executed a full blown marketing campaign to announce the
-                      relaunch, it featured a full content strategy, launch event, digital,
-                      experiential and influencer marketing. selected food and lifestyle creators
-                      received a box from Honeywell branded &quot;You&apos;ve Been Served&quot;.
-                    </p>
-                  </section>
+                  {isLeadwayCaseStudy ? (
+                    <section className="pt-8 md:pt-12 mt-8 md:mt-12">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                        {/* Content - Left Side */}
+                        <div className="space-y-3 order-2 lg:order-1 lg:pt-8 md:pt-6">
+                          <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3 md:mb-4">
+                            Strategy & Execution
+                          </h2>
+                          <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                            Layi Wasabi&apos;s comedy-education blend made complex topics digestible
+                            for millennials/Gen Z. His consistent 2.7%+ engagement rates were ideal
+                            for explaining insurance benefits. We deployed his signature comedic
+                            storytelling across Instagram and TikTok to maximize reach and
+                            platform-specific engagement.
+                          </p>
+                        </div>
+
+                        {/* Image - Right Side */}
+                        {caseStudy.images && caseStudy.images.length > 0 && (
+                          <div className="order-1 lg:order-2">
+                            <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
+                              <Image
+                                src={
+                                  caseStudy.images[0].includes(' ')
+                                    ? caseStudy.images[0]
+                                        .split('/')
+                                        .map(part => (part ? encodeURIComponent(part) : ''))
+                                        .join('/')
+                                    : caseStudy.images[0]
+                                }
+                                alt={caseStudy.title}
+                                fill
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                                className="object-cover"
+                                quality={85}
+                                priority
+                              />
+                              {/* Subtle gradient overlay for depth */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  ) : (
+                    <section className="space-y-4">
+                      <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                        Strategy & Execution
+                      </h3>
+                      {isAlwaysOnCaseStudy ? (
+                        <div className="space-y-4 text-white/80 leading-relaxed text-base md:text-lg">
+                          <p>
+                            We implemented a strategic monthly influencer engagement program across
+                            Honeywell&apos;s diverse product range. This always-on approach enabled
+                            food content creators to develop compelling recipes and content that
+                            naturally highlighted each product&apos;s unique selling propositions.
+                          </p>
+                          <p>
+                            The long-term monthly engagement model was specifically designed to
+                            foster deeper relationships with our influencer network, positioning
+                            them as authentic brand ambassadors and creating ongoing value beyond
+                            individual campaign activations.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                            The team created and executed a full blown marketing campaign to
+                            announce the relaunch, it featured a full content strategy, launch
+                            event, digital, experiential and influencer marketing. selected food and
+                            lifestyle creators received a box from Honeywell branded
+                            &quot;You&apos;ve Been Served&quot;.
+                          </p>
+
+                          {/* First YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="aB1bZp1JdMA"
+                              title="Honeywell Relaunch Campaign Video"
+                              className="w-full"
+                            />
+                          </div>
+
+                          {/* Second YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="https://www.youtube.com/watch?v=bZOF1be3uIE"
+                              title="Honeywell Relaunch Campaign Video 2"
+                              className="w-full"
+                            />
+                          </div>
+
+                          {/* Third YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="ZgzUX7vgk28"
+                              title="Honeywell Relaunch Campaign Video 3"
+                              className="w-full"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </section>
+                  )}
                 </>
               )}
 
-            {/* Services Provided - Skip for No Lose Guard, Honeywell, AXA Autoflex and Cleamax campaigns */}
+            {/* Leadway Campaign Details */}
+            {isLeadwayCaseStudy && (
+              <section className="space-y-6 pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                {/* Campaign Overview */}
+                <div className="space-y-4">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold">
+                    Campaign Overview
+                  </h3>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Leadway recognized that summer is peak travel season when young people take
+                    vacations and &quot;baecations.&quot; They needed to capture this seasonal
+                    opportunity by reaching affluent professionals who travel frequently but viewed
+                    insurance as bureaucratic rather than essential.
+                  </p>
+                </div>
+
+                {/* Strategy & Execution Details */}
+                <div className="space-y-4">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold">
+                    Strategy & Execution
+                  </h3>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Jay on air&apos;s lifestyle content and professional demeanor resonated with
+                    Nigeria&apos;s affluent millennials. With 11% engagement rate and 70%
+                    professional audience aged 25-40, he was perfect for positioning Travel
+                    Insurance as a smart business decision. Jay used real travel scenarios to
+                    demonstrate practical benefits.
+                  </p>
+                </div>
+
+                {/* Instagram Video Embed with Play Button */}
+                <div className="mt-8">
+                  <Link
+                    href="https://www.instagram.com/p/C_QwYLrIdCy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative w-full rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl group cursor-pointer"
+                  >
+                    {/* Video Cover Image */}
+                    <div className="relative w-full h-[400px] md:h-[500px]">
+                      <Image
+                        src="/case-studies/Influencer 3.webp"
+                        alt="Leadway Travel Insurance Campaign Video"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 90vw"
+                        className="object-cover"
+                        quality={85}
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 group-hover:via-black/40 transition-all duration-300" />
+
+                      {/* Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-20 h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 transform group-hover:scale-110">
+                          <svg
+                            className="w-10 h-10 md:w-12 md:h-12 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Instagram Embed (hidden by default, can be shown on interaction) */}
+                  <div
+                    className="mt-8 hidden"
+                    id="instagram-embed-container"
+                  >
+                    <InstagramEmbed
+                      postUrl="https://www.instagram.com/p/C_QwYLrIdCy/"
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Services Provided - Skip for No Lose Guard and AXA Autoflex campaigns */}
             {!isNoLoseGuardCaseStudy &&
-              !isHoneywellRelaunchCaseStudy &&
               !isAxaAutoflexCaseStudy &&
-              !isCleamaxCaseStudy && (
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
                 <section className="space-y-4">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
                     Services Provided
@@ -488,11 +755,67 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 </section>
               )}
 
-            {/* Campaign Influencers - Only show for non-special case studies */}
-            {!isHoneywellRelaunchCaseStudy &&
+            {/* Campaign Influencers - Show for both campaigns */}
+            {isAlwaysOnCaseStudy && caseStudy.images && caseStudy.images.length > 0 && (
+              <section className="space-y-6 pt-4 border-t border-white/10">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
+                  Campaign Influencers
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
+                  {caseStudy.images.map((imagePath, imgIndex) => {
+                    // Extract name from image path
+                    const getImageName = (path: string) => {
+                      const filename = path.replace('/case-studies/', '').replace('.webp', '');
+                      // Return the filename as-is for influencer names
+                      return filename;
+                    };
+
+                    const imageName = getImageName(imagePath);
+
+                    return (
+                      <div
+                        key={imgIndex}
+                        className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer"
+                      >
+                        <Image
+                          src={
+                            imagePath.includes(' ') ||
+                            imagePath.includes("'") ||
+                            imagePath.includes('\u2019')
+                              ? imagePath
+                                  .split('/')
+                                  .map(part => (part ? encodeURIComponent(part) : ''))
+                                  .join('/')
+                              : imagePath
+                          }
+                          alt={imageName}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33.33vw, 20vw"
+                          className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                          quality={75}
+                        />
+                        {/* Gradient overlay for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                        {/* Name at bottom center */}
+                        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-center">
+                          <p className="text-white text-xs sm:text-sm md:text-base font-semibold drop-shadow-lg">
+                            {imageName}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* Campaign Influencers - Only show for relaunch campaign */}
+            {!isAlwaysOnCaseStudy &&
+              !isLeadwayCaseStudy &&
               !isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
-              !isCleamaxCaseStudy && (
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
                 <section className="space-y-6 pt-4 border-t border-white/10">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
                     Campaign Influencers
@@ -744,346 +1067,429 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 </section>
               )}
 
-            {/* Platforms & Location - Only show for non-special case studies */}
-            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {/* Platforms */}
-                <section className="space-y-4">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Platforms</h3>
-                  <div className="flex items-center gap-4">
-                    {/* Instagram Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="Instagram"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+            {/* Platforms & Location - Only show for non-Leadway case studies */}
+            {!isLeadwayCaseStudy &&
+              !isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  {/* Platforms */}
+                  <section className="space-y-4">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Platforms</h3>
+                    <div className="flex items-center gap-4">
+                      {/* Instagram Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="Instagram"
                       >
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                      </svg>
-                    </a>
-                    {/* TikTok Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="TikTok"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                      </a>
+                      {/* TikTok Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="TikTok"
                       >
-                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-                      </svg>
-                    </a>
-                    {/* YouTube Icon */}
-                    <a
-                      href="#"
-                      className="text-white/80 hover:text-purple-400 transition-colors"
-                      aria-label="YouTube"
-                    >
-                      <svg
-                        className="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                        </svg>
+                      </a>
+                      {/* YouTube Icon */}
+                      <a
+                        href="#"
+                        className="text-white/80 hover:text-purple-400 transition-colors"
+                        aria-label="YouTube"
                       >
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                      </svg>
-                    </a>
-                  </div>
-                </section>
+                        <svg
+                          className="w-8 h-8"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                      </a>
+                    </div>
+                  </section>
 
-                {/* Location */}
-                <section className="space-y-4">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Location</h3>
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">🇳🇬</span>
-                    <p className="text-white/80 text-base md:text-lg">Nigeria</p>
-                  </div>
-                </section>
-              </div>
-            )}
+                  {/* Location */}
+                  <section className="space-y-4">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Location</h3>
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">🇳🇬</span>
+                      <p className="text-white/80 text-base md:text-lg">Nigeria</p>
+                    </div>
+                  </section>
+                </div>
+              )}
 
-            {/* Impact - Skip for AXA Autoflex and Cleamax campaigns (have Results section instead) */}
-            {!isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
+            {/* Results - For Leadway case study */}
+            {isLeadwayCaseStudy && (
               <section className="space-y-4 pt-4 border-t border-white/10">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
-                <div className="space-y-3">
-                  {isHoneywellRelaunchCaseStudy ? (
-                    <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                      Over 70M+ total impressions with comprehensive relaunch campaign
-                    </p>
-                  ) : isNoLoseGuardCaseStudy ? (
-                    <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                      Successfully ignited vital conversations about preparedness, with millions of
-                      impressions and widespread online discussion
-                    </p>
-                  ) : (
-                    <>
-                      <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                        Over 1M organic views without paid boost, sparking nationwide conversations.
-                      </p>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Exceptional value for mass education
-                      </p>
-                    </>
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Results</h3>
+                <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {caseStudy.metrics?.views && (
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          {caseStudy.metrics.views}
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Views</div>
+                      </div>
+                    )}
+                    {caseStudy.metrics?.likes && (
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          {caseStudy.metrics.likes}
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Likes</div>
+                      </div>
+                    )}
+                    {caseStudy.metrics?.comments && (
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          {caseStudy.metrics.comments}
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Comments</div>
+                      </div>
+                    )}
+                    {caseStudy.metrics?.saves && (
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          {caseStudy.metrics.saves}
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Saves</div>
+                      </div>
+                    )}
+                  </div>
+                  {caseStudy.metrics?.impact && (
+                    <div className="mt-6 pt-4 border-t border-white/10">
+                      <div className="text-center">
+                        <div className="text-lg md:text-xl font-semibold text-white mb-2">
+                          Impact
+                        </div>
+                        <div className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                          {caseStudy.metrics.impact}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               </section>
             )}
 
-            {/* Honeywell Relaunch Campaign - Folagade Banks Section */}
-            {isHoneywellRelaunchCaseStudy && (
-              <>
-                <section className="space-y-6 pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
-                    Honeywell Relaunch Sustenance X Folagade Banks
-                  </h3>
-
-                  {/* Content Section - FULL WIDTH */}
-                  <div className="w-full space-y-6">
-                    {/* Strategy & Execution */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">
-                        Strategy & Execution
-                      </h4>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Folagade Banks&apos; &quot;Mama Deola&quot; character commanded 1.8M
-                        impressions with 18.52% engagement and a 63.61% female audience - perfect
-                        for reaching Nigerian households. His authentic, humorous approach directly
-                        addressed the packaging concerns while demonstrating product quality.
+            {/* Impact - Skip for No Lose Guard and AXA Autoflex campaigns (have Results section instead) */}
+            {!isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
+                <section className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
+                  <div className="space-y-3">
+                    {isAlwaysOnCaseStudy ? (
+                      <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                        Over 6M organic views Monthly
                       </p>
-                    </div>
+                    ) : isLeadwayCaseStudy ? (
+                      <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                        450+ policy inquiries within 48 hours
+                      </p>
+                    ) : (
+                      <>
+                        <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                          Over 1M organic views without paid boost, sparking nationwide
+                          conversations.
+                        </p>
+                        <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                          Exceptional value for mass education
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </section>
+              )}
 
-                    {/* Results - Highlighted Section */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">Results</h4>
-                      <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              1M+
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Views</div>
-                          </div>
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              113K
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Likes</div>
-                          </div>
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              7K
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Comments</div>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-purple-400/20">
-                          <div className="text-lg md:text-xl font-semibold text-white mb-2">
-                            78% reduction in counterfeit inquiries
+            {/* Honeywell Relaunch Sustenance X Folagade Banks - Only for relaunch campaign */}
+            {caseStudy.id === 'honeywell-relaunch-campaign' && (
+              <section className="space-y-6 pt-8 md:pt-12 border-t border-white/10">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
+                  Honeywell Relaunch Sustenance X Folagade Banks
+                </h3>
+
+                {/* Content Section - FULL WIDTH */}
+                <div className="w-full space-y-6">
+                  {/* Campaign Overview */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">
+                      Campaign Overview
+                    </h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Honeywell redesigned their product packaging but customers thought the new
+                      packs were counterfeit, leading to widespread confusion and sales decline.
+                      With Nigeria in the heat of a counterfeit product crisis, the brand needed
+                      immediate damage control and consumer education to restore trust.
+                    </p>
+                  </div>
+
+                  {/* Strategy & Execution */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">
+                      Strategy & Execution
+                    </h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Folagade Banks&apos; &quot;Mama Deola&quot; character commanded 1.8M
+                      impressions with 18.52% engagement and a 63.61% female audience - perfect for
+                      reaching Nigerian households. His authentic, humorous approach directly
+                      addressed the packaging concerns while demonstrating product quality.
+                    </p>
+                  </div>
+
+                  {/* Instagram Video */}
+                  <div className="space-y-4">
+                    <Link
+                      href="https://www.instagram.com/reels/DGfknE6oYLw/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative w-full rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl group cursor-pointer"
+                    >
+                      {/* Video Cover Image */}
+                      <div className="relative w-full h-[400px] md:h-[500px]">
+                        <Image
+                          src="/case-studies/Influencer 17.webp"
+                          alt="Honeywell Relaunch Campaign Video"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 90vw"
+                          className="object-cover object-top"
+                          quality={85}
+                        />
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 group-hover:via-black/40 transition-all duration-300" />
+
+                        {/* Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-20 h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 transform group-hover:scale-110">
+                            <svg
+                              className="w-10 h-10 md:w-12 md:h-12 text-white ml-1"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                            </svg>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
-                    {/* Impact */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">Impact</h4>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Over 1M organic views without paid boost, sparking nationwide conversations.
-                        Exceptional value for mass education.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Honeywell Relaunch Sustenance X Omoba */}
-                <section className="space-y-6 pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
-                    Honeywell Relaunch Sustenance X Omoba
-                  </h3>
-
-                  {/* Image Section - Under heading */}
-                  <div className="mb-6 sm:mb-8">
-                    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
-                      <Image
-                        src="/case-studies/Influncer%20t.webp"
-                        alt="Omoba"
-                        fill
-                        sizes="100vw"
-                        className="object-cover"
-                        quality={85}
-                        priority
-                      />
-                      {/* Black overlay */}
-                      <div className="absolute inset-0 bg-black/40" />
+                    {/* Instagram Embed (hidden by default, can be shown on interaction) */}
+                    <div
+                      className="mt-8 hidden"
+                      id="instagram-embed-container-honeywell"
+                    >
+                      <InstagramEmbed postUrl="https://www.instagram.com/reels/DGfknE6oYLw/" />
                     </div>
                   </div>
 
-                  {/* Content Section - FULL WIDTH */}
-                  <div className="w-full space-y-6">
-                    {/* Strategy & Execution */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">
-                        Strategy & Execution
-                      </h4>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Omoba&apos;s authentic storytelling and her highly engaging audience was
-                        perfect for reaching Nigerian households. Her authentic, humorous skit
-                        approach directly addressed the product redesign while resounding product
-                        quality.
-                      </p>
-                    </div>
-
-                    {/* Results - Highlighted Section */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">Results</h4>
-                      <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              850K+
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Views</div>
-                          </div>
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              30K
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Likes</div>
-                          </div>
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              1K
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Comments</div>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-purple-400/20">
-                          <div className="text-lg md:text-xl font-semibold text-white mb-2">
-                            78% reduction in counterfeit inquiries
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Impact */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg md:text-xl text-white font-semibold">Impact</h4>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Over 1M organic views without paid boost, sparking nationwide conversations.
-                        Exceptional value for mass education.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Relaunch Campaign Results */}
-                {(caseStudy.metrics?.totalImpression ||
-                  caseStudy.metrics?.reach ||
-                  caseStudy.metrics?.totalEngagement ||
-                  caseStudy.metrics?.engagementRate) && (
-                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-4 border-t border-white/10">
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
-                      Campaign Results
-                    </h3>
+                  {/* Results - Highlighted Section */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">Results</h4>
                     <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {caseStudy.metrics?.totalImpression && (
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              {caseStudy.metrics.totalImpression}
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">
-                              Total Impressions
-                            </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            1M+
                           </div>
-                        )}
-                        {caseStudy.metrics?.reach && (
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              {caseStudy.metrics.reach}
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">Reach</div>
+                          <div className="text-white/70 text-sm md:text-base">Views</div>
+                        </div>
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            113K
                           </div>
-                        )}
-                        {caseStudy.metrics?.totalEngagement && (
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              {caseStudy.metrics.totalEngagement}
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">
-                              Total Engagement
-                            </div>
+                          <div className="text-white/70 text-sm md:text-base">Likes</div>
+                        </div>
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            7K
                           </div>
-                        )}
-                        {caseStudy.metrics?.engagementRate && (
-                          <div className="text-center md:text-left">
-                            <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                              {caseStudy.metrics.engagementRate}
-                            </div>
-                            <div className="text-white/70 text-sm md:text-base">
-                              Engagement Rate
-                            </div>
-                          </div>
-                        )}
+                          <div className="text-white/70 text-sm md:text-base">Comments</div>
+                        </div>
+                      </div>
+                      <div className="pt-4 border-t border-purple-400/20">
+                        <div className="text-lg md:text-xl font-semibold text-white mb-2">
+                          78% reduction in counterfeit inquiries
+                        </div>
                       </div>
                     </div>
-                  </section>
-                )}
-              </>
+                  </div>
+
+                  {/* Impact */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">Impact</h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Over 1M organic views without paid boost, sparking nationwide conversations.
+                      Exceptional value for mass education.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Honeywell Relaunch Sustenance X Omoba - Only for relaunch campaign */}
+            {caseStudy.id === 'honeywell-relaunch-campaign' && (
+              <section className="space-y-6 pt-8 md:pt-12 border-t border-white/10">
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-6">
+                  Honeywell Relaunch Sustenance X Omoba
+                </h3>
+
+                {/* Image Section - Under heading */}
+                <div className="mb-6 sm:mb-8">
+                  <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
+                    <Image
+                      src="/case-studies/Influencer 26.webp"
+                      alt="Omoba"
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                      quality={100}
+                      priority
+                    />
+                    {/* Light overlay for text readability if needed */}
+                    <div className="absolute inset-0 bg-black/10" />
+                  </div>
+                </div>
+
+                {/* Content Section - FULL WIDTH */}
+                <div className="w-full space-y-6">
+                  {/* Campaign Overview */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">
+                      Campaign Overview
+                    </h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Honeywell redesigned their product packaging but customers thought the new
+                      packs were counterfeit, leading to widespread confusion and sales decline.
+                      With Nigeria in the heat of a counterfeit product crisis, the brand needed
+                      immediate damage control and consumer education to restore trust.
+                    </p>
+                  </div>
+
+                  {/* Strategy & Execution */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">
+                      Strategy & Execution
+                    </h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Omoba&apos;s authentic storytelling and her highly engaging audience was
+                      perfect for reaching Nigerian households. Her authentic, humorous skit
+                      approach directly addressed the product redesign while resounding product
+                      quality.
+                    </p>
+                  </div>
+
+                  {/* Results - Highlighted Section */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">Results</h4>
+                    <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            850K+
+                          </div>
+                          <div className="text-white/70 text-sm md:text-base">Views</div>
+                        </div>
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            30K
+                          </div>
+                          <div className="text-white/70 text-sm md:text-base">Likes</div>
+                        </div>
+                        <div className="text-center md:text-left">
+                          <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                            1K
+                          </div>
+                          <div className="text-white/70 text-sm md:text-base">Comments</div>
+                        </div>
+                      </div>
+                      <div className="pt-4 border-t border-purple-400/20">
+                        <div className="text-lg md:text-xl font-semibold text-white mb-2">
+                          78% reduction in counterfeit inquiries
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Impact */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg md:text-xl text-white font-semibold">Impact</h4>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      Over 1M organic views without paid boost, sparking nationwide conversations.
+                      Exceptional value for mass education.
+                    </p>
+                  </div>
+                </div>
+              </section>
             )}
 
             {/* CTA Section - Brand Brief Conversion */}
-            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-              <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
-                <Heading
-                  level={2}
-                  className="text-white text-2xl md:text-3xl mb-4"
-                >
-                  Ready to Create Similar Results?
-                </Heading>
-                <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
-                  Let&apos;s discuss your campaign goals and connect you with the right creators to
-                  bring your vision to life.
-                </p>
-                <Link
-                  href="/brands/brief"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
-                >
-                  Start Your Campaign
-                </Link>
-              </div>
-            </section>
+            {!isVavaFurnitureCaseStudy && (
+              <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
+                  <Heading
+                    level={2}
+                    className="text-white text-2xl md:text-3xl mb-4"
+                  >
+                    Ready to Create Similar Results?
+                  </Heading>
+                  <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
+                    Let&apos;s discuss your campaign goals and connect you with the right creators
+                    to bring your vision to life.
+                  </p>
+                  <Link
+                    href="/brands/brief"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                  >
+                    Start Your Campaign
+                  </Link>
+                </div>
+              </section>
+            )}
 
             {/* Related Content Section */}
-            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-              <Heading
-                level={3}
-                variant="default"
-                className="!text-white text-xl md:text-2xl mb-6"
-              >
-                Explore More
-              </Heading>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/case-studies"
-                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+            {!isVavaFurnitureCaseStudy && (
+              <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                <Heading
+                  level={3}
+                  variant="default"
+                  className="!text-white text-xl md:text-2xl mb-6"
                 >
-                  View All Case Studies
-                </Link>
-                <Link
-                  href="/blog"
-                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
-                >
-                  Read Our Blog
-                </Link>
-              </div>
-            </section>
+                  Explore More
+                </Heading>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    href="/case-studies"
+                    className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                  >
+                    View All Case Studies
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                  >
+                    Read Our Blog
+                  </Link>
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </section>

@@ -113,38 +113,11 @@ export default function OurCreativesContent() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] md:min-h-[60vh] flex items-center w-full overflow-hidden bg-gradient-to-b from-purple-950/30 via-black to-black">
-        {/* Content */}
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-16 md:py-20 lg:py-24 relative z-20 w-full">
-          <div className="max-w-4xl px-4 sm:px-6 md:px-8">
-            <Heading
-              level={1}
-              variant="gradient"
-              className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight"
-            >
-              Our{' '}
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Creatives
-              </span>
-            </Heading>
-            <Text
-              variant="body"
-              color="white"
-              className="text-white text-base sm:text-lg md:text-xl leading-relaxed font-medium drop-shadow-lg"
-            >
-              Explore our collection of social media creative designs, showcasing innovative visual
-              content and campaign designs that bring brands and creators together.
-            </Text>
-          </div>
-        </div>
-      </section>
-
-      {/* Creatives Gallery Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-black">
+      {/* Creatives Gallery Section - Moved to top */}
+      <section className="pt-24 pb-12 md:pb-16 lg:pb-20 bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          {/* Modern Grid Layout - 4 columns for larger images */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+          {/* Modern Grid Layout - Responsive for all devices */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-0">
             {creativeDesigns.map((design, index) => (
               <div
                 key={design.id}
