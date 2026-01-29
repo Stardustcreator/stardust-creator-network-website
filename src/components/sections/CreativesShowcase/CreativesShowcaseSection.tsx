@@ -43,54 +43,56 @@ export default function CreativesShowcaseSection() {
     >
       <div className="container mx-auto px-4 sm:px-6">
         {/* Two-Sided Fading Gallery - Images Only */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-0 mb-8 md:mb-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-8 md:mb-12 max-w-5xl mx-auto">
           {/* Left Side - Fade In/Out */}
-          <div className="relative h-[300px] sm:h-[350px] md:h-[450px] lg:h-[550px] overflow-hidden rounded-2xl md:rounded-l-2xl md:rounded-r-none bg-white/5 border-r-0 border border-white/10">
+          <div className="relative overflow-hidden rounded-l-2xl md:rounded-l-2xl md:rounded-r-none rounded-r-2xl bg-black">
             {leftImages.map((image, index) => (
               <div
                 key={`left-${index}`}
-                className={`absolute inset-0 animate-fade-creative-left flex items-center justify-center`}
+                className={`${index === 0 ? 'relative' : 'absolute inset-0'} animate-fade-creative-left flex items-center justify-center`}
                 style={{
                   animationDelay: `${index * 3}s`,
                   animationDuration: `${leftImages.length * 3}s`,
-                  zIndex: leftImages.length - index, // Ensure proper stacking
-                  opacity: index === 0 ? 1 : 0, // First image starts visible
+                  zIndex: leftImages.length - index,
+                  opacity: index === 0 ? 1 : 0,
                 }}
               >
                 <Image
                   src={image}
                   alt={`Creative design ${index + 1}`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                  className="object-cover w-full h-full"
-                  loading="lazy"
-                  style={{ objectPosition: 'center -15%' }}
+                  width={800}
+                  height={800}
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="w-full h-auto"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  priority={index === 0}
                 />
               </div>
             ))}
           </div>
 
           {/* Right Side - Fade In/Out */}
-          <div className="relative h-[300px] sm:h-[350px] md:h-[450px] lg:h-[550px] overflow-hidden rounded-2xl md:rounded-r-2xl md:rounded-l-none bg-white/5 border-l-0 border border-white/10">
+          <div className="relative overflow-hidden rounded-r-2xl md:rounded-r-2xl md:rounded-l-none rounded-l-2xl bg-black">
             {rightImages.map((image, index) => (
               <div
                 key={`right-${index}`}
-                className={`absolute inset-0 animate-fade-creative-right flex items-center justify-center`}
+                className={`${index === 0 ? 'relative' : 'absolute inset-0'} animate-fade-creative-right flex items-center justify-center`}
                 style={{
                   animationDelay: `${index * 3}s`,
                   animationDuration: `${rightImages.length * 3}s`,
-                  zIndex: rightImages.length - index, // Ensure proper stacking
-                  opacity: index === 0 ? 1 : 0, // First image starts visible
+                  zIndex: rightImages.length - index,
+                  opacity: index === 0 ? 1 : 0,
                 }}
               >
                 <Image
                   src={image}
                   alt={`Creative design ${index + leftImages.length + 1}`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                  className="object-cover w-full h-full"
-                  loading="lazy"
-                  style={{ objectPosition: 'center -15%' }}
+                  width={800}
+                  height={800}
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="w-full h-auto"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  priority={index === 0}
                 />
               </div>
             ))}
