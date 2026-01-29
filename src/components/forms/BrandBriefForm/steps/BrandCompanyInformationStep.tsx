@@ -236,9 +236,6 @@ export default function BrandCompanyInformationStep({
         {/* Email */}
         <div>
           <label className="block text-white text-sm font-medium mb-2">Email *</label>
-          <p className="text-white text-xs opacity-70 mb-2">
-            Use your work email (no Gmail, Outlook, Yahoo, or similar).
-          </p>
           <input
             type="email"
             value={data.email || ''}
