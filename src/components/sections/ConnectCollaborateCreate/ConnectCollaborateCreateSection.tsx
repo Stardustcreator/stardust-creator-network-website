@@ -46,8 +46,7 @@ export default function ConnectCollaborateCreateSection() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 loading="lazy"
-                suppressHydrationWarning
-                unoptimized
+                quality={85}
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/60 via-purple-700/50 to-purple-900/70 group-hover:from-purple-600/70 group-hover:via-purple-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>
@@ -104,8 +103,7 @@ export default function ConnectCollaborateCreateSection() {
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 loading="lazy"
-                suppressHydrationWarning
-                unoptimized
+                quality={85}
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-pink-600/60 via-pink-700/50 to-purple-900/70 group-hover:from-pink-600/70 group-hover:via-pink-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>

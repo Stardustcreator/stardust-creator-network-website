@@ -30,69 +30,27 @@ export const caseStudies: CaseStudy[] = [
     // content will be added later
   },
   {
-    id: 'honeywell-always-on-influencer-marketing',
-    title: 'HONEYWELL ALWAYS ON INFLUENCER MARKETING ENGAGEMENT',
-    images: [
-      '/case-studies/Aramide\u2019s Kitchen.webp',
-      '/case-studies/Ifeth Delight.webp',
-      '/case-studies/Fabulous Nosh Kitchen.webp',
-      '/case-studies/Riaz Kitchens.webp',
-      "/case-studies/Omoye's Cooks.webp",
-      '/case-studies/Foodies Delecty.webp',
-      '/case-studies/Chef AHR.webp',
-      '/case-studies/Favimore Kitchen.webp',
-      '/case-studies/Redgrape Cafe.webp',
-      '/case-studies/Chef Lola.webp',
-    ],
-    logo: '/case-studies/logo honeywell.webp',
-    excerpt:
-      'An always-on influencer marketing strategy that drives consistent engagement and brand awareness through strategic creator partnerships.',
-    client: 'Honeywell',
-    industry: 'Technology',
-    metrics: {
-      totalImpression: '6.4m',
-      reach: '4.65m',
-      engagementRate: '3.69%',
-    },
-    tags: ['Technology', 'Always-On', 'Influencer Marketing'],
-  },
-  {
     id: 'leadway-travel-insurance-campaign',
     title: 'LEADWAY TRAVEL INSURANCE CAMPAIGN',
-    images: ['/case-studies/laye.webp'],
+    images: ['/case-studies/Influencer 19.webp'],
     logo: '/case-studies/leaday.webp',
     excerpt:
-      'A strategic travel insurance campaign that connected Leadway with audiences to drive awareness and engagement.',
+      'A strategic travel insurance campaign that educated young Nigerians traveling abroad about travel insurance while positioning Leadway as the accessible, trusted choice for protection.',
     client: 'Leadway',
     industry: 'Insurance',
     metrics: {
-      views: '300k+',
-      likes: '11.8K',
-      comments: '160K',
+      views: '93k+',
+      likes: '18.3K',
+      comments: '500+',
       saves: '344',
+      impact: '180+ premium inquiries',
     },
     tags: ['Insurance', 'Travel', 'Brand Awareness'],
   },
   {
-    id: 'leadway-no-lose-guard-campaign',
-    title: 'NO LOSE GUARD CAMPAIGN',
-    images: ['/case-studies/laye.webp'],
-    logo: '/case-studies/leaday.webp',
-    excerpt:
-      "A strategic campaign that ignited vital conversations about preparedness in the face of life's uncertainties, effectively raising awareness about the importance of planning ahead with Leadway.",
-    client: 'Leadway',
-    industry: 'Insurance',
-    metrics: {
-      impressionShare: '62%',
-      costPerAcquisition: 'N7,200',
-      returnOnAdSpend: '5.2x',
-    },
-    tags: ['Insurance', 'Brand Awareness', 'Performance'],
-  },
-  {
     id: 'axa-mansard-autoflex-campaign',
     title: 'AXA MANSARD AUTOFLEX',
-    images: ['/case-studies/laye.webp'],
+    images: ['/case-studies/Influencer 19.webp'],
     logo: '/case-studies/axa-logo.webp',
     excerpt:
       'A comprehensive motor insurance campaign aimed at providing flexibility to vehicle owners who are price sensitive but still need comprehensive insurance coverage.',
@@ -120,6 +78,22 @@ export const caseStudies: CaseStudy[] = [
       returnOnAdSpend: '8.9x',
     },
     tags: ['Consumer Goods', 'Cleaning Products', 'Performance'],
+  },
+  {
+    id: 'vava-furniture-campaign',
+    title: 'VAVA\nFURNITURE',
+    images: ['/case-studies/vava-furniture.webp'], // Placeholder - will be updated with actual images
+    logo: '/case-studies/VAVA-Logo.webp',
+    excerpt:
+      'Vava furniture, although being one of the top furniture brands in the country, faced issues with awareness in comparison to its competitors. To combat this and gain more awareness and sales, Vava tasked Intense with coming up with a plan to increase awareness for the brand and generate sales.',
+    client: 'Vava Furniture',
+    industry: 'Home & Living',
+    metrics: {
+      impressionShare: '71%',
+      costPerAcquisition: 'N6,100',
+      returnOnAdSpend: '12.8x',
+    },
+    tags: ['Furniture', 'Home & Living', 'Brand Awareness', 'Performance'],
   },
   // Add more case studies here as needed
 ];

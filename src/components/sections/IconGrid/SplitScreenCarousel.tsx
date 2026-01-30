@@ -46,15 +46,15 @@ export default function SplitScreenCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Main Carousel Container */}
-      <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-[40px] overflow-hidden">
+      <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-[40px] overflow-hidden shadow-2xl">
         {/* Split Screen Layout */}
-        <div className="flex flex-col md:flex-row">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
           {/* Left Side - Visual Placeholder */}
-          <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-[600px]">
+          <div className="w-full flex items-center justify-center">
             {carouselSlides.map((slide, index) => (
               <div
                 key={slide.id}
-                className={`absolute inset-0 ${index === currentSlide ? 'block' : 'hidden'}`}
+                className={`${index === currentSlide ? 'block' : 'hidden'} w-full`}
               >
                 <CarouselVisual
                   slide={slide}
@@ -65,11 +65,11 @@ export default function SplitScreenCarousel() {
           </div>
 
           {/* Right Side - Content */}
-          <div className="w-full md:w-1/2 relative border-t md:border-t-0 md:border-l border-white/10">
+          <div className="w-full flex items-center border-t md:border-t-0 md:border-l border-white/10 rounded-r-[40px] overflow-hidden">
             {carouselSlides.map((slide, index) => (
               <div
                 key={slide.id}
-                className={`${index === currentSlide ? 'block' : 'hidden'}`}
+                className={`${index === currentSlide ? 'block' : 'hidden'} w-full`}
               >
                 <CarouselContent
                   slide={slide}

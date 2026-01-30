@@ -71,15 +71,20 @@ export default function CaseStudiesContent() {
               className="relative w-full h-full overflow-hidden aspect-square bg-black/20"
             >
               <Image
-                src={imagePath}
+                src={
+                  imagePath.includes(' ')
+                    ? imagePath
+                        .split('/')
+                        .map(part => (part ? encodeURIComponent(part) : ''))
+                        .join('/')
+                    : imagePath
+                }
                 alt={`Creator ${index + 1}`}
                 fill
                 sizes="(max-width: 640px) 33.33vw, (max-width: 768px) 16.66vw, 11.11vw"
                 className="object-cover w-full h-full"
                 priority={index < 9}
-                unoptimized={
-                  imagePath.includes(' ') || imagePath.includes('\u2019') || imagePath.includes("'")
-                }
+                quality={index < 9 ? 90 : 75}
               />
             </div>
           ))}

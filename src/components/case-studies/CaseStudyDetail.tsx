@@ -24,6 +24,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
   const isNoLoseGuardCaseStudy = caseStudy.id === 'leadway-no-lose-guard-campaign';
   const isAxaAutoflexCaseStudy = caseStudy.id === 'axa-mansard-autoflex-campaign';
   const isCleamaxCaseStudy = caseStudy.id === 'cleamax-campaign';
+  const isVavaFurnitureCaseStudy = caseStudy.id === 'vava-furniture-campaign';
 
   // Ensure we have required data (only check images for case studies that require them)
   if (
@@ -32,6 +33,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
     !isNoLoseGuardCaseStudy &&
     !isAxaAutoflexCaseStudy &&
     !isCleamaxCaseStudy &&
+    !isVavaFurnitureCaseStudy &&
     (!caseStudy.images || caseStudy.images.length === 0)
   ) {
     return (
@@ -397,6 +399,98 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   themselves as the accessible, trusted choice for protection.
                 </p>
               </section>
+            ) : isVavaFurnitureCaseStudy ? (
+              <>
+                <section className="mt-8 space-y-4">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Campaign Overview
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Vava furniture, although being one of the top furniture brands in the country,
+                    faced issues with awareness in comparison to its competitors. To combat this and
+                    gain more awareness and sales, Vava tasked Intense with coming up with a plan to
+                    increase awareness for the brand and generate sales.
+                  </p>
+                </section>
+
+                {/* Our Solution Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Our Solution
+                  </h2>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    To achieve the brand&apos;s goals, we launched a 3-month 360 marketing campaign
+                    with the creative idea &apos;Vava For Everyone&apos;, letting the audience know
+                    that Vava had a furniture piece for every lifestyle and setting. To amplify our
+                    messaging, the campaign was deployed across digital and traditional channels
+                    which included Television, Radio
+                  </p>
+
+                  {/* YouTube Video */}
+                  <div className="mt-8">
+                    <YouTubeEmbed
+                      videoId="IMdnRyZLgIw"
+                      title="Vava For Everyone Campaign Video"
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Campaign Metrics */}
+                  <div className="mt-8 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
+                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 text-center">
+                      CAMPAIGN METRICS
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          71%
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Achieved Impression Share
+                        </div>
+                      </div>
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          N6,100
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Cost Per Acquisition
+                        </div>
+                      </div>
+                      <div className="text-center md:text-left">
+                        <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
+                          12.8x
+                        </div>
+                        <div className="text-white/70 text-sm md:text-base">
+                          Return On Ad Spend (ROAS)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Section - Brand Brief Conversion */}
+                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                    <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
+                      <Heading
+                        level={2}
+                        className="text-white text-2xl md:text-3xl mb-4"
+                      >
+                        Ready to Create Similar Results?
+                      </Heading>
+                      <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
+                        Let&apos;s discuss your campaign goals and connect you with the right
+                        creators to bring your vision to life.
+                      </p>
+                      <Link
+                        href="/brands/brief"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                      >
+                        Start Your Campaign
+                      </Link>
+                    </div>
+                  </section>
+                </section>
+              </>
             ) : (
               <section className="mt-8 space-y-4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
@@ -427,117 +521,239 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             )}
 
             {/* Strategy & Execution - Grid Layout for Leadway, Standard for others */}
-            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
-              <>
-                {isLeadwayCaseStudy ? (
-                  <section className="pt-8 md:pt-12 mt-8 md:mt-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                      {/* Content - Left Side */}
-                      <div className="space-y-3 order-2 lg:order-1 lg:pt-8 md:pt-6">
-                        <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3 md:mb-4">
-                          Strategy & Execution
-                        </h2>
-                        <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                          Layi Wasabi&apos;s comedy-education blend made complex topics digestible
-                          for millennials/Gen Z. His consistent 2.7%+ engagement rates were ideal
-                          for explaining insurance benefits. We deployed his signature comedic
-                          storytelling across Instagram and TikTok to maximize reach and
-                          platform-specific engagement.
-                        </p>
-                      </div>
-
-                      {/* Image - Right Side */}
-                      {caseStudy.images && caseStudy.images.length > 0 && (
-                        <div className="order-1 lg:order-2">
-                          <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
-                            <Image
-                              src={caseStudy.images[0]}
-                              alt={caseStudy.title}
-                              fill
-                              sizes="(max-width: 1024px) 100vw, 50vw"
-                              className="object-cover"
-                              quality={95}
-                              priority
-                              unoptimized={caseStudy.images[0].includes(' ')}
-                            />
-                            {/* Subtle gradient overlay for depth */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                          </div>
+            {!isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
+                <>
+                  {isLeadwayCaseStudy ? (
+                    <section className="pt-8 md:pt-12 mt-8 md:mt-12">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                        {/* Content - Left Side */}
+                        <div className="space-y-3 order-2 lg:order-1 lg:pt-8 md:pt-6">
+                          <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3 md:mb-4">
+                            Strategy & Execution
+                          </h2>
+                          <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                            Layi Wasabi&apos;s comedy-education blend made complex topics digestible
+                            for millennials/Gen Z. His consistent 2.7%+ engagement rates were ideal
+                            for explaining insurance benefits. We deployed his signature comedic
+                            storytelling across Instagram and TikTok to maximize reach and
+                            platform-specific engagement.
+                          </p>
                         </div>
-                      )}
-                    </div>
-                  </section>
-                ) : (
-                  <section className="space-y-4">
-                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
-                      Strategy & Execution
-                    </h3>
-                    {isAlwaysOnCaseStudy ? (
-                      <div className="space-y-4 text-white/80 leading-relaxed text-base md:text-lg">
-                        <p>
-                          We implemented a strategic monthly influencer engagement program across
-                          Honeywell&apos;s diverse product range. This always-on approach enabled
-                          food content creators to develop compelling recipes and content that
-                          naturally highlighted each product&apos;s unique selling propositions.
-                        </p>
-                        <p>
-                          The long-term monthly engagement model was specifically designed to foster
-                          deeper relationships with our influencer network, positioning them as
-                          authentic brand ambassadors and creating ongoing value beyond individual
-                          campaign activations.
-                        </p>
+
+                        {/* Image - Right Side */}
+                        {caseStudy.images && caseStudy.images.length > 0 && (
+                          <div className="order-1 lg:order-2">
+                            <div className="relative w-full h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl">
+                              <Image
+                                src={
+                                  caseStudy.images[0].includes(' ')
+                                    ? caseStudy.images[0]
+                                        .split('/')
+                                        .map(part => (part ? encodeURIComponent(part) : ''))
+                                        .join('/')
+                                    : caseStudy.images[0]
+                                }
+                                alt={caseStudy.title}
+                                fill
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                                className="object-cover"
+                                quality={85}
+                                priority
+                              />
+                              {/* Subtle gradient overlay for depth */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        The team created and executed a full blown marketing campaign to announce
-                        the relaunch, it featured a full content strategy, launch event, digital,
-                        experiential and influencer marketing. selected food and lifestyle creators
-                        received a box from Honeywell branded &quot;You&apos;ve Been Served&quot;.
-                      </p>
-                    )}
-                  </section>
-                )}
-              </>
+                    </section>
+                  ) : (
+                    <section className="space-y-4">
+                      <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                        Strategy & Execution
+                      </h3>
+                      {isAlwaysOnCaseStudy ? (
+                        <div className="space-y-4 text-white/80 leading-relaxed text-base md:text-lg">
+                          <p>
+                            We implemented a strategic monthly influencer engagement program across
+                            Honeywell&apos;s diverse product range. This always-on approach enabled
+                            food content creators to develop compelling recipes and content that
+                            naturally highlighted each product&apos;s unique selling propositions.
+                          </p>
+                          <p>
+                            The long-term monthly engagement model was specifically designed to
+                            foster deeper relationships with our influencer network, positioning
+                            them as authentic brand ambassadors and creating ongoing value beyond
+                            individual campaign activations.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                            The team created and executed a full blown marketing campaign to
+                            announce the relaunch, it featured a full content strategy, launch
+                            event, digital, experiential and influencer marketing. selected food and
+                            lifestyle creators received a box from Honeywell branded
+                            &quot;You&apos;ve Been Served&quot;.
+                          </p>
+
+                          {/* First YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="aB1bZp1JdMA"
+                              title="Honeywell Relaunch Campaign Video"
+                              className="w-full"
+                            />
+                          </div>
+
+                          {/* Second YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="https://www.youtube.com/watch?v=bZOF1be3uIE"
+                              title="Honeywell Relaunch Campaign Video 2"
+                              className="w-full"
+                            />
+                          </div>
+
+                          {/* Third YouTube Video */}
+                          <div className="mt-8">
+                            <YouTubeEmbed
+                              videoId="ZgzUX7vgk28"
+                              title="Honeywell Relaunch Campaign Video 3"
+                              className="w-full"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </section>
+                  )}
+                </>
+              )}
+
+            {/* Leadway Campaign Details */}
+            {isLeadwayCaseStudy && (
+              <section className="space-y-6 pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                {/* Campaign Overview */}
+                <div className="space-y-4">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold">
+                    Campaign Overview
+                  </h3>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Leadway recognized that summer is peak travel season when young people take
+                    vacations and &quot;baecations.&quot; They needed to capture this seasonal
+                    opportunity by reaching affluent professionals who travel frequently but viewed
+                    insurance as bureaucratic rather than essential.
+                  </p>
+                </div>
+
+                {/* Strategy & Execution Details */}
+                <div className="space-y-4">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold">
+                    Strategy & Execution
+                  </h3>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    Jay on air&apos;s lifestyle content and professional demeanor resonated with
+                    Nigeria&apos;s affluent millennials. With 11% engagement rate and 70%
+                    professional audience aged 25-40, he was perfect for positioning Travel
+                    Insurance as a smart business decision. Jay used real travel scenarios to
+                    demonstrate practical benefits.
+                  </p>
+                </div>
+
+                {/* Instagram Video Embed with Play Button */}
+                <div className="mt-8">
+                  <Link
+                    href="https://www.instagram.com/p/C_QwYLrIdCy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative w-full rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl group cursor-pointer"
+                  >
+                    {/* Video Cover Image */}
+                    <div className="relative w-full h-[400px] md:h-[500px]">
+                      <Image
+                        src="/case-studies/Influencer 3.webp"
+                        alt="Leadway Travel Insurance Campaign Video"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 90vw"
+                        className="object-cover"
+                        quality={85}
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 group-hover:via-black/40 transition-all duration-300" />
+
+                      {/* Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-20 h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 transform group-hover:scale-110">
+                          <svg
+                            className="w-10 h-10 md:w-12 md:h-12 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Instagram Embed (hidden by default, can be shown on interaction) */}
+                  <div
+                    className="mt-8 hidden"
+                    id="instagram-embed-container"
+                  >
+                    <InstagramEmbed
+                      postUrl="https://www.instagram.com/p/C_QwYLrIdCy/"
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              </section>
             )}
 
             {/* Services Provided - Skip for No Lose Guard and AXA Autoflex campaigns */}
-            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
-              <section className="space-y-4">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
-                  Services Provided
-                </h3>
-                <ul className="space-y-2 text-white/80">
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Influencers sourcing and engagement</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Content strategy management</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Creative direction</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Timeline management</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Legal and usage rights management</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Payment management</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">•</span>
-                    <span>Campaign tracking and reporting</span>
-                  </li>
-                </ul>
-              </section>
-            )}
+            {!isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
+                <section className="space-y-4">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+                    Services Provided
+                  </h3>
+                  <ul className="space-y-2 text-white/80">
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Influencers sourcing and engagement</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Content strategy management</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Creative direction</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Timeline management</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Legal and usage rights management</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Payment management</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-400 mr-2">•</span>
+                      <span>Campaign tracking and reporting</span>
+                    </li>
+                  </ul>
+                </section>
+              )}
 
             {/* Campaign Influencers - Show for both campaigns */}
             {isAlwaysOnCaseStudy && caseStudy.images && caseStudy.images.length > 0 && (
@@ -562,16 +778,21 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer"
                       >
                         <Image
-                          src={imagePath}
+                          src={
+                            imagePath.includes(' ') ||
+                            imagePath.includes("'") ||
+                            imagePath.includes('\u2019')
+                              ? imagePath
+                                  .split('/')
+                                  .map(part => (part ? encodeURIComponent(part) : ''))
+                                  .join('/')
+                              : imagePath
+                          }
                           alt={imageName}
                           fill
                           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33.33vw, 20vw"
                           className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                          unoptimized={
-                            imagePath.includes(' ') ||
-                            imagePath.includes("'") ||
-                            imagePath.includes('\u2019')
-                          }
+                          quality={75}
                         />
                         {/* Gradient overlay for text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -593,7 +814,8 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
               !isLeadwayCaseStudy &&
               !isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
-              !isCleamaxCaseStudy && (
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
                 <section className="space-y-6 pt-4 border-t border-white/10">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
                     Campaign Influencers
@@ -603,12 +825,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Omoye Cooks */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/omoye Cooks.webp"
+                        src="/case-studies/omoye%20Cooks.webp"
                         alt="Omoye Cooks"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -623,12 +845,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* D360 Cuisine */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/d360 Cuisine.webp"
+                        src="/case-studies/d360%20Cuisine.webp"
                         alt="D360 Cuisine"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -643,12 +865,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Chef Lizz */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Chef Lizz.webp"
+                        src="/case-studies/Chef%20Lizz.webp"
                         alt="Chef Lizz"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -668,7 +890,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -684,12 +906,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Joy Etor */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Joy Etor.webp"
+                        src="/case-studies/Joy%20Etor.webp"
                         alt="Joy Etor"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -704,12 +926,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Riaz Kitchen */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Riaz Kitchen.webp"
+                        src="/case-studies/Riaz%20Kitchen.webp"
                         alt="Riaz Kitchen"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -729,7 +951,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -744,12 +966,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Tife Paraeo */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Tife Paraeo.webp"
+                        src="/case-studies/Tife%20Paraeo.webp"
                         alt="Tife Paraeo"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -765,12 +987,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Asy Munchies */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Asy Munchies.webp"
+                        src="/case-studies/Asy%20Munchies.webp"
                         alt="Asy Munchies"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -785,12 +1007,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Cara's Kitchen */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Cara's Kitchen.webp"
+                        src="/case-studies/Cara%27s%20Kitchen.webp"
                         alt="Cara's Kitchen"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -810,7 +1032,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -825,12 +1047,12 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     {/* Your Food Girl */}
                     <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-white/5 border border-blue-500/50 group cursor-pointer">
                       <Image
-                        src="/case-studies/Your Food Girl.webp"
+                        src="/case-studies/Your%20Food%20Girl.webp"
                         alt="Your Food Girl"
                         fill
                         sizes="(max-width: 640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                        unoptimized
+                        quality={75}
                       />
                       {/* Gradient overlay for text readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -849,7 +1071,8 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             {!isLeadwayCaseStudy &&
               !isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
-              !isCleamaxCaseStudy && (
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {/* Platforms */}
                   <section className="space-y-4">
@@ -950,36 +1173,52 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       </div>
                     )}
                   </div>
+                  {caseStudy.metrics?.impact && (
+                    <div className="mt-6 pt-4 border-t border-white/10">
+                      <div className="text-center">
+                        <div className="text-lg md:text-xl font-semibold text-white mb-2">
+                          Impact
+                        </div>
+                        <div className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                          {caseStudy.metrics.impact}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </section>
             )}
 
             {/* Impact - Skip for No Lose Guard and AXA Autoflex campaigns (have Results section instead) */}
-            {!isNoLoseGuardCaseStudy && !isAxaAutoflexCaseStudy && !isCleamaxCaseStudy && (
-              <section className="space-y-4 pt-4 border-t border-white/10">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
-                <div className="space-y-3">
-                  {isAlwaysOnCaseStudy ? (
-                    <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                      Over 6M organic views Monthly
-                    </p>
-                  ) : isLeadwayCaseStudy ? (
-                    <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                      450+ policy inquiries within 48 hours
-                    </p>
-                  ) : (
-                    <>
+            {!isNoLoseGuardCaseStudy &&
+              !isAxaAutoflexCaseStudy &&
+              !isCleamaxCaseStudy &&
+              !isVavaFurnitureCaseStudy && (
+                <section className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
+                  <div className="space-y-3">
+                    {isAlwaysOnCaseStudy ? (
                       <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
-                        Over 1M organic views without paid boost, sparking nationwide conversations.
+                        Over 6M organic views Monthly
                       </p>
-                      <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                        Exceptional value for mass education
+                    ) : isLeadwayCaseStudy ? (
+                      <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                        450+ policy inquiries within 48 hours
                       </p>
-                    </>
-                  )}
-                </div>
-              </section>
-            )}
+                    ) : (
+                      <>
+                        <p className="text-white/80 leading-relaxed font-semibold text-base md:text-lg">
+                          Over 1M organic views without paid boost, sparking nationwide
+                          conversations.
+                        </p>
+                        <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                          Exceptional value for mass education
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </section>
+              )}
 
             {/* Honeywell Relaunch Sustenance X Folagade Banks - Only for relaunch campaign */}
             {caseStudy.id === 'honeywell-relaunch-campaign' && (
@@ -1014,6 +1253,51 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       reaching Nigerian households. His authentic, humorous approach directly
                       addressed the packaging concerns while demonstrating product quality.
                     </p>
+                  </div>
+
+                  {/* Instagram Video */}
+                  <div className="space-y-4">
+                    <Link
+                      href="https://www.instagram.com/reels/DGfknE6oYLw/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative w-full rounded-xl overflow-hidden bg-gray-900 border-2 border-white/20 shadow-2xl group cursor-pointer"
+                    >
+                      {/* Video Cover Image */}
+                      <div className="relative w-full h-[400px] md:h-[500px]">
+                        <Image
+                          src="/case-studies/Influencer 17.webp"
+                          alt="Honeywell Relaunch Campaign Video"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 90vw"
+                          className="object-cover object-top"
+                          quality={85}
+                        />
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black/70 group-hover:via-black/40 transition-all duration-300" />
+
+                        {/* Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-20 h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 transform group-hover:scale-110">
+                            <svg
+                              className="w-10 h-10 md:w-12 md:h-12 text-white ml-1"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {/* Instagram Embed (hidden by default, can be shown on interaction) */}
+                    <div
+                      className="mt-8 hidden"
+                      id="instagram-embed-container-honeywell"
+                    >
+                      <InstagramEmbed postUrl="https://www.instagram.com/reels/DGfknE6oYLw/" />
+                    </div>
                   </div>
 
                   {/* Results - Highlighted Section */}
@@ -1071,17 +1355,16 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 <div className="mb-6 sm:mb-8">
                   <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-900 border border-white/10">
                     <Image
-                      src="/case-studies/Influncer t.webp"
+                      src="/case-studies/Influencer 26.webp"
                       alt="Omoba"
                       fill
                       sizes="100vw"
                       className="object-cover"
                       quality={100}
                       priority
-                      unoptimized
                     />
-                    {/* Black overlay */}
-                    <div className="absolute inset-0 bg-black/40" />
+                    {/* Light overlay for text readability if needed */}
+                    <div className="absolute inset-0 bg-black/10" />
                   </div>
                 </div>
 
@@ -1158,51 +1441,55 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             )}
 
             {/* CTA Section - Brand Brief Conversion */}
-            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-              <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
-                <Heading
-                  level={2}
-                  className="text-white text-2xl md:text-3xl mb-4"
-                >
-                  Ready to Create Similar Results?
-                </Heading>
-                <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
-                  Let&apos;s discuss your campaign goals and connect you with the right creators to
-                  bring your vision to life.
-                </p>
-                <Link
-                  href="/brands/brief"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
-                >
-                  Start Your Campaign
-                </Link>
-              </div>
-            </section>
+            {!isVavaFurnitureCaseStudy && (
+              <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
+                  <Heading
+                    level={2}
+                    className="text-white text-2xl md:text-3xl mb-4"
+                  >
+                    Ready to Create Similar Results?
+                  </Heading>
+                  <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
+                    Let&apos;s discuss your campaign goals and connect you with the right creators
+                    to bring your vision to life.
+                  </p>
+                  <Link
+                    href="/brands/brief"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                  >
+                    Start Your Campaign
+                  </Link>
+                </div>
+              </section>
+            )}
 
             {/* Related Content Section */}
-            <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-              <Heading
-                level={3}
-                variant="default"
-                className="!text-white text-xl md:text-2xl mb-6"
-              >
-                Explore More
-              </Heading>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/case-studies"
-                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+            {!isVavaFurnitureCaseStudy && (
+              <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
+                <Heading
+                  level={3}
+                  variant="default"
+                  className="!text-white text-xl md:text-2xl mb-6"
                 >
-                  View All Case Studies
-                </Link>
-                <Link
-                  href="/blog"
-                  className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
-                >
-                  Read Our Blog
-                </Link>
-              </div>
-            </section>
+                  Explore More
+                </Heading>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    href="/case-studies"
+                    className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                  >
+                    View All Case Studies
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"
+                  >
+                    Read Our Blog
+                  </Link>
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </section>

@@ -34,9 +34,8 @@ export default function CaseStudiesOverviewSection() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-contain rounded-2xl"
-                quality={95}
+                quality={85}
                 priority
-                unoptimized
               />
             </div>
           </div>
