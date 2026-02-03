@@ -24,7 +24,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
   const isNoLoseGuardCaseStudy = caseStudy.id === 'leadway-no-lose-guard-campaign';
   const isAxaAutoflexCaseStudy = caseStudy.id === 'axa-mansard-autoflex-campaign';
   const isCleamaxCaseStudy = caseStudy.id === 'cleamax-campaign';
-  const isVavaFurnitureCaseStudy = caseStudy.id === 'vava-furniture-campaign';
+  const isSoFreshCaseStudy = caseStudy.id === 'so-fresh-salad-campaign';
 
   // Ensure we have required data (only check images for case studies that require them)
   if (
@@ -33,7 +33,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
     !isNoLoseGuardCaseStudy &&
     !isAxaAutoflexCaseStudy &&
     !isCleamaxCaseStudy &&
-    !isVavaFurnitureCaseStudy &&
+    !isSoFreshCaseStudy &&
     (!caseStudy.images || caseStudy.images.length === 0)
   ) {
     return (
@@ -399,96 +399,286 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   themselves as the accessible, trusted choice for protection.
                 </p>
               </section>
-            ) : isVavaFurnitureCaseStudy ? (
+            ) : isSoFreshCaseStudy ? (
               <>
                 <section className="mt-8 space-y-4">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
                     Campaign Overview
                   </h2>
                   <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                    Vava furniture, although being one of the top furniture brands in the country,
-                    faced issues with awareness in comparison to its competitors. To combat this and
-                    gain more awareness and sales, Vava tasked Intense with coming up with a plan to
-                    increase awareness for the brand and generate sales.
+                    The Salad Launch Campaign was designed to scale awareness and drive measurable
+                    actions for So Fresh&apos;s salad offerings. While previous efforts leaned
+                    heavily toward traffic and awareness, this campaign introduced a stronger
+                    conversion-focused strategy to validate demand and optimize performance across
+                    platforms.
+                  </p>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    The campaign ran alongside influencer collaborations and third-party media
+                    placements to reinforce credibility and reach health-conscious audiences.
                   </p>
                 </section>
 
-                {/* Our Solution Section */}
                 <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
-                    Our Solution
+                    Strategy & Execution
                   </h2>
                   <p className="text-white/80 leading-relaxed text-base md:text-lg">
-                    To achieve the brand&apos;s goals, we launched a 3-month 360 marketing campaign
-                    with the creative idea &apos;Vava For Everyone&apos;, letting the audience know
-                    that Vava had a furniture piece for every lifestyle and setting. To amplify our
-                    messaging, the campaign was deployed across digital and traditional channels
-                    which included Television, Radio
+                    The campaign combined paid media, creator marketing, and content distribution
+                    into a unified growth strategy. Key execution pillars included:
                   </p>
 
-                  {/* YouTube Video */}
-                  <div className="mt-8">
-                    <YouTubeEmbed
-                      videoId="IMdnRyZLgIw"
-                      title="Vava For Everyone Campaign Video"
-                      className="w-full"
-                    />
+                  {/* Instagram Reel Embed - First Video */}
+                  <div className="mt-8 mb-8 max-w-2xl mx-auto">
+                    <a
+                      href="https://www.instagram.com/reels/Cpx174zJjy1/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group relative overflow-hidden rounded-xl"
+                    >
+                      <Image
+                        src="/case-studies/so fresh image.webp"
+                        alt="So Fresh Campaign Instagram Reel"
+                        width={800}
+                        height={350}
+                        className="w-full h-auto object-cover"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/90 group-hover:bg-white transition-all duration-300 flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      {/* Instagram Badge */}
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Instagram Reel
+                      </div>
+                    </a>
                   </div>
 
-                  {/* Campaign Metrics */}
-                  <div className="mt-8 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
-                    <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 text-center">
-                      CAMPAIGN METRICS
-                    </h3>
+                  {/* Instagram Post Embed - Second Video */}
+                  <div className="mt-8 mb-8 max-w-2xl mx-auto">
+                    <a
+                      href="https://www.instagram.com/p/CouyMaaL2OJ/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group relative overflow-hidden rounded-xl"
+                    >
+                      <Image
+                        src="/case-studies/so fresh image 2.webp"
+                        alt="So Fresh Campaign Instagram Post"
+                        width={800}
+                        height={280}
+                        className="w-full h-auto object-cover"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/90 group-hover:bg-white transition-all duration-300 flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      {/* Instagram Badge */}
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Instagram Post
+                      </div>
+                    </a>
+                  </div>
+
+                  {/* Instagram Post Embed - Third Video */}
+                  <div className="mt-8 mb-8 max-w-2xl mx-auto">
+                    <a
+                      href="https://www.instagram.com/p/CqH7FxVIBCq/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group relative overflow-hidden rounded-xl"
+                    >
+                      <Image
+                        src="/case-studies/SO FRESH 3.webp"
+                        alt="So Fresh Campaign Instagram Post"
+                        width={800}
+                        height={280}
+                        className="w-full h-auto object-cover"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/90 group-hover:bg-white transition-all duration-300 flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      {/* Instagram Badge */}
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Instagram Post
+                      </div>
+                    </a>
+                  </div>
+
+                  <ul className="list-disc list-inside space-y-3 text-white/80">
+                    <li className="leading-relaxed text-base md:text-lg">
+                      A shift from awareness-heavy campaigns to conversion-optimized paid media
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Platform-specific creative adaptation for Facebook, Instagram, Google Display,
+                      and YouTube
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Strategic influencer selection within health, nutrition, and lifestyle niches
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Third-party editorial placements to strengthen brand trust
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Continuous performance tracking to identify best-performing creatives and
+                      channels
+                    </li>
+                  </ul>
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    This integrated approach ensured both scale and efficiency while gathering
+                    actionable insights for future campaigns.
+                  </p>
+                </section>
+
+                {/* Services Provided Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6 border-t border-white/10">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Services Provided
+                  </h2>
+                  <ul className="list-disc list-inside space-y-3 text-white/80">
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Influencer sourcing and engagement
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Content strategy management
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">Creative direction</li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Timeline and campaign management
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Legal and usage rights management
+                    </li>
+                    <li className="leading-relaxed text-base md:text-lg">Payment management</li>
+                    <li className="leading-relaxed text-base md:text-lg">
+                      Campaign tracking and performance reporting
+                    </li>
+                  </ul>
+                </section>
+
+                {/* Campaign Metrics */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-4 border-t border-white/10">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl mb-6 text-white font-semibold">
+                    Campaign Results
+                  </h2>
+                  <div className="bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 md:p-8 space-y-4 shadow-lg shadow-purple-500/10">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="text-center md:text-left">
                         <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                          71%
+                          4.96M
                         </div>
-                        <div className="text-white/70 text-sm md:text-base">
-                          Achieved Impression Share
-                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Impressions</div>
                       </div>
                       <div className="text-center md:text-left">
                         <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                          N6,100
+                          50.7K
                         </div>
-                        <div className="text-white/70 text-sm md:text-base">
-                          Cost Per Acquisition
-                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Clicks</div>
                       </div>
                       <div className="text-center md:text-left">
                         <div className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                          12.8x
+                          146.59%
                         </div>
-                        <div className="text-white/70 text-sm md:text-base">
-                          Return On Ad Spend (ROAS)
-                        </div>
+                        <div className="text-white/70 text-sm md:text-base">Completion Rate</div>
                       </div>
                     </div>
                   </div>
+                </section>
 
-                  {/* CTA Section - Brand Brief Conversion */}
-                  <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
-                    <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
-                      <Heading
-                        level={2}
-                        className="text-white text-2xl md:text-3xl mb-4"
-                      >
-                        Ready to Create Similar Results?
-                      </Heading>
-                      <p className="text-white/80 mb-6 max-w-2xl mx-auto text-base md:text-lg">
-                        Let&apos;s discuss your campaign goals and connect you with the right
-                        creators to bring your vision to life.
-                      </p>
-                      <Link
-                        href="/brands/brief"
-                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
-                      >
-                        Start Your Campaign
-                      </Link>
-                    </div>
-                  </section>
+                {/* Campaign Impact Section */}
+                <section className="pt-8 md:pt-12 mt-8 md:mt-12 space-y-6 border-t border-white/10">
+                  <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                    These creatives delivered the strongest engagement and click-through performance
+                    across platforms.
+                  </p>
+
+                  <div>
+                    <h3 className="text-2xl md:text-3xl text-white font-semibold mb-4">Impact</h3>
+                    <ul className="list-disc list-inside space-y-3 text-white/80">
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Strong overperformance on impressions and clicks across paid media
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Clear validation of a conversion-led campaign strategy
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Creator-led content reinforced trust and authenticity
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        High engagement achieved without excessive media spend
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Actionable insights generated to improve future campaigns
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl md:text-3xl text-white font-semibold mb-4">
+                      Key Learnings
+                    </h3>
+                    <ul className="list-disc list-inside space-y-3 text-white/80">
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Conversion-focused campaigns deliver clearer business value
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Audience relevance is more important than creator reach
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Always-on tracking is critical for accurate performance measurement
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Blending creator marketing with paid media improves efficiency
+                      </li>
+                      <li className="leading-relaxed text-base md:text-lg">
+                        Data-driven optimization significantly improves ROI
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl md:text-3xl text-white font-semibold mb-4">
+                      Final Takeaway
+                    </h3>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg mb-4">
+                      The So Fresh Salad Campaign demonstrates how a well-structured creator
+                      marketing strategy combined with performance media can drive strong engagement
+                      and measurable results. By prioritizing relevance, authenticity, and
+                      analytics, the campaign successfully delivered awareness at scale while
+                      validating consumer demand.
+                    </p>
+                    <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                      This campaign reinforces a core insight:
+                    </p>
+                    <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-semibold text-lg md:text-xl leading-relaxed mt-2">
+                      Effective creator marketing is not about visibility alone &ndash; it&apos;s
+                      about performance, trust, and results.
+                    </p>
+                  </div>
                 </section>
               </>
             ) : (
@@ -524,7 +714,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             {!isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
               !isCleamaxCaseStudy &&
-              !isVavaFurnitureCaseStudy && (
+              !isSoFreshCaseStudy && (
                 <>
                   {isLeadwayCaseStudy ? (
                     <section className="pt-8 md:pt-12 mt-8 md:mt-12">
@@ -717,7 +907,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             {!isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
               !isCleamaxCaseStudy &&
-              !isVavaFurnitureCaseStudy && (
+              !isSoFreshCaseStudy && (
                 <section className="space-y-4">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
                     Services Provided
@@ -815,7 +1005,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
               !isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
               !isCleamaxCaseStudy &&
-              !isVavaFurnitureCaseStudy && (
+              !isSoFreshCaseStudy && (
                 <section className="space-y-6 pt-4 border-t border-white/10">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4 sm:mb-6">
                     Campaign Influencers
@@ -1072,7 +1262,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
               !isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
               !isCleamaxCaseStudy &&
-              !isVavaFurnitureCaseStudy && (
+              !isSoFreshCaseStudy && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {/* Platforms */}
                   <section className="space-y-4">
@@ -1193,7 +1383,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             {!isNoLoseGuardCaseStudy &&
               !isAxaAutoflexCaseStudy &&
               !isCleamaxCaseStudy &&
-              !isVavaFurnitureCaseStudy && (
+              !isSoFreshCaseStudy && (
                 <section className="space-y-4 pt-4 border-t border-white/10">
                   <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">Impact</h3>
                   <div className="space-y-3">
@@ -1441,7 +1631,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
             )}
 
             {/* CTA Section - Brand Brief Conversion */}
-            {!isVavaFurnitureCaseStudy && (
+            {
               <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
                 <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center">
                   <Heading
@@ -1462,10 +1652,10 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   </Link>
                 </div>
               </section>
-            )}
+            }
 
             {/* Related Content Section */}
-            {!isVavaFurnitureCaseStudy && (
+            {
               <section className="pt-8 md:pt-12 mt-8 md:mt-12 border-t border-white/10">
                 <Heading
                   level={3}
@@ -1489,7 +1679,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                   </Link>
                 </div>
               </section>
-            )}
+            }
           </div>
         </div>
       </section>
