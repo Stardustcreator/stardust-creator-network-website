@@ -14,23 +14,19 @@ import { useRef } from 'react';
  */
 
 const leftImages = [
-  '/creatives/2.webp',
-  '/creatives/3.webp',
-  '/creatives/4.webp',
-  '/creatives/6.webp',
-  '/creatives/7.webp',
-  '/creatives/8.webp',
-  '/creatives/SCN-1Artboard 1 copy 3.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 3.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 4.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 5.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 6.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 7.webp',
 ];
 
 const rightImages = [
-  '/creatives/SCN-1Artboard 1 copy 5.webp',
-  '/creatives/SCN-1Artboard 1 copy 6.webp',
-  '/creatives/SCN-1Artboard 1 copy 7.webp',
-  '/creatives/SCN-1Artboard 1 copy 8.webp',
-  '/creatives/SCN-1Artboard 1 copy 10.webp',
-  '/creatives/SCN-1Artboard 1 copy 11.webp',
-  '/creatives/SCN-1Artboard 1 copy 12.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 8.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 9.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 10.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 11.webp',
+  '/creatives/SCN-1 no logoArtboard 1 copy 12.webp',
 ];
 
 export default function CreativesShowcaseSection() {

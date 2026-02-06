@@ -16,6 +16,10 @@ export interface CaseStudyMetrics {
   impressionShare?: string;
   costPerAcquisition?: string;
   returnOnAdSpend?: string;
+  // So Fresh metrics (salad campaign)
+  impressions?: string;
+  clicks?: string;
+  completionRate?: string;
 }
 
 export interface CaseStudy {

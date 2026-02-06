@@ -80,20 +80,20 @@ export const caseStudies: CaseStudy[] = [
     tags: ['Consumer Goods', 'Cleaning Products', 'Performance'],
   },
   {
-    id: 'vava-furniture-campaign',
-    title: 'VAVA\nFURNITURE',
-    images: ['/case-studies/vava-furniture.webp'], // Placeholder - will be updated with actual images
-    logo: '/case-studies/VAVA-Logo.webp',
+    id: 'so-fresh-salad-campaign',
+    title: 'SO FRESH\nSALAD CAMPAIGN',
+    images: ['/case-studies/so-fresh.webp'],
+    logo: '/case-studies/so-fresh.webp',
     excerpt:
-      'Vava furniture, although being one of the top furniture brands in the country, faced issues with awareness in comparison to its competitors. To combat this and gain more awareness and sales, Vava tasked Intense with coming up with a plan to increase awareness for the brand and generate sales.',
-    client: 'Vava Furniture',
-    industry: 'Home & Living',
+      'A conversion-focused salad campaign that combined paid media, creator marketing, and content distribution to scale awareness and drive measurable actions for So Fresh&apos;s premium salad offerings.',
+    client: 'So Fresh',
+    industry: 'Food & Beverage',
     metrics: {
-      impressionShare: '71%',
-      costPerAcquisition: 'N6,100',
-      returnOnAdSpend: '12.8x',
+      impressions: '4.96M',
+      clicks: '50.7K',
+      completionRate: '146.59%',
     },
-    tags: ['Furniture', 'Home & Living', 'Brand Awareness', 'Performance'],
+    tags: ['Food & Beverage', 'E-Commerce', 'Performance', 'Conversion'],
   },
   // Add more case studies here as needed
 ];

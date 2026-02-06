@@ -67,7 +67,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
             <div className="mb-4 flex justify-start">
               <div
                 className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl p-2 border-2 border-white/20 shadow-xl ${
-                  caseStudy.id === 'vava-furniture-campaign' ? 'bg-white' : 'bg-white/10'
+                  caseStudy.id === 'so-fresh-salad-campaign' ? 'bg-white' : 'bg-white/10'
                 }`}
               >
                 <Image
@@ -291,6 +291,54 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                     className="text-white font-semibold text-sm sm:text-base"
                   >
                     {caseStudy.metrics.returnOnAdSpend}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.impressions && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Impressions
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.impressions}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.clicks && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Clicks
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.clicks}
+                  </Text>
+                </div>
+              )}
+              {caseStudy.metrics.completionRate && (
+                <div>
+                  <Text
+                    variant="small"
+                    className="text-white/60 mb-1 text-xs sm:text-sm"
+                  >
+                    Completion Rate
+                  </Text>
+                  <Text
+                    variant="body"
+                    className="text-white font-semibold text-sm sm:text-base"
+                  >
+                    {caseStudy.metrics.completionRate}
                   </Text>
                 </div>
               )}
