@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { generateMetaTags, generateStructuredData } from '@/lib/seo';
-// Commented out unused imports
-// import { generateOrganizationSchema, generateWebSiteSchema, generateWebPageSchema } from '@/lib/schemaGenerators';
-// import { optimizeLCP, useLCPMetrics, getCriticalCSS } from '@/lib/lcp-optimization';
+import { generateMetaTags, generateStructuredData, generateWebPageSchema } from '@/lib/seo';
 
 // Critical above-the-fold components (load immediately)
 import Header from '@/components/layout/Header/Header';
@@ -42,11 +39,6 @@ const StatisticsDashboardSection = dynamic(
   {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-    loadableGenerated: {
-      webpack: () => [
-        require.resolveWeak('@/components/sections/Statistics/StatisticsDashboardSection'),
-      ],
-    },
   }
 );
 const CaseStudiesSection = dynamic(
@@ -54,17 +46,11 @@ const CaseStudiesSection = dynamic(
   {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-    loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/CaseStudies/CaseStudiesSection')],
-    },
   }
 );
 const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  loadableGenerated: {
-    webpack: () => [require.resolveWeak('@/components/sections/CTA/CTASection')],
-  },
 });
 
 // Page-specific SEO metadata
