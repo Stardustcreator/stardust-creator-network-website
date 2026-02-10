@@ -61,7 +61,7 @@ export const metadata: Metadata = generateMetaTags({
     'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
   image: '/who we are/creators.webp',
   url: '/',
-  keywords: 'creators, network, monetization, collaboration, digital business',
+  tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
   structuredData: {
     '@context': 'https://schema.org',
     ...generateStructuredData.website(),
