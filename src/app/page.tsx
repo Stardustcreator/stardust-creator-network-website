@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { generateMetaTags, generateStructuredData, generateWebPageSchema } from '@/lib/seo';
+import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
 // Critical above-the-fold components (load immediately)
 import Header from '@/components/layout/Header/Header';
@@ -64,11 +64,7 @@ export const metadata: Metadata = generateMetaTags({
   keywords: 'creators, network, monetization, collaboration, digital business',
   structuredData: {
     '@context': 'https://schema.org',
-    ...generateWebPageSchema(
-      'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
-      'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
-      'https://www.stardustcreators.com'
-    ),
+    ...generateStructuredData.website(),
   },
 });
 
