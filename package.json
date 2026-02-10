@@ -44,7 +44,8 @@
     "react-dom": "^18.2.0",
     "sanity": "^3.39.1",
     "schema-dts": "^1.1.5",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
