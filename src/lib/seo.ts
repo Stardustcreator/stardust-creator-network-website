@@ -326,6 +326,134 @@ export function createSlug(text: string): string {
 }
 
 /**
+ * Generate JSON-LD schema for AI and search engine discoverability
+ */
+interface BaseSchemaData {
+  title?: string;
+  author?: string;
+  publishedAt?: string;
+  description?: string;
+}
+
+interface SchemaBase {
+  '@context': string;
+  '@type': string;
+}
+
+interface WebSiteSchema extends SchemaBase {
+  name: string;
+  url: string;
+  description: string;
+  potentialAction?: {
+    '@type': string;
+    target: string;
+    'query-input': string;
+  };
+}
+
+interface OrganizationSchema extends SchemaBase {
+  name: string;
+  url: string;
+  description: string;
+  logo: string;
+  foundingDate: string;
+  sameAs: string[];
+}
+
+interface BlogPostingSchema extends SchemaBase {
+  headline: string;
+  author: {
+    '@type': string;
+    name: string;
+  };
+  publisher: {
+    '@type': string;
+    name: string;
+    logo: string;
+  };
+  datePublished: string;
+  description: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function generateAISchemas(options: {
+  type: 'WebSite' | 'BlogPosting' | 'Article' | 'Organization';
+  data: BaseSchemaData;
+}): WebSiteSchema | OrganizationSchema | BlogPostingSchema {
+  type SchemaType = WebSiteSchema | OrganizationSchema | BlogPostingSchema;
+
+  const baseSchemas = {
+    WebSite: {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site.name,
+      url: site.url,
+      description: site.defaultDescription,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${site.url}/search?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    Organization: {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: site.name,
+      url: site.url,
+      description: site.defaultDescription,
+      logo: absoluteUrl('/logos/scn logo black.png'),
+      foundingDate: '2023',
+      sameAs: [
+        'https://www.instagram.com/stardustcreatornetwork/',
+        'https://www.tiktok.com/@stardustcreatornetwork',
+        'https://www.linkedin.com/company/stardust-creator-network',
+      ],
+    },
+    BlogPosting: {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: options.data.title || '',
+      author: {
+        '@type': 'Person',
+        name: options.data.author || 'Stardust Creator Network',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: site.name,
+        logo: absoluteUrl('/logos/scn logo black.png'),
+      },
+      datePublished: options.data.publishedAt || new Date().toISOString(),
+      description: options.data.description || '',
+    },
+    Article: {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: options.data.title || '',
+      author: {
+        '@type': 'Person',
+        name: options.data.author || 'Stardust Creator Network',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: site.name,
+        logo: absoluteUrl('/logos/scn logo black.png'),
+      },
+      datePublished: options.data.publishedAt || new Date().toISOString(),
+      description: options.data.description || '',
+    },
+  };
+
+  return (
+    baseSchemas[options.type] || {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: site.name,
+      description: site.defaultDescription,
+    }
+  );
+}
+
+/**
  * Truncate text for meta descriptions
  * @param text - The text to truncate
  * @param maxLength - Maximum length (default: 160 for meta descriptions)
