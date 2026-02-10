@@ -1,17 +1,19 @@
-import { NextComponentType } from 'next';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Prioritize critical above-the-fold content loading
 export function optimizeLCP() {
-  // Preload critical resources with enhanced performance strategies
   const preloadLinks = [
     { href: '/hero.webp', as: 'image', type: 'image/webp', fetchpriority: 'high' },
     { href: '/hero.avif', as: 'image', type: 'image/avif', fetchpriority: 'high' },
-    { href: '/fonts/Lato-Regular.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' }
+    {
+      href: '/fonts/Lato-Regular.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous',
+    },
   ];
 
   preloadLinks.forEach(link => {
-    // Only create link if not already preloaded
     if (!document.querySelector(`link[href="${link.href}"][rel="preload"]`)) {
       const preloadLink = document.createElement('link');
       preloadLink.href = link.href;
@@ -20,18 +22,16 @@ export function optimizeLCP() {
       if (link.type) preloadLink.type = link.type;
       if (link.crossOrigin) preloadLink.crossOrigin = link.crossOrigin;
       if (link.fetchpriority) (preloadLink as any).fetchpriority = link.fetchpriority;
-      
-      // Optional: Set a modest timeout to prevent blocking
+
       setTimeout(() => {
         document.head.appendChild(preloadLink);
       }, 10);
     }
   });
 
-  // Aggressive resource hints for potential LCP images
   const resourceHints = [
     { href: 'https://cdn.stardustcreators.com', rel: 'preconnect' },
-    { href: 'https://www.googletagmanager.com', rel: 'dns-prefetch' }
+    { href: 'https://www.googletagmanager.com', rel: 'dns-prefetch' },
   ];
 
   resourceHints.forEach(hint => {
@@ -42,20 +42,32 @@ export function optimizeLCP() {
   });
 }
 
-// Lazy load non-critical content
-export function LazyLoadContent<P = {}>(
-  importFn: () => Promise<{ default: NextComponentType<P> }>,
+// ✅ FINAL: no generics, no JSX, no type conflicts
+export function LazyLoadContent(
+  importFn: () => Promise<{ default: React.ComponentType<any> }>,
   fallback: React.ReactNode = null
 ) {
-  const [Component, setComponent] = useState<NextComponentType<P> | null>(null);
+  const [Component, setComponent] = useState<React.ComponentType<any> | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     importFn().then(module => {
-      setComponent(() => module.default);
+      if (mounted) {
+        setComponent(() => module.default);
+      }
     });
+
+    return () => {
+      mounted = false;
+    };
   }, [importFn]);
 
-  return Component ? <Component /> : fallback;
+  if (!Component) {
+    return fallback as any;
+  }
+
+  return React.createElement(Component);
 }
 
 // Measure and optimize LCP
@@ -63,35 +75,29 @@ export function useLCPMetrics() {
   const [lcp, setLCP] = useState<number | null>(null);
 
   useEffect(() => {
-    if ('performance' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'largest-contentful-paint') {
-            setLCP(entry.startTime);
-            
-            // Log LCP metrics
-            console.log('LCP:', entry.startTime, 'ms');
-            
-            // Aggressive optimization if LCP is slow
-            if (entry.startTime > 2500) {
-              optimizeLCP();
-            }
+    if (typeof window === 'undefined' || !('performance' in window)) return;
+
+    const observer = new PerformanceObserver(list => {
+      for (const entry of list.getEntries()) {
+        if (entry.entryType === 'largest-contentful-paint') {
+          setLCP(entry.startTime);
+
+          if (entry.startTime > 2500) {
+            optimizeLCP();
           }
         }
-      });
+      }
+    });
 
-      observer.observe({ type: 'largest-contentful-paint', buffered: true });
+    observer.observe({ type: 'largest-contentful-paint', buffered: true });
 
-      return () => {
-        observer.disconnect();
-      };
-    }
+    return () => observer.disconnect();
   }, []);
 
   return lcp;
 }
 
-// Inline critical CSS for fastest possible rendering
+// Inline critical CSS
 export function getCriticalCSS(): string {
   return `
     :root { 

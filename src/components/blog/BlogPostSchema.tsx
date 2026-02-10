@@ -1,12 +1,12 @@
 import React from 'react';
-import { StructuredDataInjector } from '../shared/StructuredDataInjector';
+import StructuredDataInjector from '../shared/StructuredDataInjector';
 import { generateArticleSchema, BlogPostSchemaParams } from '@/lib/schemaGenerators';
 
 interface BlogPostSchemaProps extends BlogPostSchemaParams {
   enableJsonLd?: boolean;
 }
 
-export const BlogPostSchema: React.FC<BlogPostSchemaProps> = ({
+const BlogPostSchema: React.FC<BlogPostSchemaProps> = ({
   enableJsonLd = true,
   ...schemaParams
 }) => {
@@ -16,3 +16,5 @@ export const BlogPostSchema: React.FC<BlogPostSchemaProps> = ({
 
   return <StructuredDataInjector schemas={[blogPostSchema]} />;
 };
+
+export default BlogPostSchema;

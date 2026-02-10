@@ -17,10 +17,12 @@ const ConnectCollaborateCreateSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
 const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
+
 const CreatorOsSection = dynamic(
   () => import('@/components/sections/creator-os/CreatorOsSection'),
   {
@@ -28,6 +30,7 @@ const CreatorOsSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
 const CreativesShowcaseSection = dynamic(
   () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
   {
@@ -35,6 +38,7 @@ const CreativesShowcaseSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
 const StatisticsDashboardSection = dynamic(
   () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
   {
@@ -42,6 +46,7 @@ const StatisticsDashboardSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
 const CaseStudiesSection = dynamic(
   () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
   {
@@ -49,12 +54,13 @@ const CaseStudiesSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
 const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
 
-// Page-specific SEO metadata
+// ✅ Page-specific SEO metadata (NO structuredData here)
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
@@ -62,18 +68,15 @@ export const metadata: Metadata = generateMetaTags({
   image: '/who we are/creators.webp',
   url: '/',
   tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
-  structuredData: {
-    '@context': 'https://schema.org',
-    ...generateStructuredData.website(),
-  },
 });
 
 export default function Home() {
+  // ✅ Structured data belongs in JSON-LD scripts, not metadata
   const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
 
   return (
     <>
-      {/* Breadcrumb Structured Data - Deferred, non-blocking */}
+      {/* Breadcrumb Structured Data */}
       <script
         type="application/ld+json"
         defer
@@ -81,8 +84,7 @@ export default function Home() {
           __html: JSON.stringify(breadcrumbData),
         }}
       />
-      {/* Preload only the LCP image (hero) - other images will lazy load */}
-      {/* Hero image is already preloaded in layout.tsx, no need to duplicate */}
+
       {/* Header */}
       <Header />
 
@@ -103,19 +105,19 @@ export default function Home() {
         {/* Icon Grid Features */}
         <IconGridSection />
 
-        {/* Creator Showcase with Analytics */}
+        {/* Creator OS */}
         <CreatorOsSection />
 
         {/* Creatives Showcase */}
         <CreativesShowcaseSection />
 
-        {/* Credibility & Vision Statement */}
+        {/* Credibility & Vision */}
         <StatisticsDashboardSection />
 
-        {/* Case Studies Section */}
+        {/* Case Studies */}
         <CaseStudiesSection />
 
-        {/* Final CTA Section */}
+        {/* CTA */}
         <CTASection />
       </main>
 

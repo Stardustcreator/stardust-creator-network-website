@@ -1,20 +1,27 @@
+'use client';
+
 import React from 'react';
-import { SchemaObject } from 'schema-dts';
-import { jsonLdScriptProps } from 'react-schemaorg';
 
 interface StructuredDataInjectorProps {
-  schemas: SchemaObject[];
+  schemas: Record<string, any>[];
 }
 
-export const StructuredDataInjector: React.FC<StructuredDataInjectorProps> = ({ schemas }) => {
+const StructuredDataInjector: React.FC<StructuredDataInjectorProps> = ({ schemas }) => {
+  if (!schemas || schemas.length === 0) return null;
+
   return (
     <>
       {schemas.map((schema, index) => (
-        <script 
-          key={index} 
-          {...jsonLdScriptProps(schema)} 
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema),
+          }}
         />
       ))}
     </>
   );
 };
+
+export default StructuredDataInjector;

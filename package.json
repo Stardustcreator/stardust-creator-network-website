@@ -2,9 +2,13 @@
   "name": "stardust-creator-network-website",
   "version": "0.1.1",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0 <21.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && next-sitemap && npm run critical-css",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && next-sitemap",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -20,45 +24,24 @@
     "sitemap": "next-sitemap",
     "clean": "rimraf .next out dist",
     "analyze": "cross-env ANALYZE=true npm run build",
-    "analyze:bundles": "cross-env ANALYZE=true npm run build",
-    "check:unused-deps": "depcheck --ignores='@types/*,eslint-*,prettier,@axe-core/*,playwright,vitest,husky,lint-staged,rimraf,cross-env,dotenv-cli'",
-    "check:unused-imports": "unimport --check",
-    "analyze:unused": "node scripts/analyze-unused.js",
-    "optimize": "npm run check:unused-deps && npm run build && npm run critical-css && npm run performance-audit",
-    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && NODE_OPTIONS=--max-old-space-size=4096 npm run build",
-    "studio:deploy": "dotenv -e .env.local -- sanity deploy",
-    "critical-css": "node scripts/critical-css.js",
-    "performance-audit": "lighthouse https://stardustcreators.com --output=json --output-path=./performance-report.json",
-    "performance-optimize": "npm run clean && npm run critical-css && npm run build && npm run performance-audit"
+    "ci": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build",
+    "studio:deploy": "dotenv -e .env.local -- sanity deploy"
   },
   "dependencies": {
-    "@portabletext/react": "^3.2.4",
-    "@portabletext/types": "^2.0.7",
-    "@sanity/icons": "^4.1.4",
-    "@sanity/image-url": "^4.0.2",
-    "@sanity/vision": "^4.0.2",
-    "@sanity/ui": "^2.8.1",
-    "@sanity/preview-url-secret": "^3.0.2",
-    "@sanity/visual-editing": "^4.0.2",
-    "@sanity/client": "^6.17.3",
-    "@sanity/core": "^3.26.0",
-    "@sanity/types": "^4.1.1",
-    "@sanity/migrate": "^4.0.1",
-    "@sentry/nextjs": "^8.0.0",
-    "@supabase/supabase-js": "^2.42.0",
-    "@vercel/analytics": "^1.2.2",
-    "@vercel/og": "^0.6.2",
-    "clsx": "^2.1.0",
-    "googleapis": "^129.0.0",
-    "next": "14.1.0",
+    "@sanity/client": "^6.8.6",
+    "@sanity/vision": "^5.9.0",
+    "@supabase/supabase-js": "^2.95.3",
+    "@vercel/analytics": "^1.6.1",
+    "@vercel/og": "^0.8.6",
+    "clsx": "^2.1.1",
+    "googleapis": "^171.4.0",
+    "next": "^14.1.0",
     "next-sanity": "^11.6.6",
-    "next-sitemap": "^4.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sanity": "^3.39.1",
-    "styled-components": "^6.1.1",
-    "tailwind-merge": "^2.2.2",
-    "zod": "^3.22.4"
+    "schema-dts": "^1.1.5",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
@@ -77,6 +60,7 @@
     "husky": "^9.1.7",
     "lighthouse": "^13.0.2",
     "lint-staged": "^16.2.6",
+    "next-sitemap": "^4.2.3",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "rimraf": "^6.1.0",
@@ -92,9 +76,5 @@
     "*.{json,md,mdx,css,html,yml,yaml}": [
       "prettier --write"
     ]
-  },
-  "engines": {
-    "node": ">=18.17.0 <21.0.0",
-    "npm": ">=8.0.0"
   }
 }
