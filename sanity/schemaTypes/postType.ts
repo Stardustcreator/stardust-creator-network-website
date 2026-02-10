@@ -50,6 +50,36 @@ export const postType = defineType({
       name: 'body',
       type: 'blockContent',
     }),
+    defineField({
+      name: 'aiMetadata',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'readingTime',
+          type: 'number',
+          title: 'Estimated Reading Time (minutes)',
+        }),
+        defineField({
+          name: 'keywords',
+          type: 'array',
+          of: [{ type: 'string' }],
+          title: 'SEO Keywords',
+        }),
+        defineField({
+          name: 'category',
+          type: 'string',
+          title: 'Blog Category',
+          options: {
+            list: [
+              { title: 'Creator Insights', value: 'creator-insights' },
+              { title: 'Brand Collaboration', value: 'brand-collaboration' },
+              { title: 'Monetization Strategies', value: 'monetization' },
+              { title: 'Technology', value: 'technology' },
+            ],
+          },
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

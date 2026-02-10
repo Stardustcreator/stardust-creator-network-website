@@ -160,10 +160,18 @@ Generate beautiful social media images automatically:
 
 ### Performance Budgets
 
-- First Contentful Paint: < 1.5s
-- Largest Contentful Paint: < 2.5s
+- First Contentful Paint: < 1.2s ✨
+- Largest Contentful Paint: < 2.0s 🚀
 - Cumulative Layout Shift: < 0.1
-- Total Blocking Time: < 300ms
+- Total Blocking Time: < 200ms 💡
+
+### Performance Optimization Features
+
+- 🖼️ Multi-format image preloading (WebP, AVIF)
+- 🚀 Aggressive resource hinting
+- ⚡ Critical CSS inlining
+- 📊 Real-time LCP metric tracking
+- 🔍 Automatic performance optimization triggers
 
 ## Security
 

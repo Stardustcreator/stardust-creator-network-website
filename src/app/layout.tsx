@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
+// Commented out unused imports
+// import { StructuredDataInjector } from '@/components/shared/StructuredDataInjector';
+// import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schemaGenerators';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';

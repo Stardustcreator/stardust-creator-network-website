@@ -1,0 +1,35 @@
+{
+    "brandName": "Stardust Creators Network",
+    "brandDescription": "A dynamic platform connecting innovative creators with global brands, fostering collaborative and impactful digital experiences.",
+    "primaryServices": [
+        "Creator Network Management",
+        "Brand Collaboration Solutions",
+        "Digital Content Strategy",
+        "Influencer Marketing"
+    ],
+    "targetIndustries": [
+        "Technology",
+        "Digital Media",
+        "Marketing",
+        "Entertainment",
+        "E-commerce"
+    ],
+    "geographicFocus": [
+        "Global",
+        "North America",
+        "Europe",
+        "Asia-Pacific"
+    ],
+    "authoritativeSources": [
+        "Nielsen Marketing Research",
+        "Hootsuite Social Media Insights",
+        "HubSpot Marketing Reports",
+        "Google Marketing Trends"
+    ],
+    "websiteUrl": "https://www.stardustcreators.com",
+    "contactInformation": {
+        "email": "hello@stardustcreators.com",
+        "phone": "+1 (888) CREATORS",
+        "address": "123 Digital Innovation Lane, San Francisco, CA 94105, USA"
+    }
+}
