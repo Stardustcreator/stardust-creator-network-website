@@ -34,9 +34,11 @@
   "dependencies": {
     "@portabletext/react": "^3.2.4",
     "@portabletext/types": "^2.0.7",
-    "@sanity/icons": "^2.1.0",
+    "@sanity/icons": "^2.11.8",
     "@sanity/image-url": "^1.0.2",
-    "@sanity/vision": "^3.23.4",
+    "@sanity/vision": "^3.25.0",
+    "@sanity/ui": "^2.0.2",
+    "@sanity/preview-url-secret": "^1.7.2",
     "@sentry/nextjs": "^8.0.0",
     "@supabase/supabase-js": "^2.42.0",
     "@vercel/analytics": "^1.2.2",
