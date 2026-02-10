@@ -14,67 +14,57 @@ import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLo
 // Lazy load below-the-fold sections for better initial load performance
 const ConnectCollaborateCreateSection = dynamic(
   () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
-  { 
+  {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-    loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection')]
-    }
   }
 );
 const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  loadableGenerated: {
-    webpack: () => [require.resolveWeak('@/components/sections/IconGrid/IconGridSection')]
-  }
 });
 const CreatorOsSection = dynamic(
   () => import('@/components/sections/creator-os/CreatorOsSection'),
-  { 
+  {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-    loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/creator-os/CreatorOsSection')]
-    }
   }
 );
 const CreativesShowcaseSection = dynamic(
   () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
-  { 
+  {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-    loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/CreativesShowcase/CreativesShowcaseSection')]
-    }
   }
 );
 const StatisticsDashboardSection = dynamic(
   () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
-  { 
+  {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
     loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/Statistics/StatisticsDashboardSection')]
-    }
+      webpack: () => [
+        require.resolveWeak('@/components/sections/Statistics/StatisticsDashboardSection'),
+      ],
+    },
   }
 );
 const CaseStudiesSection = dynamic(
   () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
-  { 
+  {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
     loadableGenerated: {
-      webpack: () => [require.resolveWeak('@/components/sections/CaseStudies/CaseStudiesSection')]
-    }
+      webpack: () => [require.resolveWeak('@/components/sections/CaseStudies/CaseStudiesSection')],
+    },
   }
 );
-const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), { 
+const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   loadableGenerated: {
-    webpack: () => [require.resolveWeak('@/components/sections/CTA/CTASection')]
-  }
+    webpack: () => [require.resolveWeak('@/components/sections/CTA/CTASection')],
+  },
 });
 
 // Page-specific SEO metadata
@@ -92,8 +82,8 @@ export const metadata: Metadata = generateMetaTags({
       'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
       'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
       'https://www.stardustcreators.com'
-    )
-  }
+    ),
+  },
 });
 
 export default function Home() {
