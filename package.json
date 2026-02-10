@@ -32,7 +32,7 @@
     "performance-optimize": "npm run clean && npm run critical-css && npm run build && npm run performance-audit"
   },
   "dependencies": {
-    "@portabletext/react": "^3.0.16",
+    "@portabletext/react": "^3.2.4",
     "@portabletext/types": "^2.0.7",
     "@sanity/icons": "^2.1.0",
     "@sanity/image-url": "^1.0.2",
@@ -46,8 +46,8 @@
     "next": "14.1.0",
     "next-sanity": "^7.1.0",
     "next-sitemap": "^4.2.3",
-    "react": "18.3.0-next-14e45d4d5-20231218",
-    "react-dom": "18.3.0-next-14e45d4d5-20231218",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sanity": "^3.33.0",
     "styled-components": "^6.1.1",
     "tailwind-merge": "^2.2.2",
