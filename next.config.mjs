@@ -7,25 +7,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Performance optimizations
-  experimental: {
-    // Optimize package imports for better tree-shaking
-    optimizePackageImports: [
-      'lucide-react',
-      '@heroicons/react',
-      '@headlessui/react',
-      'framer-motion',
-    ],
-  },
-
-  // Server external packages (moved from experimental)
-  serverExternalPackages: [
-    '@vercel/og',
-  ],
-
-  // Turbopack configuration for Next.js 16
-  turbopack: {
-    // Empty config to silence the webpack warning
-  },
+  // No external server packages configured
 
   // Image optimization configuration
   images: {
