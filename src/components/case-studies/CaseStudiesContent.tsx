@@ -109,11 +109,33 @@ export default function CaseStudiesContent() {
             <Text
               variant="body"
               color="white"
-              className="text-white text-base sm:text-lg md:text-xl leading-relaxed font-medium drop-shadow-lg"
+              className="text-white text-base sm:text-lg md:text-xl leading-relaxed font-medium drop-shadow-lg mb-6"
             >
               Discover how Stardust Creator Network connects brands with creators to deliver
-              authentic campaigns that drive real results.
+              authentic campaigns that drive real results. From consumer goods to financial
+              services, our strategic partnerships create meaningful engagement that converts
+              audiences into customers.
             </Text>
+
+            {/* Success metrics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 max-w-2xl">
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white mb-2">500+</div>
+                <div className="text-white/80 text-sm">Brands Served</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white mb-2">85%</div>
+                <div className="text-white/80 text-sm">Campaign Success</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white mb-2">10M+</div>
+                <div className="text-white/80 text-sm">Impressions</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white mb-2">15%</div>
+                <div className="text-white/80 text-sm">Avg. Engagement</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
