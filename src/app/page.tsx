@@ -1,17 +1,38 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 
-// Components
+// Critical above-the-fold components (load immediately)
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLogosSection';
-import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection';
-import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
-import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
-import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
-import CaseStudiesSection from '@/components/sections/CaseStudies/CaseStudiesSection';
-import CTASection from '@/components/sections/CTA/CTASection';
+
+// Lazy load below-the-fold sections for better initial load performance
+const ConnectCollaborateCreateSection = dynamic(
+  () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
+  { ssr: true }
+);
+const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
+  ssr: true,
+});
+const CreatorOsSection = dynamic(
+  () => import('@/components/sections/creator-os/CreatorOsSection'),
+  { ssr: true }
+);
+const CreativesShowcaseSection = dynamic(
+  () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
+  { ssr: true }
+);
+const StatisticsDashboardSection = dynamic(
+  () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
+  { ssr: true }
+);
+const CaseStudiesSection = dynamic(
+  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
+  { ssr: true }
+);
+const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), { ssr: true });
 
 // Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
@@ -35,37 +56,8 @@ export default function Home() {
           __html: JSON.stringify(breadcrumbData),
         }}
       />
-      {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
-      <link
-        rel="preload"
-        href="/who%20we%20are/office-teamwork-session.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/who%20we%20are/creators.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/learning-hub.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/creator-network.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/growth%20tools.webp"
-        as="image"
-        fetchPriority="high"
-      />
+      {/* Preload only the LCP image (hero) - other images will lazy load */}
+      {/* Hero image is already preloaded in layout.tsx, no need to duplicate */}
       {/* Header */}
       <Header />
 
@@ -88,6 +80,9 @@ export default function Home() {
 
         {/* Creator Showcase with Analytics */}
         <CreatorOsSection />
+
+        {/* Creatives Showcase */}
+        <CreativesShowcaseSection />
 
         {/* Credibility & Vision Statement */}
         <StatisticsDashboardSection />

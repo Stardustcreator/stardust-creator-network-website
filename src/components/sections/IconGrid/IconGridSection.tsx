@@ -49,12 +49,12 @@ export default function IconGridSection() {
           </div>
 
           {/* Call-to-Action */}
-          <div className="flex justify-center">
+          <div className="flex justify-center px-4">
             <Link
-              href="/creator-community"
-              className="group relative inline-flex items-center justify-center px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+              href="/creators/join"
+              className="group relative inline-flex items-center justify-center px-8 sm:px-12 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full sm:w-auto max-w-sm sm:max-w-none"
             >
-              <span className="relative z-10">Join the Community</span>
+              <span className="relative z-10">Join the Waitlist</span>
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
             </Link>
           </div>

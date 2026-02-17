@@ -117,13 +117,13 @@ export default function CaseStudyDetailModal({
               </section>
 
               {/* Strategy & Execution */}
-              <section className="space-y-4">
-                <h3 className="text-xl md:text-2xl text-white font-semibold mb-4">
+              <section>
+                <h3 className="text-xl md:text-2xl text-white font-semibold mb-0 leading-tight">
                   Strategy & Execution
                 </h3>
                 <Text
                   variant="body"
-                  className="text-white/80 leading-relaxed"
+                  className="mt-1 text-white/80 leading-relaxed"
                 >
                   The team created and executed a full blown marketing campaign to announce the
                   relaunch, it featured a full content strategy, launch event, digital, experiential
