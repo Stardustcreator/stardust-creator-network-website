@@ -40,7 +40,7 @@ export default function ConnectCollaborateCreateSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src={encodeImagePath('/who we are/brands.webp')}
+                src={encodeImagePath('/who we are/office-teamwork-session.webp')}
                 alt="Two Nigerian creators discussing the potential of the creator community in Nigeria and strategies for growth"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"

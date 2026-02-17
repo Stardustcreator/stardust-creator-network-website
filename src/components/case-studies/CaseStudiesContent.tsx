@@ -117,7 +117,7 @@ export default function CaseStudiesContent() {
       <section className="py-12 md:py-16 lg:py-20 bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           {/* Grid Layout: 1 column mobile, 2 columns tablet, 3 columns desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
             {studies.map((caseStudy, index) => (
               <CaseStudyCard
                 key={caseStudy.id}
