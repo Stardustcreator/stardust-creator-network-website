@@ -64,7 +64,7 @@ const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'),
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
-    'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
+    'Stardust Creator Network connects creators with top brands for high-value partnerships, campaign collaborations, and scalable monetization opportunities across the creator economy',
   image: '/who we are/creators.webp',
   url: '/',
   tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
