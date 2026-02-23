@@ -123,6 +123,19 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* Preconnect to image CDNs to speed up LCP image fetches */}
+        <link
+          rel="preconnect"
+          href="https://cdn.sanity.io"
+        />
+        <link
+          rel="preconnect"
+          href="https://core.sanity-cdn.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://cdn.stardustcreators.com"
+        />
         {/* Preconnect to analytics domains (non-blocking) */}
         <link
           rel="dns-prefetch"

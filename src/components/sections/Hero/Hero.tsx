@@ -13,15 +13,27 @@ export default function Hero() {
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
   useEffect(() => {
-    // Load video only when hero section is visible (it always is, but this ensures it loads after initial render)
-    // Use a small delay to prioritize image loading first
-    const timer = setTimeout(() => {
+    // Load video only after the browser is idle to avoid blocking the LCP image
+    const loadVideo = () => {
       setShouldLoadVideo(true);
       if (videoRef.current) {
-        videoRef.current.load();
+        try {
+          videoRef.current.load();
+        } catch (e) {
+          // ignore
+        }
       }
-    }, 100);
+    };
 
+    if ('requestIdleCallback' in window) {
+      // Give the browser some idle time before loading the video
+      // @ts-ignore
+      const id = (window as any).requestIdleCallback(loadVideo, { timeout: 1500 });
+      return () => (window as any).cancelIdleCallback?.(id);
+    }
+
+    // Fallback: small delay to prioritize LCP resources
+    const timer = setTimeout(loadVideo, 1500);
     return () => clearTimeout(timer);
   }, []);
 

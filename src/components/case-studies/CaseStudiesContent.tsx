@@ -83,8 +83,10 @@ export default function CaseStudiesContent() {
                 fill
                 sizes="(max-width: 640px) 33.33vw, (max-width: 768px) 16.66vw, 11.11vw"
                 className="object-cover w-full h-full"
-                priority={index < 9}
-                quality={index < 9 ? 90 : 75}
+                // Only the first image should be prioritized for LCP; lazy-load the rest
+                priority={index === 0}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                quality={index === 0 ? 90 : 60}
               />
             </div>
           ))}
