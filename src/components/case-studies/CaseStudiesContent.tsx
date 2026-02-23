@@ -117,12 +117,8 @@ export default function CaseStudiesContent() {
               audiences into customers.
             </Text>
 
-            {/* Success metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 max-w-2xl">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-2">500+</div>
-                <div className="text-white/80 text-sm">Brands Served</div>
-              </div>
+            {/* Success metrics (removed '500+ Brands Served' as requested) */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-w-2xl">
               <div className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-2">85%</div>
                 <div className="text-white/80 text-sm">Campaign Success</div>

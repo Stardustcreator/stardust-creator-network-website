@@ -133,6 +133,9 @@ Crawl-delay: 2
 # Allow well-known paths
 Allow: /.well-known/
 
+# Allow Next.js image optimization route so crawlers can access optimized images
+Allow: /_next/image
+
 # Block sensitive paths
 Disallow: /search?
 Disallow: /*?utm_*

@@ -69,20 +69,20 @@ export default function Hero() {
       {/* Simplified gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-purple-900/30 to-black/60 z-10" />
 
-      {/* Content - Bottom Left */}
-      <div className="absolute bottom-0 left-0 z-20 p-6 pb-16 md:p-8 md:pb-20 lg:p-12 lg:pb-24 max-w-4xl">
+      {/* Content - responsive: top-anchored on small screens, bottom-anchored on md+ */}
+      <div className="absolute top-20 md:top-auto md:bottom-0 left-0 z-20 p-6 pt-6 pb-16 md:p-8 md:pt-24 md:pb-20 lg:p-12 lg:pt-28 lg:pb-24 max-w-4xl">
         {/* Main Headline */}
         <Heading
           level={1}
           variant="default"
-          className="mb-4"
+          className="mb-2"
         >
           <TypewriterText
-            words={['Build.', 'Collaborate.', 'Monetize.']}
+            words={['Learn.', 'Monetize.', 'Grow.']}
             typeSpeed={100}
             deleteSpeed={50}
             delayBetweenWords={2500}
-            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-tight tracking-tight"
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight tracking-tight"
             cursorClassName="bg-white"
           />
         </Heading>
@@ -90,46 +90,20 @@ export default function Hero() {
         <Heading
           level={2}
           variant="gradient"
-          className="mb-6"
+          className="mb-4 text-2xl md:text-3xl lg:text-4xl"
         >
-          The Future of the Creator Economy Starts Here.
+          You’re Not Just a Content Creator.
+          <br />
+          You’re Building a Media Business.
         </Heading>
 
-        <LocationSpecificContent
-          nigeria={
-            <Text
-              variant="large"
-              className="text-white max-w-3xl mb-8"
-            >
-              Join Nigeria's fastest-growing creator network. Connect with leading brands, access
-              exclusive partnerships, and unlock new revenue streams. From Lagos to Abuja, we're
-              empowering creators across Nigeria with the tools, education, and opportunities needed
-              to build sustainable creative businesses in the digital age.
-            </Text>
-          }
-          uk={
-            <Text
-              variant="large"
-              className="text-white max-w-3xl mb-8"
-            >
-              Connect with the UK's most innovative brands and fellow creators. Access premium
-              partnerships, collaborative opportunities, and revenue-generating campaigns. From
-              London to Edinburgh, we're building the infrastructure that enables creator
-              monetization and powers tomorrow's creative economy.
-            </Text>
-          }
-          fallback={
-            <Text
-              variant="large"
-              className="text-white max-w-3xl mb-8"
-            >
-              Connect with global brands and fellow creators. Access premium partnerships,
-              collaborative opportunities, and revenue-generating campaigns. We're building the
-              infrastructure that enables creator monetization, provides educational resources, and
-              powers tomorrow's creative economy worldwide.
-            </Text>
-          }
-        />
+        <Text
+          variant="large"
+          className="text-white max-w-3xl mb-6 text-base md:text-lg"
+        >
+          Stardust Creator Network helps creators turn content into structured income, systems, and
+          long-term ownership.
+        </Text>
 
         {/* Enhanced value proposition */}
         <div className="flex flex-wrap gap-6 mb-8 text-white/80">
@@ -147,19 +121,13 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        {/* CTA Button */}
+        <div>
           <Link
-            href="/brands/brief"
+            href="/creator-community"
             className="btn-primary"
           >
-            Find a Creator
-          </Link>
-          <Link
-            href="/creators/join"
-            className="btn-secondary"
-          >
-            Join as Creator
+            JOIN THE COMMUNITY
           </Link>
         </div>
       </div>
