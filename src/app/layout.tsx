@@ -157,6 +157,13 @@ export default function RootLayout({
         {/* Preload critical hero image (LCP element) */}
         <link
           rel="preload"
+          href="/hero.avif"
+          as="image"
+          type="image/avif"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
           href="/hero.webp"
           as="image"
           type="image/webp"

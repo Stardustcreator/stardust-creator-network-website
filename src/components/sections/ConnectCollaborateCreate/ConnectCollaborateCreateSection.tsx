@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
@@ -7,10 +8,34 @@ import { SectionHeader } from '@/components/shared';
 import { encodeImagePath } from '@/lib/utils';
 
 export default function ConnectCollaborateCreateSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const images = [
+    {
+      src: '/who we are/side-view-teen-playing-ukulele.webp',
+      alt: 'Teen creator with ukulele making content',
+    },
+    {
+      src: '/who we are/collage-people-using-reels.webp',
+      alt: 'Collage of creators using reels and producing content',
+    },
+    {
+      src: '/who we are/full-length-portrait-lovely-afro-american-woman.webp',
+      alt: 'Full length portrait of Afro-American woman creator',
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % images.length);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(timer);
+  }, [images.length]);
   return (
     <section
       id="who-we-are"
-      className="relative py-32 bg-black overflow-hidden"
+      className="relative py-20 md:py-32 bg-black overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -19,131 +44,152 @@ export default function ConnectCollaborateCreateSection() {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <SectionHeader
-          words={[
-            { text: 'Connect. ' },
-            { text: 'Collaborate. ', className: 'text-gradient-primary' },
-            { text: 'Create. ' },
-          ]}
-          subtitle="We connect leading brands with Nigeria and the UK's most dynamic creators — from nano storytellers to macro influencers — to craft authentic campaigns that convert. More countries coming soon."
-          headingClassName="text-white"
-          subtitleClassName="max-w-4xl mx-auto"
-          className="mb-20"
-          staggerDelay={400}
-        />
+        {/* Section Header - Centered */}
+        <div className="text-center mb-16">
+          <SectionHeader
+            words={[
+              { text: 'What ' },
+              {
+                text: 'SCN ',
+                className:
+                  'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
+              },
+              { text: 'Does' },
+            ]}
+            headingClassName="text-white text-4xl md:text-5xl lg:text-6xl"
+            className="mb-0"
+            centered={true}
+            staggerDelay={300}
+          />
+        </div>
 
-        {/* Split-Screen Layout */}
-        <div className="grid lg:grid-cols-2 gap-0 max-w-7xl mx-auto">
-          {/* For Brands - Left Side */}
-          <div className="group relative h-[600px] lg:h-[700px] overflow-hidden rounded-t-3xl lg:rounded-r-none lg:rounded-l-3xl">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <Image
-                src={encodeImagePath('/who we are/office-teamwork-session.webp')}
-                alt="Two Nigerian creators discussing the potential of the creator community in Nigeria and strategies for growth"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
-                loading="lazy"
-                quality={85}
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/60 via-purple-700/50 to-purple-900/70 group-hover:from-purple-600/70 group-hover:via-purple-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>
-            </div>
-
-            {/* Content */}
-            <div className="relative h-full flex flex-col justify-between p-8 lg:p-12">
-              {/* Floating Stats Badge */}
-              <div className="self-start animate-float">
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 shadow-xl">
-                  <div className="text-3xl lg:text-4xl font-bold text-white mb-1">500+</div>
-                  <div className="text-sm text-white/80 font-medium">Brands Served</div>
-                </div>
-              </div>
-
-              {/* Bottom Content */}
-              <div className="space-y-6">
-                <div>
-                  <Heading
-                    level={3}
-                    variant="default"
-                    className="!text-white mb-4 text-3xl lg:text-4xl font-bold"
-                  >
-                    For Brands
-                  </Heading>
-                  <Text
-                    variant="body"
-                    className="text-white text-lg opacity-95 max-w-md"
-                  >
-                    Tell us your goals — we&apos;ll curate creators who bring your vision to life.
-                  </Text>
-                </div>
-                <Link
-                  href="/brands/brief/nigeria"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+        {/* Main Content Card */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-0 lg:min-h-[600px]">
+            {/* Left Side - Image Slider */}
+            <div className="relative h-[550px] lg:h-full overflow-hidden lg:rounded-l-3xl shadow-2xl">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
                 >
-                  Find Creators
-                </Link>
+                  <Image
+                    src={encodeImagePath(image.src)}
+                    alt={image.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    loading="lazy"
+                    quality={85}
+                  />
+                </div>
+              ))}
+
+              {/* Slide Indicators - Absolute at Bottom */}
+              <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 py-5 bg-gradient-to-t from-black/60 to-transparent z-10">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 w-8'
+                        : 'bg-white/70 hover:bg-white'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
 
-            {/* Diagonal Divider Effect */}
-            <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-white/20 to-transparent hidden lg:block"></div>
-          </div>
-
-          {/* For Creators - Right Side */}
-          <div className="group relative h-[600px] lg:h-[700px] overflow-hidden rounded-b-3xl lg:rounded-l-none lg:rounded-r-3xl">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <Image
-                src={encodeImagePath('/who we are/creators.webp')}
-                alt="Content creators producing content after securing a brand partnership in the creator community"
-                fill
-                className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
-                loading="lazy"
-                quality={85}
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-600/60 via-pink-700/50 to-purple-900/70 group-hover:from-pink-600/70 group-hover:via-pink-700/60 group-hover:to-purple-900/80 transition-all duration-500"></div>
-            </div>
-
-            {/* Content */}
-            <div className="relative h-full flex flex-col justify-between p-8 lg:p-12">
-              {/* Floating Stats Badge */}
-              <div
-                className="self-start lg:self-end animate-float"
-                style={{ animationDelay: '1s' }}
+            {/* Right Side - Content */}
+            <div className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 lg:rounded-r-3xl backdrop-blur-sm border border-white/10 p-8 md:p-10 lg:p-12 flex flex-col justify-center h-full">
+              <Heading
+                level={2}
+                variant="default"
+                className="text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-6"
               >
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4 shadow-xl">
-                  <div className="text-3xl lg:text-4xl font-bold text-white mb-1">10+</div>
-                  <div className="text-sm text-white/80 font-medium">Years Experience</div>
+                We Turn Creators Into Creator Businesses.
+              </Heading>
+
+              <div className="mb-8">
+                <Text className="text-white/90 text-lg font-semibold mb-4">
+                  Most creators are stuck here:
+                </Text>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-white/80">
+                    <span className="text-pink-400 mt-1">•</span>
+                    <span>Posting consistently but underpricing</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-white/80">
+                    <span className="text-pink-400 mt-1">•</span>
+                    <span>Getting random brand deals but no system</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-white/80">
+                    <span className="text-pink-400 mt-1">•</span>
+                    <span>Growing followers but not predictable income</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-white/80">
+                    <span className="text-pink-400 mt-1">•</span>
+                    <span>Burning out because everything depends on them</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mb-8">
+                <Text className="text-white font-bold text-xl mb-4">SCN exists to fix that.</Text>
+                <Text className="text-white/90 text-lg font-semibold mb-4">We help you:</Text>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Price properly</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Pitch strategically</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Package your offers</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Build systems</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Launch digital products</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80">
+                    <span className="text-green-400">✓</span>
+                    <span>Design memberships</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80 sm:col-span-2">
+                    <span className="text-green-400">✓</span>
+                    <span>Understand contracts & licensing</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-white/80 sm:col-span-2">
+                    <span className="text-green-400">✓</span>
+                    <span>Think long-term (equity, IP, ownership)</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Bottom Content */}
-              <div className="space-y-6">
-                <div>
-                  <Heading
-                    level={3}
-                    variant="default"
-                    className="!text-white mb-4 text-3xl lg:text-4xl font-bold"
-                  >
-                    For Creators
-                  </Heading>
-                  <Text
-                    variant="body"
-                    className="text-white text-lg opacity-95 max-w-md"
-                  >
-                    Join our verified network and start collaborating today.
-                  </Text>
-                </div>
+              <div className="pt-4 border-t border-white/10 mb-6">
+                <Text className="text-white/90 text-lg font-semibold italic">
+                  We don't teach trends. We teach creator business infrastructure.
+                </Text>
+              </div>
+
+              {/* CTA Button */}
+              <div>
                 <Link
-                  href="/creators/join"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10"
+                  href="/creator-community/join"
+                  className="btn-primary"
                 >
-                  Join as Creator
+                  JOIN NOW
                 </Link>
               </div>
             </div>

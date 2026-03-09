@@ -2,71 +2,24 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
 
 import TypewriterText from './TypewriterText';
 import { Heading, Text } from '@/components/typography';
 import { LocationSpecificContent } from '@/components/shared';
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-
-  useEffect(() => {
-    // Load video only after the browser is idle to avoid blocking the LCP image
-    const loadVideo = () => {
-      setShouldLoadVideo(true);
-      if (videoRef.current) {
-        try {
-          videoRef.current.load();
-        } catch (e) {
-          // ignore
-        }
-      }
-    };
-
-    if ('requestIdleCallback' in window) {
-      // Give the browser some idle time before loading the video
-      // @ts-ignore
-      const id = (window as any).requestIdleCallback(loadVideo, { timeout: 1500 });
-      return () => (window as any).cancelIdleCallback?.(id);
-    }
-
-    // Fallback: small delay to prioritize LCP resources
-    const timer = setTimeout(loadVideo, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
+    <section className="hero-fullwidth relative min-h-[110vh] md:min-h-[115vh] overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
       {/* Mobile Background Image - LCP element, highest priority */}
-      <Image
-        src="/hero.webp"
-        alt="Stardust Creator Network - Empowering digital creators with brand partnerships and monetization opportunities"
-        fill
-        priority
-        fetchPriority="high"
-        sizes="100vw"
-        className="z-0 object-cover md:hidden"
-      />
-
-      {/* Video Background - Loaded after initial render for better performance */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover z-0 hidden md:block"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-      >
-        {shouldLoadVideo && (
-          <source
-            src="/output.webm"
-            type="video/webm"
-          />
-        )}
-        {/* Fallback for browsers that don't support video */}
+      <picture className="z-0 block md:hidden">
+        <source
+          srcSet="/hero.avif"
+          type="image/avif"
+        />
+        <source
+          srcSet="/hero.webp"
+          type="image/webp"
+        />
         <Image
           src="/hero.webp"
           alt="Stardust Creator Network - Empowering digital creators with brand partnerships and monetization opportunities"
@@ -74,15 +27,26 @@ export default function Hero() {
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="z-0 object-cover"
         />
-      </video>
+      </picture>
 
-      {/* Simplified gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-purple-900/30 to-black/60 z-10" />
+      {/* YouTube Video Background - Seamless loop */}
+      <div className="absolute top-0 left-0 w-full h-full z-0 hidden md:block overflow-hidden">
+        <iframe
+          className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          src="https://www.youtube.com/embed/pOlLKhn-wao?autoplay=1&mute=1&loop=1&playlist=pOlLKhn-wao&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=0&vq=hd1080&start=0"
+          title="Hero Background"
+          allow="autoplay; encrypted-media"
+          loading="eager"
+        />
+      </div>
 
-      {/* Content - responsive: top-anchored on small screens, bottom-anchored on md+ */}
-      <div className="absolute top-20 md:top-auto md:bottom-0 left-0 z-20 p-6 pt-6 pb-16 md:p-8 md:pt-24 md:pb-20 lg:p-12 lg:pt-28 lg:pb-24 max-w-4xl">
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-black/50 z-10" />
+
+      {/* Content - responsive with generous top spacing from navbar and enough bottom space for CTA */}
+      <div className="absolute top-36 left-0 right-0 z-20 px-6 pt-10 pb-20 md:top-44 md:px-8 md:pt-14 md:pb-24 lg:top-48 lg:px-12 lg:pt-16 lg:pb-28 max-w-5xl">
         {/* Main Headline */}
         <Heading
           level={1}
@@ -94,7 +58,7 @@ export default function Hero() {
             typeSpeed={100}
             deleteSpeed={50}
             delayBetweenWords={2500}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight tracking-tight"
+            className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white leading-tight tracking-tight"
             cursorClassName="bg-white"
           />
         </Heading>
@@ -102,7 +66,7 @@ export default function Hero() {
         <Heading
           level={2}
           variant="gradient"
-          className="mb-4 text-2xl md:text-3xl lg:text-4xl"
+          className="mb-3 text-xl md:text-2xl lg:text-3xl"
         >
           You’re Not Just a Content Creator.
           <br />
@@ -111,14 +75,14 @@ export default function Hero() {
 
         <Text
           variant="large"
-          className="text-white max-w-3xl mb-6 text-base md:text-lg"
+          className="text-white max-w-2xl mb-5 text-sm md:text-base lg:text-lg"
         >
           Stardust Creator Network helps creators turn content into structured income, systems, and
           long-term ownership.
         </Text>
 
         {/* Enhanced value proposition */}
-        <div className="flex flex-wrap gap-6 mb-8 text-white/80">
+        <div className="flex flex-wrap gap-4 mb-6 text-white/80">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
             <span className="text-sm font-medium">Brand Partnerships</span>
@@ -133,13 +97,19 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* CTA Button */}
-        <div>
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4">
           <Link
             href="/creator-community"
             className="btn-primary"
           >
             JOIN THE COMMUNITY
+          </Link>
+          <Link
+            href="#how-scn-works"
+            className="btn-secondary"
+          >
+            SEE HOW SCN WORKS
           </Link>
         </div>
       </div>

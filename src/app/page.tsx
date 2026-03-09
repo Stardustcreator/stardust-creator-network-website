@@ -23,6 +23,59 @@ const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/Ico
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
 
+const WhoScnIsForSection = dynamic(
+  () => import('@/components/sections/WhoScnIsFor/WhoScnIsForSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const HowScnWorksSection = dynamic(
+  () => import('@/components/sections/HowScnWorks/HowScnWorksSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const PaidCommunitySection = dynamic(
+  () => import('@/components/sections/PaidCommunity/PaidCommunitySection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const PricingSection = dynamic(() => import('@/components/sections/Pricing/PricingSection'), {
+  ssr: true,
+  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+});
+
+const WhatMakesScnDifferentSection = dynamic(
+  () => import('@/components/sections/WhatMakesScnDifferent/WhatMakesScnDifferentSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const WhatHappensWhenYouJoinSection = dynamic(
+  () => import('@/components/sections/WhatHappensWhenYouJoin/WhatHappensWhenYouJoinSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const TestimonialsSection = dynamic(
+  () => import('@/components/sections/Testimonials/TestimonialsSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
 const CreatorOsSection = dynamic(
   () => import('@/components/sections/creator-os/CreatorOsSection'),
   {
@@ -101,6 +154,27 @@ export default function Home() {
 
         {/* Connect. Collaborate. Create. */}
         <ConnectCollaborateCreateSection />
+
+        {/* Who SCN Is For */}
+        <WhoScnIsForSection />
+
+        {/* How SCN Works */}
+        <HowScnWorksSection />
+
+        {/* Paid Community */}
+        <PaidCommunitySection />
+
+        {/* What Makes SCN Different */}
+        <WhatMakesScnDifferentSection />
+
+        {/* What Happens When You Join */}
+        <WhatHappensWhenYouJoinSection />
+
+        {/* Testimonials */}
+        <TestimonialsSection />
+
+        {/* Pricing */}
+        <PricingSection />
 
         {/* Icon Grid Features */}
         <IconGridSection />

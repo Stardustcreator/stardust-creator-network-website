@@ -14,7 +14,7 @@ export const OptimizedHero: React.FC<HeroProps> = ({
   title,
   subtitle,
   ctaText,
-  backgroundImage
+  backgroundImage,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -27,35 +27,41 @@ export const OptimizedHero: React.FC<HeroProps> = ({
   }, []);
 
   return (
-    <section 
+    <section
       className={`relative hero-section ${isLoaded ? 'loaded' : ''} min-h-[70vh] flex items-center justify-center`}
     >
       <div className="absolute inset-0 z-0">
-        <Image 
-          src={backgroundImage}
-          alt="Hero Background"
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover brightness-50"
-          onLoadingComplete={() => setIsLoaded(true)}
-        />
+        <picture className="absolute inset-0 w-full h-full block">
+          <source
+            srcSet={backgroundImage.replace(/\.webp$|\.png$|\.jpg$|\.jpeg$/i, '.avif')}
+            type="image/avif"
+          />
+          <source
+            srcSet={backgroundImage}
+            type="image/webp"
+          />
+          <Image
+            src={backgroundImage}
+            alt="Hero Background"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover brightness-50"
+            onLoadingComplete={() => setIsLoaded(true)}
+          />
+        </picture>
       </div>
-      
+
       <AnimatePresence>
         {isLoaded && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="relative z-10 text-center text-white max-w-4xl px-4"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              {title}
-            </h1>
-            <p className="text-xl md:text-2xl mb-8">
-              {subtitle}
-            </p>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">{title}</h1>
+            <p className="text-xl md:text-2xl mb-8">{subtitle}</p>
             <button className="bg-primary-500 text-white px-8 py-3 rounded-full hover:bg-primary-600 transition">
               {ctaText}
             </button>
