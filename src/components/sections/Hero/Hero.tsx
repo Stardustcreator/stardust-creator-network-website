@@ -12,15 +12,7 @@ export default function Hero() {
   return (
     <section className="hero-fullwidth relative min-h-[110vh] md:min-h-[115vh] overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
       {/* Mobile Background Image - LCP element, highest priority */}
-      <picture className="z-0 block md:hidden">
-        <source
-          srcSet="/hero.avif"
-          type="image/avif"
-        />
-        <source
-          srcSet="/hero.webp"
-          type="image/webp"
-        />
+      <div className="absolute inset-0 z-0 block md:hidden">
         <Image
           src="/hero.webp"
           alt="Stardust Creator Network - Empowering digital creators with brand partnerships and monetization opportunities"
@@ -28,9 +20,9 @@ export default function Hero() {
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="z-0 object-cover"
+          className="object-cover"
         />
-      </picture>
+      </div>
 
       {/* YouTube Video Background - Optimized for fast loading and seamless loop */}
       <VideoBackground
