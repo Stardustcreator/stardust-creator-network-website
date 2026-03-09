@@ -115,7 +115,10 @@ export default function ConnectCollaborateCreateSection() {
               </Heading>
 
               <div className="mb-8">
-                <Text className="text-white/90 text-lg font-semibold mb-4">
+                <Text
+                  variant="body"
+                  className="text-white/90 text-lg font-semibold mb-4"
+                >
                   Most creators are stuck here:
                 </Text>
                 <ul className="space-y-3">
@@ -139,8 +142,18 @@ export default function ConnectCollaborateCreateSection() {
               </div>
 
               <div className="mb-8">
-                <Text className="text-white font-bold text-xl mb-4">SCN exists to fix that.</Text>
-                <Text className="text-white/90 text-lg font-semibold mb-4">We help you:</Text>
+                <Text
+                  variant="body"
+                  className="text-white font-bold text-xl mb-4"
+                >
+                  SCN exists to fix that.
+                </Text>
+                <Text
+                  variant="body"
+                  className="text-white/90 text-lg font-semibold mb-4"
+                >
+                  We help you:
+                </Text>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="flex items-start gap-2 text-white/80">
                     <span className="text-green-400">✓</span>
