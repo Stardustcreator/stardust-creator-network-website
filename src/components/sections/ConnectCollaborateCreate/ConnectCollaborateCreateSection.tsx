@@ -191,7 +191,10 @@ export default function ConnectCollaborateCreateSection() {
               </div>
 
               <div className="pt-4 border-t border-white/10 mb-6">
-                <Text className="text-white/90 text-lg font-semibold italic">
+                <Text
+                  variant="body"
+                  className="text-white/90 text-lg font-semibold italic"
+                >
                   We don't teach trends. We teach creator business infrastructure.
                 </Text>
               </div>
