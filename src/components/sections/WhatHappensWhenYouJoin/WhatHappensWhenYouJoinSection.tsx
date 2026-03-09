@@ -141,14 +141,18 @@ export default function WhatHappensWhenYouJoinSection() {
 
         {/* CTA Button */}
         <div className="text-center mt-10">
-          <Link
-            href="/brands"
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-base px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+          <a
+            href="#waitlist"
+            onClick={e => {
+              e.preventDefault();
+              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-base px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
             aria-label="Join Stardust Creator Network"
           >
             <span>JOIN NOW</span>
             <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

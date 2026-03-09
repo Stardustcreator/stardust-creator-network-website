@@ -47,7 +47,7 @@ const PaidCommunitySection = dynamic(
   }
 );
 
-const PricingSection = dynamic(() => import('@/components/sections/Pricing/PricingSection'), {
+const WaitlistSection = dynamic(() => import('@/components/sections/Waitlist/WaitlistSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
@@ -173,26 +173,34 @@ export default function Home() {
         {/* Testimonials */}
         <TestimonialsSection />
 
-        {/* Pricing */}
-        <PricingSection />
+        {/* Waitlist - Final conversion section before footer */}
+        <WaitlistSection />
+
+        {/* ========================================
+            SECTIONS TEMPORARILY REMOVED FROM PAGE
+            These sections are commented out but preserved for future use.
+            Uncomment any section below to restore it to the page.
+        ======================================== */}
 
         {/* Icon Grid Features */}
-        <IconGridSection />
+        {/* <IconGridSection /> */}
 
         {/* Creator OS */}
-        <CreatorOsSection />
+        {/* <CreatorOsSection /> */}
 
         {/* Creatives Showcase */}
-        <CreativesShowcaseSection />
+        {/* <CreativesShowcaseSection /> */}
 
         {/* Credibility & Vision */}
-        <StatisticsDashboardSection />
+        {/* <StatisticsDashboardSection /> */}
 
         {/* Case Studies */}
-        <CaseStudiesSection />
+        {/* <CaseStudiesSection /> */}
 
         {/* CTA */}
-        <CTASection />
+        {/* <CTASection /> */}
+
+        {/* ======================================== */}
       </main>
 
       {/* Footer */}

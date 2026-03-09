@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import TypewriterText from './TypewriterText';
+import VideoBackground from './VideoBackground';
 import { Heading, Text } from '@/components/typography';
 import { LocationSpecificContent } from '@/components/shared';
 
@@ -31,16 +32,11 @@ export default function Hero() {
         />
       </picture>
 
-      {/* YouTube Video Background - Seamless loop */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 hidden md:block overflow-hidden">
-        <iframe
-          className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          src="https://www.youtube.com/embed/pOlLKhn-wao?autoplay=1&mute=1&loop=1&playlist=pOlLKhn-wao&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=0&vq=hd1080&start=0"
-          title="Hero Background"
-          allow="autoplay; encrypted-media"
-          loading="eager"
-        />
-      </div>
+      {/* YouTube Video Background - Optimized for fast loading and seamless loop */}
+      <VideoBackground
+        videoId="pOlLKhn-wao"
+        className="absolute top-0 left-0 w-full h-full z-0 hidden md:block overflow-hidden"
+      />
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-black/50 z-10" />
@@ -99,12 +95,16 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            href="/creator-community"
+          <a
+            href="#waitlist"
             className="btn-primary"
+            onClick={e => {
+              e.preventDefault();
+              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             JOIN THE COMMUNITY
-          </Link>
+          </a>
           <Link
             href="#how-scn-works"
             className="btn-secondary"

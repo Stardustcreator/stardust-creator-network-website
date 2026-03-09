@@ -249,13 +249,17 @@ export default function HowScnWorksSection() {
 
         {/* CTA Button */}
         <div className="text-center mt-16">
-          <Link
-            href="/brands"
+          <a
+            href="#waitlist"
             className="btn-primary"
             aria-label="Join Stardust Creator Network"
+            onClick={e => {
+              e.preventDefault();
+              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             JOIN NOW
-          </Link>
+          </a>
         </div>
       </div>
     </section>
