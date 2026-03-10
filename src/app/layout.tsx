@@ -2,18 +2,27 @@ import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
+// Commented out unused imports
+// import { StructuredDataInjector } from '@/components/shared/StructuredDataInjector';
+// import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schemaGenerators';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
+import dynamic from 'next/dynamic';
+
+const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
+  ssr: false,
+});
 import './globals.css';
 
 const lato = Lato({
   variable: '--font-lato',
-  subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '700', '900'],
+  subsets: ['latin'],
+  weight: ['400', '700'],
   display: 'swap',
   preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 // Google Analytics Measurement ID
@@ -119,61 +128,65 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* Preconnect to image CDNs to speed up LCP image fetches */}
+        <link
+          rel="preconnect"
+          href="https://cdn.sanity.io"
+        />
+        <link
+          rel="preconnect"
+          href="https://core.sanity-cdn.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://cdn.stardustcreators.com"
+        />
+        {/* Preconnect to analytics domains (non-blocking) */}
+        <link
+          rel="dns-prefetch"
+          href="https://www.googletagmanager.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://www.google-analytics.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://connect.facebook.net"
+        />
+        {/* Preload critical hero image (LCP element) */}
+        <link
+          rel="preload"
+          href="/hero.avif"
+          as="image"
+          type="image/avif"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          href="/hero.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
       </head>
       <body className={`${lato.variable} antialiased font-lato`}>
-        {/* Google Tag Manager - Loads after page is interactive */}
-        <Script
-          id="google-tag-manager"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WKTV2K2D');`,
-          }}
-        />
-        {/* Meta Pixel - Loads after page is interactive */}
-        <Script
-          id="meta-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '831463455966535');
-fbq('track', 'PageView');`,
-          }}
-        />
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WKTV2K2D"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        {/* Meta Pixel (noscript) */}
-        <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=831463455966535&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+        {/* Deferred analytics: GTM & Meta Pixel load after interaction/idle to improve LCP */}
+        {/* eslint-disable-next-line @next/next/no-server-import-in-page */}
+        {/* Lazy client loader for analytics */}
+        <DeferredAnalytics />
+        {/* Note: noscript fallback is included inside DeferredAnalytics */}
         {/* Google Analytics - Loads after page is interactive */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         {/* Outbound Link Tracking - Tracks external link clicks */}
         <OutboundLinkTracker />
+        {/* Client-only deferred analytics loader */}
+        {/* @ts-ignore - client component loaded in server file */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `/* DeferredAnalytics is client-only and will hydrate in the browser */`,
+          }}
+        />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
         {/* Vercel Analytics - Lazy loaded, non-essential */}

@@ -1,0 +1,45 @@
+{
+    "homepage": {
+        "serviceDefinition": "Stardust Creator Network is a comprehensive digital platform designed to empower creators by providing tools, resources, and connections that transform creative potential into sustainable business success.",
+        "capabilities": [
+            "Collaborative Brand Partnerships",
+            "Monetization Strategies",
+            "Professional Development Resources",
+            "Global Creator Community"
+        ],
+        "faqs": [
+            {
+                "question": "How does Stardust help creators grow?",
+                "answer": "We provide targeted education, networking opportunities, brand collaboration platforms, and monetization strategies tailored to individual creator goals."
+            },
+            {
+                "question": "Who can join the Stardust Creator Network?",
+                "answer": "Any motivated creator looking to professionalize their craft, expand their reach, and build a sustainable creative business is welcome to join."
+            },
+            {
+                "question": "What makes Stardust different from other creator platforms?",
+                "answer": "Our holistic approach focuses on education, community, and strategic partnerships, ensuring creators have comprehensive support at every stage of their journey."
+            }
+        ]
+    },
+    "services": {
+        "creatorNetwork": {
+            "definition": "A dynamic ecosystem connecting creators with global opportunities, providing tools and resources for professional growth and collaboration.",
+            "capabilities": [
+                "Personalized Creator Matching",
+                "Brand Partnership Opportunities",
+                "Skill Development Workshops",
+                "Monetization Support"
+            ]
+        },
+        "brandCollaboration": {
+            "definition": "Strategic matchmaking between innovative brands and talented creators, ensuring authentic, impactful digital partnerships.",
+            "capabilities": [
+                "Campaign Strategy Development",
+                "Performance Tracking",
+                "Compliance and Contract Management",
+                "Cross-Platform Optimization"
+            ]
+        }
+    }
+}

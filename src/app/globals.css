@@ -364,15 +364,23 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.875rem 2rem;
+  padding: 0.625rem 1.25rem;
   background: var(--gradient-primary);
   color: white;
   border-radius: 0.5rem;
   font-weight: 600;
+  font-size: 0.875rem;
   text-decoration: none;
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+  }
 }
 
 .btn-primary:hover {
@@ -384,15 +392,23 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.875rem 2rem;
+  padding: 0.625rem 1.25rem;
   background: transparent;
   color: var(--color-deep-purple);
   border: 2px solid var(--color-deep-purple);
   border-radius: 0.5rem;
   font-weight: 600;
+  font-size: 0.875rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+  }
 }
 
 .btn-secondary:hover {
@@ -659,4 +675,157 @@ body {
 
 .rotateX-90 {
   transform: rotateX(90deg);
+}
+
+/* Lightbox animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Creatives showcase fade in/out animations - 5 seconds per image with seamless crossfade */
+@keyframes fade-creative {
+  0% {
+    opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  49% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fade-creative-left {
+  animation: fade-creative 10s ease-in-out infinite;
+}
+
+.animate-fade-creative-right {
+  animation: fade-creative 10s ease-in-out infinite;
+  animation-delay: 2.5s; /* Offset right side for visual variety */
+}
+
+.animate-fade-creative-left:hover,
+.animate-fade-creative-right:hover {
+  animation-play-state: paused;
+}
+
+/* ===== UTILITY CLASSES FOR BETTER TEXT-HTML RATIO ===== */
+
+/* Common card styles - replaces repetitive Tailwind classes */
+.card-base {
+  @apply relative overflow-hidden rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300;
+}
+
+.card-glass {
+  @apply bg-white/5 hover:bg-white/10 hover:border-white/20;
+}
+
+.card-gradient {
+  @apply bg-gradient-to-br from-purple-900/20 to-pink-900/20 hover:shadow-2xl hover:shadow-purple-500/20;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm md:text-base rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm md:text-base rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:bg-white/20;
+}
+
+.btn-ghost {
+  @apply text-purple-400 hover:text-purple-300 transition-colors;
+}
+
+/* Content containers */
+.container-section {
+  @apply max-w-7xl mx-auto px-6 py-20;
+}
+
+.container-article {
+  @apply max-w-4xl mx-auto px-6;
+}
+
+/* Typography patterns */
+.text-gradient {
+  @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+}
+
+.text-subtitle {
+  @apply text-white/80 text-lg;
+}
+
+.text-caption {
+  @apply text-white/60 text-sm;
+}
+
+/* Common layouts */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.flex-between {
+  @apply flex items-center justify-between;
+}
+
+.grid-auto {
+  @apply grid gap-8;
+}
+
+.grid-2 {
+  @apply grid md:grid-cols-2 gap-8;
+}
+
+.grid-3 {
+  @apply grid md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+/* Background patterns */
+.bg-dark {
+  @apply bg-gradient-to-b from-black via-purple-950/20 to-black;
+}
+
+.bg-dark-hero {
+  @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900;
+}
+
+/* Author/profile cards */
+.author-card {
+  @apply flex items-center gap-4 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl;
+}
+
+/* Tag styles */
+.tag {
+  @apply px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 text-white/80 text-sm rounded-full;
+}
+
+.tag-featured {
+  @apply px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-full;
+}
+
+/* Loading states */
+.loading-placeholder {
+  @apply animate-pulse bg-gray-200;
 }

@@ -10,7 +10,7 @@ const getSocialLinks = () => {
   // This could be country-specific in the future
   return {
     surveyUrl: '/creators/survey',
-    waitlistUrl: 'https://stardustcreatornetwork.com/community-waitlist', // Placeholder URL
+    waitlistUrl: '/creators/join',
   };
 };
 

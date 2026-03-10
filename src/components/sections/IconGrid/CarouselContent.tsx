@@ -9,7 +9,7 @@ interface CarouselContentProps {
 
 export default function CarouselContent({ slide, isActive }: CarouselContentProps) {
   return (
-    <div className="w-full h-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center p-8 md:p-12 text-left">
+    <div className="w-full flex flex-col justify-center p-8 md:p-12 text-left">
       {/* Title */}
       <div
         className={`transition-all duration-500 ${

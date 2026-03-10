@@ -8,12 +8,6 @@ export const navigationItems: NavigationItem[] = [
   {
     label: 'Who We Are',
     href: '/#who-we-are',
-    children: [
-      {
-        label: 'Our Team',
-        href: '/our-team',
-      },
-    ],
   },
   {
     label: 'Stardust Creator Community',

@@ -23,7 +23,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
     return (
       <Link
         href={`/blog/${post.slug}`}
-        className="group relative block overflow-hidden rounded-3xl bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 h-full"
+        className="group card-base card-gradient h-full rounded-3xl"
       >
         <div className="grid md:grid-cols-2 gap-6 p-8">
           {/* Featured Image */}
@@ -46,10 +46,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           {/* Content */}
           <div className="flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm rounded-full">
-                {post.category}
-              </span>
-              <span className="text-white/60 text-sm">{post.readTime} min read</span>
+              <span className="tag">{post.category}</span>
+              <span className="text-caption">{post.readTime} min read</span>
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-purple-300 transition-colors">
@@ -65,13 +63,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   alt={post.author.name}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 480px) 48px, 48px"
+                  sizes="48px"
                   loading="lazy"
                 />
               </div>
               <div>
-                <p className="text-white font-medium">{post.author.name}</p>
-                <p className="text-white/60 text-sm">{formattedDate}</p>
+                <p className="text-white text-lg font-medium">{post.author.name}</p>
+                <p className="text-caption">{formattedDate}</p>
               </div>
             </div>
           </div>
@@ -83,7 +81,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10 h-full flex flex-col"
+      className="group card-base card-gradient h-full flex flex-col"
     >
       {/* Featured Image */}
       <div className="relative h-48 overflow-hidden">
@@ -97,15 +95,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute top-4 left-4">
-          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold rounded-full">
-            {post.category}
-          </span>
+          <span className="tag-featured text-xs">{post.category}</span>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-grow">
-        <div className="flex items-center gap-2 mb-3 text-sm text-white/60">
+        <div className="flex items-center gap-2 mb-3 text-caption">
           <time dateTime={post.publishedAt}>{formattedDate}</time>
           <span>•</span>
           <span>{post.readTime} min read</span>
@@ -124,13 +120,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               alt={post.author.name}
               fill
               className="object-cover"
-              sizes="(max-width: 480px) 40px, 40px"
+              sizes="40px"
               loading="lazy"
             />
           </div>
           <div>
             <p className="text-white text-sm font-medium">{post.author.name}</p>
-            <p className="text-white/60 text-xs">{post.author.role}</p>
+            <p className="text-caption text-xs">{post.author.role}</p>
           </div>
         </div>
       </div>

@@ -1,33 +1,135 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
+import PerformanceTracker from '@/components/performance/PerformanceTracker';
 
-// Components
+// Critical above-the-fold components (load immediately)
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLogosSection';
-import ConnectCollaborateCreateSection from '@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection';
-import IconGridSection from '@/components/sections/IconGrid/IconGridSection';
-import CreatorOsSection from '@/components/sections/creator-os/CreatorOsSection';
-import StatisticsDashboardSection from '@/components/sections/Statistics/StatisticsDashboardSection';
-import CaseStudiesSection from '@/components/sections/CaseStudies/CaseStudiesSection';
-import CTASection from '@/components/sections/CTA/CTASection';
 
-// Page-specific SEO metadata
+// Lazy load below-the-fold sections for better initial load performance
+const ConnectCollaborateCreateSection = dynamic(
+  () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
+  ssr: true,
+  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+});
+
+const WhoScnIsForSection = dynamic(
+  () => import('@/components/sections/WhoScnIsFor/WhoScnIsForSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const HowScnWorksSection = dynamic(
+  () => import('@/components/sections/HowScnWorks/HowScnWorksSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const PaidCommunitySection = dynamic(
+  () => import('@/components/sections/PaidCommunity/PaidCommunitySection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const WaitlistSection = dynamic(() => import('@/components/sections/Waitlist/WaitlistSection'), {
+  ssr: true,
+  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+});
+
+const WhatMakesScnDifferentSection = dynamic(
+  () => import('@/components/sections/WhatMakesScnDifferent/WhatMakesScnDifferentSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const WhatHappensWhenYouJoinSection = dynamic(
+  () => import('@/components/sections/WhatHappensWhenYouJoin/WhatHappensWhenYouJoinSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const TestimonialsSection = dynamic(
+  () => import('@/components/sections/Testimonials/TestimonialsSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const CreatorOsSection = dynamic(
+  () => import('@/components/sections/creator-os/CreatorOsSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const CreativesShowcaseSection = dynamic(
+  () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const StatisticsDashboardSection = dynamic(
+  () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const CaseStudiesSection = dynamic(
+  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), {
+  ssr: true,
+  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+});
+
+// ✅ Page-specific SEO metadata (NO structuredData here)
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
-    'Join a growth-focused community for creators. Access education, monetization playbooks, and collaborate with peers to scale your creative business.',
+    'Stardust Creator Network connects creators with top brands for high-value partnerships, campaign collaborations, and scalable monetization opportunities across the creator economy',
   image: '/who we are/creators.webp',
   url: '/',
+  tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
 });
 
 export default function Home() {
+  // ✅ Structured data belongs in JSON-LD scripts, not metadata
   const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
 
   return (
     <>
-      {/* Breadcrumb Structured Data - Deferred, non-blocking */}
+      {/* Breadcrumb Structured Data */}
       <script
         type="application/ld+json"
         defer
@@ -35,37 +137,7 @@ export default function Home() {
           __html: JSON.stringify(breadcrumbData),
         }}
       />
-      {/* Preload critical images for faster loading - URLs must be URL-encoded for spaces */}
-      <link
-        rel="preload"
-        href="/who%20we%20are/office-teamwork-session.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/who%20we%20are/creators.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/learning-hub.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/creator-network.webp"
-        as="image"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        href="/creator%20community/growth%20tools.webp"
-        as="image"
-        fetchPriority="high"
-      />
+
       {/* Header */}
       <Header />
 
@@ -83,27 +155,59 @@ export default function Home() {
         {/* Connect. Collaborate. Create. */}
         <ConnectCollaborateCreateSection />
 
+        {/* Who SCN Is For */}
+        <WhoScnIsForSection />
+
+        {/* How SCN Works */}
+        <HowScnWorksSection />
+
+        {/* Paid Community */}
+        <PaidCommunitySection />
+
+        {/* What Makes SCN Different */}
+        <WhatMakesScnDifferentSection />
+
+        {/* What Happens When You Join */}
+        <WhatHappensWhenYouJoinSection />
+
+        {/* Testimonials */}
+        <TestimonialsSection />
+
+        {/* Waitlist - Final conversion section before footer */}
+        <WaitlistSection />
+
+        {/* ========================================
+            SECTIONS TEMPORARILY REMOVED FROM PAGE
+            These sections are commented out but preserved for future use.
+            Uncomment any section below to restore it to the page.
+        ======================================== */}
+
         {/* Icon Grid Features */}
-        <IconGridSection />
+        {/* <IconGridSection /> */}
 
-        {/* Creator Showcase with Analytics */}
-        <CreatorOsSection />
+        {/* Creator OS */}
+        {/* <CreatorOsSection /> */}
 
-        {/* Credibility & Vision Statement */}
-        <StatisticsDashboardSection />
+        {/* Creatives Showcase */}
+        {/* <CreativesShowcaseSection /> */}
 
-        {/* Case Studies Section */}
-        <CaseStudiesSection />
+        {/* Credibility & Vision */}
+        {/* <StatisticsDashboardSection /> */}
 
-        {/* Trusted by Leading Brands */}
-        <PlatformLogosSection />
+        {/* Case Studies */}
+        {/* <CaseStudiesSection /> */}
 
-        {/* Final CTA Section */}
-        <CTASection />
+        {/* CTA */}
+        {/* <CTASection /> */}
+
+        {/* ======================================== */}
       </main>
 
       {/* Footer */}
       <Footer />
+
+      {/* Performance Tracking */}
+      <PerformanceTracker />
     </>
   );
 }
