@@ -312,18 +312,11 @@ function verifyHmacSignature(body: string, signature: string, secret: string): b
     throw new Error('verifyHmacSignature should only be called server-side');
   }
 
-  // Dynamic import to avoid bundling crypto in client
-  const crypto = globalThis.crypto || require('node:crypto');
-
-  if ('createHmac' in crypto) {
-    // Node.js crypto
-    const hash = crypto.createHmac('sha512', secret).update(body).digest('hex');
-    return hash === signature;
-  }
-
-  // Fallback: compare directly (not secure, log warning)
-  console.warn('HMAC verification not available, skipping signature check');
-  return true;
+  // Use Node.js crypto for HMAC verification
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const nodeCrypto = require('node:crypto') as typeof import('crypto');
+  const hash = nodeCrypto.createHmac('sha512', secret).update(body).digest('hex');
+  return hash === signature;
 }
 
 /**
