@@ -30,6 +30,12 @@ function CallbackContent() {
 
   useEffect(() => {
     const verifyPayment = async () => {
+      if (!searchParams) {
+        setStatus('failed');
+        setError('No payment reference found');
+        return;
+      }
+
       const reference = searchParams.get('reference') || searchParams.get('trxref');
 
       if (!reference) {
