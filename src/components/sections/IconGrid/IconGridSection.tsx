@@ -20,7 +20,7 @@ export default function IconGridSection() {
               { text: 'Collaborate.', className: 'text-gradient-primary' },
               { text: 'Scale.', className: 'text-gradient-primary' },
             ]}
-            subtitle="The Stardust Creator Community is Launching Soon."
+            subtitle="The Stardust Creator Community is Now Live."
             headingClassName="text-white"
             subtitleClassName="text-xl md:text-2xl lg:text-3xl font-semibold text-white mt-4"
             className="mb-8"
@@ -42,7 +42,7 @@ export default function IconGridSection() {
             variant="body"
             className="text-white mb-12 max-w-3xl mx-auto opacity-75"
           >
-            Join the waitlist to be first in line when we open doors next month.
+            Join today and start connecting with fellow creators and brand opportunities.
           </Text>
 
           {/* Split Screen Carousel */}
@@ -65,7 +65,7 @@ export default function IconGridSection() {
             </a>
           </div>
 
-          {/* Coming Soon Badge */}
+          {/* Now Open Badge */}
           <div className="mt-12 inline-flex items-center px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-3"></div>
             <Text
@@ -74,7 +74,7 @@ export default function IconGridSection() {
               weight={500}
               as="span"
             >
-              Opening Next Month
+              Now Open - ₦5,000/month
             </Text>
           </div>
         </div>

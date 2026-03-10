@@ -240,7 +240,7 @@ export default function BrandCompanyInformationStep({
             type="email"
             value={data.email || ''}
             onChange={e => handleInputChange('email', e.target.value)}
-            placeholder="contact@yourcompany.com"
+            placeholder="you@example.com"
             className={`
               w-full bg-white/5 backdrop-blur-md border rounded-lg px-4 py-3 text-white placeholder-gray-400
               focus:outline-none focus:ring-2 focus:ring-purple-400/50 transition-all
