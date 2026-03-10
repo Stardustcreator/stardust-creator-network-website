@@ -176,6 +176,20 @@ export default function RootLayout({
         {/* Lazy client loader for analytics */}
         <DeferredAnalytics />
         {/* Note: noscript fallback is included inside DeferredAnalytics */}
+        {/* Tapfiliate - Affiliate tracking */}
+        <Script
+          src="https://script.tapfiliate.com/tapfiliate.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="tapfiliate-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){ (t[a].q=t[a].q||[]).push(arguments)}})(window,'tap');
+tap('create', '63069-ff90ee', { integration: "javascript" });
+tap('detect');`,
+          }}
+        />
         {/* Google Analytics - Loads after page is interactive */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         {/* Outbound Link Tracking - Tracks external link clicks */}
