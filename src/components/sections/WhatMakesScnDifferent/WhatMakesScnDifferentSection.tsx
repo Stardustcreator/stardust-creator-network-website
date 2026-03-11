@@ -149,7 +149,7 @@ export default function WhatMakesScnDifferentSection() {
                 fill
                 className="object-cover brightness-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={90}
+                quality={80}
               />
               <div className="absolute inset-0 bg-black/10"></div>
               {/* Light bottom overlay */}

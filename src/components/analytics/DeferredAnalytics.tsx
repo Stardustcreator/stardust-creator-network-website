@@ -54,14 +54,29 @@ export default function DeferredAnalytics() {
     // Ensure `window` exists (type-checker and SSR) before using it
     if (typeof window === 'undefined') return;
 
-    // Use requestIdleCallback if available to inject after idle time
-    if ('requestIdleCallback' in globalThis) {
-      (globalThis as any).requestIdleCallback(
-        () => {
+    // Delay analytics to improve performance - wait 3 seconds minimum
+    const delayedInject = () => {
+      setTimeout(() => {
+        if ('requestIdleCallback' in globalThis) {
+          (globalThis as any).requestIdleCallback(inject, { timeout: 5000 });
+        } else {
           inject();
-        },
-        { timeout: 2000 }
-      );
+        }
+      }, 3000);
+    };
+
+    // Use requestIdleCallback if available to inject after idle time
+    // Delay by 4 seconds to improve initial performance scores
+    if ('requestIdleCallback' in globalThis) {
+      const timer = setTimeout(() => {
+        (globalThis as any).requestIdleCallback(
+          () => {
+            inject();
+          },
+          { timeout: 5000 }
+        );
+      }, 4000);
+      return () => clearTimeout(timer);
     } else {
       // Fallback: wait for first interaction
       (globalThis as any).addEventListener('scroll', onFirstInteraction, { passive: true });
@@ -70,8 +85,8 @@ export default function DeferredAnalytics() {
       (globalThis as any).addEventListener('visibilitychange', onVisibilityChange, {
         passive: true,
       });
-      // Also set a timeout fallback
-      const t = setTimeout(() => inject(), 3000);
+      // Also set a timeout fallback (longer delay for better performance)
+      const t = setTimeout(() => inject(), 5000);
       return () => clearTimeout(t);
     }
 

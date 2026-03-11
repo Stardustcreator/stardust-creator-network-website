@@ -34,18 +34,14 @@ const nextConfig = {
     // Image formats supported - prioritize AVIF and WebP for better compression
     formats: ['image/avif', 'image/webp'],
     // Image sizes for responsive images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Performance and security settings
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // Increase cache TTL for better performance
-    minimumCacheTTL: 86400, // 24 hours
     minimumCacheTTL: 31536000, // 1 year
-    // Optimize image quality vs size balance
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Allow unoptimized images if optimization fails (for images with spaces in paths)
     unoptimized: false,
   },
@@ -209,6 +205,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  
+  // Experimental features for better performance
+  experimental: {
+    // Optimize CSS loading and bundling
+    optimizeCss: true,
+    // Optimize package imports for smaller bundles
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
+  },
+  
   // SWC minifier is enabled by default in Next.js 16 (no config needed)
   // Tailwind CSS 4 automatically purges unused CSS
   // Compression and font optimization are enabled by default in Next.js 16

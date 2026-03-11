@@ -23,6 +23,7 @@ const lato = Lato({
   display: 'swap',
   preload: true,
   fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true, // Reduce CLS by matching fallback metrics
 });
 
 // Google Analytics Measurement ID
@@ -118,7 +119,7 @@ export default function RootLayout({
             ]),
           }}
         />
-        {/* Preconnect to external domains for performance */}
+        {/* Preconnect to external domains for performance - only critical ones */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -128,20 +129,15 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Preconnect to image CDNs to speed up LCP image fetches */}
+        {/* DNS prefetch for non-critical resources */}
         <link
-          rel="preconnect"
+          rel="dns-prefetch"
           href="https://cdn.sanity.io"
         />
         <link
-          rel="preconnect"
-          href="https://core.sanity-cdn.com"
+          rel="dns-prefetch"
+          href="https://www.youtube-nocookie.com"
         />
-        <link
-          rel="preconnect"
-          href="https://cdn.stardustcreators.com"
-        />
-        {/* Preconnect to analytics domains (non-blocking) */}
         <link
           rel="dns-prefetch"
           href="https://www.googletagmanager.com"
@@ -150,18 +146,7 @@ export default function RootLayout({
           rel="dns-prefetch"
           href="https://www.google-analytics.com"
         />
-        <link
-          rel="dns-prefetch"
-          href="https://connect.facebook.net"
-        />
         {/* Preload critical hero image (LCP element) */}
-        <link
-          rel="preload"
-          href="/hero.avif"
-          as="image"
-          type="image/avif"
-          fetchPriority="high"
-        />
         <link
           rel="preload"
           href="/hero.webp"

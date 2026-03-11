@@ -198,7 +198,98 @@ body {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
+  color: var(--color-white);
+}
+
+.heading-2.on-light {
   color: var(--color-deep-purple);
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Font rendering optimization */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Content Visibility - Lazy render off-screen sections */
+@supports (content-visibility: auto) {
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
+  /* First section (hero) should always be visible */
+  section:first-of-type {
+    content-visibility: visible;
+  }
+}
+
+/* GPU Acceleration utility classes */
+.gpu-accelerate {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Optimize images and media */
+@supports (content-visibility: auto) {
+  img:not([loading='eager']),
+  video,
+  iframe {
+    content-visibility: auto;
+  }
+}
+
+/* Prevent layout shift from lazy images */
+img[loading='lazy'] {
+  min-height: 50px;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize button and link interactions */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Contain paint for sections with fixed layout */
+@supports (contain: paint) {
+  header,
+  nav,
+  footer {
+    contain: layout paint;
+  }
 }
 
 .heading-3 {

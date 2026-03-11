@@ -129,7 +129,7 @@ export default function PaidCommunitySection() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={90}
+                quality={80}
               />
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-pink-600/20"></div>
             </div>

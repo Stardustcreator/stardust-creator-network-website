@@ -117,7 +117,7 @@ export default function WhoScnIsForSection() {
                 fill
                 className="object-cover brightness-110"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={90}
+                quality={80}
               />
               {/* Black overlay to reduce brightness */}
               <div className="absolute inset-0 bg-black/25"></div>

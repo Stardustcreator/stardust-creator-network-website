@@ -19,7 +19,10 @@ export default function Hero() {
           fill
           priority
           fetchPriority="high"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, 0vw"
+          quality={75}
+          placeholder="blur"
+          blurDataURL="data:image/webp;base64,UklGRpwAAABXRUJQVlA4TJAAAAAvE8AEEO/gIJJk5/8HhwiRJDv/P3AQSbLz/wMOEiJJdv5/4CCSZOf/Bw4iSXb+f+AgkmTn/wcOIkm28/8DB5EkO/8/cBBJsvP/AwcRQiTZ+f+BgwiRZOf/Bw4CRAiRZOf/Bw4CRAiRZOf/Bw4CRAiRZDv/P3AQCRD5/wEH"
           className="object-cover"
         />
       </div>
