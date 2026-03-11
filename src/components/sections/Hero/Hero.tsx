@@ -56,9 +56,7 @@ export default function Hero() {
           variant="gradient"
           className="mb-3 text-xl md:text-2xl lg:text-3xl"
         >
-          You’re Not Just a Content Creator.
-          <br />
-          You’re Building a Media Business.
+          Turn your content into a media business
         </Heading>
 
         <Text

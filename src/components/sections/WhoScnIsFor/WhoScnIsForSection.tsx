@@ -8,7 +8,7 @@ import { encodeImagePath } from '@/lib/utils';
 
 const targetAudience = [
   {
-    title: 'Emerging creators making their first ₦100k–₦500k months',
+    title: 'Emerging creators making their first ₦100k–₦500k monthly',
     icon: '🚀',
   },
   {
