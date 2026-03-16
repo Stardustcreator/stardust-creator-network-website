@@ -68,12 +68,22 @@ const nextConfig = {
         destination: 'https://www.stardustcreatornetwork.com/:path*',
         permanent: true,
       },
-      // Example redirect from old URL structure
-      // {
-      //   source: '/old-path/:slug',
-      //   destination: '/new-path/:slug',
-      //   permanent: true,
-      // },
+      // Redirect to homepage waitlist section
+      {
+        source: '/join',
+        destination: '/#waitlist',
+        permanent: true,
+      },
+      {
+        source: '/creators',
+        destination: '/#waitlist',
+        permanent: true,
+      },
+      {
+        source: '/creator-community',
+        destination: '/#waitlist',
+        permanent: true,
+      },
     ];
   },
 
