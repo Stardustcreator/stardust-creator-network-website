@@ -151,16 +151,16 @@ export default function BrandProcessPage() {
             <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/join"
+                href="/creators/join"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-semibold transition-colors text-center"
               >
                 Join as a Creator
               </Link>
               <Link
-                href="/creators"
+                href="/"
                 className="bg-transparent border-2 border-purple-500 hover:bg-purple-500 text-white px-8 py-3 rounded-full font-semibold transition-colors text-center"
               >
-                Find Creators
+                Explore Network
               </Link>
             </div>
           </div>

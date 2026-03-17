@@ -15,6 +15,7 @@ module.exports = {
     '/500',
     '/_*',
     '/og/*', // Exclude OG image generation routes
+    '/creator-community', // Exclude redirect page
     '/*.png', // Exclude image files
     '/*.jpg',
     '/*.jpeg',

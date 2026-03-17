@@ -51,8 +51,20 @@ export default function WaitlistSection() {
     setIsSubmitting(true);
 
     try {
-      // TODO: Connect to Mailchimp/Google Sheets
-      console.log('Waitlist signup:', formData);
+      // Send to Mailchimp via API
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to join waitlist');
+      }
 
       // Reset form
       setFormData({
@@ -64,11 +76,12 @@ export default function WaitlistSection() {
 
       // Show success message
       alert(
-        "Thank you for joining the waitlist! We'll notify you when the SCN Paid Community launches."
+        result.message ||
+          "You're on the list! We'll notify you as soon as the SCN Paid Community launches."
       );
     } catch (error) {
       console.error('Waitlist signup error:', error);
-      alert('Something went wrong. Please try again.');
+      alert(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

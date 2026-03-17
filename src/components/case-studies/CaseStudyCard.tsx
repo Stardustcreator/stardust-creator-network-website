@@ -84,7 +84,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
                   sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
                   className="object-contain"
                   priority
-                  quality={90}
+                  quality={80}
                 />
               </div>
             </div>

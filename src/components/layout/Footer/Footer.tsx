@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heading, Text } from '@/components/typography';
@@ -200,12 +202,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/creators/join"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                <a
+                  href="#waitlist"
+                  onClick={e => {
+                    e.preventDefault();
+                    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm cursor-pointer"
                 >
                   Join Waitlist
-                </Link>
+                </a>
               </li>
               <li>
                 <Link

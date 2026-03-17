@@ -1550,7 +1550,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                       fill
                       sizes="100vw"
                       className="object-cover"
-                      quality={100}
+                      quality={85}
                       priority
                     />
                     {/* Light overlay for text readability if needed */}
