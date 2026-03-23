@@ -1,29 +1,27 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { Heading, Text } from '@/components/typography';
+import { Text } from '@/components/typography';
 import { SectionHeader } from '@/components/shared';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import { caseStudies } from '@/lib/data/case-studies.data';
 
-// Select the 5 case studies to display with specific images
-const featuredCaseStudies = [
-  caseStudies.find(cs => cs.id === 'honeywell-relaunch-campaign'),
-  caseStudies.find(cs => cs.id === 'axa-mansard-autoflex-campaign'),
-  caseStudies.find(cs => cs.id === 'leadway-travel-insurance-campaign'),
-  caseStudies.find(cs => cs.id === 'cleamax-campaign'),
-  caseStudies.find(cs => cs.id === 'so-fresh-salad-campaign'),
-].filter(Boolean); // Remove any undefined entries
-
-// Specific images for each campaign
-const campaignImages: Record<string, string> = {
-  'honeywell-relaunch-campaign': '/case-studies/T-Spices.webp',
-  'leadway-travel-insurance-campaign': '/case-studies/Influencer 19.webp',
-  'axa-mansard-autoflex-campaign': '/case-studies/Influencer 13.webp',
-  'cleamax-campaign': '/case-studies/Uriel.webp',
-  'so-fresh-salad-campaign': '/case-studies/so fresh image 2.webp',
-};
+const instagramTestimonials = [
+  {
+    coverImage: '/case-studies/Influencer 12.webp',
+    instagramUrl: 'https://www.instagram.com/reel/DScbmVvDD87/?igsh=c2xwa2pzZ2VweTM3',
+    subtext: 'A high-performing creator collaboration driving strong audience engagement.',
+  },
+  {
+    coverImage: '/case-studies/Favimore Kitchen.webp',
+    instagramUrl: 'https://www.instagram.com/reel/DSSIgiPjLF1/?igsh=ZTlydTRpMXJ2M2I3',
+    subtext: 'A food-focused campaign blending creativity with authentic storytelling.',
+  },
+  {
+    coverImage: '/case-studies/raade.webp',
+    instagramUrl: 'https://www.instagram.com/reel/DSH1u6hDB5Z/?igsh=cWpwYXIzaDZndGZp',
+    subtext: 'A visually compelling campaign capturing attention and driving interaction.',
+  },
+];
 
 export default function TestimonialsSection() {
   const { elementRef, isIntersecting } = useIntersectionObserver({
@@ -49,9 +47,9 @@ export default function TestimonialsSection() {
         <div className="text-center mb-4">
           <SectionHeader
             words={[
-              { text: 'Campaign ', className: 'text-white' },
+              { text: 'Creator ', className: 'text-white' },
               {
-                text: 'Case Studies',
+                text: 'Wins',
                 className:
                   'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
               },
@@ -70,86 +68,52 @@ export default function TestimonialsSection() {
             variant="body"
             className="!text-white/70 text-base md:text-lg leading-relaxed"
           >
-            Real creator-led campaigns executed with leading brands.
+            See how creators are thriving with authentic brand collaborations.
             <br />
-            Explore how influencer collaborations drive measurable results.
+            Real campaigns, real impact, real success.
           </Text>
         </div>
 
-        {/* Case Studies Grid */}
+        {/* Instagram Testimonials Grid */}
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredCaseStudies.map((caseStudy, index) => {
-              if (!caseStudy) return null;
+            {instagramTestimonials.map((testimonial, index) => (
+              <a
+                key={index}
+                href={testimonial.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 cursor-pointer ${
+                  isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${index * 150}ms` }}
+              >
+                {/* Cover Image */}
+                <div className="relative w-full h-64 overflow-hidden bg-neutral-900">
+                  <Image
+                    src={testimonial.coverImage}
+                    alt="Creator success story"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    quality={90}
+                  />
+                </div>
 
-              return (
-                <Link
-                  key={caseStudy.id}
-                  href={`/case-studies/${caseStudy.id}`}
-                  className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 cursor-pointer ${
-                    isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                >
-                  {/* Cover Image */}
-                  {campaignImages[caseStudy.id] ? (
-                    <div className="relative w-full h-64 overflow-hidden bg-neutral-900">
-                      <Image
-                        src={campaignImages[caseStudy.id]}
-                        alt={caseStudy.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        quality={90}
-                      />
-                    </div>
-                  ) : (
-                    <div className="relative w-full h-64 bg-gradient-to-br from-purple-900/20 to-pink-900/20" />
-                  )}
+                {/* Card Content */}
+                <div className="p-6">
+                  <Text
+                    variant="small"
+                    className="!text-white/70 text-sm leading-relaxed"
+                  >
+                    {testimonial.subtext}
+                  </Text>
+                </div>
 
-                  {/* Card Content */}
-                  <div className="p-6">
-                    {/* Brand Logo */}
-                    <div className="mb-3">
-                      {caseStudy.logo && (
-                        <div className="relative w-16 h-16">
-                          <Image
-                            src={caseStudy.logo}
-                            alt={`${caseStudy.client} logo`}
-                            fill
-                            className="object-contain"
-                            sizes="64px"
-                            quality={90}
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Campaign Name */}
-                    <Heading
-                      level={3}
-                      variant="default"
-                      className="!text-white text-sm font-bold mb-2 line-clamp-2"
-                    >
-                      {caseStudy.title.replace('\n', ' ')}
-                    </Heading>
-
-                    {/* Campaign Subtext */}
-                    {caseStudy.excerpt && (
-                      <Text
-                        variant="small"
-                        className="!text-white/70 text-sm leading-relaxed line-clamp-3"
-                      >
-                        {caseStudy.excerpt}
-                      </Text>
-                    )}
-                  </div>
-
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                </Link>
-              );
-            })}
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              </a>
+            ))}
           </div>
         </div>
       </div>
