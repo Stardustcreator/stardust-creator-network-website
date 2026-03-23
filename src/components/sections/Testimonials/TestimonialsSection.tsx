@@ -17,7 +17,7 @@ const instagramTestimonials = [
     subtext: 'A food-focused campaign blending creativity with authentic storytelling.',
   },
   {
-    coverImage: '/case-studies/raade.webp',
+    coverImage: '/case-studies/reedas.webp',
     instagramUrl: 'https://www.instagram.com/reel/DSH1u6hDB5Z/?igsh=cWpwYXIzaDZndGZp',
     subtext: 'A visually compelling campaign capturing attention and driving interaction.',
   },
