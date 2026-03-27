@@ -141,6 +141,14 @@ export default function Footer() {
                   Creator Resources
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/pricing-calculator"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                >
+                  Pricing Calculator
+                </Link>
+              </li>
             </ul>
           </div>
 
