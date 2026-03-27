@@ -15,6 +15,36 @@ interface CachedGeolocation {
 }
 
 /**
+ * Maps country codes to currency codes for payment
+ */
+export function mapCountryCodeToCurrency(countryCode: string): 'NGN' | 'USD' | 'GBP' | 'CAD' {
+  const code = countryCode.toLowerCase();
+
+  // Nigeria
+  if (code === 'ng') {
+    return 'NGN';
+  }
+
+  // UK and its territories
+  if (['gb', 'uk'].includes(code)) {
+    return 'GBP';
+  }
+
+  // USA
+  if (code === 'us') {
+    return 'USD';
+  }
+
+  // Canada
+  if (code === 'ca') {
+    return 'CAD';
+  }
+
+  // Default to USD for unsupported countries
+  return 'USD';
+}
+
+/**
  * Maps country codes to our supported countries
  */
 function mapCountryCodeToSupported(countryCode: string): Country {
@@ -122,6 +152,35 @@ export async function detectUserCountry(): Promise<Country> {
     setCachedGeolocation(fallback);
 
     return fallback;
+  }
+}
+
+/**
+ * Detect user's currency based on country
+ */
+export async function detectUserCurrency(): Promise<'NGN' | 'USD' | 'GBP' | 'CAD'> {
+  try {
+    const response = await fetch('https://ipapi.co/json/', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return 'USD'; // Fallback to USD
+    }
+
+    const data: GeolocationResponse = await response.json();
+
+    if (data.error) {
+      return 'USD';
+    }
+
+    return mapCountryCodeToCurrency(data.country_code);
+  } catch (error) {
+    console.warn('Failed to detect user currency:', error);
+    return 'USD'; // Fallback to USD
   }
 }
 

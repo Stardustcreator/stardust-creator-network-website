@@ -44,6 +44,7 @@
     "next-sanity": "^11.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-paystack": "^6.0.0",
     "sanity": "^3.39.1",
     "schema-dts": "^1.1.5",
     "tailwind-merge": "^3.4.0",

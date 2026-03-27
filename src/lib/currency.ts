@@ -23,25 +23,33 @@ export const CURRENCIES: Record<string, Currency> = {
     symbol: '£',
     flag: '🇬🇧',
     name: 'British Pound',
-    rate: 0.00053, // 1 NGN = ~0.00053 GBP
+    rate: 0.0008, // 1 NGN = ~0.0008 GBP (£4 for ₦5,000)
   },
   USD: {
     code: 'USD',
     symbol: '$',
     flag: '🇺🇸',
     name: 'US Dollar',
-    rate: 0.00067, // 1 NGN = ~0.00067 USD
+    rate: 0.001, // 1 NGN = ~0.001 USD ($5 for ₦5,000)
   },
   CAD: {
     code: 'CAD',
     symbol: 'C$',
     flag: '🇨🇦',
     name: 'Canadian Dollar',
-    rate: 0.00092, // 1 NGN = ~0.00092 CAD
+    rate: 0.0014, // 1 NGN = ~0.0014 CAD ($7 CAD for ₦5,000)
   },
 };
 
 export const BASE_PRICE_NGN = 5000;
+
+// Fixed prices for payment (to avoid conversion issues with Paystack)
+export const FIXED_PRICES: Record<string, number> = {
+  NGN: 5000,
+  USD: 5,
+  GBP: 4,
+  CAD: 7,
+};
 
 /**
  * Convert price from NGN to target currency
