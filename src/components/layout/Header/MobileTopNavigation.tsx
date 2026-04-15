@@ -223,10 +223,11 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
             >
               Find a Creator
             </Link>
-            <a
-              href="#waitlist"
+            <button
+              type="button"
               onClick={e => {
                 e.preventDefault();
+                e.stopPropagation();
                 onClose();
                 setTimeout(() => {
                   document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
@@ -235,7 +236,7 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
               className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10 text-center"
             >
               Join as Creator
-            </a>
+            </button>
           </div>
         </div>
       </div>
