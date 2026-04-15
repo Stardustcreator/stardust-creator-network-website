@@ -230,7 +230,7 @@ export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNaviga
                 e.stopPropagation();
                 onClose();
                 setTimeout(() => {
-                  document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
                 }, 300);
               }}
               className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10 text-center"

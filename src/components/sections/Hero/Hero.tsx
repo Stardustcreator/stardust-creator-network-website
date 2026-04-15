@@ -92,7 +92,7 @@ export default function Hero() {
             type="button"
             className="btn-primary"
             onClick={() => {
-              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             JOIN THE COMMUNITY

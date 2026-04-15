@@ -55,7 +55,7 @@ export default function IconGridSection() {
             <button
               type="button"
               onClick={() => {
-                document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="group relative inline-flex items-center justify-center px-8 sm:px-12 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full sm:w-auto max-w-sm sm:max-w-none cursor-pointer"
             >

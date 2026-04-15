@@ -144,7 +144,7 @@ export default function WhatHappensWhenYouJoinSection() {
           <button
             type="button"
             onClick={() => {
-              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-base px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
             aria-label="Join Stardust Creator Network"
