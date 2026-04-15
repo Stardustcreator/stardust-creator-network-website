@@ -201,16 +201,15 @@ export default function ConnectCollaborateCreateSection() {
 
               {/* CTA Button */}
               <div>
-                <a
-                  href="#waitlist"
-                  onClick={e => {
-                    e.preventDefault();
+                <button
+                  type="button"
+                  onClick={() => {
                     document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="btn-primary"
                 >
                   JOIN NOW
-                </a>
+                </button>
               </div>
             </div>
           </div>

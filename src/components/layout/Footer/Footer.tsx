@@ -210,16 +210,15 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#waitlist"
-                  onClick={e => {
-                    e.preventDefault();
+                <button
+                  type="button"
+                  onClick={() => {
                     document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm cursor-pointer"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm cursor-pointer bg-transparent border-none p-0"
                 >
                   Join Waitlist
-                </a>
+                </button>
               </li>
               <li>
                 <Link

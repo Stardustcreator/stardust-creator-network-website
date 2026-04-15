@@ -156,17 +156,16 @@ export default function WhoScnIsForSection() {
 
         {/* CTA Button */}
         <div className="text-center mt-16">
-          <a
-            href="#waitlist"
+          <button
+            type="button"
             className="btn-primary"
             aria-label="Join Stardust Creator Network"
-            onClick={e => {
-              e.preventDefault();
+            onClick={() => {
               document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             JOIN NOW
-          </a>
+          </button>
         </div>
       </div>
     </section>

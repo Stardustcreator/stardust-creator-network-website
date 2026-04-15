@@ -88,16 +88,15 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <a
-            href="#waitlist"
+          <button
+            type="button"
             className="btn-primary"
-            onClick={e => {
-              e.preventDefault();
+            onClick={() => {
               document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             JOIN THE COMMUNITY
-          </a>
+          </button>
           <Link
             href="#how-scn-works"
             className="btn-secondary"
