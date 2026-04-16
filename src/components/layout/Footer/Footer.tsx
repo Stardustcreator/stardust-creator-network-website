@@ -213,7 +213,9 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={() => {
-                    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                    document
+                      .getElementById('waitlist-form')
+                      ?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm cursor-pointer bg-transparent border-none p-0"
                 >

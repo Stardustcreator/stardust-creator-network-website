@@ -254,7 +254,7 @@ export default function HowScnWorksSection() {
             className="btn-primary"
             aria-label="Join Stardust Creator Network"
             onClick={() => {
-              document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             JOIN NOW

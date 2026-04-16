@@ -210,7 +210,10 @@ export default function WaitlistSection() {
         </div>
 
         {/* Waitlist Form */}
-        <div className="max-w-lg mx-auto px-2 sm:px-0">
+        <div
+          id="waitlist-form"
+          className="max-w-lg mx-auto px-2 sm:px-0"
+        >
           <div
             className={`relative bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl transition-all duration-700 ${
               isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
