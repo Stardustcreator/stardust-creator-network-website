@@ -50,6 +50,9 @@ export async function POST(request: NextRequest) {
 
     // Function to send to Mailchimp
     const sendToMailchimp = async () => {
+      // Create Basic auth header (Mailchimp requires base64 encoded "anystring:apikey")
+      const basicAuth = Buffer.from(`anystring:${MAILCHIMP_API_KEY}`).toString('base64');
+
       // Add or update member in Mailchimp
       const memberResponse = await fetch(
         `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members/${subscriberHash}`,
@@ -57,7 +60,7 @@ export async function POST(request: NextRequest) {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${MAILCHIMP_API_KEY}`,
+            Authorization: `Basic ${basicAuth}`,
           },
           body: JSON.stringify(memberData),
         }
@@ -78,7 +81,7 @@ export async function POST(request: NextRequest) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${MAILCHIMP_API_KEY}`,
+            Authorization: `Basic ${basicAuth}`,
           },
           body: JSON.stringify({
             tags: [
