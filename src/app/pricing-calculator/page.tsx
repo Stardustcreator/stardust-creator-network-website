@@ -4,6 +4,8 @@ import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import { useEffect } from 'react';
 
+// Version: 6.1 - Updated for Vercel deployment
+
 export default function PricingCalculatorPage() {
   // V5.2 Calculator Effect
   useEffect(() => {
