@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
-const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY || '2f93fb335da1221dbea4e558e3a981b3-us10';
-const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID || '9592c80acc';
-const MAILCHIMP_SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX || 'us10';
+const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY;
+const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
+const MAILCHIMP_SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX;
 const MAILCHIMP_TAG = 'Join-Waitlist';
 
-const GOOGLE_SHEETS_WEBHOOK =
-  process.env.GOOGLE_SHEETS_WEBHOOK_URL ||
-  'https://script.google.com/macros/s/AKfycbyY9ziSL852M10ZV1hGJjr5CudQAll8VFdW6VRZRTP-eEVtCAb_l-x_al41EHQj01Xm/exec';
+const GOOGLE_SHEETS_WEBHOOK = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
 
 interface WaitlistFormData {
   name: string;
@@ -19,6 +17,15 @@ interface WaitlistFormData {
 
 export async function POST(request: NextRequest) {
   try {
+    // Validate environment variables
+    if (!MAILCHIMP_API_KEY || !MAILCHIMP_AUDIENCE_ID || !MAILCHIMP_SERVER_PREFIX) {
+      console.error('Missing Mailchimp configuration');
+      return NextResponse.json(
+        { error: 'Server configuration error. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     const body: WaitlistFormData = await request.json();
     const { name, email, country, phone } = body;
 
