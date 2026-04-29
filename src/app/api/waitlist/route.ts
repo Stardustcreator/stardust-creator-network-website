@@ -112,6 +112,11 @@ export async function POST(request: NextRequest) {
 
     // Function to send to Google Sheets
     const sendToGoogleSheets = async () => {
+      // Skip if webhook URL is not configured
+      if (!GOOGLE_SHEETS_WEBHOOK) {
+        throw new Error('Google Sheets webhook not configured');
+      }
+
       const sheetsData = {
         name,
         email,
