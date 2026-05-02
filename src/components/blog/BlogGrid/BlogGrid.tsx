@@ -19,19 +19,85 @@ interface BlogGridProps {
 
 export default function BlogGrid({ posts, categories }: BlogGridProps) {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory | 'All'>('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPosts = useMemo(() => {
-    if (selectedCategory === 'All') {
-      return posts;
+    let filtered = posts;
+
+    // Filter by category
+    if (selectedCategory !== 'All') {
+      filtered = filtered.filter(post => post.category === selectedCategory);
     }
-    return posts.filter(post => post.category === selectedCategory);
-  }, [posts, selectedCategory]);
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        post =>
+          post.title.toLowerCase().includes(query) ||
+          post.excerpt.toLowerCase().includes(query) ||
+          post.category.toLowerCase().includes(query) ||
+          (post.author?.name && post.author.name.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
+  }, [posts, selectedCategory, searchQuery]);
 
   const featuredPosts = filteredPosts.filter(post => post.featured);
   const regularPosts = filteredPosts.filter(post => !post.featured);
 
   return (
     <div className="max-w-7xl mx-auto px-6">
+      {/* Search Bar */}
+      <div className="mb-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search articles by title, topic, or author..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full px-6 py-4 pl-14 bg-white/5 backdrop-blur-sm rounded-full text-white placeholder-white/40 outline-none focus:outline-none focus:ring-0 border-0"
+              style={{ boxShadow: 'none' }}
+            />
+            <svg
+              className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <BlogFilters
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
@@ -97,8 +163,15 @@ export default function BlogGrid({ posts, categories }: BlogGridProps) {
       {filteredPosts.length === 0 && (
         <div className="text-center py-20">
           <div className="inline-block p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
-            <p className="text-white/60 text-lg">
-              No posts found in this category yet. Check back soon for new content!
+            <p className="text-white/60 text-lg mb-2">
+              {searchQuery
+                ? `No articles found matching "${searchQuery}"`
+                : 'No posts found in this category yet.'}
+            </p>
+            <p className="text-white/40 text-sm">
+              {searchQuery
+                ? 'Try different keywords or browse all categories'
+                : 'Check back soon for new content!'}
             </p>
           </div>
         </div>
