@@ -16,6 +16,8 @@ module.exports = {
     '/_*',
     '/og/*', // Exclude OG image generation routes
     '/creator-community', // Exclude redirect page
+    '/creators/join', // Exclude if it redirects
+    '/join/*', // Exclude auth/signup flows
     '/*.png', // Exclude image files
     '/*.jpg',
     '/*.jpeg',
@@ -23,6 +25,9 @@ module.exports = {
     '/*.svg',
     '/*.gif',
     '/*.ico',
+    '/sitemap-0.xml', // Don't include the sitemap itself
+    '/sitemap.xml', // Don't include the sitemap index
+    '/robots.txt', // Don't include robots.txt
   ],
 
   // Transform function to customize URLs in sitemap

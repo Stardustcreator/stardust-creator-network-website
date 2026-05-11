@@ -1,9 +1,13 @@
 import { NavigationBar } from '../NavigationBar';
 
-export default function Header() {
+interface HeaderProps {
+  variant?: 'default' | 'fixed';
+}
+
+export default function Header({ variant = 'default' }: HeaderProps = {}) {
   return (
     <>
-      <NavigationBar />
+      <NavigationBar variant={variant} />
     </>
   );
 }

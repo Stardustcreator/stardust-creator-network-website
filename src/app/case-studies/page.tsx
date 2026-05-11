@@ -16,7 +16,7 @@ export const metadata: Metadata = generateMetaTags({
 export default function CaseStudiesPage() {
   return (
     <>
-      <Header />
+      <Header variant="fixed" />
       <main
         id="main-content"
         className="min-h-screen bg-black"

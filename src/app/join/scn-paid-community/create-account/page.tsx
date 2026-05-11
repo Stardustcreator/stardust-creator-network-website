@@ -70,7 +70,7 @@ function CreateAccountForm() {
         }
       `}</style>
 
-      <Header />
+      <Header variant="fixed" />
 
       <main className="relative bg-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 pt-32 md:pt-40 pb-12">

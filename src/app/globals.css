@@ -514,31 +514,31 @@ a {
 }
 
 .bg-gradient-footer {
-  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
-  border-radius: 40px 40px 0 0 !important;
+  background: #2d1b4e !important;
+  border-radius: 0 !important;
 }
 
 /* Ensure footer has the correct gradient background */
 footer.bg-gradient-footer {
-  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
-  border-radius: 40px 40px 0 0 !important;
+  background: #2d1b4e !important;
+  border-radius: 0 !important;
 }
 
 /* Additional specificity for footer gradient */
 footer[class*='bg-gradient-footer'] {
-  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
-  border-radius: 40px 40px 0 0 !important;
+  background: #2d1b4e !important;
+  border-radius: 0 !important;
 }
 
 /* Override any inherited backgrounds on footer */
 footer {
-  background: linear-gradient(135deg, #57058b 0%, #000000 100%) !important;
-  border-radius: 40px 40px 0 0 !important;
+  background: #2d1b4e !important;
+  border-radius: 0 !important;
 }
 
 /* Rounded top corners utility */
 .rounded-t-footer {
-  border-radius: 40px 40px 0 0 !important;
+  border-radius: 0 !important;
 }
 
 /* Ensure page background is black to cover footer curve edges */
