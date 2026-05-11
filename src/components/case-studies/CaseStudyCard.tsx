@@ -16,7 +16,7 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
   }
 
   // Prepare metrics for display in grid format
-  const metricsArray = [];
+  const metricsArray: { label: string; value: string }[] = [];
   if (caseStudy.metrics) {
     const m = caseStudy.metrics;
 
