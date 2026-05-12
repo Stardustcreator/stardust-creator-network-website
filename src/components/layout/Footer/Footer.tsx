@@ -7,10 +7,9 @@ import { Heading, Text } from '@/components/typography';
 export default function Footer() {
   return (
     <footer
-      className="bg-gradient-footer rounded-t-footer border-t border-white/10 py-16"
+      className="border-t border-white/10 py-16"
       style={{
-        background: 'linear-gradient(135deg, #57058B 0%, #000000 100%)',
-        borderRadius: '40px 40px 0 0',
+        backgroundColor: '#2D1B4E',
       }}
     >
       <div className="container mx-auto px-6">

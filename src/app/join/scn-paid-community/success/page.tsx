@@ -18,7 +18,7 @@ function SuccessContent() {
 
   return (
     <>
-      <Header />
+      <Header variant="fixed" />
       <main className="relative min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black flex items-center justify-center overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

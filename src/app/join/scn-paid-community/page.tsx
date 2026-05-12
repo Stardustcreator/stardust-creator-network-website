@@ -104,7 +104,7 @@ export default function SCNPaidCommunityPage() {
         }
       `}</style>
 
-      <Header />
+      <Header variant="fixed" />
 
       <main className="relative bg-white min-h-screen">
         {/* Increased top spacing from navbar */}

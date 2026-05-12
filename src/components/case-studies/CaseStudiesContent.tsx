@@ -95,9 +95,9 @@ export default function CaseStudiesContent() {
         {/* Black Overlay - 70% opacity */}
         <div className="absolute inset-0 bg-black/70 z-10" />
 
-        {/* Content - Left Aligned with Padding */}
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-16 md:py-20 lg:py-24 relative z-20 w-full">
-          <div className="max-w-4xl px-4 sm:px-6 md:px-8">
+        {/* Content - Centered */}
+        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-16 md:py-20 lg:py-24 relative z-20 w-full flex items-center justify-center">
+          <div className="max-w-4xl px-4 sm:px-6 md:px-8 text-center">
             <Heading
               level={1}
               variant="gradient"
@@ -120,7 +120,7 @@ export default function CaseStudiesContent() {
             </Text>
 
             {/* Success metrics (removed '500+ Brands Served' as requested) */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-w-2xl">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-w-2xl mx-auto">
               <div className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-2">85%</div>
                 <div className="text-white/80 text-sm">Campaign Success</div>
@@ -138,11 +138,14 @@ export default function CaseStudiesContent() {
         </div>
       </section>
 
-      {/* Case Studies Grid Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-black">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      {/* Case Studies Grid Section - Light Background */}
+      <section className="py-8 md:py-10 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Grid Layout: 1 column mobile, 2 columns tablet, 3 columns desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+            style={{ columnGap: '12px', rowGap: '12px', maxWidth: '1300px', margin: '0 auto' }}
+          >
             {studies.map((caseStudy, index) => (
               <CaseStudyCard
                 key={caseStudy.id}
@@ -157,36 +160,39 @@ export default function CaseStudiesContent() {
             <div className="text-center py-20">
               <Text
                 variant="body"
-                className="text-white/60"
+                className="text-gray-600"
               >
                 No case studies available yet. Check back soon!
               </Text>
             </div>
           )}
 
-          {/* CTA Section - Brand Brief Conversion */}
+          {/* CTA Section - Ready to work with us */}
           {studies.length > 0 && (
-            <div className="mt-16 md:mt-20">
-              <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto">
-                <Heading
-                  level={2}
-                  variant="gradient"
-                  className="text-2xl md:text-3xl mb-4"
+            <div className="mt-10 md:mt-12">
+              <div
+                className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg text-center mx-auto flex flex-col items-center justify-center"
+                style={{ width: '880px', height: '250px' }}
+              >
+                <h2
+                  className="font-semibold mb-3"
+                  style={{ fontSize: '36px', color: '#000000' }}
                 >
-                  Ready to Work With Us?
-                </Heading>
-                <Text
-                  variant="large"
-                  className="text-white/80 mb-6 max-w-2xl mx-auto"
+                  Ready to work with us?
+                </h2>
+                <p
+                  className="mb-5"
+                  style={{ fontSize: '16px', color: '#374151' }}
                 >
                   See how we&apos;ve helped brands succeed. Let&apos;s create your own success
                   story.
-                </Text>
+                </p>
                 <Link
                   href="/brands/brief"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                  className="inline-flex items-center justify-center px-6 py-2.5 text-xs md:text-sm font-semibold text-white rounded-lg transition-all duration-300 hover:opacity-90"
+                  style={{ backgroundColor: '#57058B' }}
                 >
-                  Start Your Campaign
+                  Start your campaign
                 </Link>
               </div>
             </div>

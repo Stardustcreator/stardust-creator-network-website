@@ -13,6 +13,7 @@ interface NavigationBarProps {
   logoAlt?: string;
   logoWidth?: number;
   logoHeight?: number;
+  variant?: 'default' | 'fixed';
 }
 
 export default function NavigationBar({
@@ -21,6 +22,7 @@ export default function NavigationBar({
   logoAlt = 'Stardust Creator Network Logo',
   logoWidth = 120,
   logoHeight = 48,
+  variant = 'default',
 }: NavigationBarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -56,10 +58,12 @@ export default function NavigationBar({
         <div className="flex items-center justify-center px-6 py-4">
           {/* Single Glassmorphic Container for Everything */}
           <div
-            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border border-white/20 rounded-full px-6 py-4 shadow-lg shadow-black/25 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
-              isScrolled
-                ? 'bg-white/15 shadow-xl shadow-black/40'
-                : 'bg-white/10 shadow-lg shadow-black/25'
+            className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border rounded-full px-6 py-4 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
+              variant === 'fixed'
+                ? 'bg-black/90 border-white/30 shadow-xl shadow-black/60'
+                : isScrolled
+                  ? 'bg-black/80 border-white/30 shadow-xl shadow-black/60'
+                  : 'bg-white/10 border-white/20 shadow-lg shadow-black/25'
             }`}
           >
             {/* Logo */}
@@ -91,7 +95,9 @@ export default function NavigationBar({
           {/* Mobile Layout - Outside glassmorphic container */}
           <div
             className={`lg:hidden flex items-center justify-between w-full max-w-7xl transition-all duration-300 relative ${
-              isScrolled ? 'bg-black/40 backdrop-blur-md rounded-full px-6 py-2' : ''
+              variant === 'fixed' || isScrolled
+                ? 'bg-black/80 backdrop-blur-md rounded-full px-6 py-2 shadow-xl'
+                : ''
             }`}
           >
             {/* Logo */}

@@ -1,10 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Text } from '@/components/typography';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import type { CaseStudy } from '@/types/case-study.types';
 
 interface CaseStudyCardProps {
@@ -13,371 +10,236 @@ interface CaseStudyCardProps {
 }
 
 export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const { elementRef, isIntersecting } = useIntersectionObserver({
-    threshold: 0.2,
-    rootMargin: '-50px',
-    triggerOnce: true,
-  });
-
   // Safety check
   if (!caseStudy || !caseStudy.id) {
     return null;
   }
 
+  // Prepare metrics for display in grid format
+  const metricsArray: { label: string; value: string }[] = [];
+  if (caseStudy.metrics) {
+    const m = caseStudy.metrics;
+
+    // Map metrics to display format
+    if (m.totalImpression) metricsArray.push({ label: 'Reach', value: m.totalImpression });
+    if (m.reach) metricsArray.push({ label: 'Reach', value: m.reach });
+    if (m.totalEngagement) metricsArray.push({ label: 'Engagement', value: m.totalEngagement });
+    if (m.engagementRate) metricsArray.push({ label: 'Roi', value: m.engagementRate });
+    if (m.views) metricsArray.push({ label: 'Views', value: m.views });
+    if (m.likes) metricsArray.push({ label: 'Likes', value: m.likes });
+    if (m.comments) metricsArray.push({ label: 'Comments', value: m.comments });
+    if (m.saves) metricsArray.push({ label: 'Saves', value: m.saves });
+    if (m.impressionShare) metricsArray.push({ label: 'Impression', value: m.impressionShare });
+    if (m.costPerAcquisition) metricsArray.push({ label: 'CPA', value: m.costPerAcquisition });
+    if (m.returnOnAdSpend) metricsArray.push({ label: 'ROAS', value: m.returnOnAdSpend });
+    if (m.impressions) metricsArray.push({ label: 'Impressions', value: m.impressions });
+    if (m.clicks) metricsArray.push({ label: 'Clicks', value: m.clicks });
+    if (m.completionRate) metricsArray.push({ label: 'Completion', value: m.completionRate });
+    if (m.impact) metricsArray.push({ label: 'Impact', value: m.impact });
+  }
+
+  // Add placeholder metrics for consistent layout
+  const plan = caseStudy.industry || 'Custom Plan';
+  const duration = '3 Months';
+
   return (
     <div
-      ref={elementRef}
-      className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden transition-all duration-500 ease-out flex flex-col h-full ${
-        isIntersecting ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
-      }`}
+      className="border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
       style={{
-        transitionDelay: isIntersecting ? `${index * 100}ms` : '0ms',
+        width: '416px',
+        height: '621px',
+        borderRadius: '12px',
+        margin: '0 auto',
+        backgroundColor: '#E2E8F0',
+        display: 'flex',
+        flexDirection: 'column',
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Hover Gradient Overlay */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-transparent z-10 transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
-
       {/* Card Content */}
-      <div className="relative z-20 p-6 md:p-8 flex flex-col flex-grow">
-        {/* Case Study Tag */}
-        <div className="mb-4">
-          <span className="inline-block px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white/90 text-xs font-semibold uppercase tracking-wider">
-            CASE STUDY
-          </span>
-        </div>
+      <div style={{ padding: '28px 28px 0 28px', flex: '1', overflow: 'auto' }}>
+        <div>
+          {/* Title */}
+          <h3
+            className="text-gray-900 font-semibold leading-tight mb-5 uppercase"
+            style={{ fontSize: '18px', lineHeight: '1.3' }}
+          >
+            {caseStudy.title}
+          </h3>
 
-        {/* Header with Title, Images, and Logo */}
-        <div className="mb-6">
-          {/* Title - White text */}
-          <div className="mb-4">
-            <h3 className="text-white text-xl md:text-2xl lg:text-3xl leading-tight font-bold line-clamp-2 whitespace-pre-line">
-              {caseStudy.title}
-            </h3>
-          </div>
-
-          {/* Logo - Smaller size */}
+          {/* Logo */}
           {caseStudy.logo && (
-            <div className="mb-4 flex justify-start">
+            <div className="mb-5">
               <div
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl p-2 border-2 border-white/20 shadow-xl ${
-                  caseStudy.id === 'so-fresh-salad-campaign' ? 'bg-white' : 'bg-white/10'
+                className={`rounded border flex items-center justify-center ${
+                  caseStudy.logo.includes('leaday')
+                    ? 'bg-gray-900 border-gray-700'
+                    : 'bg-gray-50 border-gray-200'
                 }`}
+                style={{ width: '90px', height: '90px', padding: '14px' }}
               >
-                <Image
-                  src={
-                    caseStudy.logo.includes(' ')
-                      ? caseStudy.logo
-                          .split('/')
-                          .map(part => (part ? encodeURIComponent(part) : ''))
-                          .join('/')
-                      : caseStudy.logo
-                  }
-                  alt={`${caseStudy.title} Logo`}
-                  fill
-                  sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                  className="object-contain"
-                  priority
-                  quality={80}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={caseStudy.logo}
+                  alt={`${caseStudy.client || caseStudy.title} Logo`}
+                  className="max-w-full max-h-full object-contain"
+                  style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
                 />
               </div>
             </div>
           )}
-        </div>
 
-        {/* Preview Content */}
-        {caseStudy.excerpt && (
-          <Text
-            variant="body"
-            className="text-white/80 mb-4 line-clamp-3 text-sm md:text-base"
-          >
-            {caseStudy.excerpt}
-          </Text>
-        )}
-
-        {/* Interactive Results */}
-        {caseStudy.metrics && (
-          <div className="mb-4">
-            <Text
-              variant="small"
-              className="text-white/80 font-semibold mb-3 uppercase tracking-wider text-xs sm:text-sm"
+          {/* Description */}
+          {caseStudy.excerpt && (
+            <p
+              className="text-gray-600 leading-relaxed mb-6"
+              style={{ fontSize: '15px', lineHeight: '1.6' }}
             >
-              {caseStudy.metrics.impressionShare
-                ? 'Campaign Metrics'
-                : caseStudy.metrics.views
-                  ? 'Interactive result'
-                  : 'Monthly Interactions Results'}
-            </Text>
-            <div className="grid grid-cols-2 gap-2 sm:gap-3">
-              {/* New metrics format (Views, Likes, Comments, Saves) */}
-              {caseStudy.metrics.views && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
+              {caseStudy.excerpt}
+            </p>
+          )}
+
+          {/* Metrics Header */}
+          <div className="mb-4">
+            <p
+              className="text-gray-700 font-semibold uppercase"
+              style={{ fontSize: '13px', letterSpacing: '0.5px' }}
+            >
+              Monthly Interactions Results
+            </p>
+          </div>
+
+          {/* Metrics Grid - 2 columns */}
+          <div style={{ marginBottom: '16px' }}>
+            <div
+              className="grid grid-cols-2"
+              style={{ gap: '0 20px', rowGap: '16px' }}
+            >
+              {/* Dynamic metrics from data */}
+              {metricsArray.slice(0, 4).map((metric, idx) => (
+                <div
+                  key={idx}
+                  className="text-left"
+                >
+                  <div
+                    className="text-gray-500 mb-1"
+                    style={{ fontSize: '15px' }}
                   >
-                    Views
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
+                    {metric.label}
+                  </div>
+                  <div
+                    className="text-gray-900 font-bold"
+                    style={{ fontSize: '18px' }}
                   >
-                    {caseStudy.metrics.views}
-                  </Text>
+                    {metric.value}
+                  </div>
                 </div>
-              )}
-              {caseStudy.metrics.likes && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Likes
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.likes}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.comments && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Comments
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.comments}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.saves && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Saves
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.saves}
-                  </Text>
-                </div>
-              )}
-              {/* Legacy metrics format */}
-              {caseStudy.metrics.totalImpression && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Total Impression
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.totalImpression}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.reach && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Reach
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.reach}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.totalEngagement && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Total Engagement
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.totalEngagement}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.engagementRate && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Engagement Rate
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.engagementRate}
-                  </Text>
-                </div>
-              )}
-              {/* Campaign metrics format (Impression Share, CPA, ROAS) */}
-              {caseStudy.metrics.impressionShare && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Impression Share
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.impressionShare}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.costPerAcquisition && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Cost Per Acquisition
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.costPerAcquisition}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.returnOnAdSpend && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    ROAS
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.returnOnAdSpend}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.impressions && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Impressions
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.impressions}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.clicks && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Clicks
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.clicks}
-                  </Text>
-                </div>
-              )}
-              {caseStudy.metrics.completionRate && (
-                <div>
-                  <Text
-                    variant="small"
-                    className="text-white/60 mb-1 text-xs sm:text-sm"
-                  >
-                    Completion Rate
-                  </Text>
-                  <Text
-                    variant="body"
-                    className="text-white font-semibold text-sm sm:text-base"
-                  >
-                    {caseStudy.metrics.completionRate}
-                  </Text>
-                </div>
+              ))}
+
+              {/* Fallback metrics if none exist */}
+              {metricsArray.length === 0 && (
+                <>
+                  <div className="text-left">
+                    <div
+                      className="text-gray-500 mb-1"
+                      style={{ fontSize: '15px' }}
+                    >
+                      Total Impression
+                    </div>
+                    <div
+                      className="text-gray-900 font-bold"
+                      style={{ fontSize: '18px' }}
+                    >
+                      -
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <div
+                      className="text-gray-500 mb-1"
+                      style={{ fontSize: '15px' }}
+                    >
+                      Reach
+                    </div>
+                    <div
+                      className="text-gray-900 font-bold"
+                      style={{ fontSize: '18px' }}
+                    >
+                      -
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <div
+                      className="text-gray-500 mb-1"
+                      style={{ fontSize: '15px' }}
+                    >
+                      Total Engagement
+                    </div>
+                    <div
+                      className="text-gray-900 font-bold"
+                      style={{ fontSize: '18px' }}
+                    >
+                      -
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <div
+                      className="text-gray-500 mb-1"
+                      style={{ fontSize: '15px' }}
+                    >
+                      Engagement rate
+                    </div>
+                    <div
+                      className="text-gray-900 font-bold"
+                      style={{ fontSize: '18px' }}
+                    >
+                      -
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>
-        )}
 
-        {/* Tags */}
-        {caseStudy.tags && caseStudy.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {caseStudy.tags.slice(0, 3).map((tag, tagIndex) => (
-              <span
-                key={tagIndex}
-                className="px-2 py-1 bg-white/5 border border-white/10 rounded text-white/70 text-xs"
-              >
-                {tag}
-              </span>
-            ))}
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            <span
+              className="text-gray-600"
+              style={{ fontSize: '13px' }}
+            >
+              Technology
+            </span>
+            <span
+              className="text-gray-600"
+              style={{ fontSize: '13px' }}
+            >
+              Relaunch
+            </span>
+            <span
+              className="text-gray-600"
+              style={{ fontSize: '13px' }}
+            >
+              Brand Awareness
+            </span>
           </div>
-        )}
-
-        {/* View Case Study Button - Pushed to bottom */}
-        <div className="mt-auto pt-4">
-          <Link
-            href={`/case-studies/${caseStudy.id}`}
-            className="block w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 text-center text-sm sm:text-base"
-          >
-            View Case Study
-          </Link>
         </div>
       </div>
 
-      {/* Scale effect on hover */}
+      {/* View Case Study Button - Full Width */}
       <div
-        className={`absolute inset-0 transition-transform duration-300 ${
-          isHovered ? 'scale-105' : 'scale-100'
-        }`}
-        style={{ zIndex: 0 }}
-      />
+        style={{
+          padding: '16px 28px 28px 28px',
+          flexShrink: 0,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Link
+          href={`/case-studies/${caseStudy.id}`}
+          className="text-center text-white font-semibold rounded-lg transition-all duration-200 hover:opacity-90 flex items-center justify-center"
+          style={{ backgroundColor: '#57058B', width: '360px', height: '46px', fontSize: '14px' }}
+        >
+          View Case Study
+        </Link>
+      </div>
     </div>
   );
 }
