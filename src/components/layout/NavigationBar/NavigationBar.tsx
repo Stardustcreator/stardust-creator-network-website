@@ -13,7 +13,7 @@ interface NavigationBarProps {
   logoAlt?: string;
   logoWidth?: number;
   logoHeight?: number;
-  variant?: 'default' | 'fixed';
+  variant?: 'default' | 'fixed' | 'light';
 }
 
 export default function NavigationBar({
@@ -59,20 +59,22 @@ export default function NavigationBar({
           {/* Single Glassmorphic Container for Everything */}
           <div
             className={`hidden lg:flex items-center justify-between w-full max-w-7xl backdrop-blur-md border rounded-full px-6 py-4 transition-all duration-300 pointer-events-none lg:pointer-events-auto ${
-              variant === 'fixed'
-                ? 'bg-black/90 border-white/30 shadow-xl shadow-black/60'
-                : isScrolled
-                  ? 'bg-black/80 border-white/30 shadow-xl shadow-black/60'
-                  : 'bg-white/10 border-white/20 shadow-lg shadow-black/25'
+              variant === 'light'
+                ? 'bg-white border-gray-200 shadow-sm'
+                : variant === 'fixed'
+                  ? 'bg-black/90 border-white/30 shadow-xl shadow-black/60'
+                  : isScrolled
+                    ? 'bg-black/80 border-white/30 shadow-xl shadow-black/60'
+                    : 'bg-white/10 border-white/20 shadow-lg shadow-black/25'
             }`}
           >
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center text-white hover:opacity-80 transition-opacity flex-shrink-0"
+              className={`flex items-center hover:opacity-80 transition-opacity flex-shrink-0 ${variant === 'light' ? 'text-black' : 'text-white'}`}
             >
               <Image
-                src={logoSrc}
+                src={variant === 'light' ? '/logos/scn logo black.png' : logoSrc}
                 alt={logoAlt}
                 width={logoWidth}
                 height={logoHeight}
@@ -83,7 +85,7 @@ export default function NavigationBar({
 
             {/* Navigation Pills */}
             <div className="flex items-center justify-center flex-1 mx-2 min-w-0 overflow-visible">
-              <TopNavigation />
+              <TopNavigation variant={variant === 'light' ? 'light' : 'default'} />
             </div>
 
             {/* Country Selector */}
