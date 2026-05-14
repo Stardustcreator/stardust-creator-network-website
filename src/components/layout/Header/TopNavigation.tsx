@@ -6,31 +6,43 @@ import { navigationItems } from './navigation.constants';
 
 interface TopNavigationProps {
   className?: string;
+  variant?: 'default' | 'light';
 }
 
 // Stable className constants to prevent hydration mismatches
 // Using template literals to ensure exact string matching
-const linkClassName = [
-  'text-white/90',
-  'hover:text-white',
-  'hover:bg-white/10',
-  'hover:backdrop-blur-sm',
-  'hover:border',
-  'hover:border-white/20',
-  'font-medium',
-  'transition-all',
-  'duration-300',
-  'py-2',
-  'px-4',
-  'rounded-full',
-  'whitespace-nowrap',
-  'focus-visible:outline-2',
-  'focus-visible:outline-purple-400',
-  'focus-visible:outline-offset-2',
-].join(' ');
+const getLinkClassName = (variant: 'default' | 'light' = 'default') => {
+  const baseClasses = [
+    'font-medium',
+    'transition-all',
+    'duration-300',
+    'py-2',
+    'px-4',
+    'rounded-full',
+    'whitespace-nowrap',
+    'focus-visible:outline-2',
+    'focus-visible:outline-purple-400',
+    'focus-visible:outline-offset-2',
+  ];
 
-export function TopNavigation({ className = '' }: TopNavigationProps) {
+  if (variant === 'light') {
+    return [...baseClasses, 'text-black', 'hover:text-black', 'hover:bg-black/5'].join(' ');
+  }
+
+  return [
+    ...baseClasses,
+    'text-white/90',
+    'hover:text-white',
+    'hover:bg-white/10',
+    'hover:backdrop-blur-sm',
+    'hover:border',
+    'hover:border-white/20',
+  ].join(' ');
+};
+
+export function TopNavigation({ className = '', variant = 'default' }: TopNavigationProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const linkClassName = getLinkClassName(variant);
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 

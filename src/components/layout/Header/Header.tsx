@@ -1,7 +1,7 @@
 import { NavigationBar } from '../NavigationBar';
 
 interface HeaderProps {
-  variant?: 'default' | 'fixed';
+  variant?: 'default' | 'fixed' | 'light';
 }
 
 export default function Header({ variant = 'default' }: HeaderProps = {}) {
