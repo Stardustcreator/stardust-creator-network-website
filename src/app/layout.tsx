@@ -14,7 +14,7 @@ import dynamic from 'next/dynamic';
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
   ssr: false,
 });
-import './globals.css';
+import './globals-new.css';
 
 const lato = Lato({
   variable: '--font-lato',
