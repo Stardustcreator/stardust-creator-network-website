@@ -51,26 +51,7 @@ function CreateAccountForm() {
 
   return (
     <>
-      {/* Style override for Header on white background */}
-      <style
-        jsx
-        global
-      >{`
-        header a,
-        header button,
-        header nav a {
-          color: #111827 !important;
-        }
-        header a:hover,
-        header nav a:hover {
-          color: #9333ea !important;
-        }
-        header img {
-          filter: brightness(0) !important;
-        }
-      `}</style>
-
-      <Header variant="fixed" />
+      <Header variant="light" />
 
       <main className="relative bg-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 pt-32 md:pt-40 pb-12">

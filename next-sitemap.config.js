@@ -19,6 +19,8 @@ module.exports = {
     '/creators/join', // Exclude if it redirects
     '/join/*', // Exclude auth/signup flows
     '/pricing-calculator/success', // Exclude success/thank-you pages
+    '/pricing-calculator/invoice', // Exclude invoice preview (part of calculator flow)
+    '/pricing-calculator/invoice/edit', // Exclude invoice edit page
     '/*.png', // Exclude image files
     '/*.jpg',
     '/*.jpeg',

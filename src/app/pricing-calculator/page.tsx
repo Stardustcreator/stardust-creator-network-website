@@ -37,6 +37,7 @@ export default function PricingCalculatorPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>('ugc');
   const [ugcRate, setUgcRate] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Deliverables state
   const [ugcShortVideo, setUgcShortVideo] = useState(false);
@@ -72,6 +73,72 @@ export default function PricingCalculatorPage() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleGetFullQuote = async () => {
+    if (!emailAddress) {
+      alert('Please enter your email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Send email to Mailchimp
+      const response = await fetch('/api/pricing-calculator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailAddress,
+          ugcRate: ugcRate,
+          campaignType: selectedCampaign,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to subscribe to Mailchimp');
+        // Continue anyway - don't block the user
+      }
+
+      // Build URL with all form data
+      const params = new URLSearchParams({
+        ugcRate,
+        ugcShortVideo: ugcShortVideo.toString(),
+        ugcLongVideo: ugcLongVideo.toString(),
+        ugcPhotos: ugcPhotos.toString(),
+        exclusivityMonths,
+        exclusivityRate,
+        usageDuration,
+        adsOnPaidSocial: adsOnPaidSocial.toString(),
+        emailWebsite: emailWebsite.toString(),
+        inStoreBillboards: inStoreBillboards.toString(),
+        discountRate,
+        emailAddress,
+      });
+      router.push(`/pricing-calculator/invoice?${params.toString()}`);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Continue anyway - don't block the user
+      const params = new URLSearchParams({
+        ugcRate,
+        ugcShortVideo: ugcShortVideo.toString(),
+        ugcLongVideo: ugcLongVideo.toString(),
+        ugcPhotos: ugcPhotos.toString(),
+        exclusivityMonths,
+        exclusivityRate,
+        usageDuration,
+        adsOnPaidSocial: adsOnPaidSocial.toString(),
+        emailWebsite: emailWebsite.toString(),
+        inStoreBillboards: inStoreBillboards.toString(),
+        discountRate,
+        emailAddress,
+      });
+      router.push(`/pricing-calculator/invoice?${params.toString()}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -628,12 +695,11 @@ export default function PricingCalculatorPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      router.push('/pricing-calculator/success');
-                    }}
-                    className="px-6 py-2.5 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors cursor-pointer"
+                    onClick={handleGetFullQuote}
+                    disabled={isSubmitting}
+                    className="px-6 py-2.5 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Get full quote
+                    {isSubmitting ? 'Processing...' : 'Get full quote'}
                   </button>
                 </div>
               </>
