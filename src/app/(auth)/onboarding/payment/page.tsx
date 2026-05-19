@@ -4,56 +4,36 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import OnboardingStepper from '@/components/onboarding/OnboardingStepper';
-import CreateAccountForm from '@/components/onboarding/CreateAccountForm';
+import PaymentPageContent from '@/components/onboarding/PaymentPageContent';
+import BackArrowIcon from '@/components/icons/BackArrowIcon';
 
 export const metadata: Metadata = {
-  title: 'Create Account – Stardust Creator Network',
+  title: 'Complete Payment – Stardust Creator Network',
   robots: { index: false },
 };
 
-function BackArrow() {
-  return (
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M15 19l-7-7 7-7"
-      />
-    </svg>
-  );
-}
-
-export default function CreateAccountPage() {
+export default function OnboardingPaymentPage() {
   return (
     <>
       <Header variant="light" />
 
       <main
         id="main-content"
-        className="min-h-screen bg-white pt-32 pb-20"
+        className="bg-white pt-32 pb-36"
       >
         <div className="w-full container mx-auto px-6">
-          {/* Top bar: back link + stepper */}
           <div className="flex items-start flex-col md:flex-row justify-between mb-16 gap-10 md:gap-5">
             <Link
-              href="/onboarding"
+              href="/onboarding/create-account"
               className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-800 transition-colors"
             >
-              <BackArrow />
-              Back to Pricing
+              <BackArrowIcon />
+              Back
             </Link>
 
-            <OnboardingStepper currentStep={2} />
+            <OnboardingStepper currentStep={3} />
           </div>
 
-          {/* Form content */}
           <Suspense
             fallback={
               <div className="flex justify-center py-20">
@@ -64,7 +44,7 @@ export default function CreateAccountPage() {
               </div>
             }
           >
-            <CreateAccountForm />
+            <PaymentPageContent />
           </Suspense>
         </div>
       </main>

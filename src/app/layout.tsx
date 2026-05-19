@@ -10,6 +10,7 @@ import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
 import dynamic from 'next/dynamic';
+import { Toaster } from '@/components/ui/Toaster';
 
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
   ssr: false,
@@ -188,6 +189,7 @@ tap('detect');`,
         />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
+        <Toaster />
         {/* Vercel Analytics - Lazy loaded, non-essential */}
         <VercelAnalytics />
       </body>

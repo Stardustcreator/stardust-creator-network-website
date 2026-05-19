@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
+import CheckIcon from '@/components/icons/CheckIcon';
 
 type BillingPeriod = 'annual' | 'monthly';
 
@@ -18,30 +19,19 @@ const COMMUNITY_FEATURES = [
   'Weekly office hours with the programs lead',
 ];
 
-function CheckIcon() {
-  return (
-    <svg
-      className="w-5 h-5 text-white shrink-0"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fillRule="evenodd"
-        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
+interface PricingSectionProps {
+  ctaBase?: string;
 }
 
-export default function PricingSection() {
+export default function PricingSection({
+  ctaBase = '/onboarding/create-account',
+}: PricingSectionProps) {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   const pricing = PRICING[billing];
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-20 pb-22 px-6">
       <div className="max-w-2xl mx-auto">
         {/* Heading */}
         <div className="text-center mb-8">
@@ -106,7 +96,7 @@ export default function PricingSection() {
           </div>
 
           <Link
-            href={`/onboarding/create-account?billing=${billing}`}
+            href={`${ctaBase}?billing=${billing}`}
             className="block w-full text-center bg-white font-semibold py-3 shadow-xs px-6 text-sm md:text-base rounded-xl transition-all duration-200 hover:bg-white/90 mb-4"
             style={{ color: 'var(--color-deep-purple)' }}
           >
@@ -123,7 +113,7 @@ export default function PricingSection() {
                 key={feature}
                 className="flex items-center gap-2"
               >
-                <CheckIcon />
+                <CheckIcon className="w-5 h-5 text-white shrink-0" />
                 <Text
                   variant="small"
                   className="text-white! text-sm md:text-base"

@@ -17,7 +17,7 @@ export default function OnboardingPage() {
       <Header variant="light" />
       <main
         id="main-content"
-        className="min-h-screen bg-white pt-28"
+        className="bg-white pt-28"
       >
         <PricingSection />
       </main>

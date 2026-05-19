@@ -28,6 +28,7 @@
     "studio:deploy": "dotenv -e .env.local -- sanity deploy"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.8",
     "@portabletext/react": "^6.0.2",
     "@portabletext/types": "^4.0.1",
     "@sanity/client": "^6.8.6",
@@ -47,6 +48,7 @@
     "react-paystack": "^6.0.0",
     "sanity": "^3.39.1",
     "schema-dts": "^1.1.5",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.3.6"
   },

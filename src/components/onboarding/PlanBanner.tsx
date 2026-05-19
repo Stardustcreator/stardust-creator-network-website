@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 interface PlanBannerProps {
   billing: 'annual' | 'monthly';
+  hideChanger?: boolean;
 }
 
 const BILLING_DISPLAY = {
@@ -9,7 +10,7 @@ const BILLING_DISPLAY = {
   monthly: { price: '₦5,000', period: 'month', cadence: 'monthly' },
 } as const;
 
-export default function PlanBanner({ billing }: PlanBannerProps) {
+export default function PlanBanner({ billing, hideChanger = false }: PlanBannerProps) {
   const { price, period, cadence } = BILLING_DISPLAY[billing];
 
   return (
@@ -21,13 +22,15 @@ export default function PlanBanner({ billing }: PlanBannerProps) {
         </p>
       </div>
 
-      <Link
-        href="/onboarding"
-        className="text-sm font-medium hover:underline shrink-0 ml-4"
-        style={{ color: 'var(--color-deep-purple)' }}
-      >
-        Change Plan
-      </Link>
+      {!hideChanger && (
+        <Link
+          href="/onboarding"
+          className="text-sm font-medium hover:underline shrink-0 ml-4"
+          style={{ color: 'var(--color-deep-purple)' }}
+        >
+          Change Plan
+        </Link>
+      )}
     </div>
   );
 }

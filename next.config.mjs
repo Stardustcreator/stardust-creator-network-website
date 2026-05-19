@@ -87,13 +87,12 @@ const nextConfig = {
     ];
   },
 
-  // Rewrites for API routes or proxying
   async rewrites() {
+    // if (!process.env.API_URL) return [];
     return [
-      // Example: Proxy blog requests to external CMS
       // {
-      //   source: '/blog/:slug*',
-      //   destination: 'https://your-headless-cms.com/api/posts/:slug*',
+      //   source: '/api/proxy/:path*',
+      //   destination: `${process.env.API_URL}/:path*`,
       // },
     ];
   },
@@ -107,43 +106,43 @@ const nextConfig = {
         headers: [
           {
             key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            value: 'on',
           },
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
             key: 'X-XSS-Protection',
-            value: '1; mode=block'
+            value: '1; mode=block',
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            value: 'nosniff',
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
+            value: 'origin-when-cross-origin',
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
+            value: 'camera=(), microphone=(), geolocation=()',
           },
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://js.paystack.co https://*.paystack.com https://*.paystack.co",
               "script-src-elem 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://core.sanity-cdn.com https://*.sanity.io https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com",
               "style-src 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.googleapis.com https://tagmanager.google.com",
               "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com",
               "font-src 'self' data: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.gstatic.com",
-              "connect-src 'self' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.facebook.com https://*.sanity.io https://*.api.sanity.io https://*.run.app https://*.conversionsapigateway.com https://ipapi.co https://api.twitter.com https://*.twitter.com https://syndication.twitter.com https://publish.twitter.com https://api.instagram.com https://*.instagram.com",
-              "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://*.sanity.io https://*.sanity.studio https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://platform.twitter.com https://*.twitter.com https://twitter.com https://x.com https://*.x.com https://www.instagram.com https://*.instagram.com",
+              "connect-src 'self' https://badass-renter-elevator.ngrok-free.dev https://scn-backend-production.up.railway.app https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.facebook.com https://*.sanity.io https://*.api.sanity.io https://*.run.app https://*.conversionsapigateway.com https://ipapi.co https://api.twitter.com https://*.twitter.com https://syndication.twitter.com https://publish.twitter.com https://api.instagram.com https://*.instagram.com https://*.paystack.com https://*.paystack.co",
+              "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://*.sanity.io https://*.sanity.studio https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://platform.twitter.com https://*.twitter.com https://twitter.com https://x.com https://*.x.com https://www.instagram.com https://*.instagram.com https://*.paystack.com https://*.paystack.co",
               "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://pbs.twimg.com https://*.twimg.com https://*.cdninstagram.com https://*.fbcdn.net",
               "media-src 'self' https://www.youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://*.cdninstagram.com https://*.fbcdn.net",
               "child-src 'self' https://www.youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://www.instagram.com https://*.instagram.com",
@@ -151,8 +150,8 @@ const nextConfig = {
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'self'",
-              "upgrade-insecure-requests"
-            ].join('; ')
+              'upgrade-insecure-requests',
+            ].join('; '),
           },
         ],
       },
@@ -162,7 +161,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -172,7 +171,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -182,7 +181,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -215,13 +214,13 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
+
   // Experimental features for better performance
   experimental: {
     // Optimize package imports for smaller bundles
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
-  
+
   // SWC minifier is enabled by default in Next.js 16 (no config needed)
   // Tailwind CSS 4 automatically purges unused CSS
   // Compression and font optimization are enabled by default in Next.js 16
