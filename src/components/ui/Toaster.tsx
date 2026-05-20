@@ -6,7 +6,7 @@ export function Toaster() {
   return (
     <SonnerToaster
       position="top-center"
-      offset={120}
+      offset={115}
       toastOptions={{
         unstyled: true,
         classNames: {
