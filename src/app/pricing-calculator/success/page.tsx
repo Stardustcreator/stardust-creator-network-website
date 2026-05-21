@@ -37,8 +37,8 @@ export default function PricingCalculatorSuccessPage() {
               Your quote has been sent successfully!
             </h1>
             <p className="text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
-              We've sent your full quote breakdown and PDF to [email]. If it doesn't show up in 5
-              minutes, check your spam folder.
+              Your full quote breakdown has been downloaded to your device. Check your Downloads
+              folder if it didn&apos;t open automatically.
             </p>
           </div>
 
