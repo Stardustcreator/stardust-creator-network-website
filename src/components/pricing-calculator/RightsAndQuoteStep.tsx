@@ -55,9 +55,9 @@ export default function RightsAndQuoteStep({
 }: RightsAndQuoteStepProps) {
   return (
     <>
-      <div className="mb-6">
+      <div className="">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Exclusivity Lock-Out</h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           Set the duration and the rate you agree to remain exclusive to this brand.
         </p>
 
@@ -74,7 +74,7 @@ export default function RightsAndQuoteStep({
               inputClassName={INPUT_TEXT}
               showFilledIndicator={false}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-text-secondary mt-1">
               Set how long work with competing brands will be restricted.
             </p>
           </div>
@@ -91,16 +91,17 @@ export default function RightsAndQuoteStep({
               inputClassName={INPUT_TEXT}
               showFilledIndicator={false}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-text-secondary mt-1">
               Set the additional charge applied for exclusivity.
             </p>
           </div>
         </div>
       </div>
+      <div className="h-px w-full bg-surface-secondary my-6" />
 
       <div className="mb-6">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Usage & Licensing Duration</h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           Configure the active period for content usage, promotions, and media rights.
         </p>
 
@@ -115,22 +116,25 @@ export default function RightsAndQuoteStep({
             id="usageDuration"
             value={usageDuration}
             onChange={e => onUsageDurationChange(e.target.value)}
-            className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all cursor-pointer"
+            className="w-full px-3.5 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-[6px] focus-visible:outline-none! bg-surface-primary focus:outline-none focus:ring-2 focus:ring-surface-action focus:border-transparent transition-all cursor-pointer"
           >
-            <option value="">Select number of months</option>
-            <option value="3">3 Months</option>
-            <option value="6">6 Months</option>
-            <option value="12">12 Months</option>
+            <option
+              value=""
+              disabled
+            >
+              Select number of months
+            </option>
+            <option value="3">3 Months (Industry standard: 1.2x)</option>
+            <option value="6">6 Months (Industry standard: 1.2x)</option>
+            <option value="12">12 Months (Industry standard: 1.2x)</option>
           </select>
-          <p className="text-xs text-gray-500 mt-1">
-            How long the brand can use your content across selected channels.
-          </p>
+          <p className="text-xs text-text-secondary mt-1">How long the brand can use your.</p>
         </div>
       </div>
 
       <div className="mb-6">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Custom Usage rate</h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           Set custom percentage rates for different advertising and digital usage channels.
         </p>
 
@@ -140,7 +144,7 @@ export default function RightsAndQuoteStep({
             return (
               <div
                 key={key}
-                className="bg-gray-50 border border-gray-200 rounded-lg p-4"
+                className="bg-surface-primary border border-stroke-tertiary rounded-lg p-4"
               >
                 <div className="flex items-center gap-3">
                   <ToggleSwitch
@@ -151,7 +155,7 @@ export default function RightsAndQuoteStep({
                   <button
                     type="button"
                     onClick={() => onUsageRatesChange(key, { enabled: !state.enabled })}
-                    className="text-base font-medium text-gray-900 cursor-pointer bg-transparent border-0 p-0"
+                    className="text-base font-medium text-gray-900 cursor-pointer bg-transparent border-0 p-0 w-full text-left"
                   >
                     {label}
                   </button>
@@ -172,7 +176,7 @@ export default function RightsAndQuoteStep({
                       inputClassName={INPUT_TEXT}
                       showFilledIndicator={false}
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-text-secondary mt-1">
                       Define your percentage share for ads or digital content usage.
                     </p>
                   </div>
@@ -185,7 +189,7 @@ export default function RightsAndQuoteStep({
 
       <div className="mb-6">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Discount</h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           Set a discount percentage that will be applied to this deal.
         </p>
 
@@ -206,7 +210,7 @@ export default function RightsAndQuoteStep({
 
       <div className="mb-6">
         <h3 className="text-base font-semibold text-gray-900 mb-1">Get Quote (Invoice)</h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           Provide your email address where the quote will be sent to.
         </p>
 
@@ -238,7 +242,7 @@ export default function RightsAndQuoteStep({
           <span>Discount</span>
           <span>- {formatNaira(quote.discount)}</span>
         </div>
-        <div className="flex justify-between border-t border-dashed border-gray-600 pt-3">
+        <div className="flex justify-between border-t border-dashed border-text-secondary pt-3">
           <span className="text-base font-semibold">Final quote</span>
           <span className="text-xl font-bold text-emerald-400">
             {formatNaira(quote.finalTotal)}
@@ -251,7 +255,7 @@ export default function RightsAndQuoteStep({
           type="button"
           onClick={onBack}
           disabled={isSubmitting}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Back
         </button>
@@ -259,7 +263,7 @@ export default function RightsAndQuoteStep({
           type="button"
           onClick={onSubmit}
           variant="primary"
-          className="py-2.5! text-sm!"
+          className="py-2.5! text-sm! rounded-md"
           disabled={isSubmitting || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
         >
           {isSubmitting ? 'Generating PDF…' : 'Get full quote'}

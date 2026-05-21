@@ -16,7 +16,7 @@ interface ProgressIndicatorProps {
 
 export default function ProgressIndicator({ currentStep, onStepClick }: ProgressIndicatorProps) {
   return (
-    <div className="flex items-center justify-center mb-12 relative">
+    <div className="flex items-center justify-center mb-12 relative lg:max-w-4/5 mx-auto">
       <div className="w-full h-px bg-surface-secondary mt-3.5 shrink-0 absolute z-5 top-0.5" />
 
       {steps.map((step, index) => {

@@ -44,7 +44,7 @@ export default function YourReachStep({
     <>
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-1">What&apos;s your reach?</h2>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-text-secondary">
           {isUgc
             ? 'UGC campaigns use a flat production fee instead of platform reach.'
             : 'Toggle the platforms you use for this campaign and fill other details.'}
@@ -64,7 +64,7 @@ export default function YourReachStep({
             inputClassName={INPUT_TEXT}
             showFilledIndicator={false}
           />
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-text-secondary mt-2">
             Your base rate for creating UGC content before usage, ads, or licensing fees are added.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function YourReachStep({
             return (
               <div
                 key={key}
-                className="bg-gray-50 border border-gray-200 rounded-lg p-4"
+                className="bg-surface-primary border border-stroke-tertiary rounded-lg p-4"
               >
                 <div className="flex items-center gap-3">
                   <ToggleSwitch
@@ -109,7 +109,7 @@ export default function YourReachStep({
                         inputClassName={INPUT_TEXT}
                         showFilledIndicator={false}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-text-secondary mt-1">
                         Provide your total follower count on {label}
                       </p>
                     </div>
@@ -128,7 +128,7 @@ export default function YourReachStep({
                         inputClassName={INPUT_TEXT}
                         showFilledIndicator={false}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-text-secondary mt-1">
                         You can find it in your analytics or compute it using your recent engagement
                         data.
                       </p>
@@ -148,7 +148,7 @@ export default function YourReachStep({
                         inputClassName={INPUT_TEXT}
                         showFilledIndicator={false}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-text-secondary mt-1">
                         This is your cost per 1,000 audience reach or views.
                       </p>
                     </div>
@@ -173,7 +173,7 @@ export default function YourReachStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Back
         </button>
@@ -181,7 +181,7 @@ export default function YourReachStep({
           type="button"
           onClick={onContinue}
           variant="primary"
-          className="py-2.5! text-sm!"
+          className="py-2.5! text-sm! rounded-md"
         >
           Continue
         </Button>

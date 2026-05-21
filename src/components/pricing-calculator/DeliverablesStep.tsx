@@ -28,7 +28,7 @@ const industryStandards: Record<DeliverableKey, string> = {
   youtubeShorts: '1.2x',
   youtubeLong: '3.0x',
   twitterPost: '0.5x',
-  ugcShortVideo: '1.0x',
+  ugcShortVideo: '1.2x',
   ugcLongVideo: '3.0x',
   ugcPhotos: '0.5x',
   brandIg: '0.6x',
@@ -58,7 +58,7 @@ export default function DeliverablesStep({
     <>
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-1">What content will you deliver?</h2>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-text-secondary">
           Add how many of each content type the brand is asking for. Only your active platforms show
           here.
         </p>
@@ -76,7 +76,7 @@ export default function DeliverablesStep({
             return (
               <div
                 key={key}
-                className="bg-gray-50 border border-gray-200 rounded-lg p-4"
+                className="bg-surface-primary border border-stroke-tertiary rounded-lg p-4"
               >
                 <div className="flex items-center gap-3">
                   <ToggleSwitch
@@ -87,7 +87,7 @@ export default function DeliverablesStep({
                   <button
                     type="button"
                     onClick={() => onChange(key, { enabled: !state.enabled })}
-                    className="text-sm lg:text-base font-medium text-gray-900 cursor-pointer bg-transparent border-0 p-0"
+                    className="text-sm lg:text-base font-medium text-gray-900 cursor-pointer bg-transparent border-0 p-0 w-full text-left"
                   >
                     {label}
                   </button>
@@ -109,7 +109,7 @@ export default function DeliverablesStep({
                         inputClassName={INPUT_TEXT}
                         showFilledIndicator={false}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-text-secondary mt-1">
                         This multiplier adjusts your base rate based on content type, usage, and
                         campaign scope.{' '}
                         <span className="text-info-700 font-medium">
@@ -130,7 +130,7 @@ export default function DeliverablesStep({
                         inputClassName={INPUT_TEXT}
                         showFilledIndicator={false}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-text-secondary mt-1">
                         Number of content you are expected to provide
                       </p>
                     </div>
@@ -146,7 +146,7 @@ export default function DeliverablesStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Back
         </button>
@@ -154,7 +154,7 @@ export default function DeliverablesStep({
           type="button"
           onClick={onContinue}
           variant="primary"
-          className="py-2.5! text-sm!"
+          className="py-2.5! text-sm! rounded-md"
         >
           Continue
         </Button>

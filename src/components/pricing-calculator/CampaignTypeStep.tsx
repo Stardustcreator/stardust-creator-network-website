@@ -14,7 +14,7 @@ const options: { id: CampaignType; title: string; description: string }[] = [
   {
     id: 'creator',
     title: 'Sponsored Content (Post on Your Page)',
-    description: 'You create the content and publish it on your own social media pages.',
+    description: 'You create the content and publish it on your own social media page.',
   },
   {
     id: 'ugc',
@@ -36,7 +36,7 @@ export default function CampaignTypeStep({ value, onChange, onContinue }: Campai
         <p className="text-sm text-gray-500">Choose the campaign type.</p>
       </div>
 
-      <div className="space-y-3 mb-6">
+      <div className="space-y-4 mb-6">
         {options.map(option => {
           const selected = value === option.id;
           return (
@@ -45,7 +45,7 @@ export default function CampaignTypeStep({ value, onChange, onContinue }: Campai
               type="button"
               onClick={() => onChange(option.id)}
               className={`w-full text-left p-4 rounded-lg border-2 hover:border-comp-secondary-1 transition-all cursor-pointer ${
-                selected ? 'bg-surface-action-primary' : 'bg-surface-primary'
+                selected ? 'bg-surface-action-primary' : 'bg-surface-primary border-[#F3F4F6]'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -72,7 +72,7 @@ export default function CampaignTypeStep({ value, onChange, onContinue }: Campai
           type="button"
           onClick={onContinue}
           variant="primary"
-          className="py-2.5! text-sm!"
+          className="py-2.5! text-sm! rounded-md!"
         >
           Continue
         </Button>

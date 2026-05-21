@@ -142,19 +142,16 @@ export default function PricingCalculatorPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [currentStep]);
 
-  const heroTitle =
-    currentStep === 1 ? 'Most creators guess their rates.' : 'Know exactly what to charge brands';
+  const heroTitle = 'Most creators guess their rates.';
   const heroSubtitle =
-    currentStep === 1
-      ? 'Calculate your estimated creator rate based on your content, audience, usage rights, deliverables, and collaboration experience.'
-      : "Every brand deal you've taken was probably worth more. Find out your real number — in 2 minutes.";
+    'Calculate your estimated creator rate based on your content, audience, usage rights, deliverables, and collaboration experience.';
 
   return (
     <>
       <Header variant="light" />
 
       <main className="min-h-screen bg-white pt-28 md:pt-40 pb-20">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">{heroTitle}</h1>
             <p className="text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
