@@ -43,3 +43,7 @@ next-env.d.ts
 # sanity
 .sanity
 dist
+
+# claude
+CLAUDE.md
+CLAUDE.md*
