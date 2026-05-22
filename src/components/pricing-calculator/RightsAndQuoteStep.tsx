@@ -23,6 +23,7 @@ interface RightsAndQuoteStepProps {
   onBack: () => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
+  submitError?: string | null;
 }
 
 const usageRateOptions: { key: UsageRateKey; label: string }[] = [
@@ -52,6 +53,7 @@ export default function RightsAndQuoteStep({
   onBack,
   onSubmit,
   isSubmitting = false,
+  submitError,
 }: RightsAndQuoteStepProps) {
   return (
     <>
@@ -249,6 +251,12 @@ export default function RightsAndQuoteStep({
           </span>
         </div>
       </div>
+
+      {submitError && (
+        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+          {submitError}
+        </div>
+      )}
 
       <div className="flex items-center gap-3">
         <button

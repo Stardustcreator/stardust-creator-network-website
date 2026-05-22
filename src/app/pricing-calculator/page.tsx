@@ -11,6 +11,7 @@ import RightsAndQuoteStep from '@/components/pricing-calculator/RightsAndQuoteSt
 import ProgressIndicator from '@/components/pricing-calculator/ProgressIndicator';
 import { computeQuote } from '@/components/pricing-calculator/calculator.utils';
 import { downloadQuotePdf } from '@/components/pricing-calculator/pdf.utils';
+import { submitRateCardQuote, RateCardApiError } from '@/lib/api/rate-card';
 import type {
   CampaignType,
   DeliverableKey,
@@ -63,6 +64,7 @@ export default function PricingCalculatorPage() {
   const [discountRate, setDiscountRate] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const quote = useMemo(
     () =>
@@ -122,8 +124,16 @@ export default function PricingCalculatorPage() {
   const handleSubmit = async () => {
     if (isSubmitting || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())) return;
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
-      console.log(quote);
+      await submitRateCardQuote({
+        email: emailAddress.trim(),
+        items: quote.items,
+        subtotal: quote.subtotal,
+        licensing: quote.licensing,
+        discount: quote.discount,
+        total: quote.finalTotal,
+      });
       await downloadQuotePdf({ quote, email: emailAddress });
       if (typeof window !== 'undefined') {
         window.sessionStorage.setItem(
@@ -131,9 +141,13 @@ export default function PricingCalculatorPage() {
           JSON.stringify({ email: emailAddress, finalTotal: quote.finalTotal })
         );
       }
-      router.push(`/pricing-calculator/success?email=${emailAddress}`);
+      router.push(`/pricing-calculator/success?email=${encodeURIComponent(emailAddress.trim())}`);
     } catch (error) {
-      console.error('Failed to generate PDF', error);
+      if (error instanceof RateCardApiError) {
+        setSubmitError(error.message);
+      } else {
+        setSubmitError('Something went wrong. Please try again.');
+      }
       setIsSubmitting(false);
     }
   };
@@ -214,6 +228,7 @@ export default function PricingCalculatorPage() {
                 onBack={goBack}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
+                submitError={submitError}
               />
             )}
           </div>
