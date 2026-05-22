@@ -131,7 +131,7 @@ export default function PricingCalculatorPage() {
           JSON.stringify({ email: emailAddress, finalTotal: quote.finalTotal })
         );
       }
-      router.push('/pricing-calculator/success');
+      router.push(`/pricing-calculator/success?email=${emailAddress}`);
     } catch (error) {
       console.error('Failed to generate PDF', error);
       setIsSubmitting(false);

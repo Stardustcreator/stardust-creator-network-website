@@ -76,7 +76,7 @@ export default function OtpStep({ email, onVerified, onEditEmail }: OtpStepProps
       toast.success('OTP verified successfully');
       onVerified(resetToken);
     } catch (err) {
-      // setError(err instanceof Error ? err.message : 'Verification failed. Please try again.');
+      setError(err instanceof Error ? err.message : 'Verification failed. Please try again.');
       toast.error(err instanceof Error ? err.message : 'Failed to verify OTP');
     } finally {
       setIsVerifying(false);
@@ -123,7 +123,7 @@ export default function OtpStep({ email, onVerified, onEditEmail }: OtpStepProps
 
       <form onSubmit={handleVerify}>
         <div
-          className="flex items-center justify-between gap-3 mb-6"
+          className="flex items-center justify-between gap-3 mb-9"
           onPaste={handlePaste}
         >
           {otp.map((digit, i) => (
@@ -138,7 +138,7 @@ export default function OtpStep({ email, onVerified, onEditEmail }: OtpStepProps
               value={digit}
               onChange={e => handleChange(i, e.target.value)}
               onKeyDown={e => handleKeyDown(i, e)}
-              className="w-12 lg:w-14 h-12 lg:h-14 text-center text-xl font-semibold rounded-lg outline-none transition-colors duration-150 text-neutral-900"
+              className="w-12 lg:w-14 h-12 lg:h-14 text-center text-xl focus-visible:outline-none! focus:ring-2 focus:ring-surface-action font-semibold rounded-md outline-none transition-colors duration-150 text-neutral-900"
               style={{
                 border: `0.6px solid ${
                   error
@@ -155,7 +155,7 @@ export default function OtpStep({ email, onVerified, onEditEmail }: OtpStepProps
 
         {error && (
           <p
-            className="text-sm text-surface-error mb-4"
+            className="text-sm text-surface-error mb-8 font-medium"
             role="alert"
           >
             {error}
@@ -181,7 +181,7 @@ export default function OtpStep({ email, onVerified, onEditEmail }: OtpStepProps
             <button
               type="button"
               onClick={handleResend}
-              className="font-semibold hover:underline text-text-action"
+              className="font-semibold hover:underline text-text-action cursor-pointer"
             >
               Resend code
             </button>
