@@ -4,14 +4,10 @@ import Button from '../ui/Button';
 import FormInput from '../ui/FormInput';
 import ToggleSwitch from './ToggleSwitch';
 import { computePlatformBase, formatNaira } from './calculator.utils';
-import type { CampaignType, PlatformKey, ReachState } from './types';
+import { usePricingCalculator } from '@/lib/contexts';
+import type { PlatformKey } from './types';
 
 interface YourReachStepProps {
-  campaign: CampaignType;
-  reach: ReachState;
-  onChange: (key: PlatformKey, patch: Partial<ReachState[PlatformKey]>) => void;
-  ugcRate: string;
-  onUgcRateChange: (value: string) => void;
   onBack: () => void;
   onContinue: () => void;
 }
@@ -29,15 +25,14 @@ function sanitizeNumeric(value: string) {
   return value.replace(/[^0-9.]/g, '');
 }
 
-export default function YourReachStep({
-  campaign,
-  reach,
-  onChange,
-  ugcRate,
-  onUgcRateChange,
-  onBack,
-  onContinue,
-}: YourReachStepProps) {
+export default function YourReachStep({ onBack, onContinue }: YourReachStepProps) {
+  const {
+    campaign,
+    reach,
+    updateReach: onChange,
+    ugcRate,
+    setUgcRate: onUgcRateChange,
+  } = usePricingCalculator();
   const isUgc = campaign === 'ugc';
 
   return (

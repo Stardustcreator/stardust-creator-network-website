@@ -3,21 +3,10 @@
 import Button from '../ui/Button';
 import FormInput from '../ui/FormInput';
 import ToggleSwitch from './ToggleSwitch';
-import { INPUT_TEXT, type UsageRateKey, type UsageRatesState } from './types';
+import { usePricingCalculator } from '@/lib/contexts';
+import { INPUT_TEXT, type UsageRateKey } from './types';
 
 interface RightsAndQuoteStepProps {
-  exclusivityMonths: string;
-  onExclusivityMonthsChange: (value: string) => void;
-  exclusivityRate: string;
-  onExclusivityRateChange: (value: string) => void;
-  usageDuration: string;
-  onUsageDurationChange: (value: string) => void;
-  usageRates: UsageRatesState;
-  onUsageRatesChange: (key: UsageRateKey, patch: Partial<UsageRatesState[UsageRateKey]>) => void;
-  discountRate: string;
-  onDiscountRateChange: (value: string) => void;
-  emailAddress: string;
-  onEmailAddressChange: (value: string) => void;
   onBack: () => void;
   onSubmit: () => void;
 }
@@ -32,22 +21,21 @@ function sanitizeInteger(value: string) {
   return value.replace(/[^0-9]/g, '');
 }
 
-export default function RightsAndQuoteStep({
-  exclusivityMonths,
-  onExclusivityMonthsChange,
-  exclusivityRate,
-  onExclusivityRateChange,
-  usageDuration,
-  onUsageDurationChange,
-  usageRates,
-  onUsageRatesChange,
-  discountRate,
-  onDiscountRateChange,
-  emailAddress,
-  onEmailAddressChange,
-  onBack,
-  onSubmit,
-}: RightsAndQuoteStepProps) {
+export default function RightsAndQuoteStep({ onBack, onSubmit }: RightsAndQuoteStepProps) {
+  const {
+    exclusivityMonths,
+    setExclusivityMonths: onExclusivityMonthsChange,
+    exclusivityRate,
+    setExclusivityRate: onExclusivityRateChange,
+    usageDuration,
+    setUsageDuration: onUsageDurationChange,
+    usageRates,
+    updateUsageRate: onUsageRatesChange,
+    discountRate,
+    setDiscountRate: onDiscountRateChange,
+    emailAddress,
+    setEmailAddress: onEmailAddressChange,
+  } = usePricingCalculator();
   return (
     <>
       <div className="">

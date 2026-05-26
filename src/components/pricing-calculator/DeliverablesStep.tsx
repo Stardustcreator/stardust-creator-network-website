@@ -4,19 +4,10 @@ import Button from '../ui/Button';
 import FormInput from '../ui/FormInput';
 import ToggleSwitch from './ToggleSwitch';
 import { getVisibleDeliverables } from './calculator.utils';
-import {
-  INPUT_TEXT,
-  type CampaignType,
-  type DeliverableKey,
-  type DeliverablesState,
-  type ReachState,
-} from './types';
+import { usePricingCalculator } from '@/lib/contexts';
+import { INPUT_TEXT, type DeliverableKey } from './types';
 
 interface DeliverablesStepProps {
-  campaign: CampaignType;
-  reach: ReachState;
-  deliverables: DeliverablesState;
-  onChange: (key: DeliverableKey, patch: Partial<DeliverablesState[DeliverableKey]>) => void;
   onBack: () => void;
   onContinue: () => void;
 }
@@ -44,14 +35,8 @@ function sanitizeInteger(value: string) {
   return value.replace(/[^0-9]/g, '');
 }
 
-export default function DeliverablesStep({
-  campaign,
-  reach,
-  deliverables,
-  onChange,
-  onBack,
-  onContinue,
-}: DeliverablesStepProps) {
+export default function DeliverablesStep({ onBack, onContinue }: DeliverablesStepProps) {
+  const { campaign, reach, deliverables, updateDeliverable: onChange } = usePricingCalculator();
   const items = getVisibleDeliverables(campaign, reach);
 
   return (

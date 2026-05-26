@@ -2,11 +2,10 @@
 
 import CheckIcon from '../icons/CheckIcon';
 import Button from '../ui/Button';
+import { usePricingCalculator } from '@/lib/contexts';
 import type { CampaignType } from './types';
 
 interface CampaignTypeStepProps {
-  value: CampaignType;
-  onChange: (next: CampaignType) => void;
   onContinue: () => void;
 }
 
@@ -28,7 +27,8 @@ const options: { id: CampaignType; title: string; description: string }[] = [
   },
 ];
 
-export default function CampaignTypeStep({ value, onChange, onContinue }: CampaignTypeStepProps) {
+export default function CampaignTypeStep({ onContinue }: CampaignTypeStepProps) {
+  const { campaign: value, setCampaign: onChange } = usePricingCalculator();
   return (
     <>
       <div className="mb-6">
