@@ -8,6 +8,7 @@ import CampaignTypeStep from '@/components/pricing-calculator/CampaignTypeStep';
 import YourReachStep from '@/components/pricing-calculator/YourReachStep';
 import DeliverablesStep from '@/components/pricing-calculator/DeliverablesStep';
 import RightsAndQuoteStep from '@/components/pricing-calculator/RightsAndQuoteStep';
+import PreviewAndEditStep from '@/components/pricing-calculator/PreviewAndEditStep';
 import ProgressIndicator from '@/components/pricing-calculator/ProgressIndicator';
 import { computeQuote } from '@/components/pricing-calculator/calculator.utils';
 import { downloadQuotePdf } from '@/components/pricing-calculator/pdf.utils';
@@ -99,7 +100,7 @@ export default function PricingCalculatorPage() {
   };
 
   const goNext = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 5) setCurrentStep(currentStep + 1);
   };
 
   const goBack = () => {
@@ -156,6 +157,10 @@ export default function PricingCalculatorPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [currentStep]);
 
+  useEffect(() => {
+    setSubmitError(null);
+  }, [emailAddress]);
+
   const heroTitle = 'Most creators guess their rates.';
   const heroSubtitle =
     'Calculate your estimated creator rate based on your content, audience, usage rights, deliverables, and collaboration experience.';
@@ -173,10 +178,12 @@ export default function PricingCalculatorPage() {
             </p>
           </div>
 
-          <ProgressIndicator
-            currentStep={currentStep}
-            onStepClick={handleStepClick}
-          />
+          {currentStep < 5 && (
+            <ProgressIndicator
+              currentStep={currentStep}
+              onStepClick={handleStepClick}
+            />
+          )}
 
           <div className="bg-white rounded-lg border border-stroke-secondary shadow-sm p-5 md:p-7 lg:p-8">
             {currentStep === 1 && (
@@ -224,8 +231,32 @@ export default function PricingCalculatorPage() {
                 onDiscountRateChange={setDiscountRate}
                 emailAddress={emailAddress}
                 onEmailAddressChange={setEmailAddress}
-                quote={quote}
                 onBack={goBack}
+                onSubmit={goNext}
+              />
+            )}
+
+            {currentStep === 5 && (
+              <PreviewAndEditStep
+                campaign={campaign}
+                onCampaignChange={setCampaign}
+                reach={reach}
+                onReachChange={updateReach}
+                ugcRate={ugcRate}
+                onUgcRateChange={setUgcRate}
+                deliverables={deliverables}
+                onDeliverableChange={updateDeliverable}
+                exclusivityMonths={exclusivityMonths}
+                onExclusivityMonthsChange={setExclusivityMonths}
+                exclusivityRate={exclusivityRate}
+                onExclusivityRateChange={setExclusivityRate}
+                usageDuration={usageDuration}
+                onUsageDurationChange={setUsageDuration}
+                usageRates={usageRates}
+                onUsageRatesChange={updateUsageRate}
+                discountRate={discountRate}
+                onDiscountRateChange={setDiscountRate}
+                quote={quote}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
                 submitError={submitError}

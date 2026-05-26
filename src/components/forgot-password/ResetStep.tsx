@@ -6,6 +6,7 @@ import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/Button';
 import { resetPassword } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
+import { validatePassword } from '@/lib/validations/password.validations';
 
 interface ResetStepProps {
   resetToken: string;
@@ -28,11 +29,8 @@ export default function ResetStep({ resetToken, onComplete }: ResetStepProps) {
 
   function validate() {
     const next: Partial<typeof formData> = {};
-    if (!formData.password) {
-      next.password = 'Password is required.';
-    } else if (formData.password.length < 8) {
-      next.password = 'Password must be at least 8 characters.';
-    }
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) next.password = passwordError;
     if (!formData.confirmPassword) {
       next.confirmPassword = 'Please confirm your password.';
     } else if (formData.password !== formData.confirmPassword) {

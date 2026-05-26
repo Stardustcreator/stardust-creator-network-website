@@ -80,10 +80,10 @@ export default function VerificationStep({
       toast.success('Verification successful');
       onVerified(registrationToken);
     } catch (err) {
-      // setError(err instanceof Error ? err.message : 'Verification failed. Please try again.');
+      console.log(err);
       toast.error(err instanceof Error ? err.message : 'Verification failed. Please try again.');
+      setError(err instanceof Error ? err.message : 'Verification failed. Please try again.');
     } finally {
-      toast.dismiss();
       setIsVerifying(false);
     }
   }
@@ -95,8 +95,9 @@ export default function VerificationStep({
     inputRefs.current[0]?.focus();
     try {
       await resendVerification(email);
-    } catch {
-      // resend failures are non-blocking — countdown already reset
+      toast.success('Verification code resent');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Resend failed. Please try again.');
     }
   }
 
@@ -156,7 +157,7 @@ export default function VerificationStep({
           ))}
         </div>
 
-        {error && (
+        {error && otp.join('').length < 6 && (
           <p
             className="text-sm text-surface-error mb-4"
             role="alert"

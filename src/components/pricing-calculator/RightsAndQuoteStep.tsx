@@ -3,7 +3,6 @@
 import Button from '../ui/Button';
 import FormInput from '../ui/FormInput';
 import ToggleSwitch from './ToggleSwitch';
-import { formatNaira, type QuoteBreakdown } from './calculator.utils';
 import { INPUT_TEXT, type UsageRateKey, type UsageRatesState } from './types';
 
 interface RightsAndQuoteStepProps {
@@ -19,11 +18,8 @@ interface RightsAndQuoteStepProps {
   onDiscountRateChange: (value: string) => void;
   emailAddress: string;
   onEmailAddressChange: (value: string) => void;
-  quote: QuoteBreakdown;
   onBack: () => void;
   onSubmit: () => void;
-  isSubmitting?: boolean;
-  submitError?: string | null;
 }
 
 const usageRateOptions: { key: UsageRateKey; label: string }[] = [
@@ -49,11 +45,8 @@ export default function RightsAndQuoteStep({
   onDiscountRateChange,
   emailAddress,
   onEmailAddressChange,
-  quote,
   onBack,
   onSubmit,
-  isSubmitting = false,
-  submitError,
 }: RightsAndQuoteStepProps) {
   return (
     <>
@@ -231,39 +224,11 @@ export default function RightsAndQuoteStep({
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg bg-gray-900 text-white p-5 hidden">
-        <div className="flex justify-between text-sm mb-2">
-          <span className="text-gray-300">Subtotal (Content)</span>
-          <span>{formatNaira(quote.subtotal)}</span>
-        </div>
-        <div className="flex justify-between text-sm mb-2">
-          <span className="text-gray-300">Rights & Licensing</span>
-          <span>+ {formatNaira(quote.licensing)}</span>
-        </div>
-        <div className="flex justify-between text-sm mb-3 text-red-300">
-          <span>Discount</span>
-          <span>- {formatNaira(quote.discount)}</span>
-        </div>
-        <div className="flex justify-between border-t border-dashed border-text-secondary pt-3">
-          <span className="text-base font-semibold">Final quote</span>
-          <span className="text-xl font-bold text-emerald-400">
-            {formatNaira(quote.finalTotal)}
-          </span>
-        </div>
-      </div>
-
-      {submitError && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {submitError}
-        </div>
-      )}
-
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={onBack}
-          disabled={isSubmitting}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Back
         </button>
@@ -272,9 +237,9 @@ export default function RightsAndQuoteStep({
           onClick={onSubmit}
           variant="primary"
           className="py-2.5! text-sm! rounded-md"
-          disabled={isSubmitting || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
+          disabled={!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
         >
-          {isSubmitting ? 'Generating PDF…' : 'Get full quote'}
+          Preview quote
         </Button>
       </div>
     </>

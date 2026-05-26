@@ -10,6 +10,7 @@ import CheckIcon from '@/components/icons/CheckIcon';
 import { completeRegistration } from '@/lib/api/auth';
 import { initializePayment } from '@/lib/api/payments';
 import { toast } from '@/lib/toast';
+import { validatePassword } from '@/lib/validations/password.validations';
 
 interface SetPasswordStepProps {
   billing: 'annual' | 'monthly';
@@ -47,11 +48,8 @@ export default function SetPasswordStep({
 
   function validate() {
     const next: Partial<typeof formData & { terms: string }> = {};
-    if (!formData.password) {
-      next.password = 'Password is required.';
-    } else if (formData.password.length < 8) {
-      next.password = 'Password must be at least 8 characters.';
-    }
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) next.password = passwordError;
     if (!formData.confirmPassword) {
       next.confirmPassword = 'Please confirm your password.';
     } else if (formData.password !== formData.confirmPassword) {

@@ -8,7 +8,7 @@ import FormInput from '@/components/ui/FormInput';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { login, initiateGoogleAuth } from '@/lib/api/auth';
-import { getCircleUrl } from '@/lib/api/subscriptions';
+import { getSubscription, getCircleUrl } from '@/lib/api/subscriptions';
 import { toast } from '@/lib/toast';
 
 export default function SignInForm() {
@@ -50,13 +50,24 @@ export default function SignInForm() {
     setApiError('');
     try {
       await login(formData.email, formData.password);
-      const circleUrl = await getCircleUrl();
-      if (!circleUrl) {
-        toast.error('No active subscription found');
+      const subscription = await getSubscription();
+
+      if (!subscription) {
         router.push('/onboarding/subscribe');
         return;
       }
-      toast.success('Login successful');
+
+      if (subscription.status !== 'active') {
+        toast.error('Your subscription is not active.');
+        router.push('/onboarding/reactivate');
+        return;
+      }
+
+      const circleUrl = await getCircleUrl();
+      if (!circleUrl) {
+        router.push('/onboarding/subscribe');
+        return;
+      }
       window.location.href = circleUrl;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');

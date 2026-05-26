@@ -219,6 +219,8 @@ const nextConfig = {
   experimental: {
     // Optimize package imports for smaller bundles
     optimizePackageImports: ['framer-motion', 'lucide-react'],
+    // Keep pdfkit in Node.js runtime — it can't be bundled by webpack
+    serverComponentsExternalPackages: ['pdfkit'],
   },
 
   // SWC minifier is enabled by default in Next.js 16 (no config needed)
