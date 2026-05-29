@@ -9,10 +9,19 @@ import YourReachStep from '@/components/pricing-calculator/YourReachStep';
 import DeliverablesStep from '@/components/pricing-calculator/DeliverablesStep';
 import RightsAndQuoteStep from '@/components/pricing-calculator/RightsAndQuoteStep';
 import ProgressIndicator from '@/components/pricing-calculator/ProgressIndicator';
+import { getCommunitySession } from '@/lib/api/rate-card';
+import { usePricingCalculator } from '@/lib/contexts';
 
 export default function MemberPricingCalculatorPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
+  const { setEmailAddress } = usePricingCalculator();
+
+  useEffect(() => {
+    getCommunitySession()
+      .then(session => setEmailAddress(session.email))
+      .catch(() => {});
+  }, [setEmailAddress]);
 
   const handleStepClick = (step: number) => {
     if (step <= currentStep) setCurrentStep(step);

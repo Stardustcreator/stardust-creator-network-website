@@ -59,7 +59,7 @@ export default function SignInForm() {
       }
 
       if (subscription.status !== 'active') {
-        toast.error('Your subscription is not active.');
+        // toast.error('Your subscription is not active.');
         router.push('/onboarding/reactivate');
         return;
       }

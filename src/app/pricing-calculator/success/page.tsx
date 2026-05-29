@@ -24,7 +24,7 @@ export default function PricingCalculatorSuccessPage() {
               individual projects.
             </p>
             <Link
-              href="/join/scn-paid-community"
+              href="/onboarding"
               className="inline-block px-6 py-2.5 bg-surface-action text-white text-sm font-medium rounded-lg hover:bg-surface-action/80 transition-colors"
             >
               Join Community

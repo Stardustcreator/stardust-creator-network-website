@@ -39,11 +39,7 @@ const C_TOT_X = M + 330;
 const C_TOT_W = CW - 330;
 
 function naira(n: number): string {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
-    minimumFractionDigits: 0,
-  }).format(n);
+  return `NGN ${new Intl.NumberFormat('en-NG', { minimumFractionDigits: 0 }).format(n)}`;
 }
 
 function generatePdf(payload: PdfPayload): Promise<Buffer> {

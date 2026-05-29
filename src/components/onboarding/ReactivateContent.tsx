@@ -32,7 +32,7 @@ export default function ReactivateContent() {
   const [selected, setSelected] = useState<Billing | null>(null);
   const [step, setStep] = useState<Step>('selecting');
   const [checkoutUrl, setCheckoutUrl] = useState('');
-  const [reference, setReference] = useState('');
+  const [_reference, setReference] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleReactivate = useCallback(async () => {
@@ -54,18 +54,19 @@ export default function ReactivateContent() {
 
   const handlePaymentSuccess = useCallback(async () => {
     setStep('redirecting');
-    try {
-      const base = process.env.NEXT_PUBLIC_API_URL;
-      window.location.href = `${base}/payments/callback?trxref=${reference}&reference=${reference}`;
-    } catch {
-      const circleUrl = await getCircleUrl();
-      if (circleUrl) {
-        window.location.href = circleUrl;
-      } else {
-        router.push('/onboarding/subscribe');
-      }
-    }
-  }, [reference, router]);
+    // try {
+    //   const base = process.env.NEXT_PUBLIC_API_URL;
+    //   window.location.href = `${base}/payments/callback?trxref=${reference}&reference=${reference}`;
+    // } catch {
+    //   const circleUrl = await getCircleUrl();
+    //   if (circleUrl) {
+    //     window.location.href = circleUrl;
+    //   } else {
+    //     router.push('/onboarding/subscribe');
+    //   }
+    // }
+    window.location.href = 'https://stardust-creators-network.circle.so';
+  }, []);
 
   if (step === 'paying') {
     return (

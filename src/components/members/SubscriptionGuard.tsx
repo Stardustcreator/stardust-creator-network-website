@@ -21,7 +21,7 @@ export default function SubscriptionGuard({ children }: { children: React.ReactN
           toast.error('Please complete the onboarding process.');
           setTimeout(() => router.replace('/onboarding/payment'), 1500);
         } else {
-          toast.error('No active subscription');
+          // toast.error('No active subscription');
           setTimeout(() => router.replace('/onboarding/reactivate'), 1500);
         }
         return;
