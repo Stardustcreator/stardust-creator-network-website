@@ -121,7 +121,6 @@ export default function CreateAccountForm() {
       toast.error(err instanceof Error ? err.message : 'Registration failed');
     } finally {
       setIsSubmitting(false);
-      // toast.dismiss();
     }
   }
 

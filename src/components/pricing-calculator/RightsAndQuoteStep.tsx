@@ -3,27 +3,14 @@
 import Button from '../ui/Button';
 import FormInput from '../ui/FormInput';
 import ToggleSwitch from './ToggleSwitch';
-import { formatNaira, type QuoteBreakdown } from './calculator.utils';
-import { INPUT_TEXT, type UsageRateKey, type UsageRatesState } from './types';
+import { usePricingCalculator } from '@/lib/contexts';
+import { INPUT_TEXT, type UsageRateKey } from './types';
 
 interface RightsAndQuoteStepProps {
-  exclusivityMonths: string;
-  onExclusivityMonthsChange: (value: string) => void;
-  exclusivityRate: string;
-  onExclusivityRateChange: (value: string) => void;
-  usageDuration: string;
-  onUsageDurationChange: (value: string) => void;
-  usageRates: UsageRatesState;
-  onUsageRatesChange: (key: UsageRateKey, patch: Partial<UsageRatesState[UsageRateKey]>) => void;
-  discountRate: string;
-  onDiscountRateChange: (value: string) => void;
-  emailAddress: string;
-  onEmailAddressChange: (value: string) => void;
-  quote: QuoteBreakdown;
   onBack: () => void;
   onSubmit: () => void;
+  hideEmail?: boolean;
   isSubmitting?: boolean;
-  submitError?: string | null;
 }
 
 const usageRateOptions: { key: UsageRateKey; label: string }[] = [
@@ -37,24 +24,25 @@ function sanitizeInteger(value: string) {
 }
 
 export default function RightsAndQuoteStep({
-  exclusivityMonths,
-  onExclusivityMonthsChange,
-  exclusivityRate,
-  onExclusivityRateChange,
-  usageDuration,
-  onUsageDurationChange,
-  usageRates,
-  onUsageRatesChange,
-  discountRate,
-  onDiscountRateChange,
-  emailAddress,
-  onEmailAddressChange,
-  quote,
   onBack,
   onSubmit,
-  isSubmitting = false,
-  submitError,
+  hideEmail,
+  isSubmitting,
 }: RightsAndQuoteStepProps) {
+  const {
+    exclusivityMonths,
+    setExclusivityMonths: onExclusivityMonthsChange,
+    exclusivityRate,
+    setExclusivityRate: onExclusivityRateChange,
+    usageDuration,
+    setUsageDuration: onUsageDurationChange,
+    usageRates,
+    updateUsageRate: onUsageRatesChange,
+    discountRate,
+    setDiscountRate: onDiscountRateChange,
+    emailAddress,
+    setEmailAddress: onEmailAddressChange,
+  } = usePricingCalculator();
   return (
     <>
       <div className="">
@@ -210,51 +198,26 @@ export default function RightsAndQuoteStep({
         </div>
       </div>
 
-      <div className="mb-6">
-        <h3 className="text-base font-semibold text-gray-900 mb-1">Get Quote (Invoice)</h3>
-        <p className="text-sm text-text-secondary mb-4">
-          Provide your email address where the quote will be sent to.
-        </p>
+      {!hideEmail && (
+        <div className="mb-6">
+          <h3 className="text-base font-semibold text-gray-900 mb-1">Get Quote (Invoice)</h3>
+          <p className="text-sm text-text-secondary mb-4">
+            Provide your email address where the quote will be sent to.
+          </p>
 
-        <div>
-          <FormInput
-            label="Your email address"
-            id="emailAddress"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={e => onEmailAddressChange(e.target.value)}
-            placeholder="Enter email address"
-            inputMode="email"
-            inputClassName={INPUT_TEXT}
-            showFilledIndicator={false}
-          />
-        </div>
-      </div>
-
-      <div className="mb-6 rounded-lg bg-gray-900 text-white p-5 hidden">
-        <div className="flex justify-between text-sm mb-2">
-          <span className="text-gray-300">Subtotal (Content)</span>
-          <span>{formatNaira(quote.subtotal)}</span>
-        </div>
-        <div className="flex justify-between text-sm mb-2">
-          <span className="text-gray-300">Rights & Licensing</span>
-          <span>+ {formatNaira(quote.licensing)}</span>
-        </div>
-        <div className="flex justify-between text-sm mb-3 text-red-300">
-          <span>Discount</span>
-          <span>- {formatNaira(quote.discount)}</span>
-        </div>
-        <div className="flex justify-between border-t border-dashed border-text-secondary pt-3">
-          <span className="text-base font-semibold">Final quote</span>
-          <span className="text-xl font-bold text-emerald-400">
-            {formatNaira(quote.finalTotal)}
-          </span>
-        </div>
-      </div>
-
-      {submitError && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {submitError}
+          <div>
+            <FormInput
+              label="Your email address"
+              id="emailAddress"
+              name="emailAddress"
+              value={emailAddress}
+              onChange={e => onEmailAddressChange(e.target.value)}
+              placeholder="Enter email address"
+              inputMode="email"
+              inputClassName={INPUT_TEXT}
+              showFilledIndicator={false}
+            />
+          </div>
         </div>
       )}
 
@@ -262,8 +225,7 @@ export default function RightsAndQuoteStep({
         <button
           type="button"
           onClick={onBack}
-          disabled={isSubmitting}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Back
         </button>
@@ -272,9 +234,11 @@ export default function RightsAndQuoteStep({
           onClick={onSubmit}
           variant="primary"
           className="py-2.5! text-sm! rounded-md"
-          disabled={isSubmitting || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
+          disabled={
+            isSubmitting || (!hideEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim()))
+          }
         >
-          {isSubmitting ? 'Generating PDF…' : 'Get full quote'}
+          {isSubmitting ? 'Checking…' : 'Preview quote'}
         </Button>
       </div>
     </>

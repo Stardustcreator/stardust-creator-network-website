@@ -57,3 +57,7 @@ export function initiateGoogleAuth(billing?: 'annual' | 'monthly') {
   if (billing) sessionStorage.setItem('scn_billing', billing);
   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
 }
+
+export function refreshSession() {
+  return post<void>('/auth/refresh', {});
+}

@@ -8,7 +8,7 @@ import FormInput from '@/components/ui/FormInput';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { login, initiateGoogleAuth } from '@/lib/api/auth';
-import { getCircleUrl } from '@/lib/api/subscriptions';
+import { getSubscription } from '@/lib/api/subscriptions';
 import { toast } from '@/lib/toast';
 
 export default function SignInForm() {
@@ -50,17 +50,23 @@ export default function SignInForm() {
     setApiError('');
     try {
       await login(formData.email, formData.password);
-      const circleUrl = await getCircleUrl();
-      if (!circleUrl) {
-        toast.error('No active subscription found');
-        router.push('/onboarding/subscribe');
+      const subscription = await getSubscription();
+
+      if (!subscription || !subscription.id) {
+        toast.error('Please complete the onboarding process.');
+        router.push('/onboarding/payment');
         return;
       }
-      toast.success('Login successful');
-      window.location.href = circleUrl;
+
+      if (subscription.status !== 'active') {
+        // toast.error('Your subscription is not active.');
+        router.push('/onboarding/reactivate');
+        return;
+      }
+
+      window.location.href = 'https://stardust-creators-network.circle.so';
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-    } finally {
       setIsSubmitting(false);
     }
   }

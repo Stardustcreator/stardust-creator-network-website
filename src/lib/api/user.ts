@@ -21,7 +21,18 @@ export interface UserProfile {
   email: string;
   firstName: string;
   lastName: string;
-  [key: string]: unknown;
+  status: string;
+  provider: string;
+  providerId: string | null;
+  avatarUrl: string | null;
+  emailVerifiedAt: string;
+  phone: string | null;
+  registrationLocation: string | null;
+  lastLogin: string;
+  createdAt: string;
+  updatedAt: string;
+  circleUserId: string | null;
+  tosAcceptedAt: string;
 }
 
 export function getMyProfile() {

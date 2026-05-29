@@ -2,12 +2,12 @@
 
 import CheckIcon from '../icons/CheckIcon';
 import Button from '../ui/Button';
+import { usePricingCalculator } from '@/lib/contexts';
 import type { CampaignType } from './types';
 
 interface CampaignTypeStepProps {
-  value: CampaignType;
-  onChange: (next: CampaignType) => void;
   onContinue: () => void;
+  error?: boolean;
 }
 
 const options: { id: CampaignType; title: string; description: string }[] = [
@@ -28,7 +28,8 @@ const options: { id: CampaignType; title: string; description: string }[] = [
   },
 ];
 
-export default function CampaignTypeStep({ value, onChange, onContinue }: CampaignTypeStepProps) {
+export default function CampaignTypeStep({ onContinue, error }: CampaignTypeStepProps) {
+  const { campaign: value, setCampaign: onChange } = usePricingCalculator();
   return (
     <>
       <div className="mb-6">
@@ -66,6 +67,11 @@ export default function CampaignTypeStep({ value, onChange, onContinue }: Campai
           );
         })}
       </div>
+      {error && false && (
+        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2.5 text-xs text-red-700">
+          Join the SCN Community for unlimited rate card generations
+        </div>
+      )}
 
       <div>
         <Button
