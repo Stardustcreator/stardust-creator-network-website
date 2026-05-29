@@ -17,7 +17,7 @@ export default function MemberPricingCalculatorSuccessPage() {
 
           <div className="text-center">
             <Link
-              href="/member/pricing-calculator"
+              href="/members/pricing-calculator"
               className="inline-block px-6 py-2.5 bg-surface-action text-white text-sm font-medium rounded-lg hover:bg-surface-action/80 transition-colors"
             >
               Calculate Another Quote

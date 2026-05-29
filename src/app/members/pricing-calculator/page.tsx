@@ -29,7 +29,7 @@ export default function MemberPricingCalculatorPage() {
 
   const goNext = () => {
     if (currentStep < 4) setCurrentStep(currentStep + 1);
-    else router.push('/member/pricing-calculator/preview');
+    else router.push('/members/pricing-calculator/preview');
   };
 
   const goBack = () => {
