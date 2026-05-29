@@ -7,6 +7,7 @@ import type { CampaignType } from './types';
 
 interface CampaignTypeStepProps {
   onContinue: () => void;
+  error?: boolean;
 }
 
 const options: { id: CampaignType; title: string; description: string }[] = [
@@ -27,7 +28,7 @@ const options: { id: CampaignType; title: string; description: string }[] = [
   },
 ];
 
-export default function CampaignTypeStep({ onContinue }: CampaignTypeStepProps) {
+export default function CampaignTypeStep({ onContinue, error }: CampaignTypeStepProps) {
   const { campaign: value, setCampaign: onChange } = usePricingCalculator();
   return (
     <>
@@ -66,6 +67,11 @@ export default function CampaignTypeStep({ onContinue }: CampaignTypeStepProps) 
           );
         })}
       </div>
+      {error && false && (
+        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2.5 text-xs text-red-700">
+          Join the SCN Community for unlimited rate card generations
+        </div>
+      )}
 
       <div>
         <Button

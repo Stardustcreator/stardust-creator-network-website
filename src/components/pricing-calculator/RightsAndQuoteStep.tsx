@@ -9,6 +9,8 @@ import { INPUT_TEXT, type UsageRateKey } from './types';
 interface RightsAndQuoteStepProps {
   onBack: () => void;
   onSubmit: () => void;
+  hideEmail?: boolean;
+  isSubmitting?: boolean;
 }
 
 const usageRateOptions: { key: UsageRateKey; label: string }[] = [
@@ -21,7 +23,12 @@ function sanitizeInteger(value: string) {
   return value.replace(/[^0-9]/g, '');
 }
 
-export default function RightsAndQuoteStep({ onBack, onSubmit }: RightsAndQuoteStepProps) {
+export default function RightsAndQuoteStep({
+  onBack,
+  onSubmit,
+  hideEmail,
+  isSubmitting,
+}: RightsAndQuoteStepProps) {
   const {
     exclusivityMonths,
     setExclusivityMonths: onExclusivityMonthsChange,
@@ -191,26 +198,28 @@ export default function RightsAndQuoteStep({ onBack, onSubmit }: RightsAndQuoteS
         </div>
       </div>
 
-      <div className="mb-6">
-        <h3 className="text-base font-semibold text-gray-900 mb-1">Get Quote (Invoice)</h3>
-        <p className="text-sm text-text-secondary mb-4">
-          Provide your email address where the quote will be sent to.
-        </p>
+      {!hideEmail && (
+        <div className="mb-6">
+          <h3 className="text-base font-semibold text-gray-900 mb-1">Get Quote (Invoice)</h3>
+          <p className="text-sm text-text-secondary mb-4">
+            Provide your email address where the quote will be sent to.
+          </p>
 
-        <div>
-          <FormInput
-            label="Your email address"
-            id="emailAddress"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={e => onEmailAddressChange(e.target.value)}
-            placeholder="Enter email address"
-            inputMode="email"
-            inputClassName={INPUT_TEXT}
-            showFilledIndicator={false}
-          />
+          <div>
+            <FormInput
+              label="Your email address"
+              id="emailAddress"
+              name="emailAddress"
+              value={emailAddress}
+              onChange={e => onEmailAddressChange(e.target.value)}
+              placeholder="Enter email address"
+              inputMode="email"
+              inputClassName={INPUT_TEXT}
+              showFilledIndicator={false}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex items-center gap-3">
         <button
@@ -225,9 +234,11 @@ export default function RightsAndQuoteStep({ onBack, onSubmit }: RightsAndQuoteS
           onClick={onSubmit}
           variant="primary"
           className="py-2.5! text-sm! rounded-md"
-          disabled={!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
+          disabled={
+            isSubmitting || (!hideEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim()))
+          }
         >
-          Preview quote
+          {isSubmitting ? 'Checking…' : 'Preview quote'}
         </Button>
       </div>
     </>

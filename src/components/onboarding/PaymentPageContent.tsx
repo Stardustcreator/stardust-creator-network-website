@@ -18,6 +18,7 @@ export default function PaymentPageContent() {
   const [retryMessage, setRetryMessage] = useState('');
 
   const billingRef = useRef<'annual' | 'monthly'>('monthly');
+  const initialized = useRef(false);
 
   const runInitialize = useCallback((billingValue: 'annual' | 'monthly') => {
     setIsLoading(true);
@@ -41,6 +42,9 @@ export default function PaymentPageContent() {
   }, []);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     const param = searchParams?.get('billing') as 'annual' | 'monthly' | null;
     const stored = sessionStorage.getItem('scn_billing') as 'annual' | 'monthly' | null;
     const resolved: 'annual' | 'monthly' = param ?? stored ?? 'monthly';
@@ -111,7 +115,7 @@ export default function PaymentPageContent() {
   return (
     <PaymentStep
       checkoutUrl={checkoutUrl}
-      onSuccess={() => router.push(`/onboarding/success?reference=${reference}`)}
+      onSuccess={() => router.push(`/onboarding/success`)}
       onCancel={() => {
         setCheckoutUrl('');
         setRetryMessage('Payment cancelled. Ready to try again?');

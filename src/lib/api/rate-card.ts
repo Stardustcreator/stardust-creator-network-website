@@ -26,6 +26,31 @@ export class RateCardApiError extends Error {
   }
 }
 
+export async function checkRateCardEmail(email: string): Promise<void> {
+  const res = await fetch(`${BASE}/rate-card/check-email`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ email }),
+  });
+
+  if (res.ok) return;
+
+  const data = await res.json().catch(() => ({}));
+
+  if (res.status === 409) {
+    throw new RateCardApiError(
+      'DUPLICATE_EMAIL',
+      'Join the SCN Community for unlimited rate card generations'
+    );
+  }
+
+  throw new RateCardApiError(
+    'VALIDATION_ERROR',
+    data.message ?? 'Something went wrong. Please try again.'
+  );
+}
+
 export async function submitRateCardQuote(payload: RateCardQuotePayload): Promise<void> {
   const res = await fetch(`${BASE}/rate-card/quotes`, {
     method: 'POST',

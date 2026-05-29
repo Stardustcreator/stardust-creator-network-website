@@ -8,7 +8,7 @@ interface QuoteSummaryProps {
   onSubmit: () => void;
   isSubmitting: boolean;
   submitError?: string | null;
-  emailAddress: string;
+  emailAddress?: string;
 }
 
 export default function QuoteSummary({
@@ -48,7 +48,8 @@ export default function QuoteSummary({
 
       {submitError && (
         <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2.5 text-xs text-red-700">
-          {submitError}
+          {/* {submitError} */}
+          Join the SCN Community for unlimited rate card generations
         </div>
       )}
 
@@ -57,7 +58,10 @@ export default function QuoteSummary({
         onClick={onSubmit}
         variant="primary"
         className="w-full py-2.5! text-sm! rounded-md"
-        disabled={isSubmitting || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())}
+        disabled={
+          isSubmitting ||
+          (emailAddress !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim()))
+        }
       >
         {isSubmitting ? 'Generating PDF…' : 'Download rate card'}
       </Button>

@@ -9,6 +9,7 @@ import QuoteSummary from '@/components/pricing-calculator/QuoteSummary';
 import { usePricingCalculator } from '@/lib/contexts';
 import { downloadQuotePdf } from '@/components/pricing-calculator/pdf.utils';
 import { submitRateCardQuote, RateCardApiError } from '@/lib/api/rate-card';
+import { markCalculatorUsed } from '@/lib/hooks/useFingerprintGuard';
 
 export default function PreviewPage() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function PreviewPage() {
         total: quote.finalTotal,
       });
       await downloadQuotePdf({ quote, email: emailAddress });
+      await markCalculatorUsed();
       window.sessionStorage.setItem(
         'pricing-calculator:last-quote',
         JSON.stringify({ email: emailAddress, finalTotal: quote.finalTotal })

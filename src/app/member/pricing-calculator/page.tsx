@@ -9,42 +9,18 @@ import YourReachStep from '@/components/pricing-calculator/YourReachStep';
 import DeliverablesStep from '@/components/pricing-calculator/DeliverablesStep';
 import RightsAndQuoteStep from '@/components/pricing-calculator/RightsAndQuoteStep';
 import ProgressIndicator from '@/components/pricing-calculator/ProgressIndicator';
-import { useFingerprintGuard } from '@/lib/hooks/useFingerprintGuard';
-import { checkRateCardEmail } from '@/lib/api/rate-card';
-import { usePricingCalculator } from '@/lib/contexts';
-import { toast } from '@/lib/toast';
 
-export default function PricingCalculatorPage() {
+export default function MemberPricingCalculatorPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [usedError, setUsedError] = useState(false);
-  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
-  const fpStatus = useFingerprintGuard();
-  const { emailAddress } = usePricingCalculator();
 
   const handleStepClick = (step: number) => {
     if (step <= currentStep) setCurrentStep(step);
   };
 
-  const goNext = async () => {
-    if (currentStep === 1 && fpStatus === 'blocked') {
-      setUsedError(true);
-      toast.error('Join the SCN Community for unlimited rate card generations');
-      return;
-    }
-    if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
-      return;
-    }
-    setIsCheckingEmail(true);
-    try {
-      await checkRateCardEmail(emailAddress);
-      router.push('/pricing-calculator/preview');
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-    } finally {
-      setIsCheckingEmail(false);
-    }
+  const goNext = () => {
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    else router.push('/member/pricing-calculator/preview');
   };
 
   const goBack = () => {
@@ -77,12 +53,7 @@ export default function PricingCalculatorPage() {
           />
 
           <div className="bg-white rounded-lg border border-stroke-secondary shadow-sm p-5 md:p-7 lg:p-8">
-            {currentStep === 1 && (
-              <CampaignTypeStep
-                onContinue={goNext}
-                error={usedError}
-              />
-            )}
+            {currentStep === 1 && <CampaignTypeStep onContinue={goNext} />}
             {currentStep === 2 && (
               <YourReachStep
                 onBack={goBack}
@@ -99,7 +70,7 @@ export default function PricingCalculatorPage() {
               <RightsAndQuoteStep
                 onBack={goBack}
                 onSubmit={goNext}
-                isSubmitting={isCheckingEmail}
+                hideEmail
               />
             )}
           </div>
