@@ -945,6 +945,9 @@ footer {
   display: none;
 }
 
+.inner-shadow {
+  box-shadow: 0px 1px 8px 0px #00000040 inset;
+}
 /* ============================================
    ACCESSIBILITY
    ============================================ */

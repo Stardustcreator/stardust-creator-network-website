@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { generateMetaTags } from '@/lib/seo';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
-import PricingSection from '@/components/pricing/PricingSection';
+// import PricingSection from '@/components/pricing/PricingSection';
+import PlanPricingSection from '@/components/pricing/PlanPricingSection';
 
 export const metadata: Metadata = generateMetaTags({
   title: 'Join the Community – Stardust Creator Network',
@@ -19,7 +20,8 @@ export default function OnboardingPage() {
         id="main-content"
         className="bg-white pt-28"
       >
-        <PricingSection />
+        {/* <PricingSection /> */}
+        <PlanPricingSection />
       </main>
       <Footer />
     </>

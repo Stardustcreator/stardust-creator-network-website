@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Heading, Text } from '@/components/typography';
-import PlanBanner from './PlanBanner';
+// import PlanBanner from './PlanBanner';
 import FormInput from '@/components/ui/FormInput';
 import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
@@ -13,6 +13,7 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
+import PlanBannerNew from './PlanBannerNew';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password' | 'payment';
 
@@ -20,6 +21,7 @@ export default function CreateAccountForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const billing = (searchParams?.get('billing') ?? 'monthly') as 'annual' | 'monthly';
+  const planId = (searchParams?.get('plan') ?? 'builder') as 'starter' | 'builder';
 
   const [substep, setSubstep] = useState<OnboardingSubstep>('form');
 
@@ -128,7 +130,11 @@ export default function CreateAccountForm() {
     <div className="max-w-3xl mx-auto">
       {/* Plan summary */}
       <div className="mb-8">
-        <PlanBanner billing={billing} />
+        {/* <PlanBanner billing={billing} /> */}
+        <PlanBannerNew
+          billing={billing}
+          plan={planId}
+        />
       </div>
 
       {/* Heading */}
