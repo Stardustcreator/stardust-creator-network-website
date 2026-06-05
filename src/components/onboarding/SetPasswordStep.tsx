@@ -14,6 +14,7 @@ import { validatePassword } from '@/lib/validations/password.validations';
 
 interface SetPasswordStepProps {
   billing: 'annual' | 'monthly';
+  plan: 'community' | 'starter' | 'builder';
   registrationToken: string;
   onComplete: (reference: string) => void;
 }
@@ -29,6 +30,7 @@ function SuccessBanner() {
 
 export default function SetPasswordStep({
   billing,
+  plan,
   registrationToken,
   onComplete,
 }: SetPasswordStepProps) {
@@ -75,7 +77,7 @@ export default function SetPasswordStep({
         setRegistrationCompleted(true);
       }
 
-      const { checkoutUrl, reference } = await initializePayment(billing);
+      const { checkoutUrl, reference } = await initializePayment(billing, plan);
       const accessCode = checkoutUrl.split('/').pop();
       if (!accessCode) throw new Error('Invalid payment session. Please try again.');
 
@@ -106,6 +108,7 @@ export default function SetPasswordStep({
       <div className="mb-8">
         <PlanBanner
           billing={billing}
+          plan={plan}
           hideChanger
         />
       </div>

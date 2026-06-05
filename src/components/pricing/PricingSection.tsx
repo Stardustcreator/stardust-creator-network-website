@@ -96,7 +96,7 @@ export default function PricingSection({
           </div>
 
           <Link
-            href={`${ctaBase}?billing=${billing}`}
+            href={`${ctaBase}?plan=community&billing=${billing}`}
             className="block w-full text-center bg-white font-semibold py-3 shadow-xs px-6 text-sm md:text-base rounded-xl transition-all duration-200 hover:bg-white/90 mb-4"
             style={{ color: 'var(--color-deep-purple)' }}
           >

@@ -180,13 +180,6 @@ tap('detect');`,
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         {/* Outbound Link Tracking - Tracks external link clicks */}
         <OutboundLinkTracker />
-        {/* Client-only deferred analytics loader */}
-        {/* @ts-ignore - client component loaded in server file */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `/* DeferredAnalytics is client-only and will hydrate in the browser */`,
-          }}
-        />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
         <Toaster />

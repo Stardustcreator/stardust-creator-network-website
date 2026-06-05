@@ -22,7 +22,9 @@ function SuccessContent() {
 
   useEffect(() => {
     if (!reference) return;
-    const base = process.env.NEXT_PUBLIC_API_URL;
+    const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+    if (!base) return;
+
     setDashboardUrl(`${base}/payments/callback?trxref=${reference}&reference=${reference}`);
   }, [reference]);
 
@@ -38,9 +40,8 @@ function SuccessContent() {
       setProgress(pct);
       if (pct < 100) {
         raf = requestAnimationFrame(tick);
-        // } else if (dashboardUrl) {
-        //   window.location.href = dashboardUrl;
-        // }
+      } else if (dashboardUrl) {
+        window.location.href = dashboardUrl;
       }
     }
 

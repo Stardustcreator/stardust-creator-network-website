@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Heading, Text } from '@/components/typography';
-// import PlanBanner from './PlanBanner';
 import FormInput from '@/components/ui/FormInput';
 import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
@@ -13,20 +12,26 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
-import PlanBannerNew from './PlanBannerNew';
+import PlanBanner from './PlanBanner';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password' | 'payment';
+type BillingPeriod = 'annual' | 'monthly';
+type PlanId = 'community' | 'starter' | 'builder';
 
-export default function CreateAccountForm() {
-  const searchParams = useSearchParams();
+interface CreateAccountFormProps {
+  initialBilling: BillingPeriod;
+  initialPlan: PlanId;
+}
+
+export default function CreateAccountForm({ initialBilling, initialPlan }: CreateAccountFormProps) {
   const router = useRouter();
-  const billing = (searchParams?.get('billing') ?? 'monthly') as 'annual' | 'monthly';
-  const planId = (searchParams?.get('plan') ?? 'builder') as 'starter' | 'builder';
+  const billing = initialBilling;
+  const planId = initialPlan;
 
   const [substep, setSubstep] = useState<OnboardingSubstep>('form');
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, [substep]);
 
   const [formData, setFormData] = useState({
@@ -58,14 +63,19 @@ export default function CreateAccountForm() {
     return (
       <SetPasswordStep
         billing={billing}
+        plan={planId}
         registrationToken={registrationToken}
         onComplete={reference => {
           // setCheckoutUrl(url);
           // setPaymentReference(reference);
           // setSubstep('payment');
-          router.push(
-            `/onboarding/success?reference=${reference}&firstName=${formData.firstName}&email=${formData.email}`
-          );
+          const params = new URLSearchParams({
+            reference,
+            firstName: formData.firstName,
+            email: formData.email,
+          });
+
+          router.push(`/onboarding/success?${params.toString()}`);
         }}
       />
     );
@@ -75,11 +85,15 @@ export default function CreateAccountForm() {
     return (
       <PaymentStep
         checkoutUrl={checkoutUrl}
-        onSuccess={() =>
-          router.push(
-            `/onboarding/success?reference=${paymentReference}&firstName=${formData.firstName}&email=${formData.email}`
-          )
-        }
+        onSuccess={() => {
+          const params = new URLSearchParams({
+            reference: paymentReference,
+            firstName: formData.firstName,
+            email: formData.email,
+          });
+
+          router.push(`/onboarding/success?${params.toString()}`);
+        }}
         onCancel={() => setSubstep('password')}
       />
     );
@@ -106,6 +120,11 @@ export default function CreateAccountForm() {
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    console.log('Create account submit initiated with data:', {
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    });
     e.preventDefault();
     const validation = validate();
     if (Object.keys(validation).length > 0) {
@@ -114,13 +133,32 @@ export default function CreateAccountForm() {
     }
     setIsSubmitting(true);
     setApiError('');
+    console.warn('Create account submit started:', {
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    });
     try {
       await initiateRegistration(formData.email, formData.firstName, formData.lastName);
       toast.success('Registration successful');
       setSubstep('otp');
     } catch (err) {
-      // setApiError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-      toast.error(err instanceof Error ? err.message : 'Registration failed');
+      const message =
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      console.error('Create account submit failed:', {
+        message,
+        error:
+          err instanceof Error
+            ? {
+                name: err.name,
+                message: err.message,
+                stack: err.stack,
+                cause: (err as Error & { cause?: unknown }).cause,
+              }
+            : err,
+      });
+      setApiError(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -130,8 +168,7 @@ export default function CreateAccountForm() {
     <div className="max-w-3xl mx-auto">
       {/* Plan summary */}
       <div className="mb-8">
-        {/* <PlanBanner billing={billing} /> */}
-        <PlanBannerNew
+        <PlanBanner
           billing={billing}
           plan={planId}
         />
@@ -159,7 +196,7 @@ export default function CreateAccountForm() {
         type="button"
         variant="social"
         className="w-full mb-6"
-        onClick={() => initiateGoogleAuth(billing)}
+        onClick={() => initiateGoogleAuth(billing, planId)}
       >
         <GoogleIcon />
         Sign up with Google
@@ -228,14 +265,14 @@ export default function CreateAccountForm() {
           {isSubmitting ? 'Please wait…' : 'Continue'}
         </Button>
 
-        {/* {apiError && (
+        {apiError && (
           <p
             className="mt-3 text-sm text-center text-surface-error"
             role="alert"
           >
             {apiError}
           </p>
-        )} */}
+        )}
 
         {/* Sign in link */}
         <p className="text-center text-sm text-text-secondary mt-5">
