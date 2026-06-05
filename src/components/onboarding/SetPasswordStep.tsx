@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button';
 import CheckIcon from '@/components/icons/CheckIcon';
 import { completeRegistration } from '@/lib/api/auth';
 import { initializePayment } from '@/lib/api/payments';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 import { validatePassword } from '@/lib/validations/password.validations';
 
@@ -75,6 +76,11 @@ export default function SetPasswordStep({
       if (!registrationCompleted) {
         await completeRegistration(registrationToken, formData.password, true);
         setRegistrationCompleted(true);
+      }
+
+      if (plan === 'starter') {
+        window.location.href = getScnDashboardUrl();
+        return;
       }
 
       const { checkoutUrl, reference } = await initializePayment(billing, plan);
@@ -217,9 +223,11 @@ export default function SetPasswordStep({
         >
           {isSubmitting
             ? 'Please wait…'
-            : registrationCompleted
-              ? 'Retry Payment'
-              : 'Continue to Payment'}
+            : plan === 'starter'
+              ? 'Complete Registration'
+              : registrationCompleted
+                ? 'Retry Payment'
+                : 'Continue to Payment'}
         </Button>
       </form>
     </div>
