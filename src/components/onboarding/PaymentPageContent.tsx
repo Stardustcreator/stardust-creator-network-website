@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import PaymentStep from './PaymentStep';
 import PlanBanner from './PlanBanner';
 import { initializePayment } from '@/lib/api/payments';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 
 type BillingPeriod = 'annual' | 'monthly';
@@ -94,6 +95,11 @@ export default function PaymentPageContent() {
     setPlan(resolvedPlan);
     billingRef.current = resolvedBilling;
     planRef.current = resolvedPlan;
+
+    if (resolvedPlan === 'starter') {
+      window.location.href = getScnDashboardUrl();
+      return;
+    }
 
     runInitialize(resolvedBilling, resolvedPlan);
   }, [router, searchParams, runInitialize]);
