@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import SignInForm from '@/components/signin/SignInForm';
+import RedirectAuthenticatedUser from '@/components/auth/RedirectAuthenticatedUser';
 import { generateMetaTags } from '@/lib/seo';
 
 export const metadata: Metadata = generateMetaTags({
@@ -19,9 +20,14 @@ export default function SignInPage() {
         id="main-content"
         className="bg-white pt-41 pb-36"
       >
-        <div className="w-full container mx-auto px-6">
-          <SignInForm />
-        </div>
+        <RedirectAuthenticatedUser
+          inactiveRedirect="/onboarding/reactivate"
+          noSubscriptionRedirect="/onboarding"
+        >
+          <div className="w-full container mx-auto px-6">
+            <SignInForm />
+          </div>
+        </RedirectAuthenticatedUser>
       </main>
 
       <Footer />

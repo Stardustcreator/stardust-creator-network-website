@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { checkSubscriptionAccess } from '@/lib/api/subscriptions';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 
 export default function OnboardingCheckPage() {
   const router = useRouter();
@@ -10,14 +11,14 @@ export default function OnboardingCheckPage() {
   useEffect(() => {
     checkSubscriptionAccess().then(result => {
       if (result.ok) {
-        window.location.href = 'https://stardust-creators-network.circle.so';
+        window.location.href = getScnDashboardUrl();
         return;
       }
       if (result.reason === 'inactive') {
         router.replace('/onboarding/reactivate');
         return;
       }
-      router.replace('/onboarding/payment');
+      router.replace('/onboarding');
     });
   }, [router]);
 

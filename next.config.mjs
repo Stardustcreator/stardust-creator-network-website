@@ -4,6 +4,55 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+function getOrigin(value) {
+  if (!value) return undefined;
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return undefined;
+  }
+}
+
+const configuredApiOrigin = getOrigin(process.env.NEXT_PUBLIC_API_URL);
+const connectSources = Array.from(
+  new Set(
+    [
+      "'self'",
+      configuredApiOrigin,
+      ...(isProduction ? [] : ['http://localhost:*', 'http://127.0.0.1:*']),
+      'https://badass-renter-elevator.ngrok-free.dev',
+      'https://scn-backend-production.up.railway.app',
+      'https://stardustcreatornetwork.com',
+      'https://www.stardustcreatornetwork.com',
+      'https://www.googletagmanager.com',
+      'https://www.google-analytics.com',
+      'https://analytics.google.com',
+      'https://stats.g.doubleclick.net',
+      'https://region1.google-analytics.com',
+      'https://*.google-analytics.com',
+      'https://*.analytics.google.com',
+      'https://*.googletagmanager.com',
+      'https://*.facebook.com',
+      'https://*.sanity.io',
+      'https://*.api.sanity.io',
+      'https://*.run.app',
+      'https://*.conversionsapigateway.com',
+      'https://ipapi.co',
+      'https://api.twitter.com',
+      'https://*.twitter.com',
+      'https://syndication.twitter.com',
+      'https://publish.twitter.com',
+      'https://api.instagram.com',
+      'https://*.instagram.com',
+      'https://*.paystack.com',
+      'https://*.paystack.co',
+    ].filter(Boolean)
+  )
+).join(' ');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Performance optimizations
@@ -136,12 +185,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://js.paystack.co https://*.paystack.com https://*.paystack.co",
-              "script-src-elem 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://core.sanity-cdn.com https://*.sanity.io https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://script.tapfiliate.com https://js.paystack.co https://*.paystack.com https://*.paystack.co",
+              "script-src-elem 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://core.sanity-cdn.com https://*.sanity.io https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://script.tapfiliate.com",
               "style-src 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.googleapis.com https://tagmanager.google.com",
-              "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com",
               "font-src 'self' data: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.gstatic.com",
-              "connect-src 'self' https://badass-renter-elevator.ngrok-free.dev https://scn-backend-production.up.railway.app https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.facebook.com https://*.sanity.io https://*.api.sanity.io https://*.run.app https://*.conversionsapigateway.com https://ipapi.co https://api.twitter.com https://*.twitter.com https://syndication.twitter.com https://publish.twitter.com https://api.instagram.com https://*.instagram.com https://*.paystack.com https://*.paystack.co",
+              `connect-src ${connectSources}`,
               "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://*.sanity.io https://*.sanity.studio https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://platform.twitter.com https://*.twitter.com https://twitter.com https://x.com https://*.x.com https://www.instagram.com https://*.instagram.com https://*.paystack.com https://*.paystack.co",
               "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://pbs.twimg.com https://*.twimg.com https://*.cdninstagram.com https://*.fbcdn.net",
               "media-src 'self' https://www.youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://*.cdninstagram.com https://*.fbcdn.net",
@@ -150,48 +198,52 @@ const nextConfig = {
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'self'",
-              'upgrade-insecure-requests',
+              ...(isProduction ? ['upgrade-insecure-requests'] : []),
             ].join('; '),
           },
         ],
       },
-      {
-        // Cache static assets aggressively
-        source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache images with longer duration
-        source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache video files
-        source: '/(.*)\\.(webm|mp4|mov)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+      ...(isProduction
+        ? [
+            {
+              // Cache static assets aggressively in production only.
+              source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+            {
+              // Cache images with longer duration in production only.
+              source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+            {
+              // Cache video files in production only.
+              source: '/(.*)\\.(webm|mp4|mov)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+          ]
+        : []),
     ];
   },
 
   // Compiler options
   compiler: {
-    // Remove console.log in production
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Keep production errors visible while stripping noisy console.log output.
+    removeConsole: isProduction ? { exclude: ['error', 'warn'] } : false,
   },
 
   // Enable powered by header (set to false for security)

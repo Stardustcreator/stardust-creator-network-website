@@ -9,6 +9,7 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { login, initiateGoogleAuth } from '@/lib/api/auth';
 import { getSubscription } from '@/lib/api/subscriptions';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 
 export default function SignInForm() {
@@ -54,7 +55,7 @@ export default function SignInForm() {
 
       if (!subscription || !subscription.id) {
         toast.error('Please complete the onboarding process.');
-        router.push('/onboarding/payment');
+        router.push('/onboarding');
         return;
       }
 
@@ -64,7 +65,7 @@ export default function SignInForm() {
         return;
       }
 
-      window.location.href = 'https://stardust-creators-network.circle.so';
+      window.location.href = getScnDashboardUrl();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
       setIsSubmitting(false);

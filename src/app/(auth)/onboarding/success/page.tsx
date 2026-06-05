@@ -22,7 +22,9 @@ function SuccessContent() {
 
   useEffect(() => {
     if (!reference) return;
-    const base = process.env.NEXT_PUBLIC_API_URL;
+    const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+    if (!base) return;
+
     setDashboardUrl(`${base}/payments/callback?trxref=${reference}&reference=${reference}`);
   }, [reference]);
 
@@ -38,9 +40,8 @@ function SuccessContent() {
       setProgress(pct);
       if (pct < 100) {
         raf = requestAnimationFrame(tick);
-        // } else if (dashboardUrl) {
-        //   window.location.href = dashboardUrl;
-        // }
+      } else if (dashboardUrl) {
+        window.location.href = dashboardUrl;
       }
     }
 
@@ -79,15 +80,15 @@ function SuccessContent() {
 
           {/* Subtitle */}
           <p className="text-text-secondary text-sm md:text-base leading-relaxed mb-12">
-            Your payment was successful. Check your email to complete
-            <br className="hidden sm:block" /> the onboarding process and access your dashboard.
+            Creator OS is active. Taking you to your dashboard now{' '}
+            <br className="hidden sm:block" /> — no extra steps needed.
           </p>
 
           {/* Progress widget */}
           <div className="w-full rounded-lg border px-6 py-10 mb-3 border-primary-100 bg-surface-action-primary">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm md:text-base text-text-secondary">
-                Check your inbox to complete the process
+                Opening your dashboard...
               </span>
               <svg
                 className="w-4 h-4 text-neutral-400 animate-spin"
@@ -122,7 +123,7 @@ function SuccessContent() {
               />
             </div>
 
-            {/* <p
+            <p
               className={`text-sm text-text-secondary font-medium mt-3 transition-opacity duration-500 ${showSkip ? 'opacity-100' : 'opacity-0'}`}
             >
               Taking too long?{' '}
@@ -141,7 +142,7 @@ function SuccessContent() {
                   Go to dashboard now
                 </Link>
               )}
-            </p> */}
+            </p>
           </div>
 
           {/* Receipt confirmation */}

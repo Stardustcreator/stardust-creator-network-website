@@ -6,7 +6,7 @@ import { Heading, Text } from '@/components/typography';
 import Button from '@/components/ui/Button';
 import PaymentStep from './PaymentStep';
 import { initializePayment } from '@/lib/api/payments';
-import { getCircleUrl } from '@/lib/api/subscriptions';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 
 type Billing = 'annual' | 'monthly';
@@ -54,18 +54,7 @@ export default function ReactivateContent() {
 
   const handlePaymentSuccess = useCallback(async () => {
     setStep('redirecting');
-    // try {
-    //   const base = process.env.NEXT_PUBLIC_API_URL;
-    //   window.location.href = `${base}/payments/callback?trxref=${reference}&reference=${reference}`;
-    // } catch {
-    //   const circleUrl = await getCircleUrl();
-    //   if (circleUrl) {
-    //     window.location.href = circleUrl;
-    //   } else {
-    //     router.push('/onboarding/subscribe');
-    //   }
-    // }
-    window.location.href = 'https://stardust-creators-network.circle.so';
+    window.location.href = getScnDashboardUrl();
   }, []);
 
   if (step === 'paying') {
