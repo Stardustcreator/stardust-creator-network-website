@@ -11,6 +11,7 @@ import { login, initiateGoogleAuth } from '@/lib/api/auth';
 import { getSubscription } from '@/lib/api/subscriptions';
 import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
+import { getMyProfile } from '@/lib/api/user';
 
 export default function SignInForm() {
   const router = useRouter();
@@ -51,19 +52,21 @@ export default function SignInForm() {
     setApiError('');
     try {
       await login(formData.email, formData.password);
-      const subscription = await getSubscription();
+      const result = await getMyProfile();
 
-      if (!subscription || !subscription.id) {
-        toast.error('Please complete the onboarding process.');
-        router.push('/onboarding');
+      // const subscription = await getSubscription();
+
+      if (!result || !result.id) {
+        // toast.error('Please complete the onboarding process.');
+        // router.push('/onboarding');
         return;
       }
 
-      if (subscription.status !== 'active') {
-        // toast.error('Your subscription is not active.');
-        router.push('/onboarding/reactivate');
-        return;
-      }
+      // if (subscription.status !== 'active') {
+      //   // toast.error('Your subscription is not active.');
+      //   router.push('/onboarding/reactivate');
+      //   return;
+      // }
 
       window.location.href = getScnDashboardUrl();
     } catch (err) {

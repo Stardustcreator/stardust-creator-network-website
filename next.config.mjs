@@ -25,6 +25,7 @@ const connectSources = Array.from(
       ...(isProduction ? [] : ['http://localhost:*', 'http://127.0.0.1:*']),
       'https://badass-renter-elevator.ngrok-free.dev',
       'https://scn-backend-production.up.railway.app',
+      'https://scn-backend-staging.up.railway.app',
       'https://stardustcreatornetwork.com',
       'https://www.stardustcreatornetwork.com',
       'https://www.googletagmanager.com',
@@ -205,37 +206,37 @@ const nextConfig = {
       },
       ...(isProduction
         ? [
-            {
-              // Cache static assets aggressively in production only.
-              source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache images with longer duration in production only.
-              source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache video files in production only.
-              source: '/(.*)\\.(webm|mp4|mov)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-          ]
+          {
+            // Cache static assets aggressively in production only.
+            source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // Cache images with longer duration in production only.
+            source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // Cache video files in production only.
+            source: '/(.*)\\.(webm|mp4|mov)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+        ]
         : []),
     ];
   },
