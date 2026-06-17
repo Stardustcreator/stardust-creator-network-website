@@ -1,5 +1,5 @@
-import SubscriptionGuard from '@/components/members/SubscriptionGuard';
+// import SubscriptionGuard from '@/components/members/SubscriptionGuard';
 
 export default function MemberLayout({ children }: { children: React.ReactNode }) {
-  return <SubscriptionGuard>{children}</SubscriptionGuard>;
+  return <>{children}</>;
 }
