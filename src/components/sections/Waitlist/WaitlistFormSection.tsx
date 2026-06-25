@@ -180,13 +180,10 @@ export default function WaitlistFormSection() {
         {/* Waitlist Form */}
         <div className="max-w-lg mx-auto px-2 sm:px-0">
           <div
-            className={`relative bg-white backdrop-blur-xl border border-purple-300 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl shadow-purple-500/10 transition-all duration-700 ${
+            className={`relative bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg transition-all duration-700 ${
               isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            {/* Glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-300 to-pink-300 rounded-2xl sm:rounded-3xl blur-xl opacity-20"></div>
-
             <form
               onSubmit={handleSubmit}
               className="relative space-y-5 sm:space-y-6"
@@ -206,7 +203,7 @@ export default function WaitlistFormSection() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl px-4 py-3 sm:py-3.5 text-white text-sm sm:text-base placeholder-white/50 transition-all hover:bg-white/15 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base placeholder-gray-400 transition-all hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Enter your full name"
                 />
               </div>
