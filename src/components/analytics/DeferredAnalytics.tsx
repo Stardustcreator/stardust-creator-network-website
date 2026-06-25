@@ -93,18 +93,5 @@ export default function DeferredAnalytics() {
     return () => removeListeners();
   }, []);
 
-  return (
-    <>
-      {/* Noscript fallbacks for analytics */}
-      <noscript>
-        <iframe
-          title="gtm"
-          src="https://www.googletagmanager.com/ns.html?id=GTM-WKTV2K2D"
-          height="0"
-          width="0"
-          style={{ display: 'none', visibility: 'hidden' }}
-        />
-      </noscript>
-    </>
-  );
+  return null;
 }

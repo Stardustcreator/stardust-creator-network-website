@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { PricingCalculatorProvider } from '@/lib/contexts';
 
 export const metadata: Metadata = {
   title: 'Pricing Calculator - Know What to Charge Brands | Stardust Creator Network',
@@ -46,5 +47,5 @@ export const metadata: Metadata = {
 };
 
 export default function PricingCalculatorLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <PricingCalculatorProvider>{children}</PricingCalculatorProvider>;
 }

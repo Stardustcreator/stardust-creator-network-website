@@ -10,11 +10,12 @@ import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
 import dynamic from 'next/dynamic';
+import { Toaster } from '@/components/ui/Toaster';
 
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
   ssr: false,
 });
-import './globals.css';
+import './globals-new.css';
 
 const lato = Lato({
   variable: '--font-lato',
@@ -179,15 +180,9 @@ tap('detect');`,
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         {/* Outbound Link Tracking - Tracks external link clicks */}
         <OutboundLinkTracker />
-        {/* Client-only deferred analytics loader */}
-        {/* @ts-ignore - client component loaded in server file */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `/* DeferredAnalytics is client-only and will hydrate in the browser */`,
-          }}
-        />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
+        <Toaster />
         {/* Vercel Analytics - Lazy loaded, non-essential */}
         <VercelAnalytics />
       </body>
