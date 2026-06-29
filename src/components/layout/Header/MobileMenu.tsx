@@ -30,12 +30,12 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         className="fixed inset-0 z-50 bg-black bg-opacity-50"
         onClick={onClose}
       />
-      <div className="fixed top-0 right-0 z-50 h-full w-80 max-w-sm bg-white shadow-xl">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-          <span className="text-lg font-semibold text-brand-purple">Menu</span>
+      <div className="fixed top-0 right-0 z-50 h-full w-80 max-w-sm bg-black shadow-xl">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-700">
+          <span className="text-lg font-semibold text-white">Menu</span>
           <button
             onClick={onClose}
-            className="p-2 text-neutral-600 hover:text-brand-purple transition-colors"
+            className="p-2 text-white hover:text-purple-400 transition-colors"
           >
             <svg
               className="w-6 h-6"
@@ -61,11 +61,11 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <div>
                     <button
                       onClick={() => toggleExpanded(item.label)}
-                      className="flex items-center justify-between w-full text-left text-neutral-700 hover:text-brand-purple font-medium transition-colors py-2"
+                      className="flex items-center justify-between w-full text-left text-white hover:text-purple-400 font-medium transition-colors py-2"
                     >
                       {item.label}
                       <svg
-                        className={`w-4 h-4 transition-transform ${
+                        className={`w-4 h-4 transition-transform text-white ${
                           expandedItems.has(item.label) ? 'rotate-180' : ''
                         }`}
                         fill="none"
@@ -81,13 +81,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       </svg>
                     </button>
                     {expandedItems.has(item.label) && (
-                      <ul className="ml-4 mt-2 space-y-2">
+                      <ul className="ml-4 mt-2 space-y-2 bg-white rounded-lg p-3">
                         {item.children.map(child => (
                           <li key={child.label}>
                             <Link
                               href={child.href}
                               onClick={onClose}
-                              className="block text-neutral-600 hover:text-brand-purple transition-colors py-1"
+                              className="block text-black hover:text-purple-600 transition-colors py-2 px-2"
                             >
                               {child.label}
                             </Link>
@@ -100,7 +100,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className="block text-neutral-700 hover:text-brand-purple font-medium transition-colors py-2"
+                    className="block text-white hover:text-purple-400 font-medium transition-colors py-2"
                   >
                     {item.label}
                   </Link>
@@ -109,21 +109,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             ))}
           </ul>
 
-          {/* Mobile CTAs */}
-          <div className="mt-8 space-y-3">
+          {/* Mobile CTA */}
+          <div className="mt-8">
             <Link
-              href="/brands/brief"
+              href="/auth/signup"
               onClick={onClose}
-              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full text-center"
+              className="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-300 w-full text-center"
             >
-              Find a Creator
-            </Link>
-            <Link
-              href="/creators/join"
-              onClick={onClose}
-              className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-purple-500 text-purple-500 text-button rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 w-full text-center"
-            >
-              Join as Creator
+              Sign up
             </Link>
           </div>
         </nav>

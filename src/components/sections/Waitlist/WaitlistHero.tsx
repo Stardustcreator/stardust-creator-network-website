@@ -12,7 +12,7 @@ export default function WaitlistHero() {
   };
 
   return (
-    <section className="hero-fullwidth relative min-h-[90vh] sm:min-h-[95vh] md:min-h-[100vh] overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
+    <section className="hero-fullwidth relative min-h-[90vh] sm:min-h-[95vh] md:min-h-[100vh] overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px] flex items-center justify-center">
       {/* Background Image - All Screens */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -31,7 +31,7 @@ export default function WaitlistHero() {
       <div className="absolute inset-0 bg-black/40 z-10" />
 
       {/* Content */}
-      <div className="absolute top-48 left-0 right-0 z-20 px-6 pt-16 pb-20 md:top-56 md:px-8 md:pt-20 md:pb-24 lg:top-64 lg:px-12 lg:pt-24 lg:pb-28 max-w-5xl mx-auto">
+      <div className="relative z-20 px-6 sm:px-8 lg:px-12 max-w-5xl mx-auto w-full pt-20 md:pt-32 lg:pt-40">
         {/* Main Headline */}
         <Heading
           level={1}

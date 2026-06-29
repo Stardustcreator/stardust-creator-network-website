@@ -206,7 +206,7 @@ export default function WaitlistFormSection() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl px-4 py-3 sm:py-3.5 text-white text-sm sm:text-base placeholder-white/50 transition-all hover:bg-white/15 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base placeholder-gray-400 transition-all hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Enter your full name"
                 />
               </div>
@@ -304,7 +304,7 @@ export default function WaitlistFormSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3.5 sm:py-4 px-6 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base"
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 sm:py-4.5 px-6 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-semibold"
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
