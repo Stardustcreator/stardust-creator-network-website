@@ -69,7 +69,7 @@ export default function NavigationBar({
             {/* Country Selector & Sign Up Button */}
             <div className="flex items-center gap-4 flex-shrink-0">
               <CountrySelector variant="desktop" />
-              <Link href="/auth/signup">
+              <Link href="/signin">
                 <button
                   className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
                   style={{
@@ -85,16 +85,14 @@ export default function NavigationBar({
         </div>
 
         {/* Mobile Navigation - White Bar (Floats over hero) */}
-        <div className="lg:hidden px-4 pt-2">
-          <div className="w-full">
-            <MobileTopNavigation
-              onMenuClick={() => setIsMobileMenuOpen(true)}
-              logoSrc={logoSrc}
-              logoAlt={logoAlt}
-              logoWidth={logoWidth}
-              logoHeight={logoHeight}
-            />
-          </div>
+        <div className="lg:hidden pt-2">
+          <MobileTopNavigation
+            onMenuClick={() => setIsMobileMenuOpen(true)}
+            logoSrc={logoSrc}
+            logoAlt={logoAlt}
+            logoWidth={logoWidth}
+            logoHeight={logoHeight}
+          />
         </div>
       </header>
 
