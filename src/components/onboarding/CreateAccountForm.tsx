@@ -7,20 +7,28 @@ import { Heading, Text } from '@/components/typography';
 import FormInput from '@/components/ui/FormInput';
 import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
-import PaymentStep from './PaymentStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
-import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
+import { initiateRegistration, initiateGoogleAuth, type DiscountPreview } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import PlanBanner from './PlanBanner';
 
-type OnboardingSubstep = 'form' | 'otp' | 'password' | 'payment';
+type OnboardingSubstep = 'form' | 'otp' | 'password';
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'community' | 'starter' | 'builder';
 
 interface CreateAccountFormProps {
   initialBilling: BillingPeriod;
   initialPlan: PlanId;
+}
+
+function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
+  if (plan === 'starter') return 'starter_free';
+  return `${plan}_${billing}`;
+}
+
+function formatAmount(kobo: number, currency: string): string {
+  return (kobo / 100).toLocaleString('en-NG', { style: 'currency', currency });
 }
 
 export default function CreateAccountForm({ initialBilling, initialPlan }: CreateAccountFormProps) {
@@ -38,14 +46,13 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     firstName: '',
     lastName: '',
     email: '',
-    coupon: '',
+    discountCode: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationToken, setRegistrationToken] = useState('');
-  const [checkoutUrl, setCheckoutUrl] = useState('');
-  const [paymentReference, setPaymentReference] = useState('');
+  const [discountPreview, setDiscountPreview] = useState<DiscountPreview | undefined>();
   const [expanded, setExpanded] = useState(false);
 
   if (substep === 'otp') {
@@ -67,10 +74,8 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
         billing={billing}
         plan={planId}
         registrationToken={registrationToken}
+        discountPreview={discountPreview}
         onComplete={reference => {
-          // setCheckoutUrl(url);
-          // setPaymentReference(reference);
-          // setSubstep('payment');
           const params = new URLSearchParams({
             reference,
             firstName: formData.firstName,
@@ -79,24 +84,6 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
 
           router.push(`/onboarding/success?${params.toString()}`);
         }}
-      />
-    );
-  }
-
-  if (substep === 'payment') {
-    return (
-      <PaymentStep
-        checkoutUrl={checkoutUrl}
-        onSuccess={() => {
-          const params = new URLSearchParams({
-            reference: paymentReference,
-            firstName: formData.firstName,
-            email: formData.email,
-          });
-
-          router.push(`/onboarding/success?${params.toString()}`);
-        }}
-        onCancel={() => setSubstep('password')}
       />
     );
   }
@@ -122,11 +109,6 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    console.log('Create account submit initiated with data:', {
-      email: formData.email,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-    });
     e.preventDefault();
     const validation = validate();
     if (Object.keys(validation).length > 0) {
@@ -135,42 +117,34 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     }
     setIsSubmitting(true);
     setApiError('');
-    console.warn('Create account submit started:', {
-      email: formData.email,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-    });
     try {
-      await initiateRegistration(
+      const backendPlanId = toBackendPlanId(planId, billing);
+      const code =
+        expanded && formData.discountCode.trim() ? formData.discountCode.trim() : undefined;
+
+      const result = await initiateRegistration(
         formData.email,
         formData.firstName,
         formData.lastName,
-        expanded ? formData.coupon : undefined
+        backendPlanId,
+        code
       );
-      toast.success('Registration successful');
+
+      if (result.discount) {
+        setDiscountPreview(result.discount);
+        toast.success(`Code ${result.discount.code} applied!`);
+      }
+
       setSubstep('otp');
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Something went wrong. Please try again.';
-      console.error('Create account submit failed:', {
-        message,
-        error:
-          err instanceof Error
-            ? {
-                name: err.name,
-                message: err.message,
-                stack: err.stack,
-                cause: (err as Error & { cause?: unknown }).cause,
-              }
-            : err,
-      });
       setApiError(message);
       toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
   }
-  console.log({ planId, billing });
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -263,6 +237,8 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
             autoComplete="email"
           />
         </div>
+
+        {/* Discount code — shown for paid plans only */}
         {planId !== 'starter' && (
           <div className="space-y-3 mb-6 -mt-3">
             <p className="text-sm text-text-secondary">
@@ -278,43 +254,41 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
             </p>
 
             {expanded && (
-              <>
-                <div className="flex items-center gap-3 w-full">
-                  <div className="flex-1">
-                    <FormInput
-                      label=""
-                      id="coupon"
-                      name="coupon"
-                      type="text"
-                      placeholder="e.g ABCD1234"
-                      value={formData.coupon}
-                      onChange={handleChange}
-                      error={errors.coupon}
-                      required={expanded}
-                      inputClassName="w-full"
-                    />
-                  </div>
-                  {/* <Button
-                type="button"
-                variant="primary"
-                onClick={() => {
-                  setExpanded(false)
-                }}
-                disabled={formData.coupon.length > 0}
-                className="px-5 text-sm! disabled:bg-[#F1F5F9]!"
-              >
-                Cancel
-              </Button> */}
+              <div className="flex items-center gap-3 w-full">
+                <div className="flex-1">
+                  <FormInput
+                    label=""
+                    id="discountCode"
+                    name="discountCode"
+                    type="text"
+                    placeholder="e.g ABCD1234"
+                    value={formData.discountCode}
+                    onChange={handleChange}
+                    error={errors.discountCode}
+                    inputClassName="w-full"
+                  />
                 </div>
-                {errors.coupon && (
-                  <p className="mt-2 text-sm font-medium text-text-error">
-                    Invalid code. Check and try again
-                  </p>
-                )}
-              </>
+              </div>
+            )}
+
+            {/* Discount preview — shown after a valid code is confirmed */}
+            {discountPreview && (
+              <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm">
+                <span className="font-semibold text-green-700">{discountPreview.code}</span>
+                <span className="text-green-700">
+                  {formatAmount(discountPreview.discountAmount, discountPreview.currency)} off — you
+                  pay{' '}
+                  <span className="font-semibold">
+                    {discountPreview.finalAmount === 0
+                      ? 'nothing'
+                      : formatAmount(discountPreview.finalAmount, discountPreview.currency)}
+                  </span>
+                </span>
+              </div>
             )}
           </div>
         )}
+
         {/* CTA */}
         <Button
           type="submit"
