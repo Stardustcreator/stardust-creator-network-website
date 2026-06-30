@@ -55,7 +55,7 @@ export default function FAQSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8 },
     },
   };
 
@@ -64,7 +64,7 @@ export default function FAQSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, delay: 0.2, ease: 'easeOut' },
+      transition: { duration: 0.8, delay: 0.2 },
     },
   };
 
@@ -76,7 +76,6 @@ export default function FAQSection() {
       transition: {
         duration: 0.6,
         delay: index * 0.1,
-        ease: 'easeOut',
       },
     }),
   };

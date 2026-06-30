@@ -48,7 +48,7 @@ export default function WhatChangesWhenYouJoinSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8 },
     },
   };
 
@@ -60,7 +60,6 @@ export default function WhatChangesWhenYouJoinSection() {
       transition: {
         duration: 0.6,
         delay: index * 0.12,
-        ease: 'easeOut',
       },
     }),
   };
