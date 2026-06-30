@@ -18,50 +18,8 @@ const ConnectCollaborateCreateSection = dynamic(
   }
 );
 
-const IconGridSection = dynamic(() => import('@/components/sections/IconGrid/IconGridSection'), {
-  ssr: true,
-  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-});
-
 const WhoScnIsForSection = dynamic(
   () => import('@/components/sections/WhoScnIsFor/WhoScnIsForSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const HowScnWorksSection = dynamic(
-  () => import('@/components/sections/HowScnWorks/HowScnWorksSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const PaidCommunitySection = dynamic(
-  () => import('@/components/sections/PaidCommunity/PaidCommunitySection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const WaitlistSection = dynamic(() => import('@/components/sections/Waitlist/WaitlistSection'), {
-  ssr: true,
-  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-});
-
-const WhatMakesScnDifferentSection = dynamic(
-  () => import('@/components/sections/WhatMakesScnDifferent/WhatMakesScnDifferentSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const WhatHappensWhenYouJoinSection = dynamic(
-  () => import('@/components/sections/WhatHappensWhenYouJoin/WhatHappensWhenYouJoinSection'),
   {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
@@ -76,44 +34,25 @@ const TestimonialsSection = dynamic(
   }
 );
 
-const CreatorOsSection = dynamic(
-  () => import('@/components/sections/creator-os/CreatorOsSection'),
+const WhatChangesWhenYouJoinSection = dynamic(
+  () => import('@/components/sections/WhatChangesWhenYouJoin/WhatChangesWhenYouJoinSection'),
   {
     ssr: true,
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
 
-const CreativesShowcaseSection = dynamic(
-  () => import('@/components/sections/CreativesShowcase/CreativesShowcaseSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const StatisticsDashboardSection = dynamic(
-  () => import('@/components/sections/Statistics/StatisticsDashboardSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const CaseStudiesSection = dynamic(
-  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
-  {
-    ssr: true,
-    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
-  }
-);
-
-const CTASection = dynamic(() => import('@/components/sections/CTA/CTASection'), {
+const FAQSection = dynamic(() => import('@/components/sections/FAQS/FAQSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
 
-// ✅ Page-specific SEO metadata (NO structuredData here)
+const FinalCTASection = dynamic(() => import('@/components/sections/FinalCTA/FinalCTASection'), {
+  ssr: true,
+  loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+});
+
+// ✅ Page-specific SEO metadata
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
   description:
@@ -124,7 +63,6 @@ export const metadata: Metadata = generateMetaTags({
 });
 
 export default function Home() {
-  // ✅ Structured data belongs in JSON-LD scripts, not metadata
   const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
 
   return (
@@ -146,61 +84,29 @@ export default function Home() {
         id="main-content"
         className="bg-black"
       >
-        {/* Hero Section */}
+        {/* ========== SECTION 1 ========== */}
         <Hero />
 
-        {/* Platform Logos */}
+        {/* ========== SECTION 2 ========== */}
         <PlatformLogosSection />
 
-        {/* Connect. Collaborate. Create. */}
+        {/* ========== SECTION 3 ========== */}
         <ConnectCollaborateCreateSection />
 
-        {/* Who SCN Is For */}
+        {/* ========== SECTION 4 ========== */}
         <WhoScnIsForSection />
 
-        {/* How SCN Works */}
-        <HowScnWorksSection />
-
-        {/* Paid Community */}
-        <PaidCommunitySection />
-
-        {/* What Makes SCN Different */}
-        <WhatMakesScnDifferentSection />
-
-        {/* What Happens When You Join */}
-        <WhatHappensWhenYouJoinSection />
-
-        {/* Testimonials */}
+        {/* ========== SECTION 5 ========== */}
         <TestimonialsSection />
 
-        {/* Waitlist - Final conversion section before footer */}
-        <WaitlistSection />
+        {/* ========== SECTION 6 ========== */}
+        <WhatChangesWhenYouJoinSection />
 
-        {/* ========================================
-            SECTIONS TEMPORARILY REMOVED FROM PAGE
-            These sections are commented out but preserved for future use.
-            Uncomment any section below to restore it to the page.
-        ======================================== */}
+        {/* ========== SECTION 7 ========== */}
+        <FAQSection />
 
-        {/* Icon Grid Features */}
-        {/* <IconGridSection /> */}
-
-        {/* Creator OS */}
-        {/* <CreatorOsSection /> */}
-
-        {/* Creatives Showcase */}
-        {/* <CreativesShowcaseSection /> */}
-
-        {/* Credibility & Vision */}
-        {/* <StatisticsDashboardSection /> */}
-
-        {/* Case Studies */}
-        {/* <CaseStudiesSection /> */}
-
-        {/* CTA */}
-        {/* <CTASection /> */}
-
-        {/* ======================================== */}
+        {/* ========== SECTION 8 - Final CTA ========== */}
+        <FinalCTASection />
       </main>
 
       {/* Footer */}

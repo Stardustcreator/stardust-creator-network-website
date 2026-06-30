@@ -11,7 +11,7 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     label: 'Creator OS',
-    href: '/#creator-os',
+    href: '/creator-os',
   },
   {
     label: 'Find Creators',

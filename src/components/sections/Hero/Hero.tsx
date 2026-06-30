@@ -2,108 +2,178 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-
-import TypewriterText from './TypewriterText';
-import VideoBackground from './VideoBackground';
-import { Heading, Text } from '@/components/typography';
-import { LocationSpecificContent } from '@/components/shared';
+import { motion } from 'framer-motion';
 
 export default function Hero() {
+  const words = [
+    'Your',
+    'Content',
+    'Is',
+    'a',
+    'Business.',
+    "It's",
+    'Time',
+    'to',
+    'Run',
+    'It',
+    'Like',
+    'One.',
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const underlineVariants = {
+    animate: {
+      scaleX: [0, 1, 1, 0],
+      opacity: [0, 1, 1, 0],
+      transition: {
+        duration: 4,
+        ease: 'easeInOut',
+        repeat: Infinity,
+        repeatDelay: 1,
+      },
+    },
+  };
+
+  const isHighlightedWord = (word: string) => {
+    return word === 'Content' || word === 'Business.';
+  };
+
   return (
-    <section className="hero-fullwidth relative min-h-[110vh] md:min-h-[115vh] overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px]">
-      {/* Mobile Background Image - LCP element, highest priority */}
-      <div className="absolute inset-0 z-0 block md:hidden">
+    <section className="hero-fullwidth relative min-h-screen overflow-hidden bg-black rounded-br-[40px] rounded-bl-[40px] flex items-center justify-center">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
         <Image
-          src="/hero.webp"
-          alt="Stardust Creator Network - Empowering digital creators with brand partnerships and monetization opportunities"
+          src="/who we are/home page hero.webp"
+          alt="Stardust Creator Network - Your Content Is a Business"
           fill
           priority
           fetchPriority="high"
-          sizes="(max-width: 768px) 100vw, 0vw"
-          quality={75}
-          placeholder="blur"
-          blurDataURL="data:image/webp;base64,UklGRpwAAABXRUJQVlA4TJAAAAAvE8AEEO/gIJJk5/8HhwiRJDv/P3AQSbLz/wMOEiJJdv5/4CCSZOf/Bw4iSXb+f+AgkmTn/wcOIkm28/8DB5EkO/8/cBBJsvP/AwcRQiTZ+f+BgwiRZOf/Bw4CRAiRZOf/Bw4CRAiRZOf/Bw4CRAiRZDv/P3AQCRD5/wEH"
-          className="object-cover"
+          sizes="100vw"
+          quality={100}
+          className="object-cover object-center"
         />
       </div>
 
-      {/* YouTube Video Background - Optimized for fast loading and seamless loop */}
-      <VideoBackground
-        videoId="pOlLKhn-wao"
-        className="absolute top-0 left-0 w-full h-full z-0 hidden md:block overflow-hidden"
+      {/* Light Purple Overlay */}
+      <div
+        className="absolute inset-0 z-5"
+        style={{ backgroundColor: 'rgba(87, 5, 139, 0.10)' }}
       />
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/50 z-10" />
-
-      {/* Content - responsive with generous top spacing from navbar and enough bottom space for CTA */}
-      <div className="absolute top-36 left-0 right-0 z-20 px-6 pt-10 pb-20 md:top-44 md:px-8 md:pt-14 md:pb-24 lg:top-48 lg:px-12 lg:pt-16 lg:pb-28 max-w-5xl">
-        {/* Main Headline */}
-        <Heading
-          level={1}
-          variant="default"
-          className="mb-2"
+      {/* Content - centered and responsive with better spacing */}
+      <div className="relative z-20 px-6 sm:px-8 lg:px-12 py-16 sm:py-20 md:py-24 max-w-4xl mx-auto w-full text-center">
+        {/* Main Headline - Word-by-Word Fade Animation with Modern Underlines */}
+        <h1
+          className="mb-6 sm:mb-8 text-white flex flex-wrap justify-center gap-2 sm:gap-1 md:gap-3"
+          style={{
+            fontFamily: 'var(--font-bricolage-grotesque)',
+            fontSize: 'clamp(1.5rem, 6vw, 3.5rem)',
+            fontWeight: 700,
+            lineHeight: '1.3',
+            letterSpacing: '-0.02em',
+          }}
         >
-          <TypewriterText
-            words={['Learn.', 'Monetize.', 'Grow.']}
-            typeSpeed={100}
-            deleteSpeed={50}
-            delayBetweenWords={2500}
-            className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white leading-tight tracking-tight"
-            cursorClassName="bg-white"
-          />
-        </Heading>
-
-        <Heading
-          level={2}
-          variant="gradient"
-          className="mb-3 text-xl md:text-2xl lg:text-3xl"
-        >
-          Turn your content into a media business
-        </Heading>
-
-        <Text
-          variant="large"
-          className="text-white max-w-2xl mb-5 text-sm md:text-base lg:text-lg"
-        >
-          Stardust Creator Network helps creators turn content into structured income, systems, and
-          long-term ownership.
-        </Text>
-
-        {/* Enhanced value proposition */}
-        <div className="flex flex-wrap gap-4 mb-6 text-white/80">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-            <span className="text-sm font-medium">Brand Partnerships</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
-            <span className="text-sm font-medium">Creator Education</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-            <span className="text-sm font-medium">Revenue Growth</span>
-          </div>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => {
-              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
-            }}
+          <motion.div
+            className="flex flex-wrap justify-center gap-2 sm:gap-1 md:gap-3"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            JOIN THE COMMUNITY
-          </button>
-          <Link
-            href="#how-scn-works"
-            className="btn-secondary"
-          >
-            SEE HOW SCN WORKS
+            {words.map((word, index) => (
+              <motion.span
+                key={index}
+                variants={wordVariants}
+                className="text-white inline-block relative"
+              >
+                {word}
+
+                {/* Modern Gradient Underline Animation - Contained to word only */}
+                {isHighlightedWord(word) && (
+                  <motion.div
+                    className="absolute -bottom-1 sm:-bottom-1.5 left-0 right-0 h-0.5 sm:h-1 rounded-full"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent, #ffffff, transparent)',
+                      boxShadow: '0 0 6px rgba(255, 255, 255, 0.5)',
+                      originX: 0.5,
+                    }}
+                    variants={underlineVariants}
+                    animate="animate"
+                  />
+                )}
+              </motion.span>
+            ))}
+          </motion.div>
+        </h1>
+
+        {/* Subheadline - Using Lato font */}
+        <motion.p
+          className="text-white/90 max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2"
+          style={{
+            fontFamily: 'var(--font-lato)',
+            fontSize: 'clamp(0.875rem, 3vw, 1.125rem)',
+            lineHeight: '1.7',
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+        >
+          SCN is the operating system for African creators. The tools, the community, and the
+          education you need to turn your content into a real business.
+        </motion.p>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.5 }}
+        >
+          <Link href="/signin">
+            <button
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-7 md:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-xs sm:text-sm md:text-base"
+              style={{ backgroundColor: '#57058B', color: 'white' }}
+            >
+              Join the Network
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="inline sm:w-4 sm:h-4 md:w-5 md:h-5"
+              >
+                <path
+                  d="M4 10H16M16 10L11 5M16 10L11 15"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
