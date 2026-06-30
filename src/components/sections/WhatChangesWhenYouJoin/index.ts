@@ -1,1 +1,1 @@
-export { default } from './HowScnWorksSection';
+export { default } from './WhatChangesWhenYouJoinSection';
