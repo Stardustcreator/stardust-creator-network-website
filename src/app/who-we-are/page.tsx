@@ -13,7 +13,7 @@ export default function WhoWeArePage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8 },
     },
   };
 
@@ -22,7 +22,7 @@ export default function WhoWeArePage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, delay: 0.2, ease: 'easeOut' },
+      transition: { duration: 0.8, delay: 0.2 },
     },
   };
 
@@ -31,7 +31,7 @@ export default function WhoWeArePage() {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.6, delay: 0.4, ease: 'easeOut' },
+      transition: { duration: 0.6, delay: 0.4 },
     },
   };
 
@@ -40,7 +40,7 @@ export default function WhoWeArePage() {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8 },
     },
   };
 
@@ -52,7 +52,6 @@ export default function WhoWeArePage() {
       transition: {
         duration: 0.6,
         delay: index * 0.1,
-        ease: 'easeOut',
       },
     }),
   };
