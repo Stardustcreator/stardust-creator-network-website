@@ -38,7 +38,6 @@ export default function Hero() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: 'easeOut',
       },
     },
   };
@@ -49,7 +48,6 @@ export default function Hero() {
       opacity: [0, 1, 1, 0],
       transition: {
         duration: 4,
-        ease: 'easeInOut',
         repeat: Infinity,
         repeatDelay: 1,
       },
