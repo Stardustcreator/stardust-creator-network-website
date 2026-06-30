@@ -25,7 +25,6 @@ export default function ConnectCollaborateCreateSection() {
       scale: 1,
       transition: {
         duration: 0.7,
-        ease: 'easeOut',
       },
     },
   };
@@ -38,7 +37,6 @@ export default function ConnectCollaborateCreateSection() {
       x: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut',
       },
     },
   };
@@ -52,7 +50,6 @@ export default function ConnectCollaborateCreateSection() {
       transition: {
         duration: 0.6,
         delay: 0.1,
-        ease: 'easeOut',
       },
     },
   };
@@ -65,7 +62,6 @@ export default function ConnectCollaborateCreateSection() {
       scale: 1,
       transition: {
         duration: 0.8,
-        ease: 'easeOut',
       },
     },
   };
