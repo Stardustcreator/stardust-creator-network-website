@@ -88,8 +88,13 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return data as T;
 }
 
-export function initiateRegistration(email: string, firstName: string, lastName: string) {
-  return post<void>('/auth/initiate-registration', { email, firstName, lastName });
+export function initiateRegistration(
+  email: string,
+  firstName: string,
+  lastName: string,
+  coupon?: string
+) {
+  return post<void>('/auth/initiate-registration', { email, firstName, lastName, coupon });
 }
 
 export function verifyEmail(email: string, code: string) {

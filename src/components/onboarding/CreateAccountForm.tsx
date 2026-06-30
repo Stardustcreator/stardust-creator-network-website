@@ -38,6 +38,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     firstName: '',
     lastName: '',
     email: '',
+    coupon: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
@@ -45,6 +46,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   const [registrationToken, setRegistrationToken] = useState('');
   const [checkoutUrl, setCheckoutUrl] = useState('');
   const [paymentReference, setPaymentReference] = useState('');
+  const [expanded, setExpanded] = useState(false);
 
   if (substep === 'otp') {
     return (
@@ -139,7 +141,12 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
       lastName: formData.lastName,
     });
     try {
-      await initiateRegistration(formData.email, formData.firstName, formData.lastName);
+      await initiateRegistration(
+        formData.email,
+        formData.firstName,
+        formData.lastName,
+        expanded ? formData.coupon : undefined
+      );
       toast.success('Registration successful');
       setSubstep('otp');
     } catch (err) {
@@ -163,6 +170,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
       setIsSubmitting(false);
     }
   }
+  console.log({ planId, billing });
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -255,7 +263,58 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
             autoComplete="email"
           />
         </div>
+        {planId !== 'starter' && (
+          <div className="space-y-3 mb-6 -mt-3">
+            <p className="text-sm text-text-secondary">
+              Got a discount code?{' '}
+              <button
+                type="button"
+                onClick={() => setExpanded(v => !v)}
+                disabled={isSubmitting}
+                className="font-semibold text-text-action cursor-pointer underline-offset-2 hover:underline disabled:no-underline disabled:opacity-60"
+              >
+                {expanded ? 'Hide' : 'Click here'}
+              </button>
+            </p>
 
+            {expanded && (
+              <>
+                <div className="flex items-center gap-3 w-full">
+                  <div className="flex-1">
+                    <FormInput
+                      label=""
+                      id="coupon"
+                      name="coupon"
+                      type="text"
+                      placeholder="e.g ABCD1234"
+                      value={formData.coupon}
+                      onChange={handleChange}
+                      error={errors.coupon}
+                      required={expanded}
+                      inputClassName="w-full"
+                    />
+                  </div>
+                  {/* <Button
+                type="button"
+                variant="primary"
+                onClick={() => {
+                  setExpanded(false)
+                }}
+                disabled={formData.coupon.length > 0}
+                className="px-5 text-sm! disabled:bg-[#F1F5F9]!"
+              >
+                Cancel
+              </Button> */}
+                </div>
+                {errors.coupon && (
+                  <p className="mt-2 text-sm font-medium text-text-error">
+                    Invalid code. Check and try again
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        )}
         {/* CTA */}
         <Button
           type="submit"
