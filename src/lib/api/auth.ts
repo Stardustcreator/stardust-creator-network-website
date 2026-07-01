@@ -88,12 +88,46 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return data as T;
 }
 
-export function initiateRegistration(email: string, firstName: string, lastName: string) {
-  return post<void>('/auth/initiate-registration', { email, firstName, lastName });
+export interface DiscountPreview {
+  discountCodeId: string;
+  code: string;
+  discountType: string;
+  discountValue: number;
+  originalAmount: number;
+  discountAmount: number;
+  finalAmount: number;
+  planId: string;
+  planName: string;
+  currency: string;
+}
+
+export function initiateRegistration(
+  email: string,
+  firstName: string,
+  lastName: string,
+  planId?: string,
+  discountCode?: string
+) {
+  return post<{ message: string; discount?: DiscountPreview }>('/auth/initiate-registration', {
+    email,
+    firstName,
+    lastName,
+    planId,
+    discountCode,
+  });
 }
 
 export function verifyEmail(email: string, code: string) {
   return post<{ registrationToken: string }>('/auth/verify-email', { email, code });
+}
+
+interface SubscriptionResult {
+  requiresPayment: boolean;
+  checkoutUrl?: string;
+  reference?: string;
+  planId?: string;
+  amount?: number;
+  currency?: string;
 }
 
 export function completeRegistration(
@@ -101,7 +135,10 @@ export function completeRegistration(
   password: string,
   tosAccepted: boolean
 ) {
-  return post<void>('/auth/complete-registration', { registrationToken, password, tosAccepted });
+  return post<{ user: unknown; subscription: SubscriptionResult; message: string }>(
+    '/auth/complete-registration',
+    { registrationToken, password, tosAccepted }
+  );
 }
 
 export function resendVerification(email: string) {

@@ -7,8 +7,7 @@ import PlanBanner from './PlanBanner';
 import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/Button';
 import CheckIcon from '@/components/icons/CheckIcon';
-import { completeRegistration } from '@/lib/api/auth';
-import { initializePayment } from '@/lib/api/payments';
+import { completeRegistration, type DiscountPreview } from '@/lib/api/auth';
 import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 import { validatePassword } from '@/lib/validations/password.validations';
@@ -17,6 +16,7 @@ interface SetPasswordStepProps {
   billing: 'annual' | 'monthly';
   plan: 'community' | 'starter' | 'builder';
   registrationToken: string;
+  discountPreview?: DiscountPreview;
   onComplete: (reference: string) => void;
 }
 
@@ -33,6 +33,7 @@ export default function SetPasswordStep({
   billing,
   plan,
   registrationToken,
+  discountPreview,
   onComplete,
 }: SetPasswordStepProps) {
   const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
@@ -73,17 +74,23 @@ export default function SetPasswordStep({
     }
     setIsSubmitting(true);
     try {
+      let checkoutUrl: string | undefined;
+      let reference: string | undefined;
+
       if (!registrationCompleted) {
-        await completeRegistration(registrationToken, formData.password, true);
+        const result = await completeRegistration(registrationToken, formData.password, true);
         setRegistrationCompleted(true);
+        checkoutUrl = result.subscription.checkoutUrl;
+        reference = result.subscription.reference;
+
+        if (!result.subscription.requiresPayment) {
+          window.location.href = getScnDashboardUrl();
+          return;
+        }
       }
 
-      if (plan === 'starter') {
-        window.location.href = getScnDashboardUrl();
-        return;
-      }
+      if (!checkoutUrl || !reference) throw new Error('Invalid payment session. Please try again.');
 
-      const { checkoutUrl, reference } = await initializePayment(billing, plan);
       const accessCode = checkoutUrl.split('/').pop();
       if (!accessCode) throw new Error('Invalid payment session. Please try again.');
 
@@ -92,7 +99,7 @@ export default function SetPasswordStep({
       const popup = new PaystackPop();
       const trans = popup.resumeTransaction(accessCode);
 
-      trans.onSuccess = () => onComplete(reference);
+      trans.onSuccess = () => onComplete(reference!);
       trans.onError = () => {
         toast.error('Payment failed. Please try again.');
         setIsSubmitting(false);
@@ -223,7 +230,7 @@ export default function SetPasswordStep({
         >
           {isSubmitting
             ? 'Please wait…'
-            : plan === 'starter'
+            : plan === 'starter' || discountPreview?.finalAmount === 0
               ? 'Complete Registration'
               : registrationCompleted
                 ? 'Retry Payment'
