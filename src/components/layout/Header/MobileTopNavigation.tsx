@@ -1,245 +1,64 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { navigationItems } from './navigation.constants';
-import CountrySelector from './CountrySelector';
+import Link from 'next/link';
 
 interface MobileTopNavigationProps {
-  isOpen: boolean;
-  onClose: () => void;
-  menuId: string;
+  onMenuClick: () => void;
+  logoSrc?: string;
+  logoAlt?: string;
+  logoWidth?: number;
+  logoHeight?: number;
 }
 
-export function MobileTopNavigation({ isOpen, onClose, menuId }: MobileTopNavigationProps) {
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [isMounted, setIsMounted] = useState(false);
-
-  // Prevent hydration mismatch by only rendering interactive content after mount
-  useEffect(() => {
-    // This is necessary for preventing hydration mismatch in Next.js
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMounted(true);
-  }, []);
-
-  const toggleExpanded = (label: string) => {
-    const newExpanded = new Set(expandedItems);
-    if (newExpanded.has(label)) {
-      newExpanded.delete(label);
-    } else {
-      newExpanded.add(label);
-    }
-    setExpandedItems(newExpanded);
-  };
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (!isMounted || typeof window === 'undefined') {
-      return undefined;
-    }
-
-    const { body } = document;
-    const originalOverflow = body.style.overflow;
-
-    if (isOpen) {
-      body.style.overflow = 'hidden';
-    } else {
-      body.style.overflow = originalOverflow;
-    }
-
-    return () => {
-      body.style.overflow = originalOverflow;
-    };
-  }, [isOpen, isMounted]);
-
-  // Prevent hydration mismatch - render consistent structure on server
-  if (!isMounted) {
-    return (
-      <div
-        id={menuId}
-        role="dialog"
-        aria-modal="false"
-        className="fixed top-0 left-0 right-0 bottom-0 h-screen bg-black/95 backdrop-blur-lg z-50 lg:hidden transform -translate-y-full opacity-0 pointer-events-none"
-        aria-hidden="true"
-      />
-    );
-  }
-
+export function MobileTopNavigation({
+  onMenuClick,
+  logoSrc = '/logos/scn logo black.png',
+  logoAlt = 'Stardust Creator Network',
+  logoWidth = 100,
+  logoHeight = 40,
+}: MobileTopNavigationProps) {
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm transition-all duration-300 lg:hidden z-40 ${
-          isOpen
-            ? 'opacity-100 visible pointer-events-auto'
-            : 'opacity-0 invisible pointer-events-none'
-        }`}
-        aria-hidden="true"
-        onClick={onClose}
-      />
-
-      {/* Mobile Menu Panel - Full Height Dropdown */}
-      <div
-        id={menuId}
-        role="dialog"
-        aria-modal="true"
-        onClick={e => e.stopPropagation()}
-        className={`fixed top-0 left-0 right-0 bottom-0 h-screen bg-black/95 backdrop-blur-lg z-50 lg:hidden transform transition-all duration-300 ease-in-out overflow-y-auto ${
-          isOpen
-            ? 'translate-y-0 opacity-100 pointer-events-auto'
-            : '-translate-y-full opacity-0 pointer-events-none'
-        }`}
+    <div
+      className="bg-white rounded-2xl px-4 shadow-md flex items-center justify-between mx-auto"
+      style={{ width: '330px', height: '75px' }}
+    >
+      {/* Logo */}
+      <Link
+        href="/"
+        className="flex items-center hover:opacity-80 transition-opacity"
       >
-        {/* Header with Logo and Close Button */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 sticky top-0 bg-black/95 backdrop-blur-lg z-10">
-          {/* Logo */}
-          <Link
-            href="/"
-            onClick={onClose}
-            className="flex items-center text-white hover:opacity-80 transition-opacity"
-          >
-            <Image
-              src="/logos/scn logo white.png"
-              alt="Stardust Creator Network Logo"
-              width={120}
-              height={48}
-              className="object-contain"
-              priority
-            />
-          </Link>
+        <Image
+          src={logoSrc}
+          alt={logoAlt}
+          width={logoWidth}
+          height={logoHeight}
+          className="object-contain"
+          priority
+        />
+      </Link>
 
-          {/* Close Button */}
-          <button
-            type="button"
-            onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              onClose();
-            }}
-            className="p-2 text-white hover:text-purple-300 transition-colors rounded-lg hover:bg-white/10"
-            aria-label="Close navigation menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div className="container mx-auto px-6 py-6">
-          {/* Country Selector */}
-          <div className="mb-6">
-            <CountrySelector variant="mobile" />
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="mb-6">
-            <ul className="space-y-2">
-              {navigationItems.map(item => (
-                <li key={item.label}>
-                  {item.children ? (
-                    <div>
-                      <button
-                        onClick={() => toggleExpanded(item.label)}
-                        className="flex items-center justify-between w-full text-left text-white hover:text-purple-300 font-medium transition-all py-3 px-4 rounded-lg hover:bg-white/10"
-                      >
-                        <span>{item.label}</span>
-                        <svg
-                          className={`w-4 h-4 transition-transform ${
-                            expandedItems.has(item.label) ? 'rotate-180' : ''
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-                      {expandedItems.has(item.label) && (
-                        <ul className="ml-4 mt-2 space-y-1 border-l-2 border-purple-300/30 pl-4">
-                          {item.children.map(child => (
-                            <li key={child.label}>
-                              <Link
-                                href={child.href}
-                                onClick={onClose}
-                                className="block text-gray-300 hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5"
-                              >
-                                {child.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      onClick={onClose}
-                      className="block text-white hover:text-purple-300 font-medium transition-all py-3 px-4 rounded-lg hover:bg-white/10"
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col gap-3">
-            <Link
-              href="/brands/brief"
-              onClick={onClose}
-              className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 text-center"
-            >
-              Find a Creator
-            </Link>
-            <button
-              type="button"
-              onClick={e => {
-                e.preventDefault();
-                e.stopPropagation();
-                onClose();
-                setTimeout(() => {
-                  document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
-                }, 300);
-              }}
-              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10 text-center"
-            >
-              Join as Creator
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+      {/* Hamburger Menu Button */}
+      <button
+        onClick={onMenuClick}
+        className="p-2 text-black hover:text-purple-600 transition-colors"
+        aria-label="Open menu"
+        type="button"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </div>
   );
 }
