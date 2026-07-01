@@ -32,15 +32,24 @@ export default function PlatformLogosSection() {
   );
 
   return (
-    <section className="pt-12 pb-8 bg-black border-t border-white/5">
+    <section
+      className="pt-12 pb-8 border-t border-gray-300"
+      style={{ backgroundColor: '#FBF3FF' }}
+    >
       <div className="container mx-auto px-6">
         {/* Horizontally Scrolling Brand Logos */}
         <div className="relative overflow-hidden">
           {/* Left fade gradient */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 md:w-32 lg:w-40 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div
+            className="absolute left-0 top-0 bottom-0 w-24 md:w-32 lg:w-40 bg-gradient-to-r z-10 pointer-events-none"
+            style={{ backgroundImage: 'linear-gradient(to right, #FBF3FF, transparent)' }}
+          />
 
           {/* Right fade gradient */}
-          <div className="absolute right-0 top-0 bottom-0 w-24 md:w-32 lg:w-40 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-24 md:w-32 lg:w-40 bg-gradient-to-l z-10 pointer-events-none"
+            style={{ backgroundImage: 'linear-gradient(to left, #FBF3FF, transparent)' }}
+          />
 
           <div className="flex gap-6 md:gap-8 lg:gap-10 animate-scroll-logos">
             {/* First set of logos */}

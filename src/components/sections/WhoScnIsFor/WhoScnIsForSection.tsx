@@ -1,171 +1,191 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { Heading, Text } from '@/components/typography';
-import { SectionHeader } from '@/components/shared';
-import { encodeImagePath } from '@/lib/utils';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-const targetAudience = [
+const cards = [
   {
-    title: 'Emerging creators making their first ₦100k–₦500k monthly',
-    icon: '🚀',
+    id: 1,
+    label: 'Learn',
+    description:
+      'Access creator-focused education built for the African creator. From pricing your work to understanding usage rights to building a business around your content.',
+    buttonText: 'Start Learning',
+    buttonLink: '#',
+    image: '/who we are/card 1.webp',
   },
   {
-    title: 'Scaling creators who want systems and structure',
-    icon: '📊',
+    id: 2,
+    label: 'Build',
+    description:
+      'Turn your content into a lasting business. The tools, systems, and strategy to grow something that belongs to you - beyond any algorithm or platform.',
+    buttonText: 'Start Building',
+    buttonLink: '#',
+    image: '/who we are/card 2.webp',
   },
   {
-    title: 'Educators building courses',
-    icon: '👨‍🏫',
+    id: 3,
+    label: 'Earn',
+    description:
+      'Stop guessing what to charge and start earning what your work is worth. Build defensible rates, invoice professionally, and connect with brands already looking for creators like you.',
+    buttonText: 'Calculate Rate',
+    buttonLink: '#',
+    image: '/who we are/card 3.webp',
   },
   {
-    title: 'Entertainers diversifying income',
-    icon: '🎬',
-  },
-  {
-    title: 'Tastemakers monetizing influence',
-    icon: '💫',
-  },
-  {
-    title: 'Creative professionals building studio brands',
-    icon: '🎨',
-  },
-  {
-    title: 'Community builders launching paid circles',
-    icon: '🤝',
-  },
-  {
-    title: 'Tech & business experts building authority platforms',
-    icon: '💻',
+    id: 4,
+    label: 'Grow',
+    description:
+      'Build an audience you actually own, not just followers on a platform you cannot control. Every visitor to your profile or storefront can join your mailing list.',
+    buttonText: 'Grow your List',
+    buttonLink: '#',
+    image: '/who we are/card 4.webp',
   },
 ];
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const wordVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+    },
+  },
+};
+
 export default function WhoScnIsForSection() {
+  const words = ['How', 'SCN', 'Helps'];
+
   return (
-    <section
-      id="who-scn-is-for"
-      className="relative py-20 md:py-32 bg-gradient-to-b from-black via-neutral-950 to-black overflow-hidden"
-    >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Label */}
-        <div className="text-center mb-6">
-          <Text
-            variant="small"
-            className="text-purple-400 uppercase tracking-[0.2em] font-bold text-sm"
+    <section className="relative w-full py-16 sm:py-20 md:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="text-center mb-12 sm:mb-16">
+          {/* ANIMATED HEADING */}
+          <motion.div
+            className="flex flex-wrap justify-center gap-3 mb-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
           >
-            WHO SCN IS FOR
-          </Text>
-        </div>
+            {words.map((word, index) => (
+              <motion.span
+                key={index}
+                variants={wordVariants}
+                style={{
+                  fontFamily: 'var(--font-bricolage-grotesque)',
+                  fontSize: 'clamp(2rem, 5vw, 3rem)',
+                  fontWeight: 700,
+                  lineHeight: '1.3',
+                  letterSpacing: '-0.02em',
+                  color: '#000000',
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </motion.div>
 
-        {/* Main Heading */}
-        <div className="text-center mb-8">
-          <SectionHeader
-            words={[
-              { text: 'If ', className: 'text-white' },
-              { text: "You're ", className: 'text-white' },
-              {
-                text: 'Serious ',
-                className:
-                  'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
-              },
-              { text: 'About ', className: 'text-white' },
-              {
-                text: 'Growth',
-                className:
-                  'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
-              },
-            ]}
-            headingClassName="text-4xl md:text-5xl lg:text-6xl font-bold"
-            className="mb-4"
-            centered={true}
-            staggerDelay={300}
-          />
-          <Heading
-            level={3}
-            variant="default"
-            className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mt-2 drop-shadow-lg !text-white"
-          >
-            Then You Belong Here.
-          </Heading>
-        </div>
-
-        {/* Description */}
-        <div className="text-center mb-16">
-          <Text
-            variant="large"
-            className="text-white font-semibold max-w-2xl mx-auto text-xl md:text-2xl"
-          >
-            SCN is built for:
-          </Text>
-        </div>
-
-        {/* Grid Layout with Image */}
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-6 items-stretch mb-16">
-            {/* Image Side */}
-            <div className="relative h-[450px] md:h-[550px] lg:h-auto rounded-l-2xl overflow-hidden shadow-2xl shadow-purple-500/20 order-2 lg:order-1 ring-2 ring-purple-500/30">
-              <Image
-                src={encodeImagePath('/creatives/SCN-1 no logoArtboard 1 copy 8.webp')}
-                alt="Diverse community of creators collaborating"
-                fill
-                className="object-cover brightness-110"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={80}
-              />
-              {/* Black overlay to reduce brightness */}
-              <div className="absolute inset-0 bg-black/25"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-            </div>
-
-            {/* Cards Side */}
-            <div className="order-1 lg:order-2">
-              <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-                {targetAudience.map((item, index) => (
-                  <div
-                    key={index}
-                    className="group relative p-6 rounded-xl bg-gradient-to-br from-neutral-900/80 via-neutral-900/60 to-neutral-950/80 backdrop-blur-sm border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/20 flex flex-col items-center text-center"
-                  >
-                    {/* Icon */}
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                      {item.icon}
-                    </div>
-
-                    {/* Title */}
-                    <Text
-                      variant="body"
-                      className="text-white font-semibold leading-snug text-base drop-shadow-md"
-                    >
-                      {item.title}
-                    </Text>
-
-                    {/* Hover gradient border effect */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 via-pink-500/0 to-purple-500/0 group-hover:from-purple-500/30 group-hover:via-pink-500/30 group-hover:to-purple-500/30 transition-all duration-300 pointer-events-none"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Button */}
-        <div className="text-center mt-16">
-          <button
-            type="button"
-            className="btn-primary"
-            aria-label="Join Stardust Creator Network"
-            onClick={() => {
-              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
+          {/* Rest stays the same */}
+          <p
+            className="text-black/70 max-w-2xl mx-auto"
+            style={{
+              fontFamily: 'var(--font-lato)',
+              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+              lineHeight: '1.6',
             }}
           >
-            JOIN NOW
-          </button>
+            Level up your creator game with the tools you need to learn, grow, monetize, and
+            connect-all in one place.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {cards.map(card => (
+            <div
+              key={card.id}
+              className="group relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <Image
+                src={card.image}
+                alt={card.label}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={90}
+              />
+
+              {/* Dark Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+              {/* Content - All at Bottom */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                {/* Label */}
+                <h3
+                  className="text-white mb-2"
+                  style={{
+                    fontFamily: 'var(--font-bricolage-grotesque)',
+                    fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                    fontWeight: 700,
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  {card.label}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="text-white/90 mb-6 sm:mb-8 text-sm sm:text-base"
+                  style={{
+                    fontFamily: 'var(--font-lato)',
+                    fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  {card.description}
+                </p>
+
+                {/* Button */}
+                <Link href={card.buttonLink}>
+                  <button
+                    className="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
+                    style={{ backgroundColor: '#FFFFFF', color: '#000000' }}
+                  >
+                    {card.buttonText}
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="inline"
+                    >
+                      <path
+                        d="M4 10H16M16 10L11 5M16 10L11 15"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
