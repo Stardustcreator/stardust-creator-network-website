@@ -63,21 +63,24 @@ export default function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/who we are/home page hero.webp"
-          alt="Stardust Creator Network - Your Content Is a Business"
+          src="/who we are/herosectionimage.webp"
+          alt="Stardust Creator Network hero section - Empowering African creators to build sustainable businesses from their content with professional tools and community support"
           fill
           priority
           fetchPriority="high"
           sizes="100vw"
           quality={100}
-          className="object-cover object-center"
+          className="object-cover"
+          style={{
+            objectPosition: '70% center',
+          }}
         />
       </div>
 
-      {/* Light Purple Overlay */}
+      {/* Purple Overlay - Slightly darker */}
       <div
         className="absolute inset-0 z-5"
-        style={{ backgroundColor: 'rgba(87, 5, 139, 0.10)' }}
+        style={{ backgroundColor: 'rgba(87, 5, 139, 0.50)' }}
       />
 
       {/* Content - centered and responsive with better spacing */}
