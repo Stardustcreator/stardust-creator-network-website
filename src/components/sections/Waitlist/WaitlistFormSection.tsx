@@ -180,13 +180,10 @@ export default function WaitlistFormSection() {
         {/* Waitlist Form */}
         <div className="max-w-lg mx-auto px-2 sm:px-0">
           <div
-            className={`relative bg-white backdrop-blur-xl border border-purple-300 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl shadow-purple-500/10 transition-all duration-700 ${
+            className={`relative bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg transition-all duration-700 ${
               isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            {/* Glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-300 to-pink-300 rounded-2xl sm:rounded-3xl blur-xl opacity-20"></div>
-
             <form
               onSubmit={handleSubmit}
               className="relative space-y-5 sm:space-y-6"
