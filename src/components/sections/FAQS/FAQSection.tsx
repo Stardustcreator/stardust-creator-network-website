@@ -8,42 +8,42 @@ const faqs = [
   {
     question: 'What is Stardust Creator Network?',
     answer:
-      'Stardust Creator Network is a creator operating system designed to help African creators build sustainable, profitable businesses. We provide tools, education, and community support for creators at every stage of their journey.',
+      'Stardust Creator Network, SCN, is a creator business platform and community for African creators. It gives creators the tools, education, and brand connections they need to build a sustainable creator income - from rate card calculators and professional invoicing to brand deal access and a live creator community. Think of it as the operating system for your creator business.',
   },
   {
     question: 'Who can join SCN?',
     answer:
-      "SCN is open to creators of all sizes and niches – from emerging creators just starting out to established creators looking to scale. Whether you're a content creator, educator, entertainer, or professional, you're welcome.",
+      ' SCN is for any creator who is ready to move beyond just posting and start building a real creator business. Whether you are just starting out, trying to land your first brand deal, or already working with brands but want better rates and more structure, SCN is built for you. You do not need a large following to join - you need the right tools and the right knowledge.',
   },
   {
     question: 'How do I know what to charge for a brand deal?',
     answer:
-      'Our Rate Calculator tool helps you determine fair pricing based on your audience size, engagement rate, and niche. We also provide templates and frameworks to help you confidently pitch your rates to brands.',
+      'The SCN rate card calculator helps you generate an accurate quote for every campaign based on your deliverables, usage rights, platform, and niche - so you always have a number you can justify. You can also produce a professional invoice directly from the calculator to send to your client.',
   },
   {
     question: 'Do I need a media kit?',
     answer:
-      'Yes, a media kit is essential for pitching to brands. We provide customizable media kit templates that include all the information brands need to make partnership decisions.',
+      'Yes. A media kit significantly increases your chances of landing brand deals because it shows brands who you are, who your audience is, and why working with you is worth the investment. Inside SCN, you will learn how to build a professional creator profile and media kit, and the SCN creator dashboard gives you a storefront where brands can discover and book you directly.',
   },
   {
     question: 'Can I get paid with a small following?',
     answer:
-      'Absolutely! While follower count matters, brands also value engagement, niche relevance, and audience quality. We help you identify and attract brands that align with your specific audience.',
+      'Yes. Follower count is just one factor in how much you earn as a creator. UGC is one of the most effective ways to earn from your content even without a large following, because brands pay for the quality of the content, not just the reach. On the SCN creator dashboard, you can add your UGC services to your storefront so clients can book you directly.',
   },
   {
     question: 'How do I find brands to work with?',
     answer:
-      'Through SCN, you get access to our brand network, direct outreach strategies, and templates to pitch brands. We also teach you how to identify brands that align with your values and audience.',
+      'Through the SCN brand desk, vetted creators get direct access to brand campaigns from brands that are already looking for creators and ready to pay. Sign up now to get connected.',
   },
   {
     question: 'Is SCN only for Nigerian creators?',
     answer:
-      "While we're based in Nigeria and deeply understand the African creator economy, our tools and community support creators across the continent and beyond.",
+      ' SCN is built for African creators, starting in Nigeria. Our tools, education, and community are designed with the realities of the African creator economy in mind - not adapted from Western templates that do not reflect how brands and creators work here. As we grow, SCN will expand to serve creators across the continent and beyond.',
   },
   {
     question: 'Where can I find a community of like-minded creators?',
     answer:
-      "Our Paid Community brings together serious creators who are focused on building sustainable businesses. You'll get access to monthly clinics, peer networking, and exclusive resources.",
+      'The SCN community connects you with ambitious African creators who are building in the same direction. You get access to live business clinics, peer accountability, collaboration opportunities, and people who are one step ahead of where you are right now. Click above to join the SCN community.',
   },
 ];
 

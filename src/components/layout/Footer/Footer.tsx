@@ -9,7 +9,7 @@ export default function Footer() {
     <footer
       className="border-t border-white/10 py-16"
       style={{
-        backgroundColor: '#2D1B4E',
+        background: 'linear-gradient(90deg, #1E0033 0%, #22003D 100%)',
       }}
     >
       <div className="container mx-auto px-6">
@@ -118,34 +118,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/creators/opportunities"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Creator Opportunities
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/creators/stories"
+                  href="/#testimonials"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Success Stories
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/creators/resources"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Creator Resources
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing-calculator"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Pricing Calculator
                 </Link>
               </li>
             </ul>
@@ -164,7 +140,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/brands/brief"
+                  href="/find-creators"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Find a Creator
@@ -172,7 +148,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/case-studies"
+                  href="/find-creators"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Campaign Examples
@@ -180,7 +156,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/brands/process"
+                  href="/find-creators"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   How It Works
@@ -202,31 +178,18 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/#who-we-are"
+                  href="/who-we-are"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   About
                 </Link>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    document
-                      .getElementById('waitlist-form')
-                      ?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm cursor-pointer bg-transparent border-none p-0"
-                >
-                  Join Waitlist
-                </button>
-              </li>
-              <li>
                 <Link
-                  href="/#creator-os"
+                  href="/creator-os"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
-                  CreatorOS
+                  Creator OS
                 </Link>
               </li>
             </ul>
