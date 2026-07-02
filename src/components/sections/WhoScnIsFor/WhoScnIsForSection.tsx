@@ -117,7 +117,7 @@ export default function WhoScnIsForSection() {
           {cards.map(card => (
             <div
               key={card.id}
-              className="group relative h-96 md:h-[520px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="group relative h-96 md:h-130 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
               <Image
                 src={card.image}
@@ -129,7 +129,7 @@ export default function WhoScnIsForSection() {
               />
 
               {/* Dark Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
 
               {/* Content - All at Bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
