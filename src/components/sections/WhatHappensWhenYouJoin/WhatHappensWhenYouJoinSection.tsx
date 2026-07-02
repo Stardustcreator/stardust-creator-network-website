@@ -1,157 +1,98 @@
 'use client';
 
 import Link from 'next/link';
-import { Heading, Text } from '@/components/typography';
-import { SectionHeader } from '@/components/shared';
 
-const stopDoing = [
-  { text: 'Guessing your rates', icon: '❌' },
-  { text: 'Waiting for brands to DM you', icon: '⏳' },
-  { text: 'Accepting vague briefs', icon: '📄' },
-  { text: 'Signing bad contracts', icon: '📝' },
-  { text: 'Relying on one income stream', icon: '💸' },
-];
-
-const startDoing = [
-  { text: 'Building predictable revenue', icon: '✅' },
-  { text: 'Structuring recurring offers', icon: '🎯' },
-  { text: 'Designing monetization intentionally', icon: '💡' },
-  { text: 'Thinking like a business', icon: '🚀' },
+const changes = [
+  {
+    stop: 'Guessing your rates every deal',
+    start: 'Confident, defensible pricing backed by data',
+  },
+  {
+    stop: 'Waiting for brands to DM you',
+    start: 'Brands reach you through the SCN desk',
+  },
+  {
+    stop: 'Accepting vague, unpaid briefs',
+    start: 'Structured contracts with clear deliverables',
+  },
+  {
+    stop: "Signing bad deals you can't undo",
+    start: 'Professional invoicing, on-time payments',
+  },
+  {
+    stop: 'Relying on a single income stream',
+    start: 'Multiple intentional revenue channels',
+  },
 ];
 
 export default function WhatHappensWhenYouJoinSection() {
   return (
     <section
       id="what-happens-when-you-join"
-      className="relative py-16 md:py-24 bg-gradient-to-b from-black via-neutral-950 to-black overflow-hidden"
+      className="relative py-16 md:py-24 bg-white overflow-hidden"
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/2 right-1/3 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Label */}
-        <div className="text-center mb-6">
-          <Text
-            variant="small"
-            className="text-purple-400 uppercase tracking-[0.2em] font-bold text-sm"
-          >
-            RESULTS-ORIENTED
-          </Text>
-        </div>
-
+      <div className="container mx-auto px-6 relative z-10 max-w-6xl">
         {/* Main Heading */}
-        <div className="text-center mb-10">
-          <SectionHeader
-            words={[
-              { text: 'What ', className: 'text-white' },
-              { text: 'Happens ', className: 'text-white' },
-              { text: 'When ', className: 'text-white' },
-              {
-                text: 'You ',
-                className:
-                  'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
-              },
-              {
-                text: 'Join?',
-                className:
-                  'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
-              },
-            ]}
-            headingClassName="text-3xl md:text-4xl lg:text-5xl font-bold"
-            className="mb-0"
-            centered={true}
-            staggerDelay={150}
-            level={2}
-          />
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-black text-3xl md:text-4xl lg:text-5xl font-bold">
+            What Changes when you Join
+          </h2>
         </div>
 
-        {/* Two Column Layout */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Left Column - You Stop */}
-            <div className="group relative bg-red-950/10 backdrop-blur-md border border-red-500/20 rounded-xl p-4 hover:border-red-500/40 hover:bg-red-950/15 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
-              {/* Subtle red glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+        {/* Changes List - Fixed Height Rows */}
+        <div className="space-y-3 md:space-y-4 mb-16">
+          {changes.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center h-20 md:h-24 p-4 md:p-5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-all"
+            >
+              {/* Left Column - Stop (with X icon) */}
+              <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 h-full">
+                <span className="text-lg md:text-xl shrink-0">❌</span>
+                <span className="text-gray-700 text-sm md:text-base font-medium line-through">
+                  {item.stop}
+                </span>
+              </div>
 
-              <div className="relative z-10">
-                <Heading
-                  level={3}
-                  variant="default"
-                  className="!text-red-400 text-lg md:text-xl font-bold mb-3"
-                >
-                  You stop:
-                </Heading>
+              {/* Middle Column - Arrow (FIXED WIDTH, CENTERED) */}
+              <div className="w-16 md:w-20 flex justify-center items-center h-full shrink-0">
+                <span className="text-gray-400 text-xl md:text-2xl">→</span>
+              </div>
 
-                <div className="space-y-2.5">
-                  {stopDoing.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-2 transform hover:translate-x-1 transition-transform duration-300"
-                    >
-                      <span className="text-lg shrink-0 mt-0.5">{item.icon}</span>
-                      <Text
-                        variant="body"
-                        className="!text-white/75 text-xs md:text-sm leading-relaxed"
-                      >
-                        {item.text}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
+              {/* Right Column - Start (with checkmark icon) */}
+              <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 h-full justify-end">
+                <span className="text-gray-700 text-sm md:text-base font-medium">{item.start}</span>
+                <span className="text-lg md:text-xl shrink-0">✅</span>
               </div>
             </div>
-
-            {/* Right Column - You Start */}
-            <div className="group relative bg-green-950/10 backdrop-blur-md border border-green-500/20 rounded-xl p-4 hover:border-green-500/40 hover:bg-green-950/15 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10">
-              {/* Subtle green glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
-
-              <div className="relative z-10">
-                <Heading
-                  level={3}
-                  variant="default"
-                  className="!text-green-400 text-lg md:text-xl font-bold mb-3"
-                >
-                  And you start:
-                </Heading>
-
-                <div className="space-y-2.5">
-                  {startDoing.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-2 transform hover:translate-x-1 transition-transform duration-300"
-                    >
-                      <span className="text-lg shrink-0 mt-0.5">{item.icon}</span>
-                      <Text
-                        variant="body"
-                        className="!text-white/75 text-xs md:text-sm leading-relaxed"
-                      >
-                        {item.text}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* CTA Button */}
-        <div className="text-center mt-10">
-          <button
-            type="button"
-            onClick={() => {
-              document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-base px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
-            aria-label="Join Stardust Creator Network"
-          >
-            <span>JOIN NOW</span>
-            <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </button>
+        <div className="text-center">
+          <Link href="/signin">
+            <button
+              className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90"
+              style={{ backgroundColor: '#57058B' }}
+            >
+              Join now
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 10H16M16 10L11 5M16 10L11 15"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </Link>
         </div>
       </div>
     </section>
