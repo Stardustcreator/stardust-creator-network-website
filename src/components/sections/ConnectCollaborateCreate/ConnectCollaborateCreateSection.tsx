@@ -102,7 +102,7 @@ export default function ConnectCollaborateCreateSection() {
             className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto"
             style={{ fontFamily: 'var(--font-lato)' }}
           >
-            Everything you need — in one place, not scattered across five tools.
+            Everything you need in one place, not scattered across five tools.
           </p>
         </div>
 
@@ -250,7 +250,7 @@ export default function ConnectCollaborateCreateSection() {
                 viewport={{ once: true, amount: 0.5 }}
               >
                 Grow your subscriber list, keep your audience engaged, and reach them with
-                broadcasts that feel personal — all from one place.
+                broadcasts that feel personal.
               </motion.p>
 
               {/* Bullet Points */}
@@ -561,7 +561,7 @@ export default function ConnectCollaborateCreateSection() {
                     className="text-sm sm:text-base"
                     style={{ fontFamily: 'var(--font-lato)' }}
                   >
-                    Real growth happens in community — surrounded by people who cheer you on every
+                    Real growth happens in community, surrounded by people who cheer you on every
                     step of the way
                   </span>
                 </li>
