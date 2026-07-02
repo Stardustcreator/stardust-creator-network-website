@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { TopNavigation } from '../Header/TopNavigation';
 import { MobileTopNavigation } from '../Header/MobileTopNavigation';
 import { MobileMenu } from '../Header/MobileMenu';
-import CountrySelector from '../Header/CountrySelector';
 
 interface NavigationBarProps {
   className?: string;
@@ -66,9 +65,8 @@ export default function NavigationBar({
               <TopNavigation variant="light" />
             </div>
 
-            {/* Country Selector & Sign Up Button */}
+            {/* Sign Up Button */}
             <div className="flex items-center gap-4 flex-shrink-0">
-              <CountrySelector variant="desktop" />
               <Link href="/signin">
                 <button
                   className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
