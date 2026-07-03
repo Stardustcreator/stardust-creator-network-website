@@ -22,8 +22,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
     }
   };
 
-  // Safe date extraction with multiple fallbacks
-  const safeDate = post?.publishedAt || post?._createdAt || new Date().toISOString();
+  // Safe date extraction with fallback
+  const safeDate = post?.publishedAt || new Date().toISOString();
   const formattedDate = formatDate(safeDate);
   const safeTitle = post?.title || 'Untitled';
   const safeSlug = post?.slug || '#';
