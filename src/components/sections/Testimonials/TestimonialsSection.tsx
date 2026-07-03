@@ -9,20 +9,19 @@ const creatorTestimonials = [
   {
     coverImage: '/case-studies/Influencer 12.webp',
     youtubeShortId: '575zHUMhoAc',
-    subtext:
-      'I went from 2K to 28K followers in 4 months using the growth tools. The audience insights changed everything for me.',
+    subtext: "You definitely know you're in excellent hands when you're working with SCN.",
   },
   {
     coverImage: '/case-studies/favimore 2.webp',
     youtubeShortId: 'Q1J4s6zahFo',
     subtext:
-      'I went from 2K to 28K followers in 4 months using the growth tools. The audience insights changed everything for me.',
+      "I've worked with SCN for 6 months now, and they are reliable and professional. They let you tap into your creativity and content style.",
   },
   {
     coverImage: '/case-studies/raeedas made.webp',
     youtubeShortId: 'gbycxCdgdW8',
     subtext:
-      'I went from 2K to 28K followers in 4 months using the growth tools. The audience insights changed everything for me.',
+      "Through SCN, I've been able to work with amazing brands and it feels like a true partnership.",
   },
 ];
 
@@ -91,7 +90,7 @@ export default function TestimonialsSection() {
                 <motion.div
                   key={index}
                   onClick={() => openVideo(testimonial.youtubeShortId)}
-                  className="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+                  className="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-full flex flex-col"
                   custom={index}
                   variants={cardVariants}
                   initial="hidden"
@@ -129,7 +128,7 @@ export default function TestimonialsSection() {
 
                   {/* Card Content - Dark Background */}
                   <div
-                    className="p-6 sm:p-8"
+                    className="p-6 sm:p-8 flex-grow flex items-center"
                     style={{ backgroundColor: '#272329' }}
                   >
                     <p
