@@ -66,7 +66,7 @@ export default function BlogHeader({ className = '' }: BlogHeaderProps) {
           initial="hidden"
           animate="visible"
         >
-          Everything You Need to Know to Build a Profitable Creator Business
+          Everything You Need to Know to Build a Profitable Creator Business.
         </motion.h1>
 
         <motion.p
