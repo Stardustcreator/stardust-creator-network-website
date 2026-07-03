@@ -1,1 +1,1 @@
-export { default } from './BlogFilters';
+export { default as BlogFilters } from './BlogFilters';
