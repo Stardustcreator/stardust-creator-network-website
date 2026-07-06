@@ -43,7 +43,7 @@ const PLANS: PlanConfig[] = [
     suffix: '/month',
     caption: { annual: 'Billed as ₦75,000/year', monthly: 'Billed monthly' },
     cta: { label: 'Start Building', withArrow: true },
-    commission: '2%',
+    commission: '3%',
   },
 ];
 
@@ -51,7 +51,7 @@ const FEATURES: { label: string; starter: FeatureValue; builder: FeatureValue }[
   { label: 'Rate Card Output', starter: 'Total price only', builder: 'Full Breakdown' },
   { label: 'Rate card generations', starter: '3 / month', builder: '10 / month' },
   { label: 'Invoicing', starter: '3 / month', builder: '10 / month' },
-  { label: 'Commission', starter: '5%', builder: '2%' },
+  { label: 'Commission', starter: '5%', builder: '3%' },
   { label: 'Email captures', starter: '100 subscribers', builder: '500 subscribers' },
   { label: 'Email Broadcasts', starter: '2 / month', builder: '5 / month' },
   {
@@ -74,8 +74,20 @@ export default function PlanPricingSection({
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   return (
-    <section className="py-20 px-6 pb-24">
+    <section className="py-10 px-6 pb-24">
       <div className="max-w-7xl mx-auto">
+        {/* Promo banner */}
+        <div className="animate-promo-banner max-w-2xl mx-auto mb-8 rounded-lg border border-comp-primary-100 bg-surface-action-primary px-4 py-3 text-center">
+          <Text
+            variant="small"
+            className="text-text-primary!"
+          >
+            Sign up for the <span className="font-semibold">Builder</span> plan and get your first
+            month free — use code <span className="font-semibold text-brand-purple">BETA26</span> at
+            checkout.
+          </Text>
+        </div>
+
         {/* Heading */}
         <div className="text-center mb-8">
           <Heading
