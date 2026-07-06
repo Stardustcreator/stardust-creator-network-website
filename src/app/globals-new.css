@@ -1098,16 +1098,6 @@ a {
   }
 }
 
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(87, 5, 139, 0.18);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(87, 5, 139, 0);
-  }
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -1169,16 +1159,6 @@ a {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2.4s ease-in-out infinite;
-}
-
-.animate-promo-banner {
-  animation:
-    fadeInUp 0.7s ease-out forwards,
-    pulse-glow 2.4s ease-in-out 0.7s infinite;
 }
 
 .animate-gradient-shift {
