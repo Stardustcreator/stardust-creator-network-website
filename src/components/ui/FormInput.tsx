@@ -61,7 +61,7 @@ export default function FormInput({
 
   return (
     <div>
-      <div className={`"flex items-center justify-between mb-1.5 ${!label && 'hidden'}`}>
+      <div className={`flex items-center justify-between mb-1.5 ${!label && 'hidden'}`}>
         <label
           htmlFor={id}
           className="text-sm font-medium text-text-primary"

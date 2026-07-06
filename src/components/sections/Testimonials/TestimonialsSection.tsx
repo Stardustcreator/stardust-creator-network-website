@@ -2,35 +2,31 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Text } from '@/components/typography';
-import { SectionHeader } from '@/components/shared';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const creatorTestimonials = [
   {
     coverImage: '/case-studies/Influencer 12.webp',
     youtubeShortId: '575zHUMhoAc',
-    subtext: 'A high-performing creator collaboration driving strong audience engagement.',
+    subtext: "You definitely know you're in excellent hands when you're working with SCN.",
   },
   {
     coverImage: '/case-studies/favimore 2.webp',
     youtubeShortId: 'Q1J4s6zahFo',
-    subtext: 'A food-focused campaign blending creativity with authentic storytelling.',
+    subtext:
+      "I've worked with SCN for 6 months now, and they are reliable and professional. They let you tap into your creativity and content style.",
   },
   {
     coverImage: '/case-studies/raeedas made.webp',
     youtubeShortId: 'gbycxCdgdW8',
-    subtext: 'A visually compelling campaign capturing attention and driving interaction.',
+    subtext:
+      "Through SCN, I've been able to work with amazing brands and it feels like a true partnership.",
   },
 ];
 
 export default function TestimonialsSection() {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-  const { elementRef, isIntersecting } = useIntersectionObserver({
-    threshold: 0.2,
-    rootMargin: '-50px',
-    triggerOnce: true,
-  });
 
   const openVideo = (videoId: string) => {
     setSelectedVideo(videoId);
@@ -38,6 +34,18 @@ export default function TestimonialsSection() {
 
   const closeVideo = () => {
     setSelectedVideo(null);
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: index * 0.15,
+      },
+    }),
   };
 
   return (
@@ -57,61 +65,40 @@ export default function TestimonialsSection() {
 
       <section
         id="testimonials"
-        ref={elementRef}
-        className="relative py-16 md:py-24 bg-gradient-to-b from-neutral-950 via-neutral-900 to-black overflow-hidden"
+        className="relative py-16 md:py-32 overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #7805C4 0%, #5705BB 100%)' }}
       >
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl"></div>
-        </div>
-
         <div className="container mx-auto px-6 relative z-10">
           {/* Main Heading */}
-          <div className="text-center mb-4">
-            <SectionHeader
-              words={[
-                { text: 'Creator ', className: 'text-white' },
-                {
-                  text: 'Wins',
-                  className:
-                    'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent',
-                },
-              ]}
-              headingClassName="text-3xl md:text-4xl lg:text-5xl font-bold"
-              className="mb-0"
-              centered={true}
-              staggerDelay={200}
-              level={2}
-            />
-          </div>
-
-          {/* Section Subtext */}
-          <div className="text-center mb-12 max-w-3xl mx-auto">
-            <Text
-              variant="body"
-              className="!text-white/70 text-base md:text-lg leading-relaxed"
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <motion.h2
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white"
+              style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6 }}
             >
-              See how creators are thriving with authentic brand collaborations.
-              <br />
-              Real campaigns, real impact, real success.
-            </Text>
+              What Creators Are Saying About SCN
+            </motion.h2>
           </div>
 
           {/* Creator Testimonials Grid */}
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-6xl mx-auto mb-12 sm:mb-16 md:mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {creatorTestimonials.map((testimonial, index) => (
-                <div
+                <motion.div
                   key={index}
                   onClick={() => openVideo(testimonial.youtubeShortId)}
-                  className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 cursor-pointer ${
-                    isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
+                  className="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-full flex flex-col"
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
                 >
                   {/* Cover Image */}
-                  <div className="relative w-full h-64 overflow-hidden bg-neutral-900">
+                  <div className="relative w-full h-64 overflow-hidden bg-neutral-400">
                     <Image
                       src={testimonial.coverImage}
                       alt="Creator success story"
@@ -123,7 +110,7 @@ export default function TestimonialsSection() {
                     />
 
                     {/* Dark overlay on hover */}
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                     {/* Play Button Overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -139,21 +126,54 @@ export default function TestimonialsSection() {
                     </div>
                   </div>
 
-                  {/* Card Content */}
-                  <div className="p-6">
-                    <Text
-                      variant="small"
-                      className="!text-white/70 text-sm leading-relaxed"
+                  {/* Card Content - Dark Background */}
+                  <div
+                    className="p-6 sm:p-8 flex-grow flex items-center"
+                    style={{ backgroundColor: '#272329' }}
+                  >
+                    <p
+                      className="text-white/90 text-sm sm:text-base leading-relaxed"
+                      style={{ fontFamily: 'var(--font-lato)' }}
                     >
                       {testimonial.subtext}
-                    </Text>
+                    </p>
                   </div>
-
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                </div>
+                </motion.div>
               ))}
             </div>
+          </div>
+
+          {/* Button Below Cards */}
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Link
+                href="#"
+                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-black font-semibold hover:opacity-90 transition-all rounded-lg"
+                style={{ backgroundColor: '#FFFFFF', border: 'none' }}
+              >
+                <span style={{ fontFamily: 'var(--font-lato)' }}>Start your Story</span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 10H16M16 10L11 5M16 10L11 15"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </motion.div>
           </div>
 
           {/* Video Modal */}

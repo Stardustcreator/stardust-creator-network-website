@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Lato } from 'next/font/google';
+import { Lato, Bricolage_Grotesque } from 'next/font/google';
 import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
 // Commented out unused imports
@@ -25,6 +25,13 @@ const lato = Lato({
   preload: true,
   fallback: ['system-ui', 'arial'],
   adjustFontFallback: true, // Reduce CLS by matching fallback metrics
+});
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: '--font-bricolage-grotesque',
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  display: 'swap',
+  preload: true,
 });
 
 // Google Analytics Measurement ID
@@ -156,7 +163,7 @@ export default function RootLayout({
           fetchPriority="high"
         />
       </head>
-      <body className={`${lato.variable} antialiased font-lato`}>
+      <body className={`${lato.variable} ${bricolageGrotesque.variable} antialiased font-lato`}>
         {/* Deferred analytics: GTM & Meta Pixel load after interaction/idle to improve LCP */}
         {/* eslint-disable-next-line @next/next/no-server-import-in-page */}
         {/* Lazy client loader for analytics */}
