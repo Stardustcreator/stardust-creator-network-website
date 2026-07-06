@@ -36,7 +36,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   const billing = initialBilling;
   const planId = initialPlan;
 
-  const [substep, setSubstep] = useState<OnboardingSubstep>('form');
+  const [substep, setSubstep] = useState<OnboardingSubstep>('otp');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
