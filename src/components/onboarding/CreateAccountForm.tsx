@@ -169,7 +169,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
           variant="body"
           className="text-neutral-500!"
         >
-          Join 50+ Nigerian creators diversifying their income with structure and community.
+          Join Creators building, growing and earning all in one place.
         </Text>
       </div>
 
