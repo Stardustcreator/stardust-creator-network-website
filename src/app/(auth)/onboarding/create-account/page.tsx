@@ -49,7 +49,7 @@ export default function CreateAccountPage({ searchParams }: CreateAccountPagePro
           inactiveRedirect="/onboarding/reactivate"
           noSubscriptionRedirect={paymentPath}
         >
-          <div className="w-full container mx-auto px-6">
+          <div className="w-full container mx-auto px-3 lg:px-6">
             {/* Top bar: back link + stepper */}
             <div className="flex items-start flex-col md:flex-row justify-between mb-16 gap-10 md:gap-5">
               <Link
