@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Heading, Text } from '@/components/typography';
 import CheckIcon from '@/components/icons/CheckIcon';
 import LockIcon from '@/components/icons/LockIcon';
@@ -74,8 +75,37 @@ export default function PlanPricingSection({
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   return (
-    <section className="py-20 px-6 pb-24">
+    <section className="py-10 px-6 pb-24">
       <div className="max-w-7xl mx-auto">
+        {/* Promo banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            boxShadow: [
+              '0 0 0 0 rgba(87, 5, 139, 0.4)',
+              '0 0 0 10px rgba(87, 5, 139, 0)',
+              '0 0 0 0 rgba(87, 5, 139, 0.4)',
+            ],
+          }}
+          transition={{
+            opacity: { duration: 0.7, ease: 'easeOut' },
+            y: { duration: 0.7, ease: 'easeOut' },
+            boxShadow: { duration: 2.4, ease: 'easeInOut', repeat: Infinity, delay: 0.7 },
+          }}
+          className="max-w-2xl mx-auto mb-8 rounded-lg border border-comp-primary-100 bg-surface-action-primary px-4 py-3 text-center"
+        >
+          <Text
+            variant="small"
+            className="text-text-primary!"
+          >
+            Sign up for the <span className="font-semibold">Builder</span> plan and get your first
+            month free — use code <span className="font-semibold text-brand-purple">BETA26</span> at
+            checkout.
+          </Text>
+        </motion.div>
+
         {/* Heading */}
         <div className="text-center mb-8">
           <Heading
