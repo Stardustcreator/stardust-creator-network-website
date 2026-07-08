@@ -11,7 +11,7 @@ const cards = [
     description:
       'Access creator-focused education built for the African creator. From pricing your work to understanding usage rights to building a business around your content.',
     buttonText: 'Start Learning',
-    buttonLink: '#',
+    buttonLink: '/pricing',
     image: '/who we are/card 1.webp',
   },
   {
@@ -20,7 +20,7 @@ const cards = [
     description:
       'Turn your content into a lasting business. The tools, systems, and strategy to grow something that belongs to you - beyond any algorithm or platform.',
     buttonText: 'Start Building',
-    buttonLink: '#',
+    buttonLink: '/pricing',
     image: '/who we are/card 2.webp',
   },
   {
@@ -29,7 +29,7 @@ const cards = [
     description:
       'Stop guessing what to charge and start earning what your work is worth. Build defensible rates, invoice professionally, and connect with brands already looking for creators like you.',
     buttonText: 'Calculate Rate',
-    buttonLink: '#',
+    buttonLink: '/pricing',
     image: '/who we are/card 3.webp',
   },
   {
@@ -38,7 +38,7 @@ const cards = [
     description:
       'Build an audience you actually own, not just followers on a platform you cannot control. Every visitor to your profile or storefront can join your mailing list.',
     buttonText: 'Grow your List',
-    buttonLink: '#',
+    buttonLink: '/pricing',
     image: '/who we are/card 4.webp',
   },
 ];

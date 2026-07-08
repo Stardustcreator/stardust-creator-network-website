@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function FinalCTASection() {
   return (
     <section
@@ -28,15 +30,14 @@ export default function FinalCTASection() {
           journey and build something that lasts.
         </p>
 
-        <button
-          className="px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-          style={{ backgroundColor: '#57058B', color: 'white' }}
-          onClick={() => {
-            document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-        >
-          Sign Up Now
-        </button>
+        <Link href="/signin">
+          <button
+            className="px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
+            style={{ backgroundColor: '#57058B', color: 'white' }}
+          >
+            Sign Up Now
+          </button>
+        </Link>
       </div>
     </section>
   );

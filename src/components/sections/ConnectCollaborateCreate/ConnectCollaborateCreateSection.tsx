@@ -583,7 +583,7 @@ export default function ConnectCollaborateCreateSection() {
         {/* See All Features Link */}
         <div className="text-center mt-12 sm:mt-16 md:mt-20">
           <Link
-            href="#"
+            href="/creator-os"
             className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-black font-semibold hover:opacity-90 transition-all rounded-lg"
             style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E7EB' }}
           >
