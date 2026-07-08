@@ -1,4 +1,8 @@
-'use client';
+export const metadata = {
+  canonical: 'https://www.stardustcreatornetwork.com/creator-os',
+};
+
+('use client');
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -125,7 +129,7 @@ export default function CreatorOSPage() {
                 initial="hidden"
                 animate="visible"
               >
-                <Link href="/creators/join">
+                <Link href="/signin">
                   <button
                     className="inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
                     style={{ backgroundColor: '#57058B', color: 'white' }}
@@ -992,7 +996,7 @@ export default function CreatorOSPage() {
                   building real businesses from their content. You do not have to figure this out
                   alone.
                 </p>
-                <Link href="/creators/join">
+                <Link href="/signin">
                   <button
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm md:text-base"
                     style={{ backgroundColor: '#57058B', color: 'white' }}
