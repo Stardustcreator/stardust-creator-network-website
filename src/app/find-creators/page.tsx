@@ -1,8 +1,6 @@
-export const metadata = {
-  canonical: 'https://www.stardustcreatornetwork.com/find-creators',
-};
+'use client';
 
-('use client');
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -76,8 +74,6 @@ function AnimatedMetric({ value, label }) {
     </div>
   );
 }
-
-import React from 'react';
 
 export default function FindCreatorsPage() {
   const cards = [
