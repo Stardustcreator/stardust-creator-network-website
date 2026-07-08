@@ -1,8 +1,4 @@
-export const metadata = {
-  canonical: 'https://www.stardustcreatornetwork.com/creator-os',
-};
-
-('use client');
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -121,7 +117,7 @@ export default function CreatorOSPage() {
                 animate="visible"
               >
                 When your tools are scattered, your business feels scattered. SCN gives you one
-                place to price your work, get paid, grow your audience, and connect with brands.
+                place to price your work, get paid, grow your audience, & connect with brands.
               </motion.p>
 
               <motion.div
