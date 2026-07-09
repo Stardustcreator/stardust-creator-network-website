@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth, type DiscountPreview } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import PlanBanner from './PlanBanner';
+import PromoBanner from '@/components/shared/PromoBanner';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password';
 type BillingPeriod = 'annual' | 'monthly';
@@ -148,6 +149,9 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
 
   return (
     <div className="max-w-3xl mx-auto">
+      {/* Promo banner */}
+      <PromoBanner />
+
       {/* Plan summary */}
       <div className="mb-8">
         <PlanBanner
