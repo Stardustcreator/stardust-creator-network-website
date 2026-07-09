@@ -112,7 +112,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           {/* Mobile CTA */}
           <div className="mt-8">
             <Link
-              href="/signin"
+              href="/onboarding"
               onClick={onClose}
               className="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-300 w-full text-center"
             >

@@ -7,7 +7,6 @@ import PerformanceTracker from '@/components/performance/PerformanceTracker';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
-import PlatformLogosSection from '@/components/sections/PlatformLogos/PlatformLogosSection';
 
 // Lazy load below-the-fold sections for better initial load performance
 const ConnectCollaborateCreateSection = dynamic(
@@ -88,24 +87,21 @@ export default function Home() {
         <Hero />
 
         {/* ========== SECTION 2 ========== */}
-        <PlatformLogosSection />
-
-        {/* ========== SECTION 3 ========== */}
         <ConnectCollaborateCreateSection />
 
-        {/* ========== SECTION 4 ========== */}
+        {/* ========== SECTION 3 ========== */}
         <WhoScnIsForSection />
 
-        {/* ========== SECTION 5 ========== */}
+        {/* ========== SECTION 4 ========== */}
         <TestimonialsSection />
 
-        {/* ========== SECTION 6 ========== */}
+        {/* ========== SECTION 5 ========== */}
         <WhatChangesWhenYouJoinSection />
 
-        {/* ========== SECTION 7 ========== */}
+        {/* ========== SECTION 6 ========== */}
         <FAQSection />
 
-        {/* ========== SECTION 8 - Final CTA ========== */}
+        {/* ========== SECTION 7 - Final CTA ========== */}
         <FinalCTASection />
       </main>
 

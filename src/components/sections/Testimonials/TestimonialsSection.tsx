@@ -151,27 +151,28 @@ export default function TestimonialsSection() {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Link
-                href="#"
-                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-black font-semibold hover:opacity-90 transition-all rounded-lg"
-                style={{ backgroundColor: '#FFFFFF', border: 'none' }}
-              >
-                <span style={{ fontFamily: 'var(--font-lato)' }}>Start your Story</span>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <Link href="/signin">
+                <button
+                  className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-black font-semibold hover:opacity-90 transition-all rounded-lg cursor-pointer"
+                  style={{ backgroundColor: '#FFFFFF', border: 'none' }}
                 >
-                  <path
-                    d="M4 10H16M16 10L11 5M16 10L11 15"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                  <span style={{ fontFamily: 'var(--font-lato)' }}>Start your Story</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4 10H16M16 10L11 5M16 10L11 15"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
               </Link>
             </motion.div>
           </div>

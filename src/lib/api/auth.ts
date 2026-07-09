@@ -105,15 +105,13 @@ export function initiateRegistration(
   email: string,
   firstName: string,
   lastName: string,
-  planId?: string,
-  discountCode?: string
+  planId?: string
 ) {
-  return post<{ message: string; discount?: DiscountPreview }>('/auth/initiate-registration', {
+  return post<{ message: string }>('/auth/initiate-registration', {
     email,
     firstName,
     lastName,
     planId,
-    discountCode,
   });
 }
 
