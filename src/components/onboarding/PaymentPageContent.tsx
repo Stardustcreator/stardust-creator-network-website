@@ -1,15 +1,29 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import PaymentStep from './PaymentStep';
 import PlanBanner from './PlanBanner';
+import { CheckoutForm, type CheckoutValues } from './CheckoutForm';
+import Modal from '../ui/modal';
 import { initializePayment } from '@/lib/api/payments';
+import { getMyProfile } from '@/lib/api/user';
 import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'community' | 'starter' | 'builder';
+
+const CHECKOUT_PRICE: Record<PlanId, Record<BillingPeriod, string>> = {
+  community: { annual: '₦50,000', monthly: '₦5,000' },
+  starter: { annual: '₦0', monthly: '₦0' },
+  builder: { annual: '₦75,000', monthly: '₦7,500' },
+};
+
+const PLAN_NAME: Record<PlanId, string> = {
+  community: 'Community',
+  starter: 'Starter',
+  builder: 'Builder',
+};
 
 function getBillingPeriod(value: string | null): BillingPeriod {
   return value === 'annual' ? 'annual' : 'monthly';
@@ -35,45 +49,18 @@ export default function PaymentPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [checkoutUrl, setCheckoutUrl] = useState('');
-  const [reference, setReference] = useState('');
   const [billing, setBilling] = useState<BillingPeriod>('monthly');
   const [plan, setPlan] = useState<PlanId | null>(null);
+  const [profile, setProfile] = useState<{
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [retryMessage, setRetryMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
-  const billingRef = useRef<BillingPeriod>('monthly');
-  const planRef = useRef<PlanId>('community');
   const initialized = useRef(false);
-
-  const runInitialize = useCallback(
-    (billingValue: BillingPeriod, planValue: PlanId) => {
-      setIsLoading(true);
-      setRetryMessage('');
-      setCheckoutUrl('');
-
-      initializePayment(billingValue, planValue)
-        .then(({ checkoutUrl, reference }) => {
-          setCheckoutUrl(checkoutUrl ?? '');
-          setReference(reference ?? '');
-        })
-        .catch(err => {
-          const message =
-            err instanceof Error ? err.message : 'Failed to start payment. Please try again.';
-
-          if (message.toLowerCase().includes('unauthorized')) {
-            toast.error('Please choose a plan to continue.');
-            router.replace('/onboarding');
-            return;
-          }
-
-          setRetryMessage(message);
-          toast.error(message);
-        })
-        .finally(() => setIsLoading(false));
-    },
-    [router]
-  );
 
   useEffect(() => {
     if (initialized.current) return;
@@ -93,16 +80,69 @@ export default function PaymentPageContent() {
 
     setBilling(resolvedBilling);
     setPlan(resolvedPlan);
-    billingRef.current = resolvedBilling;
-    planRef.current = resolvedPlan;
 
     if (resolvedPlan === 'starter') {
       window.location.href = getScnDashboardUrl();
       return;
     }
 
-    runInitialize(resolvedBilling, resolvedPlan);
-  }, [router, searchParams, runInitialize]);
+    getMyProfile()
+      .then(({ firstName, lastName, email }) => {
+        setProfile({ firstName, lastName, email });
+        setIsLoading(false);
+        setShowCheckout(true);
+      })
+      .catch(() => {
+        toast.error('Please sign in to continue.');
+        router.replace('/signin');
+      });
+  }, [router, searchParams]);
+
+  async function handleCheckoutSubmit(values: CheckoutValues) {
+    if (!plan) return;
+    setIsSubmitting(true);
+    try {
+      const { checkoutUrl, reference, requiresPayment } = await initializePayment(
+        billing,
+        plan,
+        values.couponCode
+      );
+
+      const goToSuccess = () => {
+        const params = new URLSearchParams({
+          reference: reference ?? '',
+          firstName: profile?.firstName ?? '',
+          email: profile?.email ?? '',
+        });
+        router.push(`/onboarding/success?${params.toString()}`);
+      };
+
+      if (!requiresPayment) {
+        goToSuccess();
+        return;
+      }
+
+      const accessCode = checkoutUrl?.split('/').pop();
+      if (!accessCode) {
+        throw new Error('Invalid payment session. Please try again.');
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { default: PaystackPop } = (await import('@paystack/inline-js')) as any;
+      const popup = new PaystackPop();
+      const trans = popup.resumeTransaction(accessCode);
+
+      trans.onSuccess = () => goToSuccess();
+      trans.onError = () => {
+        toast.error('Payment failed. Please try again.');
+        setIsSubmitting(false);
+      };
+      trans.onCancel = () => setIsSubmitting(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setIsSubmitting(false);
+    }
+  }
 
   const spinner = (
     <div className="flex justify-center py-20">
@@ -113,70 +153,47 @@ export default function PaymentPageContent() {
     </div>
   );
 
-  if (isLoading) {
-    return (
-      <div className="max-w-3xl mx-auto">
-        {plan && (
-          <div className="mb-8">
-            <PlanBanner
-              billing={billing}
-              plan={plan}
-              hideChanger
-            />
-          </div>
-        )}
-        {spinner}
-      </div>
-    );
-  }
-
-  if (retryMessage) {
-    return (
-      <div className="max-w-3xl mx-auto">
-        {plan && (
-          <div className="mb-8">
-            <PlanBanner
-              billing={billing}
-              plan={plan}
-              hideChanger
-            />
-          </div>
-        )}
-        <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-neutral-600">{retryMessage}</p>
-          <div className="flex gap-3">
-            <button
-              onClick={() => runInitialize(billingRef.current, planRef.current)}
-              className="px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: 'var(--color-deep-purple)' }}
-            >
-              Try Again
-            </button>
-            <button
-              onClick={() => router.push('/onboarding')}
-              className="px-6 py-2.5 rounded-lg text-sm font-semibold text-neutral-700 border border-neutral-300 hover:bg-neutral-50 transition-colors"
-            >
-              Go Back
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!checkoutUrl) return null;
-
   return (
-    <PaymentStep
-      checkoutUrl={checkoutUrl}
-      onSuccess={() => {
-        const params = new URLSearchParams({ reference });
-        router.push(`/onboarding/success?${params.toString()}`);
-      }}
-      onCancel={() => {
-        setCheckoutUrl('');
-        setRetryMessage('Payment cancelled. Ready to try again?');
-      }}
-    />
+    <div className="max-w-3xl mx-auto">
+      {plan && (
+        <div className="mb-8">
+          <PlanBanner
+            billing={billing}
+            plan={plan}
+            hideChanger
+          />
+        </div>
+      )}
+
+      {isLoading && spinner}
+
+      {plan && profile && (
+        <Modal
+          open={showCheckout}
+          onClose={() => {
+            setShowCheckout(false);
+            router.push('/onboarding');
+          }}
+          mobileSheet
+          ariaLabel="Subscription Checkout"
+          className="w-xl"
+        >
+          <CheckoutForm
+            offerId={`${plan}_${billing}`}
+            priceLabel={CHECKOUT_PRICE[plan][billing]}
+            planLabel={`${PLAN_NAME[plan]} Plan (${billing === 'monthly' ? 'Monthly' : 'Annual'})`}
+            busy={isSubmitting}
+            initialFirstName={profile.firstName}
+            initialLastName={profile.lastName}
+            initialEmail={profile.email}
+            onSubmit={handleCheckoutSubmit}
+            onCancel={() => {
+              setShowCheckout(false);
+              router.push('/onboarding');
+            }}
+          />
+        </Modal>
+      )}
+    </div>
   );
 }
