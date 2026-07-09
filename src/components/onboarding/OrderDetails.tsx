@@ -39,6 +39,7 @@ export function OrderDetails({
   onChange,
 }: OrderDetailsProps) {
   const [code, setCode] = useState('');
+  const [expanded, setExpanded] = useState(false);
   const [applied, setApplied] = useState<DiscountPreview | null>(null);
   const [applying, setApplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,6 +74,19 @@ export function OrderDetails({
       </h3>
 
       <div className="space-y-3">
+        {!applied && (
+          <p className="text-sm text-text-secondary">
+            Got a discount code?{' '}
+            <button
+              type="button"
+              onClick={() => setExpanded(v => !v)}
+              disabled={busy || applying || !!applied}
+              className="font-semibold text-text-action cursor-pointer underline-offset-2 hover:underline disabled:no-underline disabled:opacity-60"
+            >
+              Click here
+            </button>
+          </p>
+        )}
         {applied ? (
           <div className="flex items-center justify-between gap-3 rounded-md border border-stroke-success bg-surface-success px-4 py-3 shadow-md">
             <span className="flex items-center gap-2 text-sm font-medium text-text-success">
@@ -89,11 +103,8 @@ export function OrderDetails({
               <CloseIcon />
             </button>
           </div>
-        ) : (
+        ) : expanded ? (
           <div>
-            <p className="mb-2 text-sm text-text-secondary">
-              Discount code <span className="text-text-tertiary">(optional)</span>
-            </p>
             <div className="flex items-start gap-3">
               <input
                 type="text"
@@ -130,7 +141,7 @@ export function OrderDetails({
             </div>
             {error && <p className="mt-2 text-sm font-medium text-text-error">{error}</p>}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="h-px bg-stroke-tertiary" />
