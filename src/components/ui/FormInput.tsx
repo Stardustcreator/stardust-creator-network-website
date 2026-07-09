@@ -48,6 +48,7 @@ export default function FormInput({
   const resolvedType = isPassword ? (showPassword ? 'text' : 'password') : type;
   const isFilled = value.trim().length > 0;
   const showFilledStyles = showFilledIndicator && !isPassword && isFilled && !error && !focused;
+  console.log({ showFilledIndicator, showFilledStyles });
 
   const borderStyle: React.CSSProperties = error
     ? {
