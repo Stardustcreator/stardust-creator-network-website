@@ -26,7 +26,7 @@ interface OrderDetailsProps {
 }
 
 /**
- * Order-details panel for the checkout sheet: an expandable discount-code field
+ * Order-details panel for the checkout sheet: an optional discount-code field
  * and the cart/discount/total breakdown. Validates codes through
  * `POST /payments/discount-preview`, which returns the server-computed amounts
  * (kobo), so the totals here are never derived on the client.
@@ -38,7 +38,6 @@ export function OrderDetails({
   busy,
   onChange,
 }: OrderDetailsProps) {
-  const [expanded, setExpanded] = useState(false);
   const [code, setCode] = useState('');
   const [applied, setApplied] = useState<DiscountPreview | null>(null);
   const [applying, setApplying] = useState(false);
@@ -64,7 +63,6 @@ export function OrderDetails({
     setApplied(null);
     setCode('');
     setError(null);
-    setExpanded(false);
     onChange(null);
   };
 
@@ -75,20 +73,6 @@ export function OrderDetails({
       </h3>
 
       <div className="space-y-3">
-        {!applied && (
-          <p className="text-sm text-text-secondary">
-            Got a discount code?{' '}
-            <button
-              type="button"
-              onClick={() => setExpanded(v => !v)}
-              disabled={busy || applying || !!applied}
-              className="font-semibold text-text-action cursor-pointer underline-offset-2 hover:underline disabled:no-underline disabled:opacity-60"
-            >
-              Click here
-            </button>
-          </p>
-        )}
-
         {applied ? (
           <div className="flex items-center justify-between gap-3 rounded-md border border-stroke-success bg-surface-success px-4 py-3 shadow-md">
             <span className="flex items-center gap-2 text-sm font-medium text-text-success">
@@ -105,8 +89,11 @@ export function OrderDetails({
               <CloseIcon />
             </button>
           </div>
-        ) : expanded ? (
+        ) : (
           <div>
+            <p className="mb-2 text-sm text-text-secondary">
+              Discount code <span className="text-text-tertiary">(optional)</span>
+            </p>
             <div className="flex items-start gap-3">
               <input
                 type="text"
@@ -124,7 +111,7 @@ export function OrderDetails({
                 placeholder="e.g., SAVE5K"
                 disabled={busy || applying}
                 autoComplete="off"
-                aria-label="Discount code"
+                aria-label="Discount code (optional)"
                 className="h-11 flex-1 rounded-md border focus-visible:outline-none! focus:ring-2 focus:ring-surface-action bg-surface-white px-3 text-sm text-text-primary outline-none placeholder:text-text-secondary focus:border-stroke-action disabled:opacity-60"
                 style={{
                   borderColor: error ? 'var(--color-stroke-error)' : 'var(--color-stroke-primary)',
@@ -143,7 +130,7 @@ export function OrderDetails({
             </div>
             {error && <p className="mt-2 text-sm font-medium text-text-error">{error}</p>}
           </div>
-        ) : null}
+        )}
       </div>
 
       <div className="h-px bg-stroke-tertiary" />
