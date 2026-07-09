@@ -54,8 +54,8 @@ export default function PaymentPageContent() {
 
       initializePayment(billingValue, planValue)
         .then(({ checkoutUrl, reference }) => {
-          setCheckoutUrl(checkoutUrl);
-          setReference(reference);
+          setCheckoutUrl(checkoutUrl ?? '');
+          setReference(reference ?? '');
         })
         .catch(err => {
           const message =

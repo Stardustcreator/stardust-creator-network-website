@@ -9,7 +9,7 @@ import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
-import { initiateRegistration, initiateGoogleAuth, type DiscountPreview } from '@/lib/api/auth';
+import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import PlanBanner from './PlanBanner';
 import PromoBanner from '@/components/shared/PromoBanner';
@@ -48,7 +48,6 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   const [apiError, setApiError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationToken, setRegistrationToken] = useState('');
-  const [discountPreview, setDiscountPreview] = useState<DiscountPreview | undefined>();
 
   if (substep === 'otp') {
     return (
@@ -69,13 +68,15 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
         billing={billing}
         plan={planId}
         registrationToken={registrationToken}
-        discountPreview={discountPreview}
+        firstName={formData.firstName}
+        lastName={formData.lastName}
+        email={formData.email}
         onComplete={reference => {
           const params = new URLSearchParams({
-            reference,
             firstName: formData.firstName,
             email: formData.email,
           });
+          if (reference) params.set('reference', reference);
 
           router.push(`/onboarding/success?${params.toString()}`);
         }}
@@ -122,9 +123,8 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
         backendPlanId
       );
 
-      if (result.discount) {
-        setDiscountPreview(result.discount);
-        toast.success(`Code ${result.discount.code} applied!`);
+      if (result.message) {
+        toast.success(result.message);
       }
 
       setSubstep('otp');
