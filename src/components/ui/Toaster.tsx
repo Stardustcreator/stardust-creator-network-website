@@ -11,7 +11,7 @@ export function Toaster() {
         unstyled: true,
         classNames: {
           toast:
-            'flex items-center justify-center w-fit min-w-[280px] px-5 py-3 lg:py-4 rounded-lg border text-sm font-medium md:whitespace-nowrap',
+            'flex items-center justify-center w-fit min-w-[280px] max-w-2xl px-5 py-3 lg:py-4 rounded-lg border text-sm font-medium md:whitespace-nowrap',
           success: 'bg-surface-success border-stroke-success/70 text-[#009966]',
           error: 'bg-red-50 border-red-300 text-red-700',
           icon: 'hidden',

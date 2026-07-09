@@ -305,7 +305,7 @@ export default function WhatChangesWhenYouJoinSection() {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Link
-              href="#"
+              href="/onboarding"
               className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
               style={{ backgroundColor: '#57058B', color: 'white' }}
             >

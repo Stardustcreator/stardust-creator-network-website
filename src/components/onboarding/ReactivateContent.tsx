@@ -40,8 +40,8 @@ export default function ReactivateContent() {
     setIsLoading(true);
     try {
       const { checkoutUrl, reference } = await initializePayment(selected);
-      setCheckoutUrl(checkoutUrl);
-      setReference(reference);
+      setCheckoutUrl(checkoutUrl ?? '');
+      setReference(reference ?? '');
       setStep('paying');
     } catch (err) {
       toast.error(
