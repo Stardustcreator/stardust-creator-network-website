@@ -28,10 +28,6 @@ function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
   return `${plan}_${billing}`;
 }
 
-function formatAmount(kobo: number, currency: string): string {
-  return (kobo / 100).toLocaleString('en-NG', { style: 'currency', currency });
-}
-
 export default function CreateAccountForm({ initialBilling, initialPlan }: CreateAccountFormProps) {
   const router = useRouter();
   const billing = initialBilling;
@@ -47,14 +43,12 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     firstName: '',
     lastName: '',
     email: '',
-    discountCode: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationToken, setRegistrationToken] = useState('');
   const [discountPreview, setDiscountPreview] = useState<DiscountPreview | undefined>();
-  const [expanded, setExpanded] = useState(false);
 
   if (substep === 'otp') {
     return (
@@ -120,15 +114,12 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     setApiError('');
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
-      const code =
-        expanded && formData.discountCode.trim() ? formData.discountCode.trim() : undefined;
 
       const result = await initiateRegistration(
         formData.email,
         formData.firstName,
         formData.lastName,
-        backendPlanId,
-        code
+        backendPlanId
       );
 
       if (result.discount) {
@@ -241,57 +232,6 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
             autoComplete="email"
           />
         </div>
-
-        {/* Discount code — shown for paid plans only */}
-        {planId !== 'starter' && (
-          <div className="space-y-3 mb-6 -mt-3">
-            <p className="text-sm text-text-secondary">
-              Got a discount code?{' '}
-              <button
-                type="button"
-                onClick={() => setExpanded(v => !v)}
-                disabled={isSubmitting}
-                className="font-semibold text-text-action cursor-pointer underline-offset-2 hover:underline disabled:no-underline disabled:opacity-60"
-              >
-                {expanded ? 'Hide' : 'Click here'}
-              </button>
-            </p>
-
-            {expanded && (
-              <div className="flex items-center gap-3 w-full">
-                <div className="flex-1">
-                  <FormInput
-                    label=""
-                    id="discountCode"
-                    name="discountCode"
-                    type="text"
-                    placeholder="e.g ABCD1234"
-                    value={formData.discountCode}
-                    onChange={handleChange}
-                    error={errors.discountCode}
-                    inputClassName="w-full"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Discount preview — shown after a valid code is confirmed */}
-            {discountPreview && (
-              <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm">
-                <span className="font-semibold text-green-700">{discountPreview.code}</span>
-                <span className="text-green-700">
-                  {formatAmount(discountPreview.discountAmount, discountPreview.currency)} off — you
-                  pay{' '}
-                  <span className="font-semibold">
-                    {discountPreview.finalAmount === 0
-                      ? 'nothing'
-                      : formatAmount(discountPreview.finalAmount, discountPreview.currency)}
-                  </span>
-                </span>
-              </div>
-            )}
-          </div>
-        )}
 
         {/* CTA */}
         <Button
