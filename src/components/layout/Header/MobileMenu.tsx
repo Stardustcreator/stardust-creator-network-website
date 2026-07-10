@@ -109,8 +109,19 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             ))}
           </ul>
 
-          {/* Mobile CTA */}
-          <div className="mt-8">
+          {/* Mobile CTA Buttons */}
+          <div className="mt-8 space-y-3">
+            <Link
+              href="https://www.scn.africa/signin"
+              onClick={onClose}
+              className="inline-flex items-center justify-center px-8 py-3 text-black font-semibold rounded-lg hover:opacity-90 transition-all duration-300 w-full text-center"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1.5px solid #E7E5E4',
+              }}
+            >
+              Login
+            </Link>
             <Link
               href="/signin"
               onClick={onClose}

@@ -28,6 +28,7 @@ const connectSources = Array.from(
       'https://scn-backend-staging.up.railway.app',
       'https://stardustcreatornetwork.com',
       'https://www.stardustcreatornetwork.com',
+      'https://mtdchowzitagopmsurzi.supabase.co',
       'https://www.googletagmanager.com',
       'https://www.google-analytics.com',
       'https://analytics.google.com',

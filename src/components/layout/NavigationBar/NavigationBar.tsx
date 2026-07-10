@@ -65,8 +65,20 @@ export default function NavigationBar({
               <TopNavigation variant="light" />
             </div>
 
-            {/* Sign Up Button */}
-            <div className="flex items-center gap-4 flex-shrink-0">
+            {/* Login & Sign Up Buttons */}
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Link href="https://www.scn.africa/signin">
+                <button
+                  className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    color: '#000000',
+                    border: '1.5px solid #E7E5E4',
+                  }}
+                >
+                  Login
+                </button>
+              </Link>
               <Link href="/signin">
                 <button
                   className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
