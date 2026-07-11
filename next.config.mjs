@@ -91,6 +91,7 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
+      { source: '/event', destination: 'https://forms.gle/oEox9SL61cemDkhC9', permanent: false },
     ];
   },
 
