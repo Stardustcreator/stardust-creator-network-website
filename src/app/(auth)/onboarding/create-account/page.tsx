@@ -20,6 +20,8 @@ interface CreateAccountPageProps {
   searchParams?: {
     billing?: string;
     plan?: string;
+    email?: string;
+    step?: string;
   };
 }
 
@@ -35,6 +37,7 @@ function getPlanId(value?: string): PlanId {
 export default function CreateAccountPage({ searchParams }: CreateAccountPageProps) {
   const billing = getBillingPeriod(searchParams?.billing);
   const planId = getPlanId(searchParams?.plan);
+  const initialStep = searchParams?.step === 'otp' && searchParams.email ? 'otp' : 'form';
   const paymentPath = `/onboarding/payment?plan=${planId}&billing=${billing}`;
 
   return (
@@ -80,6 +83,8 @@ export default function CreateAccountPage({ searchParams }: CreateAccountPagePro
               <CreateAccountForm
                 initialBilling={billing}
                 initialPlan={planId}
+                initialEmail={searchParams?.email}
+                initialStep={initialStep}
               />
             </Suspense>
           </div>
