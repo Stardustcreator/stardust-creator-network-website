@@ -21,6 +21,8 @@ type PlanId = 'community' | 'starter' | 'builder';
 interface CreateAccountFormProps {
   initialBilling: BillingPeriod;
   initialPlan: PlanId;
+  initialEmail?: string;
+  initialStep?: OnboardingSubstep;
 }
 
 function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
@@ -28,12 +30,17 @@ function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
   return `${plan}_${billing}`;
 }
 
-export default function CreateAccountForm({ initialBilling, initialPlan }: CreateAccountFormProps) {
+export default function CreateAccountForm({
+  initialBilling,
+  initialPlan,
+  initialEmail,
+  initialStep = 'form',
+}: CreateAccountFormProps) {
   const router = useRouter();
   const billing = initialBilling;
   const planId = initialPlan;
 
-  const [substep, setSubstep] = useState<OnboardingSubstep>('form');
+  const [substep, setSubstep] = useState<OnboardingSubstep>(initialStep);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -42,7 +49,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    email: initialEmail ?? '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
