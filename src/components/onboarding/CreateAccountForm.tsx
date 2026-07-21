@@ -9,9 +9,10 @@ import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
-import { initiateRegistration, initiateGoogleAuth, type DiscountPreview } from '@/lib/api/auth';
+import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import PlanBanner from './PlanBanner';
+import PromoBanner from '@/components/shared/PromoBanner';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password';
 type BillingPeriod = 'annual' | 'monthly';
@@ -20,6 +21,8 @@ type PlanId = 'community' | 'starter' | 'builder';
 interface CreateAccountFormProps {
   initialBilling: BillingPeriod;
   initialPlan: PlanId;
+  initialEmail?: string;
+  initialStep?: OnboardingSubstep;
 }
 
 function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
@@ -27,16 +30,17 @@ function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
   return `${plan}_${billing}`;
 }
 
-function formatAmount(kobo: number, currency: string): string {
-  return (kobo / 100).toLocaleString('en-NG', { style: 'currency', currency });
-}
-
-export default function CreateAccountForm({ initialBilling, initialPlan }: CreateAccountFormProps) {
+export default function CreateAccountForm({
+  initialBilling,
+  initialPlan,
+  initialEmail,
+  initialStep = 'form',
+}: CreateAccountFormProps) {
   const router = useRouter();
   const billing = initialBilling;
   const planId = initialPlan;
 
-  const [substep, setSubstep] = useState<OnboardingSubstep>('form');
+  const [substep, setSubstep] = useState<OnboardingSubstep>(initialStep);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -45,15 +49,13 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
-    discountCode: '',
+    email: initialEmail ?? '',
+    phone: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationToken, setRegistrationToken] = useState('');
-  const [discountPreview, setDiscountPreview] = useState<DiscountPreview | undefined>();
-  const [expanded, setExpanded] = useState(false);
 
   if (substep === 'otp') {
     return (
@@ -74,13 +76,15 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
         billing={billing}
         plan={planId}
         registrationToken={registrationToken}
-        discountPreview={discountPreview}
+        firstName={formData.firstName}
+        lastName={formData.lastName}
+        email={formData.email}
         onComplete={reference => {
           const params = new URLSearchParams({
-            reference,
             firstName: formData.firstName,
             email: formData.email,
           });
+          if (reference) params.set('reference', reference);
 
           router.push(`/onboarding/success?${params.toString()}`);
         }}
@@ -105,6 +109,14 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       next.email = 'Please enter a valid email address.';
     }
+    if (!formData.phone.trim()) {
+      next.phone = 'Phone number is required.';
+    } else if (
+      !/^\+?[\d\s\-()]+$/.test(formData.phone) ||
+      formData.phone.replace(/\D/g, '').length < 10
+    ) {
+      next.phone = 'Please enter a valid phone number.';
+    }
     return next;
   }
 
@@ -119,20 +131,17 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
     setApiError('');
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
-      const code =
-        expanded && formData.discountCode.trim() ? formData.discountCode.trim() : undefined;
 
       const result = await initiateRegistration(
         formData.email,
         formData.firstName,
         formData.lastName,
-        backendPlanId,
-        code
+        formData.phone,
+        backendPlanId
       );
 
-      if (result.discount) {
-        setDiscountPreview(result.discount);
-        toast.success(`Code ${result.discount.code} applied!`);
+      if (result.message) {
+        toast.success(result.message);
       }
 
       setSubstep('otp');
@@ -148,6 +157,9 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
 
   return (
     <div className="max-w-3xl mx-auto">
+      {/* Promo banner */}
+      <PromoBanner />
+
       {/* Plan summary */}
       <div className="mb-8">
         <PlanBanner
@@ -169,7 +181,7 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
           variant="body"
           className="text-neutral-500!"
         >
-          Join 50+ Nigerian creators diversifying their income with structure and community.
+          Join Creators building, growing and earning all in one place.
         </Text>
       </div>
 
@@ -238,56 +250,22 @@ export default function CreateAccountForm({ initialBilling, initialPlan }: Creat
           />
         </div>
 
-        {/* Discount code — shown for paid plans only */}
-        {planId !== 'starter' && (
-          <div className="space-y-3 mb-6 -mt-3">
-            <p className="text-sm text-text-secondary">
-              Got a discount code?{' '}
-              <button
-                type="button"
-                onClick={() => setExpanded(v => !v)}
-                disabled={isSubmitting}
-                className="font-semibold text-text-action cursor-pointer underline-offset-2 hover:underline disabled:no-underline disabled:opacity-60"
-              >
-                {expanded ? 'Hide' : 'Click here'}
-              </button>
-            </p>
-
-            {expanded && (
-              <div className="flex items-center gap-3 w-full">
-                <div className="flex-1">
-                  <FormInput
-                    label=""
-                    id="discountCode"
-                    name="discountCode"
-                    type="text"
-                    placeholder="e.g ABCD1234"
-                    value={formData.discountCode}
-                    onChange={handleChange}
-                    error={errors.discountCode}
-                    inputClassName="w-full"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Discount preview — shown after a valid code is confirmed */}
-            {discountPreview && (
-              <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm">
-                <span className="font-semibold text-green-700">{discountPreview.code}</span>
-                <span className="text-green-700">
-                  {formatAmount(discountPreview.discountAmount, discountPreview.currency)} off — you
-                  pay{' '}
-                  <span className="font-semibold">
-                    {discountPreview.finalAmount === 0
-                      ? 'nothing'
-                      : formatAmount(discountPreview.finalAmount, discountPreview.currency)}
-                  </span>
-                </span>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Phone */}
+        <div className="mb-6">
+          <FormInput
+            label="Phone Number"
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            placeholder="+234 xxx xxx xxxx"
+            value={formData.phone}
+            onChange={handleChange}
+            error={errors.phone}
+            required
+            autoComplete="tel"
+          />
+        </div>
 
         {/* CTA */}
         <Button

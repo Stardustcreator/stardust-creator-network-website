@@ -7,6 +7,7 @@ import CheckIcon from '@/components/icons/CheckIcon';
 import LockIcon from '@/components/icons/LockIcon';
 import Image from 'next/image';
 import { ArrowRightIcon, ChevronRightIcon } from '@sanity/icons';
+import PromoBanner from '@/components/shared/PromoBanner';
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'starter' | 'builder';
@@ -25,16 +26,16 @@ interface PlanConfig {
 }
 
 const PLANS: PlanConfig[] = [
-  {
-    id: 'starter',
-    name: 'Starter',
-    recommended: false,
-    price: { annual: '₦0', monthly: '₦0' },
-    suffix: '/month',
-    caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
-    cta: { label: 'Get Started for free', withArrow: false },
-    commission: '5%',
-  },
+  // {
+  //   id: 'starter',
+  //   name: 'Starter',
+  //   recommended: false,
+  //   price: { annual: '₦0', monthly: '₦0' },
+  //   suffix: '/month',
+  //   caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
+  //   cta: { label: 'Get Started for free', withArrow: false },
+  //   commission: '5%',
+  // },
   {
     id: 'builder',
     name: 'Builder',
@@ -74,8 +75,11 @@ export default function PlanPricingSection({
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   return (
-    <section className="py-20 px-6 pb-24">
+    <section className="py-10 px-6 pb-24">
       <div className="max-w-7xl mx-auto">
+        {/* Promo banner */}
+        <PromoBanner />
+
         {/* Heading */}
         <div className="text-center mb-8">
           <Heading
@@ -122,7 +126,7 @@ export default function PlanPricingSection({
         </div>
 
         {/* Plan cards */}
-        <div className="grid gap-8 md:grid-cols-2 md:items-start max-w-3xl mx-auto md:max-w-none">
+        <div className="grid gap-8 max-w-md mx-auto">
           {PLANS.map(plan => {
             const isBuilder = plan.id === 'builder';
             return (
@@ -189,7 +193,7 @@ export default function PlanPricingSection({
 
                 {/* SCN Commission highlight */}
                 <div
-                  className={`flex items-center justify-between rounded-lg px-4 py-3 mb-3 ${
+                  className={`hidden pflex items-center justify-between rounded-lg px-4 py-3 mb-3 ${
                     isBuilder ? 'bg-surface-action-primary' : 'bg-surface-primary'
                   }`}
                 >

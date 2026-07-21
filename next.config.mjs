@@ -58,6 +58,7 @@ const connectSources = Array.from(
       'https://*.instagram.com',
       'https://*.paystack.com',
       'https://*.paystack.co',
+      'https://*.clarity.ms',
     ].filter(Boolean)
   )
 ).join(' ');
@@ -92,6 +93,7 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
+      { source: '/event', destination: 'https://zoom.us/meeting/register/dkJZOaYuRTaj5-jR8OkvTQ', permanent: false },
     ];
   },
 
@@ -116,9 +118,9 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://script.tapfiliate.com https://js.paystack.co https://*.paystack.com https://*.paystack.co https://analytics.tiktok.com https://api.analytics.tiktok.com https://log.tiktok.com https://t.tiktok.com https://*.tiktok.com https://*.tiktokcdn.com",
-              "script-src-elem 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://core.sanity-cdn.com https://*.sanity.io https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://script.tapfiliate.com https://analytics.tiktok.com https://api.analytics.tiktok.com https://log.tiktok.com https://t.tiktok.com https://*.tiktok.com https://*.tiktokcdn.com",
+              "script-src-elem 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://*.clarity.ms https://www.stardustcreatornetwork.com https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://tagmanager.google.com https://googletagmanager.com https://connect.facebook.net https://*.facebook.com https://core.sanity-cdn.com https://*.sanity.io https://platform.twitter.com https://*.twitter.com https://cdn.syndication.twimg.com https://script.tapfiliate.com https://analytics.tiktok.com https://api.analytics.tiktok.com https://log.tiktok.com https://t.tiktok.com https://*.tiktok.com https://*.tiktokcdn.com",
               "style-src 'self' 'unsafe-inline' https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.googleapis.com https://tagmanager.google.com",
-              "font-src 'self' data: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://fonts.gstatic.com",
+              "font-src 'self' data: https://stardustcreatornetwork.com https://*.clarity.ms https://www.stardustcreatornetwork.com https://fonts.gstatic.com",
               `connect-src ${connectSources}`,
               "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://*.sanity.io https://*.sanity.studio https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://platform.twitter.com https://*.twitter.com https://twitter.com https://x.com https://*.x.com https://www.instagram.com https://*.instagram.com https://*.paystack.com https://*.paystack.co",
               "img-src 'self' data: blob: https: https://stardustcreatornetwork.com https://www.stardustcreatornetwork.com https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://stats.g.doubleclick.net https://googletagmanager.com https://*.google-analytics.com https://*.googletagmanager.com https://*.facebook.com https://pbs.twimg.com https://*.twimg.com https://*.cdninstagram.com https://*.fbcdn.net",
@@ -135,37 +137,37 @@ const nextConfig = {
       },
       ...(isProduction
         ? [
-            {
-              // Cache static assets aggressively in production only.
-              source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache images with longer duration in production only.
-              source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache video files in production only.
-              source: '/(.*)\\.(webm|mp4|mov)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-          ]
+          {
+            // Cache static assets aggressively in production only.
+            source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // Cache images with longer duration in production only.
+            source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // Cache video files in production only.
+            source: '/(.*)\\.(webm|mp4|mov)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+        ]
         : []),
     ];
   },
