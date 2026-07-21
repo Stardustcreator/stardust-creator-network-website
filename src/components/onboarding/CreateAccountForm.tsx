@@ -50,6 +50,7 @@ export default function CreateAccountForm({
     firstName: '',
     lastName: '',
     email: initialEmail ?? '',
+    phone: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
@@ -108,6 +109,14 @@ export default function CreateAccountForm({
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       next.email = 'Please enter a valid email address.';
     }
+    if (!formData.phone.trim()) {
+      next.phone = 'Phone number is required.';
+    } else if (
+      !/^\+?[\d\s\-()]+$/.test(formData.phone) ||
+      formData.phone.replace(/\D/g, '').length < 10
+    ) {
+      next.phone = 'Please enter a valid phone number.';
+    }
     return next;
   }
 
@@ -127,6 +136,7 @@ export default function CreateAccountForm({
         formData.email,
         formData.firstName,
         formData.lastName,
+        formData.phone,
         backendPlanId
       );
 
@@ -237,6 +247,23 @@ export default function CreateAccountForm({
             error={errors.email}
             required
             autoComplete="email"
+          />
+        </div>
+
+        {/* Phone */}
+        <div className="mb-6">
+          <FormInput
+            label="Phone Number"
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            placeholder="+234 xxx xxx xxxx"
+            value={formData.phone}
+            onChange={handleChange}
+            error={errors.phone}
+            required
+            autoComplete="tel"
           />
         </div>
 
