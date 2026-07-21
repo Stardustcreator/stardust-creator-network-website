@@ -67,7 +67,7 @@ export default function NavigationBar({
 
             {/* Sign Up Button */}
             <div className="flex items-center gap-4 shrink-0">
-              <Link href="/onboarding">
+              <Link href="/signin">
                 <button
                   className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
                   style={{
@@ -75,7 +75,7 @@ export default function NavigationBar({
                     color: '#FFFFFF',
                   }}
                 >
-                  Sign up
+                  Sign in / Register
                 </button>
               </Link>
             </div>
