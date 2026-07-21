@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -39,7 +38,7 @@ export default function NavigationBar({
         {/* Desktop Navigation - White background with border */}
         <div className="hidden lg:flex items-center justify-center px-4 py-4">
           <div
-            className="flex items-center justify-between w-full max-w-[1325px] h-[68px] px-8 py-2 rounded-2xl transition-all duration-300"
+            className="flex items-center justify-between w-full max-w-331.25 h-17 px-8 py-2 rounded-2xl transition-all duration-300"
             style={{
               backgroundColor: '#FFFFFF',
               border: '1.5px solid #E2E8F0',
@@ -48,7 +47,7 @@ export default function NavigationBar({
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center hover:opacity-80 transition-opacity flex-shrink-0"
+              className="flex items-center hover:opacity-80 transition-opacity shrink-0"
             >
               <Image
                 src={logoSrc}
@@ -79,6 +78,7 @@ export default function NavigationBar({
                   Login
                 </button>
               </Link>
+
               <Link href="/signin">
                 <button
                   className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
@@ -87,7 +87,7 @@ export default function NavigationBar({
                     color: '#FFFFFF',
                   }}
                 >
-                  Sign up
+                  Sign in / Register
                 </button>
               </Link>
             </div>
