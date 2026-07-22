@@ -45,6 +45,10 @@ export interface SubmitBriefPayload {
   contentCategories?: string[];
   platforms?: string[];
   brandCreatorFit?: string;
+  /** Only collected by the standalone /brief page today. */
+  creatorCountNeeded?: number;
+  creatorGender?: string;
+  creatorAgeRange?: string;
 
   // Step 4: Budget & Payment Preference
   /** Raw budget bucket text, e.g. '₦5M–₦10M'. */
