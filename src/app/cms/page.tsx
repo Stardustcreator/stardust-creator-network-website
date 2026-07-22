@@ -1,12 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Lazily constructed so this never runs during `next build`'s static
+// prerendering pass (Node, no browser env available) - only inside
+// useEffect/handlers below, which execute in the browser. Mirrors the
+// lazy-init pattern in src/lib/supabase.ts.
+let cachedClient: SupabaseClient | null = null;
+function getSupabase(): SupabaseClient {
+  if (!cachedClient) {
+    cachedClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+  }
+  return cachedClient;
+}
 
 type PageType =
   | 'homepage'
@@ -53,7 +63,7 @@ export default function CmsPage() {
       setLoading(true);
       setErrorMessage('');
       try {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
           .from('pages')
           .select('*')
           .eq('slug', currentPage)
@@ -61,7 +71,7 @@ export default function CmsPage() {
 
         if (error) {
           if (error.code === 'PGRST116') {
-            const { data: newPage, error: insertError } = await supabase
+            const { data: newPage, error: insertError } = await getSupabase()
               .from('pages')
               .insert({
                 slug: currentPage,
@@ -116,7 +126,7 @@ export default function CmsPage() {
     setErrorMessage('');
 
     try {
-      const { error } = await supabase
+      const { error } = await getSupabase()
         .from('pages')
         .update({
           title: pageData.title,
