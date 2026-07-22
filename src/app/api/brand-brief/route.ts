@@ -1,6 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
+import {
+  apiBrandBriefSchema,
+  type ApiBrandBriefInput,
+} from '@/lib/validations/brand-brief.validations';
 import { getSupabaseAdmin } from '@/lib/supabase';
+import { submitBrief } from '@/lib/api/briefs';
+
+// Budget buckets are only resolvable to a number for Naira submissions today
+// - there's no currency field on the admin Brief record, so a GBP bucket
+// (or any non-Nigeria country) is left unresolved rather than guessing an
+// exchange rate. Closed buckets use the midpoint of their two bounds; the
+// one open-ended bucket ("₦10M+") has no upper bound to average, so it uses
+// its stated floor as a conservative estimate.
+const NGN_BUDGET_TO_KOBO: Record<string, number> = {
+  '₦2.5M–₦5M': 375_000_000, // midpoint ₦3.75M
+  '₦5M–₦10M': 750_000_000, // midpoint ₦7.5M
+  '₦10M+': 1_000_000_000, // floor: ₦10M
+};
+
+function resolveBudgetKobo(country: string, estimatedBudget: string): number | undefined {
+  if (country !== 'Nigeria') return undefined;
+  return NGN_BUDGET_TO_KOBO[estimatedBudget];
+}
+
+// The admin Brief record has one free-text `timeline` field; the website form
+// splits this into a start date plus a duration bucket, so combine them into
+// one readable string.
+function synthesizeTimeline(data: ApiBrandBriefInput['timelineDeliverables']): string {
+  return `Starts ${data.campaignStartDate} · ${data.campaignDuration}`;
+}
+
+// The admin Brief record has one free-text `campaignBrief` field; the website
+// form has no single equivalent, so summarize the closest fields into one
+// block so admins reviewing the brief aren't looking at a blank field.
+function synthesizeCampaignBrief(
+  campaignObjectives: ApiBrandBriefInput['campaignObjectives'],
+  creatorPreferences: ApiBrandBriefInput['creatorPreferences'],
+  additionalInformation: ApiBrandBriefInput['additionalInformation']
+): string {
+  return [
+    `Campaign: ${campaignObjectives.campaignName}`,
+    `Goals: ${campaignObjectives.campaignGoals.join(', ')}`,
+    creatorPreferences.brandCreatorFit && `Creator fit: ${creatorPreferences.brandCreatorFit}`,
+    additionalInformation.additionalNotes && `Notes: ${additionalInformation.additionalNotes}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
 
 // Helper function to get client IP address
 function getClientIP(request: NextRequest): string {
@@ -303,6 +349,32 @@ export async function POST(request: NextRequest) {
     // Note: Google Sheets and Mailchimp syncs are handled by scheduled cron jobs
     // This keeps form submissions fast and reliable
     // Syncs run every 4 hours via /api/cron/sync-google-sheets and /api/cron/sync-mailchimp
+
+    // Route this submission into the admin B2B Briefs module too, so it
+    // actually reaches a sourcer instead of only existing in Supabase.
+    // Best-effort: Supabase (above) remains the source of truth for the full
+    // questionnaire response, so a failure here must never fail the brand's
+    // submission - it just means this brief needs to be entered into the
+    // admin wizard manually until whatever broke is fixed.
+    try {
+      await submitBrief({
+        brandName: validatedData.brandCompanyInformation.brandName,
+        contactEmail: validatedData.brandCompanyInformation.email,
+        contactName: validatedData.brandCompanyInformation.contactPerson,
+        budget: resolveBudgetKobo(
+          validatedData.brandCompanyInformation.country,
+          validatedData.budgetPaymentPreference.estimatedBudget
+        ),
+        timeline: synthesizeTimeline(validatedData.timelineDeliverables),
+        campaignBrief: synthesizeCampaignBrief(
+          validatedData.campaignObjectives,
+          validatedData.creatorPreferences,
+          validatedData.additionalInformation
+        ),
+      });
+    } catch (briefRoutingError) {
+      console.error('Failed to route brand brief into admin Briefs module:', briefRoutingError);
+    }
 
     // Return success response
     return NextResponse.json({
