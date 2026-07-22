@@ -276,14 +276,14 @@ export default function CreateAccountForm({
           {isSubmitting ? 'Please wait…' : 'Continue'}
         </Button>
 
-        {apiError && (
+        {/* {apiError && (
           <p
-            className="mt-3 text-sm text-center text-surface-error"
+            className="mt-3 text-sm text-center text-surface-error hidden"
             role="alert"
           >
             {apiError}
           </p>
-        )}
+        )} */}
 
         {/* Sign in link */}
         <p className="text-center text-sm text-text-secondary mt-5">
