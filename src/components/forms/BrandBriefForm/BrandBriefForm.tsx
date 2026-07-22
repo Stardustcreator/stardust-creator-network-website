@@ -25,7 +25,6 @@ import AgreementSubmissionStep from './steps/AgreementSubmissionStep';
 // Shared components (reuse from creator form)
 import FormProgress from '../CreatorApplicationForm/FormProgress';
 import FormNavigation from '../CreatorApplicationForm/FormNavigation';
-import DraftResumeModal from '../DraftResumeModal';
 
 interface BrandBriefFormProps {
   country: Country;
@@ -53,81 +52,9 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
     completedSteps: new Set(),
   });
   const [earlyCaptured, setEarlyCaptured] = useState(false);
-  const [draftModalOpen, setDraftModalOpen] = useState(false);
-  const [draftData, setDraftData] = useState<{
-    id: string;
-    country: string;
-    lastUpdated: string;
-    data: BrandBriefFormData;
-  } | null>(null);
-  const [draftChecked, setDraftChecked] = useState(false);
 
   const currentStepIndex = FORM_STEPS.indexOf(formState.currentStep);
   const totalSteps = FORM_STEPS.length - 1; // Exclude welcome from count
-
-  // Check for existing draft when email is provided
-  const checkForDraft = useCallback(
-    async (email: string) => {
-      if (draftChecked) return; // Only check once
-
-      try {
-        const response = await fetch(`/api/brand-brief/draft?email=${encodeURIComponent(email)}`);
-        const result = await response.json();
-
-        if (result.success && result.hasDraft) {
-          setDraftData(result.draft);
-          setDraftModalOpen(true);
-        }
-        setDraftChecked(true);
-      } catch (error) {
-        console.error('Error checking for draft:', error);
-        setDraftChecked(true);
-      }
-    },
-    [draftChecked]
-  );
-
-  // Auto-save draft after completing each section
-  const saveDraft = useCallback(async () => {
-    if (!formState.data.brandCompanyInformation?.email) {
-      return; // Need email to save draft
-    }
-
-    try {
-      await fetch('/api/brand-brief/draft', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formState.data.brandCompanyInformation.email,
-          country,
-          formData: formState.data,
-        }),
-      });
-      console.log('Draft saved successfully');
-    } catch (error) {
-      console.warn('Failed to save draft:', error);
-    }
-  }, [formState.data, country]);
-
-  // Handle draft resume
-  const handleResumeDraft = useCallback(() => {
-    if (draftData) {
-      setFormState(prev => ({
-        ...prev,
-        data: draftData.data,
-        currentStep: 'brand-company-information', // Start from where they have data
-      }));
-      setDraftModalOpen(false);
-    }
-  }, [draftData]);
-
-  // Handle start fresh
-  const handleStartFresh = useCallback(() => {
-    setDraftModalOpen(false);
-    setDraftData(null);
-  }, []);
 
   // Early capture contact information to Mailchimp
   const performEarlyCapture = useCallback(async () => {
@@ -140,11 +67,6 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
     // Only capture if user has consented
     if (!brandInfo.marketingConsent) {
       return;
-    }
-
-    // Check for existing draft when we have email
-    if (!draftChecked) {
-      await checkForDraft(brandInfo.email);
     }
 
     try {
@@ -172,18 +94,13 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
       // Don't block form progression if early capture fails
       console.warn('Early capture error:', error);
     }
-  }, [earlyCaptured, formState.data.brandCompanyInformation, draftChecked, checkForDraft]);
+  }, [earlyCaptured, formState.data.brandCompanyInformation]);
 
   // Navigate to next step
   const goToNextStep = useCallback(async () => {
     // Perform early capture when moving from brand-company-information step
     if (formState.currentStep === 'brand-company-information') {
       await performEarlyCapture();
-    }
-
-    // Save draft after completing any section (except welcome)
-    if (formState.currentStep !== 'welcome' && formState.data.brandCompanyInformation?.email) {
-      await saveDraft();
     }
 
     const nextIndex = currentStepIndex + 1;
@@ -194,13 +111,7 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
         completedSteps: new Set([...prev.completedSteps, prev.currentStep]),
       }));
     }
-  }, [
-    currentStepIndex,
-    formState.currentStep,
-    formState.data.brandCompanyInformation?.email,
-    performEarlyCapture,
-    saveDraft,
-  ]);
+  }, [currentStepIndex, formState.currentStep, performEarlyCapture]);
 
   // Navigate to previous step
   const goToPreviousStep = useCallback(() => {
@@ -391,25 +302,6 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
           body: errorData,
         });
 
-        // Handle specific error cases with user-friendly messages
-        if (response.status === 409 && errorData.code === 'DUPLICATE_EMAIL') {
-          // Set the error on the email field specifically
-          setFormState(prev => ({
-            ...prev,
-            currentStep: 'brand-company-information', // Navigate back to brand info step
-            errors: {
-              ...prev.errors,
-              brandCompanyInformation: {
-                ...prev.errors.brandCompanyInformation,
-                email:
-                  'A brief with this email address has already been submitted. Please use a different email address or contact us if you believe this is an error.',
-              },
-            },
-            isSubmitting: false,
-          }));
-          return; // Don't throw error, just set field error and return
-        }
-
         // Handle validation errors
         if (response.status === 400 && errorData.details) {
           const fieldErrors = errorData.details
@@ -596,16 +488,6 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
               <p className="text-red-400">{formState.errors.general}</p>
             </div>
           </div>
-        )}
-
-        {/* Draft Resume Modal */}
-        {draftData && (
-          <DraftResumeModal
-            isOpen={draftModalOpen}
-            lastUpdated={draftData.lastUpdated}
-            onResume={handleResumeDraft}
-            onStartFresh={handleStartFresh}
-          />
         )}
       </div>
     </div>
