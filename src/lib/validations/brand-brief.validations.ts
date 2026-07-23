@@ -235,29 +235,62 @@ export const createCompleteBrandBriefFormSchema = (country: Country) => {
 };
 
 // API request schema
+//
+// Deliberately loose (plain strings/arrays, not the enums the client-side
+// schemas above use) because this boundary is now shared by two different
+// frontend forms with two different option vocabularies (BrandBriefForm's
+// step wizard, and the standalone /brief page) - each form's own client-side
+// schema/UI is responsible for guiding the user to sensible values; this is
+// just a shape check. The only fields treated as truly required mirror what
+// the admin backend itself requires to persist a usable brief (a name and a
+// contactable email) - see CreateBriefDto in scn-backend.
 export const apiBrandBriefSchema = z.object({
-  brandCompanyInformation: brandCompanyInformationSchema,
-  campaignObjectives: campaignObjectivesSchema,
-  creatorPreferences: creatorPreferencesSchema,
+  brandCompanyInformation: z.object({
+    brandName: z.string().min(1, 'Brand/Company name is required'),
+    companyWebsite: z.string().optional(),
+    country: z.string().optional(),
+    industry: z.string().optional(),
+    businessType: z.string().optional(),
+    contactPerson: z.string().optional(),
+    email: z.string().email('Please enter a valid email address'),
+    phoneNumber: z.string().optional(),
+    marketingConsent: z.boolean().optional(),
+  }),
+  campaignObjectives: z.object({
+    campaignName: z.string().optional(),
+    campaignGoals: z.array(z.string()).optional(),
+    campaignType: z.string().optional(),
+    targetAudiences: z.array(z.string()).optional(),
+    targetMarkets: z.array(z.string()).optional(),
+  }),
+  creatorPreferences: z.object({
+    preferredCreatorTier: z.string().optional(),
+    contentCategories: z.array(z.string()).optional(),
+    platformFocus: z.array(z.string()).optional(),
+    brandCreatorFit: z.string().optional(),
+    creatorCountNeeded: z.number().optional(),
+    creatorGender: z.string().optional(),
+    creatorAgeRange: z.string().optional(),
+  }),
   budgetPaymentPreference: z.object({
-    estimatedBudget: z.string(),
-    paymentModel: z.string(),
-    ongoingCollaboration: z.string(),
+    estimatedBudget: z.string().optional(),
+    paymentModel: z.string().optional(),
+    ongoingCollaboration: z.string().optional(),
   }),
   timelineDeliverables: z.object({
-    campaignStartDate: z.string(),
-    campaignDuration: z.string(),
-    deliverables: z.array(z.string()),
+    campaignStartDate: z.string().optional(),
+    campaignDuration: z.string().optional(),
+    deliverables: z.array(z.string()).optional(),
   }),
   additionalInformation: z.object({
-    referralSource: z.string(),
-    collaborationType: z.string(),
-    communityInterest: z.string(),
+    referralSource: z.string().optional(),
+    collaborationType: z.string().optional(),
+    communityInterest: z.string().optional(),
     additionalNotes: z.string().optional(),
   }),
   agreementSubmission: z.object({
-    authorizedConfirmed: z.boolean(),
-    termsAgreed: z.boolean(),
+    authorizedConfirmed: z.boolean().optional(),
+    termsAgreed: z.boolean().optional(),
   }),
   // Additional metadata
   location: z.string(),

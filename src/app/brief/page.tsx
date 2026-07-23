@@ -399,12 +399,92 @@ export default function BriefPage() {
   const [authorizedConfirmed, setAuthorizedConfirmed] = useState(false);
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const phonePlaceholder = country === 'United Kingdom' ? '+44 XXXX XXXXXX' : '+234 XXX XXX XXXX';
   const today = new Date().toISOString().split('T')[0];
 
   const toggleValue = (list: string[], value: string, setList: (v: string[]) => void) => {
     setList(list.includes(value) ? list.filter(v => v !== value) : [...list, value]);
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const parsedNumCreators = parseInt(numCreators, 10);
+
+    try {
+      const response = await fetch('/api/brand-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          brandCompanyInformation: {
+            brandName,
+            companyWebsite: website,
+            country,
+            industry,
+            businessType,
+            contactPerson,
+            email,
+            phoneNumber: phone,
+            marketingConsent: consent,
+          },
+          campaignObjectives: {
+            campaignName,
+            campaignGoals,
+            campaignType,
+            targetAudiences,
+            targetMarkets,
+          },
+          creatorPreferences: {
+            preferredCreatorTier: preferredTier,
+            contentCategories,
+            platformFocus,
+            brandCreatorFit,
+            creatorCountNeeded: Number.isNaN(parsedNumCreators) ? undefined : parsedNumCreators,
+            creatorGender,
+            creatorAgeRange,
+          },
+          budgetPaymentPreference: {
+            estimatedBudget,
+            paymentModel,
+            ongoingCollaboration,
+          },
+          timelineDeliverables: {
+            campaignStartDate,
+            campaignDuration,
+            deliverables,
+          },
+          additionalInformation: {
+            referralSource,
+            collaborationType,
+            communityInterest,
+            additionalNotes,
+          },
+          agreementSubmission: {
+            authorizedConfirmed,
+            termsAgreed,
+          },
+          location: country,
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to submit brief. Please try again.');
+      }
+
+      setCurrentStep(8);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : 'Failed to submit brief. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -1394,16 +1474,16 @@ export default function BriefPage() {
                   Our partnerships team will review your brief within 72 hours
                 </p>
 
+                {submitError && (
+                  <div className="mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 text-sm">
+                    {submitError}
+                  </div>
+                )}
+
                 <button
                   type="button"
                   disabled={!authorizedConfirmed || !termsAgreed || isSubmitting}
-                  onClick={() => {
-                    setIsSubmitting(true);
-                    setTimeout(() => {
-                      setIsSubmitting(false);
-                      setCurrentStep(8);
-                    }, 400);
-                  }}
+                  onClick={handleSubmit}
                   className={`w-full mt-6 py-3.5 rounded-lg font-semibold transition-all ${
                     authorizedConfirmed && termsAgreed && !isSubmitting
                       ? 'text-white hover:opacity-90'
