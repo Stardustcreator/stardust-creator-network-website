@@ -72,7 +72,7 @@ interface PlanPricingSectionProps {
 export default function PlanPricingSection({
   ctaBase = '/onboarding/create-account',
 }: PlanPricingSectionProps) {
-  const [billing, setBilling] = useState<BillingPeriod>('annual');
+  const [billing, setBilling] = useState<BillingPeriod>('monthly');
 
   return (
     <section className="py-10 px-6 pb-24">
