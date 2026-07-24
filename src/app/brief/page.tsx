@@ -39,7 +39,7 @@ const CAMPAIGN_TYPES = [
 const TARGET_AUDIENCES = [
   'Gen Z (18-24)',
   'Millennials (25-35)',
-  'Gen X (18-24)',
+  'Gen X (36-51)',
   'Families',
   'Professionals',
   'Others',
@@ -92,7 +92,7 @@ const TIER_RANGES_BY_PLATFORM: Record<string, Record<string, string>> = {
     Macro: '250K - 1M',
     Mega: '1M+',
   },
-  'X (Twitter)': {
+  'X/Twitter': {
     Nano: '1K - 5K',
     Micro: '5K - 25K',
     'Mid-Tier': '25K - 100K',
@@ -115,7 +115,7 @@ const TIER_RANGES_BY_PLATFORM: Record<string, Record<string, string>> = {
   },
 };
 
-const NIGERIA_BUDGET_RANGES = ['₦2.5M - ₦5M', '₦5M - ₦10M', '₦10M+'];
+const NIGERIA_BUDGET_RANGES = ['₦500k - ₦2M', '₦2.5M - ₦5M', '₦5M - ₦10M', '₦10M+'];
 const UK_BUDGET_RANGES = ['£5k - £10k', '£10k - £50k', '£50k - £100k', '£100k+'];
 const PAYMENT_MODELS = [
   'Flat campaign fee',
@@ -380,7 +380,7 @@ export default function BriefPage() {
   const [creatorAgeRange, setCreatorAgeRange] = useState('');
   const [contentCategories, setContentCategories] = useState<string[]>([]);
   const [platformFocus, setPlatformFocus] = useState<string[]>([]);
-  const [preferredTier, setPreferredTier] = useState('');
+  const [preferredTiers, setPreferredTiers] = useState<Record<string, string[]>>({});
   const [brandCreatorFit, setBrandCreatorFit] = useState('');
 
   const [estimatedBudget, setEstimatedBudget] = useState('');
@@ -406,6 +406,21 @@ export default function BriefPage() {
 
   const toggleValue = (list: string[], value: string, setList: (v: string[]) => void) => {
     setList(list.includes(value) ? list.filter(v => v !== value) : [...list, value]);
+  };
+
+  const togglePreferredTier = (platform: string, tierName: string) => {
+    setPreferredTiers(prev => {
+      const current = prev[platform] ?? [];
+      const next = current.includes(tierName)
+        ? current.filter(t => t !== tierName)
+        : [...current, tierName];
+
+      if (next.length === 0) {
+        const { [platform]: _removed, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [platform]: next };
+    });
   };
 
   const handleSubmit = async () => {
@@ -438,7 +453,9 @@ export default function BriefPage() {
             targetMarkets,
           },
           creatorPreferences: {
-            preferredCreatorTier: preferredTier,
+            preferredTiers: platformFocus
+              .filter(platform => (preferredTiers[platform] ?? []).length > 0)
+              .map(platform => ({ platform, tiers: preferredTiers[platform] })),
             contentCategories,
             platformFocus,
             brandCreatorFit,
@@ -980,33 +997,51 @@ export default function BriefPage() {
                     <label className="block text-sm font-medium text-neutral-800 mb-2">
                       Preferred Creator Tier
                     </label>
-                    <div
-                      className="rounded-xl overflow-hidden"
-                      style={{ border: '1px solid #E7E5E4' }}
-                    >
-                      {Object.entries(TIER_RANGES_BY_PLATFORM).map(
-                        ([platformName, ranges], index) => (
-                          <div
-                            key={platformName}
-                            className="p-4"
-                            style={index !== 0 ? { borderTop: '1px solid #E7E5E4' } : undefined}
-                          >
-                            <p className="text-sm text-neutral-500 mb-3">{platformName}</p>
-                            <div className="flex flex-wrap gap-3">
-                              {CREATOR_TIER_NAMES.map(tierName => (
-                                <TierCard
-                                  key={tierName}
-                                  tierName={tierName}
-                                  range={ranges[tierName]}
-                                  selected={preferredTier === tierName}
-                                  onSelect={() => setPreferredTier(tierName)}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </div>
+                    <p className="text-sm text-neutral-500 mb-2">
+                      Select one or more tiers for each platform you chose above.
+                    </p>
+                    {platformFocus.filter(platform => TIER_RANGES_BY_PLATFORM[platform]).length ===
+                    0 ? (
+                      <div
+                        className="rounded-xl p-4 text-sm text-neutral-500"
+                        style={{ border: '1px solid #E7E5E4', backgroundColor: '#FAFAF9' }}
+                      >
+                        Select a platform under Platform Focus above to choose creator tiers.
+                      </div>
+                    ) : (
+                      <div
+                        className="rounded-xl overflow-hidden"
+                        style={{ border: '1px solid #E7E5E4' }}
+                      >
+                        {platformFocus
+                          .filter(platform => TIER_RANGES_BY_PLATFORM[platform])
+                          .map((platformName, index) => {
+                            const ranges = TIER_RANGES_BY_PLATFORM[platformName];
+                            const selectedTiers = preferredTiers[platformName] ?? [];
+
+                            return (
+                              <div
+                                key={platformName}
+                                className="p-4"
+                                style={index !== 0 ? { borderTop: '1px solid #E7E5E4' } : undefined}
+                              >
+                                <p className="text-sm text-neutral-500 mb-3">{platformName}</p>
+                                <div className="flex flex-wrap gap-3">
+                                  {CREATOR_TIER_NAMES.map(tierName => (
+                                    <TierCard
+                                      key={tierName}
+                                      tierName={tierName}
+                                      range={ranges[tierName]}
+                                      selected={selectedTiers.includes(tierName)}
+                                      onSelect={() => togglePreferredTier(platformName, tierName)}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    )}
                   </div>
 
                   <div>
