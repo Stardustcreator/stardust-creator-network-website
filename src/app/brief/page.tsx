@@ -1117,7 +1117,7 @@ export default function BriefPage() {
                     </select>
                   </div>
 
-                  <div>
+                  <div className="hidden">
                     <label className="block text-sm font-medium text-neutral-800 mb-2">
                       Preferred payment model
                     </label>
@@ -1356,7 +1356,7 @@ export default function BriefPage() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="hidden">
                     <label className="block text-sm font-medium text-neutral-800 mb-1.5">
                       Marketing Leaders Community
                     </label>
@@ -1396,7 +1396,7 @@ export default function BriefPage() {
                 </div>
 
                 <div
-                  className="mt-6 rounded-lg p-4 flex items-start gap-3"
+                  className="mt-6 rounded-lg p-4 fle items-start gap-3 hidden"
                   style={{ backgroundColor: '#EFF6FF' }}
                 >
                   <svg
@@ -1411,7 +1411,7 @@ export default function BriefPage() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <div>
+                  <div className="hidden">
                     <p className="text-sm font-semibold text-neutral-900 mb-1">
                       Marketing Leaders Community
                     </p>
@@ -1592,7 +1592,7 @@ export default function BriefPage() {
                 </div>
 
                 <div
-                  className="mt-8 rounded-xl p-6 sm:p-8"
+                  className="mt-8 rounded-xl p-6 sm:p-8 hidden"
                   style={{ border: '1px solid #E7E5E4' }}
                 >
                   <p className="text-center text-neutral-700 max-w-2xl mx-auto mb-6">
