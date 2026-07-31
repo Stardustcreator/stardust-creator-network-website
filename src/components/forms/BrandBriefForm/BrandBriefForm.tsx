@@ -457,7 +457,7 @@ export default function BrandBriefForm({ country }: BrandBriefFormProps) {
   const shouldShowNavigation = !['welcome'].includes(formState.currentStep);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black">
+    <div className="min-h-screen bg-linear-to-br from-black via-purple-950/20 to-black">
       <div className="container mx-auto px-4 py-8">
         {/* Progress indicator */}
         {shouldShowProgress && (
