@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 
@@ -355,6 +356,7 @@ function TierCard({
 }
 
 export default function BriefPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = STEP_LABELS.length;
   const percentComplete = Math.round((currentStep / totalSteps) * 100);
@@ -492,6 +494,14 @@ export default function BriefPage() {
 
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Failed to submit brief. Please try again.');
+      }
+
+      // With a brief reference the brand goes on to review pricing and pay;
+      // without one (older backend) they stay on the inline success step.
+      const reference = result.data?.reference;
+      if (reference) {
+        router.push(`/brief/payment?ref=${encodeURIComponent(reference)}`);
+        return;
       }
 
       setCurrentStep(8);
