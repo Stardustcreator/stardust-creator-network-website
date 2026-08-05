@@ -14,18 +14,18 @@ function Spinner() {
   );
 }
 
-// The "sourcing tail" (terms, mobilization invoice, sourcing desk) for a
-// multi-creator brief is /brief-status - it already covers all three: brief
-// terms/summary, the mobilization invoice/payment link, and status as the
-// sourcing desk works the brief. This route exists as a stable destination
-// name for the backend's nextRoute signal; it just forwards straight there.
+// The "sourcing tail" for a multi-creator brief starts at /brief/payment: the
+// brand reviews pricing and terms, then pays the mobilization fee before
+// sourcing begins. /brief-status is where they go afterwards to watch the
+// sourcing desk work the brief. This route exists as a stable destination name
+// for the backend's nextRoute signal; it just forwards straight on.
 function SourcingTailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams?.get('token');
 
   useEffect(() => {
-    router.replace(token ? `/brief-status?token=${encodeURIComponent(token)}` : '/brief-status');
+    router.replace(token ? `/brief/payment?token=${encodeURIComponent(token)}` : '/brief/payment');
   }, [router, token]);
 
   return <Spinner />;

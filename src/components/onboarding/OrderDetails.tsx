@@ -3,12 +3,28 @@
 import { useState } from 'react';
 
 import Button from '../ui/Button';
-import { previewDiscount, type DiscountPreview } from '@/lib/api/payments';
+import { previewDiscount } from '@/lib/api/payments';
 import { formatNaira } from '@/lib/format';
 import { CheckmarkCircleIcon, CloseIcon } from '@sanity/icons';
 
+/**
+ * The parts of a previewed discount this panel actually renders. Kept as a
+ * structural subset so both the subscription `DiscountPreview` (which also
+ * carries planId/planName/currency) and the brief-scoped
+ * `BriefDiscountPreview` satisfy it without conversion.
+ */
+export interface AppliedDiscount {
+  code: string;
+  discountType: string;
+  discountValue: number;
+  /** Amounts are server-computed kobo. */
+  originalAmount: number;
+  discountAmount: number;
+  finalAmount: number;
+}
+
 /** Human label for the applied discount, e.g. "6% off" or "₦5,000 off". */
-function discountSummary(discount: DiscountPreview): string {
+function discountSummary(discount: AppliedDiscount): string {
   return discount.discountType.toLowerCase() === 'percentage'
     ? `${discount.discountValue}% off`
     : `${formatNaira(discount.discountAmount)} off`;
@@ -19,14 +35,19 @@ interface OrderDetailsProps {
   priceLabel: string;
   planLabel: string;
   busy: boolean;
-  onChange: (discount: DiscountPreview | null) => void;
+  onChange: (discount: AppliedDiscount | null) => void;
+  /**
+   * Overrides how a code is validated. Defaults to the subscription
+   * plan-scoped preview; the brief checkout passes a token-scoped one instead.
+   */
+  onPreview?: (code: string) => Promise<AppliedDiscount>;
 }
 
 /**
  * Order-details panel for the checkout sheet: an optional discount-code field
- * and the cart/discount/total breakdown. Validates codes through
- * `POST /payments/discount-preview`, which returns the server-computed amounts
- * (kobo), so the totals here are never derived on the client.
+ * and the cart/discount/total breakdown. Codes are always validated
+ * server-side (see `onPreview`), which returns the computed amounts in kobo,
+ * so the totals here are never derived on the client.
  */
 export function OrderDetails({
   offerId,
@@ -34,10 +55,11 @@ export function OrderDetails({
   planLabel,
   busy,
   onChange,
+  onPreview,
 }: OrderDetailsProps) {
   const [code, setCode] = useState('');
   const [expanded, setExpanded] = useState(false);
-  const [applied, setApplied] = useState<DiscountPreview | null>(null);
+  const [applied, setApplied] = useState<AppliedDiscount | null>(null);
   const [applying, setApplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,7 +69,8 @@ export function OrderDetails({
     setApplying(true);
     setError(null);
     try {
-      const discount = await previewDiscount(offerId, trimmed);
+      const preview = onPreview ?? (value => previewDiscount(offerId, value));
+      const discount = await preview(trimmed);
       setApplied(discount);
       onChange(discount);
     } catch (err) {
@@ -168,7 +191,11 @@ export function OrderDetails({
         <div className="flex items-center justify-between text-base font-bold">
           <dt className="text-text-primary">Total</dt>
           <dd className="flex items-center gap-2">
-            {applied && <span className="text-text-secondary line-through">{priceLabel}</span>}
+            {applied && (
+              <span className="text-text-secondary line-through">
+                {formatNaira(applied.originalAmount)}
+              </span>
+            )}
             <span className={applied ? 'text-text-success' : 'text-text-action'}>
               {applied ? formatNaira(applied.finalAmount) : priceLabel}
             </span>

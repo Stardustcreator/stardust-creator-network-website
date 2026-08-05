@@ -6,15 +6,23 @@ import { useSearchParams } from 'next/navigation';
 
 import Modal from '@/components/ui/modal';
 import { CheckoutForm, type CheckoutValues } from '@/components/onboarding/CheckoutForm';
-import { getBriefPayment, type BriefPaymentState } from '@/lib/api/briefs';
-import { initializeBriefPayment } from '@/lib/api/payments';
+import { type AppliedDiscount } from '@/components/onboarding/OrderDetails';
+import {
+  payBrief,
+  previewBriefDiscount,
+  resumeBrief,
+  type BriefResumeResponse,
+} from '@/lib/api/briefs';
+import { getStoredGuestBriefToken } from '@/lib/guest-brief-token';
 import { formatNaira } from '@/lib/format';
 import { toast } from '@/lib/toast';
 
 /**
  * Offer id for the brief mobilization charge. Unlike the subscription ids in
  * `payments.ts` there's a single brief offer, so it's a constant rather than a
- * plan/billing lookup. Also the id `OrderDetails` validates coupons against.
+ * plan/billing lookup. Discount codes here are scoped by the brief's guest
+ * token rather than this id (see `previewBriefDiscount`), so it's only carried
+ * for prop compatibility with the shared checkout form.
  */
 const BRIEF_OFFER_ID = 'brief_mobilization';
 
@@ -175,21 +183,28 @@ function formatPaidDate(iso: string | undefined): string {
 
 export default function BriefPaymentClient() {
   const searchParams = useSearchParams();
-  const reference = searchParams?.get('ref') ?? '';
+  const tokenFromUrl = searchParams?.get('token') ?? undefined;
 
-  const [brief, setBrief] = useState<BriefPaymentState | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [brief, setBrief] = useState<BriefResumeResponse | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // The emailed link carries the token, but a brand returning on the same
+  // device can resume from the copy persisted at submit time.
   useEffect(() => {
-    if (!reference) {
-      setLoadError('No brief reference provided.');
+    const resolved = tokenFromUrl ?? getStoredGuestBriefToken()?.guestToken;
+
+    if (!resolved) {
+      setLoadError('No brief link found on this device.');
       return;
     }
 
+    setToken(resolved);
+
     let active = true;
-    getBriefPayment(reference)
+    resumeBrief(resolved)
       .then(data => {
         if (active) setBrief(data);
       })
@@ -203,39 +218,55 @@ export default function BriefPaymentClient() {
     return () => {
       active = false;
     };
-  }, [reference]);
+  }, [tokenFromUrl]);
 
-  const markPaid = useCallback((paymentReference?: string) => {
-    setShowCheckout(false);
-    setIsSubmitting(false);
-    setBrief(prev =>
-      prev
-        ? {
-            ...prev,
-            status: 'paid',
-            paymentReference: paymentReference ?? prev.paymentReference,
-            paidAt: prev.paidAt ?? new Date().toISOString(),
-          }
-        : prev
-    );
-  }, []);
+  /**
+   * Re-reads the brief after a payment attempt. The paid receipt is rendered
+   * from server state rather than optimistically, so a webhook that hasn't
+   * landed yet leaves the brand on the unpaid view instead of a false receipt.
+   */
+  const refreshFromResume = useCallback(async () => {
+    if (!token) return;
+    try {
+      setBrief(await resumeBrief(token));
+      setShowCheckout(false);
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Payment went through but we couldn't refresh."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [token]);
+
+  const previewBriefDiscountCode = useCallback(
+    async (code: string): Promise<AppliedDiscount> => {
+      if (!token) throw new Error('Invalid code. Check and try again');
+      return previewBriefDiscount(token, code);
+    },
+    [token]
+  );
 
   async function handleCheckoutSubmit(values: CheckoutValues) {
+    if (!token) return;
     setIsSubmitting(true);
     try {
-      const {
-        checkoutUrl,
-        reference: txReference,
-        requiresPayment,
-      } = await initializeBriefPayment(reference, values.couponCode);
+      const { paymentUrl } = await payBrief({
+        token,
+        payerFirstName: values.firstName,
+        payerLastName: values.lastName,
+        payerEmail: values.email,
+        ...(values.couponCode ? { discountCode: values.couponCode } : {}),
+      });
 
-      // A 100%-off code settles server-side, so there's nothing to open.
-      if (!requiresPayment) {
-        markPaid(txReference);
+      // No checkout to open means the fee settled server-side (e.g. a
+      // 100%-off code), so go straight to re-reading the brief's state.
+      if (!paymentUrl) {
+        await refreshFromResume();
         return;
       }
 
-      const accessCode = checkoutUrl?.split('/').pop();
+      const accessCode = paymentUrl.split('/').pop();
       if (!accessCode) {
         throw new Error('Invalid payment session. Please try again.');
       }
@@ -244,7 +275,9 @@ export default function BriefPaymentClient() {
       const { default: PaystackPop } = (await import('@paystack/inline-js')) as any;
       const trans = new PaystackPop().resumeTransaction(accessCode);
 
-      trans.onSuccess = () => markPaid(txReference);
+      trans.onSuccess = () => {
+        void refreshFromResume();
+      };
       trans.onError = () => {
         toast.error('Payment failed. Please try again.');
         setIsSubmitting(false);
@@ -257,8 +290,20 @@ export default function BriefPaymentClient() {
   }
 
   const email = brief?.contactEmail ?? '';
+  const reference = brief?.reference ?? '';
   const pricing = brief?.pricing;
-  const totalLabel = formatNaira(pricing?.totalDueNow);
+  const commitmentFee = brief?.commitmentFee;
+  // `paidAt` is the reliable signal; the status label is a secondary check.
+  const isPaid = commitmentFee?.paidAt != null || commitmentFee?.status === 'Paid';
+  // Only `totalDueNowKobo` is the amount due now - `commitmentFee.amount` is
+  // the full invoiced fee and is a larger, different figure, so it must never
+  // stand in for the total.
+  const totalDueNowKobo = pricing?.totalDueNowKobo;
+  const totalLabel = formatNaira(totalDueNowKobo);
+  // The backend rejects payment when a brief's creator count falls outside the
+  // configured pricing range, and returns no total for it - so offer payment
+  // only once there's a real amount to collect.
+  const isPayable = totalDueNowKobo != null && totalDueNowKobo > 0;
   const [firstName, ...restOfName] = (brief?.contactName ?? '').trim().split(' ');
 
   return (
@@ -294,7 +339,7 @@ export default function BriefPaymentClient() {
                 style={{ borderColor: '#57058B', borderTopColor: 'transparent' }}
               />
             </div>
-          ) : brief.status === 'paid' ? (
+          ) : isPaid ? (
             /* ---- Paid: centered receipt ---- */
             <div className="mx-auto max-w-[812px] py-8 sm:py-16">
               <div className="text-center">
@@ -324,15 +369,15 @@ export default function BriefPaymentClient() {
               >
                 <SummaryRow
                   label="Brief ID"
-                  value={brief.reference ?? reference}
+                  value={reference || '—'}
                 />
                 <SummaryRow
                   label="Payment reference"
-                  value={brief.paymentReference ?? '—'}
+                  value={commitmentFee?.paymentReference ?? '—'}
                 />
                 <SummaryRow
                   label="Date paid"
-                  value={formatPaidDate(brief.paidAt)}
+                  value={formatPaidDate(commitmentFee?.paidAt ?? undefined)}
                 />
                 <SummaryRow
                   label="Confirmation sent to"
@@ -386,7 +431,7 @@ export default function BriefPaymentClient() {
                   className="self-start rounded-lg bg-white p-2.5 text-sm font-medium sm:self-auto"
                   style={{ color: '#0D542B' }}
                 >
-                  {brief.reference ?? reference}
+                  {reference}
                 </span>
               </div>
 
@@ -438,11 +483,13 @@ export default function BriefPaymentClient() {
                       />
                       <SummaryRow
                         label="Sourcing Fee"
-                        value={formatNaira(pricing?.sourcingFee)}
+                        value={formatNaira(pricing?.sourcingFeeKobo)}
                       />
+                      {/* Labelled "Commitment fee" per the design; the backend
+                          calls the same figure engagementFeeKobo. */}
                       <SummaryRow
                         label="Commitment fee"
-                        value={formatNaira(pricing?.commitmentFee)}
+                        value={formatNaira(pricing?.engagementFeeKobo)}
                       />
                     </div>
 
@@ -466,49 +513,61 @@ export default function BriefPaymentClient() {
                           className="text-2xl font-bold tracking-[-0.0333em]"
                           style={{ color: '#0A0A0A' }}
                         >
-                          {totalLabel}
+                          {isPayable ? totalLabel : 'To be confirmed'}
                         </span>
-                        <span
-                          className="text-sm"
-                          style={{ color: '#717182' }}
-                        >
-                          one-time
-                        </span>
+                        {isPayable && (
+                          <span
+                            className="text-sm"
+                            style={{ color: '#717182' }}
+                          >
+                            one-time
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setShowCheckout(true)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-lg px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90"
-                      style={{ backgroundColor: '#57058B' }}
-                    >
-                      Pay Now
-                      <ArrowRightIcon />
-                    </button>
-                    <p
-                      className="text-center text-xs"
-                      style={{ color: '#737373' }}
-                    >
-                      By paying, you agree to SCN&apos;s{' '}
-                      <Link
-                        href={TERMS_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline"
+                  {isPayable ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowCheckout(true)}
+                        className="flex w-full items-center justify-center gap-1.5 rounded-lg px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90"
+                        style={{ backgroundColor: '#57058B' }}
                       >
-                        Terms of Service
-                      </Link>
-                    </p>
-                  </div>
+                        Pay Now
+                        <ArrowRightIcon />
+                      </button>
+                      <p
+                        className="text-center text-xs"
+                        style={{ color: '#737373' }}
+                      >
+                        By paying, you agree to SCN&apos;s{' '}
+                        <Link
+                          href={TERMS_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline"
+                        >
+                          Terms of Service
+                        </Link>
+                      </p>
+                    </div>
+                  ) : null}
 
-                  <EmailNotice>
-                    Not ready to pay now? Your secure payment link has been sent to{' '}
-                    {email || 'your email'}. You can return and complete payment at any time without
-                    signing in.
-                  </EmailNotice>
+                  {isPayable ? (
+                    <EmailNotice>
+                      Not ready to pay now? Your secure payment link has been sent to{' '}
+                      {email || 'your email'}. You can return and complete payment at any time
+                      without signing in.
+                    </EmailNotice>
+                  ) : (
+                    <EmailNotice>
+                      Your brief needs a quick review before we can price it. Our partnerships team
+                      will send your mobilization invoice to {email || 'your email'} within 72 hours
+                      - no action needed from you right now.
+                    </EmailNotice>
+                  )}
                 </div>
 
                 {/* Right: terms */}
@@ -593,6 +652,10 @@ export default function BriefPaymentClient() {
           initialFirstName={firstName ?? ''}
           initialLastName={restOfName.join(' ')}
           initialEmail={email}
+          // The brand has no session here, and /pay needs a real payer - so
+          // these are prefilled from the brief but stay correctable.
+          editableContact
+          onPreviewDiscount={previewBriefDiscountCode}
           onSubmit={handleCheckoutSubmit}
           onCancel={() => setShowCheckout(false)}
         />

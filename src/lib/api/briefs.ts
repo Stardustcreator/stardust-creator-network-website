@@ -16,21 +16,6 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return data as T;
 }
 
-async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { Accept: 'application/json' },
-    cache: 'no-store',
-  });
-
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    throw new Error(data.message ?? 'Something went wrong. Please try again.');
-  }
-
-  return data as T;
-}
-
 export interface SubmitBriefPayload {
   brandName: string;
   contactEmail: string;
@@ -57,6 +42,8 @@ export interface SubmitBriefPayload {
 
   // Step 3: Creator Preferences
   preferredCreatorTier?: string;
+  /** Per-platform tier selections, e.g. `[{ platform: 'Instagram', tiers: ['Micro'] }]`. */
+  preferredTiers?: Array<{ platform: string; tiers: string[] }>;
   contentCategories?: string[];
   platforms?: string[];
   brandCreatorFit?: string;
@@ -136,37 +123,31 @@ export interface SubmitBriefResponse {
   pricing?: BriefPricing;
 }
 
-/** Mobilization pricing for a brief. All money fields are in kobo. */
+/**
+ * Mobilization pricing for a brief. All money fields are in kobo, and the
+ * `Kobo` suffixes match the backend's field names exactly - don't rename them
+ * to friendlier labels, or every amount silently renders as ₦0 (formatNaira
+ * turns `undefined` into ₦0 rather than throwing).
+ *
+ * `sourcingFeeKobo + engagementFeeKobo = totalDueNowKobo`.
+ */
 export interface BriefPricing {
   requestedCreators?: number;
-  sourcingFee?: number;
-  commitmentFee?: number;
-  totalDueNow?: number;
-}
-
-export interface BriefPaymentState {
-  /** Brand-facing brief id, e.g. `SCN-2025-0847`. */
-  reference?: string;
-  /** Where the confirmation email was sent. */
-  contactEmail?: string;
-  contactName?: string;
-  pricing?: BriefPricing;
-  status?: 'unpaid' | 'paid';
-  /** Present once paid. */
-  paymentReference?: string;
-  /** ISO timestamp of the successful payment. */
-  paidAt?: string;
-}
-
-export interface SubmitBriefResult extends BriefPaymentState {
-  message: string;
+  sourcingFeeKobo?: number;
+  engagementFeeKobo?: number;
+  totalDueNowKobo?: number;
 }
 
 /**
  * Routes a "Find a Creator" submission into the admin B2B Briefs module
- * (`POST /briefs/find-a-creator` on the backend, unauthenticated). Called
- * server-side from `/api/brand-brief` - this is the sole persistence path
- * for brand brief submissions (Supabase was removed from this flow).
+ * (`POST /briefs/find-a-creator` on the backend, unauthenticated) - the sole
+ * persistence path for brand brief submissions (Supabase was removed from this
+ * flow). Called from the browser by `/brief`, and server-side by
+ * `/api/brand-brief` for BrandBriefForm.
+ *
+ * The backend rejects unknown properties, so callers must send this flat shape
+ * rather than the grouped form state - see `@/lib/brief-payload` for the
+ * mapping helpers both callers share.
  *
  * Everything beyond `message` is optional: a backend that doesn't yet return
  * a reference / pricing leaves the brand on the inline success step instead of
@@ -180,10 +161,18 @@ export interface BriefResumeCommitmentFee {
   status: string;
   amount: number | null;
   paidAt: string | null;
+  /**
+   * Transaction reference for the settled fee, shown on the paid receipt.
+   * Optional - the backend doesn't document it yet, so the receipt falls back
+   * to a dash rather than inventing one.
+   */
+  paymentReference?: string | null;
 }
 
 export interface BriefResumeResponse {
   id: string;
+  /** Brand-facing brief id, e.g. `SCN-2025-0847`. */
+  reference?: string;
   brandName: string;
   contactName: string | null;
   contactEmail: string;
@@ -199,11 +188,23 @@ export interface BriefResumeResponse {
   /** Present only for multi-creator briefs - a resolved range. */
   budgetMinKobo?: number | null;
   budgetMaxKobo?: number | null;
+  /** Raw budget bucket text, e.g. '₦5M–₦10M'. */
+  budgetRange?: string | null;
+  paymentModel?: string | null;
+  ongoingCollaboration?: string | null;
+  campaignName?: string | null;
   creatorCountNeeded: number | null;
   platforms: string[];
   campaignBrief: string | null;
   commitmentFee: BriefResumeCommitmentFee | null;
-  /** Present only when the commitment fee is still unpaid and in range. */
+  /** Live pricing breakdown - the source of truth for `/brief/payment`. */
+  pricing?: BriefPricing;
+  submittedDate?: string;
+  /**
+   * Historically carried a hosted payment link. The current backend does not
+   * return one from resume (payment is initialized through `payBrief`), so
+   * treat this as legacy and optional.
+   */
   paymentUrl?: string;
 }
 
@@ -218,11 +219,56 @@ export function resumeBrief(token: string) {
 }
 
 /**
- * Pricing and payment state for a single brief, keyed by its brand-facing
- * reference. Unauthenticated by design - the brand reaches `/brief/payment`
- * from an emailed link with no session, so this is the only way that page can
- * render real amounts on a cold load.
+ * A discount code previewed against a brief's mobilization pricing. Narrower
+ * than the subscription `DiscountPreview` in `auth.ts` - the brief-scoped
+ * endpoint carries no planId/planName/currency, because the "plan" is the
+ * brief itself. Amounts are server-computed kobo, never derived client-side.
  */
-export function getBriefPayment(reference: string) {
-  return get<BriefPaymentState>(`/briefs/find-a-creator/${encodeURIComponent(reference)}/payment`);
+export interface BriefDiscountPreview {
+  discountCodeId: string;
+  code: string;
+  discountType: string;
+  discountValue: number;
+  originalAmount: number;
+  discountAmount: number;
+  finalAmount: number;
+}
+
+/**
+ * Previews a discount code against a brief's current pricing before payment
+ * (`POST /briefs/find-a-creator/discount-preview`, unauthenticated - scoped by
+ * guest token rather than a plan id). Called from the browser by
+ * `/brief/payment`.
+ */
+export function previewBriefDiscount(token: string, discountCode: string) {
+  return post<BriefDiscountPreview>('/briefs/find-a-creator/discount-preview', {
+    token,
+    discountCode,
+  });
+}
+
+export interface PayBriefPayload {
+  token: string;
+  payerFirstName: string;
+  payerLastName: string;
+  payerEmail: string;
+  discountCode?: string;
+}
+
+export interface PayBriefResponse {
+  /**
+   * Paystack checkout URL. Absent when the fee settles server-side with
+   * nothing to collect (e.g. a 100%-off code), in which case re-read the
+   * brief's state with `resumeBrief` instead of opening a checkout.
+   */
+  paymentUrl?: string;
+}
+
+/**
+ * Collects payer details and initializes the Paystack checkout for a brief's
+ * commitment fee (`POST /briefs/find-a-creator/pay`, unauthenticated). Called
+ * from the browser by `/brief/payment`.
+ */
+export function payBrief(payload: PayBriefPayload) {
+  return post<PayBriefResponse>('/briefs/find-a-creator/pay', payload);
 }
