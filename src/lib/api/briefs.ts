@@ -16,6 +16,21 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return data as T;
 }
 
+async function get<T>(path: string): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    headers: { Accept: 'application/json' },
+    cache: 'no-store',
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(data.message ?? 'Something went wrong. Please try again.');
+  }
+
+  return data as T;
+}
+
 export interface SubmitBriefPayload {
   brandName: string;
   contactEmail: string;
@@ -113,6 +128,38 @@ export interface SubmitBriefResponse {
   /** Present only for multi-creator briefs - a resolved range. */
   budgetMinKobo?: number | null;
   budgetMaxKobo?: number | null;
+  /** Brand-facing brief id, e.g. `SCN-2025-0847` - present once the backend assigns one. */
+  reference?: string;
+  /** Where the confirmation email was sent, if different from the submitted email. */
+  contactEmail?: string;
+  /** Present when the brief resolves immediately to a mobilization fee. */
+  pricing?: BriefPricing;
+}
+
+/** Mobilization pricing for a brief. All money fields are in kobo. */
+export interface BriefPricing {
+  requestedCreators?: number;
+  sourcingFee?: number;
+  commitmentFee?: number;
+  totalDueNow?: number;
+}
+
+export interface BriefPaymentState {
+  /** Brand-facing brief id, e.g. `SCN-2025-0847`. */
+  reference?: string;
+  /** Where the confirmation email was sent. */
+  contactEmail?: string;
+  contactName?: string;
+  pricing?: BriefPricing;
+  status?: 'unpaid' | 'paid';
+  /** Present once paid. */
+  paymentReference?: string;
+  /** ISO timestamp of the successful payment. */
+  paidAt?: string;
+}
+
+export interface SubmitBriefResult extends BriefPaymentState {
+  message: string;
 }
 
 /**
@@ -120,6 +167,10 @@ export interface SubmitBriefResponse {
  * (`POST /briefs/find-a-creator` on the backend, unauthenticated). Called
  * server-side from `/api/brand-brief` - this is the sole persistence path
  * for brand brief submissions (Supabase was removed from this flow).
+ *
+ * Everything beyond `message` is optional: a backend that doesn't yet return
+ * a reference / pricing leaves the brand on the inline success step instead of
+ * the payment page.
  */
 export function submitBrief(payload: SubmitBriefPayload) {
   return post<SubmitBriefResponse>('/briefs/find-a-creator', payload);
@@ -164,4 +215,14 @@ export interface BriefResumeResponse {
  */
 export function resumeBrief(token: string) {
   return post<BriefResumeResponse>('/briefs/resume', { token });
+}
+
+/**
+ * Pricing and payment state for a single brief, keyed by its brand-facing
+ * reference. Unauthenticated by design - the brand reaches `/brief/payment`
+ * from an emailed link with no session, so this is the only way that page can
+ * render real amounts on a cold load.
+ */
+export function getBriefPayment(reference: string) {
+  return get<BriefPaymentState>(`/briefs/find-a-creator/${encodeURIComponent(reference)}/payment`);
 }

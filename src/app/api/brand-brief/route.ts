@@ -146,6 +146,9 @@ export async function POST(request: NextRequest) {
       referrerUrl: referrer,
     });
 
+    // `reference` and `pricing` drive the /brief/payment hand-off. Both are
+    // optional, so the brand falls back to the inline success step when the
+    // backend doesn't send them.
     return NextResponse.json({
       success: true,
       data: {
@@ -157,6 +160,9 @@ export async function POST(request: NextRequest) {
         budget: result.budget,
         budgetMinKobo: result.budgetMinKobo,
         budgetMaxKobo: result.budgetMaxKobo,
+        reference: result.reference,
+        contactEmail: result.contactEmail ?? brandCompanyInformation.email,
+        pricing: result.pricing,
       },
     });
   } catch (error) {

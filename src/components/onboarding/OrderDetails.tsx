@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import Button from '../ui/Button';
 import { previewDiscount, type DiscountPreview } from '@/lib/api/payments';
+import { formatNaira } from '@/lib/format';
 import { CheckmarkCircleIcon, CloseIcon } from '@sanity/icons';
 
 /** Human label for the applied discount, e.g. "6% off" or "₦5,000 off". */
@@ -11,10 +12,6 @@ function discountSummary(discount: DiscountPreview): string {
   return discount.discountType.toLowerCase() === 'percentage'
     ? `${discount.discountValue}% off`
     : `${formatNaira(discount.discountAmount)} off`;
-}
-function formatNaira(kobo: number | undefined): string {
-  const naira = Math.round((kobo ?? 0) / 100);
-  return `₦${new Intl.NumberFormat('en-NG').format(naira)}`;
 }
 
 interface OrderDetailsProps {

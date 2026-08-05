@@ -509,6 +509,12 @@ export default function BriefPage() {
         router.push(
           `/${result.data.nextRoute}?token=${encodeURIComponent(result.data.guestToken)}`
         );
+      }
+      // With a brief reference the brand goes on to review pricing and pay;
+      // without one (older backend) they stay on the inline success step.
+      const reference = result.data?.reference;
+      if (reference) {
+        router.push(`/brief/payment?ref=${encodeURIComponent(reference)}`);
         return;
       }
 
