@@ -148,7 +148,16 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: { message: result.message },
+      data: {
+        message: result.message,
+        briefId: result.briefId,
+        guestToken: result.guestToken,
+        pathTag: result.pathTag,
+        nextRoute: result.nextRoute,
+        budget: result.budget,
+        budgetMinKobo: result.budgetMinKobo,
+        budgetMaxKobo: result.budgetMaxKobo,
+      },
     });
   } catch (error) {
     console.error('Brand brief submission error:', error);

@@ -71,12 +71,48 @@ export interface SubmitBriefPayload {
   authorizationConfirmed?: boolean;
   termsAgreed?: boolean;
 
+  /**
+   * Explicit path choice, distinct from the count-derived pathTag - only
+   * send this if the UI itself asked the brand to pick a path (e.g. a
+   * future single-vs-multi selector); omit to let the backend derive the
+   * path purely from creatorCountNeeded, as it does today.
+   */
+  intendedPath?: BriefPathTag;
+
   // Attribution metadata
   locationDetected?: string;
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
   referrerUrl?: string;
+}
+
+/** Routing hint derived from creatorCountNeeded (1 = single, 2+ = multi). */
+export type BriefPathTag = 'single-creator' | 'multi-creator';
+
+/**
+ * Where to send the brand after submission - single-creator goes to the
+ * pitch route, multi-creator to the sourcing tail (terms, mobilization
+ * invoice, sourcing desk).
+ */
+export type BriefNextRoute = 'pitch' | 'sourcing-tail';
+
+export interface SubmitBriefResponse {
+  message: string;
+  briefId: string;
+  /**
+   * Guest token bound to this brief - the client's only way to resume it
+   * later (via resumeBrief) without an account. Persist it (see
+   * @/lib/guest-brief-token) immediately; it is never re-issued.
+   */
+  guestToken: string;
+  pathTag: BriefPathTag;
+  nextRoute: BriefNextRoute;
+  /** Present only for single-creator briefs - a single resolved figure. */
+  budget?: number;
+  /** Present only for multi-creator briefs - a resolved range. */
+  budgetMinKobo?: number | null;
+  budgetMaxKobo?: number | null;
 }
 
 /**
@@ -86,5 +122,46 @@ export interface SubmitBriefPayload {
  * for brand brief submissions (Supabase was removed from this flow).
  */
 export function submitBrief(payload: SubmitBriefPayload) {
-  return post<{ message: string }>('/briefs/find-a-creator', payload);
+  return post<SubmitBriefResponse>('/briefs/find-a-creator', payload);
+}
+
+export interface BriefResumeCommitmentFee {
+  status: string;
+  amount: number | null;
+  paidAt: string | null;
+}
+
+export interface BriefResumeResponse {
+  id: string;
+  brandName: string;
+  contactName: string | null;
+  contactEmail: string;
+  budget: number | null;
+  budgetIncomplete: boolean;
+  timeline: string | null;
+  status: string;
+  source: string;
+  /** Brand-facing status label, e.g. "Awaiting Payment", "Sourcing Creators". */
+  tag: string;
+  pathTag: BriefPathTag;
+  nextRoute: BriefNextRoute;
+  /** Present only for multi-creator briefs - a resolved range. */
+  budgetMinKobo?: number | null;
+  budgetMaxKobo?: number | null;
+  creatorCountNeeded: number | null;
+  platforms: string[];
+  campaignBrief: string | null;
+  commitmentFee: BriefResumeCommitmentFee | null;
+  /** Present only when the commitment fee is still unpaid and in range. */
+  paymentUrl?: string;
+}
+
+/**
+ * Resumes a website-submitted brief by its guest token (`POST /briefs/resume`
+ * on the backend, unauthenticated) - see
+ * AdminBriefsService.resumeByGuestToken. Called server-side from
+ * `/api/brief-status`.
+ */
+export function resumeBrief(token: string) {
+  return post<BriefResumeResponse>('/briefs/resume', { token });
 }

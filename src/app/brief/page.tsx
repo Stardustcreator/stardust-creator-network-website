@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
+import { persistGuestBriefToken } from '@/lib/guest-brief-token';
 
 const COUNTRIES = ['Nigeria', 'United Kingdom', 'Other'];
 const INDUSTRIES = [
@@ -355,6 +357,7 @@ function TierCard({
 }
 
 export default function BriefPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = STEP_LABELS.length;
   const percentComplete = Math.round((currentStep / totalSteps) * 100);
@@ -492,6 +495,21 @@ export default function BriefPage() {
 
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Failed to submit brief. Please try again.');
+      }
+
+      if (result.data?.briefId && result.data?.guestToken) {
+        persistGuestBriefToken(result.data.briefId, result.data.guestToken);
+      }
+
+      // The backend decides where a submitted brief goes next - single-
+      // creator to the pitch route, multi-creator to the sourcing tail
+      // (terms, mobilization invoice, sourcing desk). Fall back to the
+      // inline thank-you screen only if that signal is somehow missing.
+      if (result.data?.nextRoute && result.data?.guestToken) {
+        router.push(
+          `/${result.data.nextRoute}?token=${encodeURIComponent(result.data.guestToken)}`
+        );
+        return;
       }
 
       setCurrentStep(8);
@@ -1589,6 +1607,13 @@ export default function BriefPage() {
                     Our partnerships team will review your brief and contact you within 72 hours
                     with curated creator shortlist and tailored proposal.
                   </p>
+                  <Link
+                    href="/brief-status"
+                    className="inline-block mt-4 font-semibold"
+                    style={{ color: '#57058B' }}
+                  >
+                    View your brief anytime, no sign-in needed →
+                  </Link>
                 </div>
 
                 <div
