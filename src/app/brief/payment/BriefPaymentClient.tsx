@@ -11,6 +11,7 @@ import {
   payBrief,
   previewBriefDiscount,
   resumeBrief,
+  verifyBriefPayment,
   type BriefResumeResponse,
 } from '@/lib/api/briefs';
 import { getStoredGuestBriefToken } from '@/lib/guest-brief-token';
@@ -190,6 +191,7 @@ export default function BriefPaymentClient() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConfirmingPayment, setIsConfirmingPayment] = useState(false);
 
   // The emailed link carries the token, but a brand returning on the same
   // device can resume from the copy persisted at submit time.
@@ -239,6 +241,40 @@ export default function BriefPaymentClient() {
     }
   }, [token]);
 
+  /**
+   * Called the instant the inline Paystack popup reports success. Rather
+   * than trusting that client-side signal alone (and rather than only
+   * waiting on our own async webhook, which can lag behind it), this asks
+   * the backend to independently re-verify with Paystack. A short retry
+   * covers the rare case where even that server-side verify call outruns
+   * Paystack's own settlement.
+   */
+  const confirmPayment = useCallback(async () => {
+    if (!token) return;
+    setShowCheckout(false);
+    setIsConfirmingPayment(true);
+    const maxAttempts = 3;
+    try {
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        const result = await verifyBriefPayment(token);
+        const paid =
+          result.commitmentFee?.paidAt != null || result.commitmentFee?.status === 'Paid';
+        if (paid || attempt === maxAttempts) {
+          setBrief(result);
+          break;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Payment went through but we couldn't confirm it."
+      );
+    } finally {
+      setIsConfirmingPayment(false);
+      setIsSubmitting(false);
+    }
+  }, [token]);
+
   const previewBriefDiscountCode = useCallback(
     async (code: string): Promise<AppliedDiscount> => {
       if (!token) throw new Error('Invalid code. Check and try again');
@@ -276,7 +312,7 @@ export default function BriefPaymentClient() {
       const trans = new PaystackPop().resumeTransaction(accessCode);
 
       trans.onSuccess = () => {
-        void refreshFromResume();
+        void confirmPayment();
       };
       trans.onError = () => {
         toast.error('Payment failed. Please try again.');
@@ -338,6 +374,19 @@ export default function BriefPaymentClient() {
                 className="h-8 w-8 animate-spin rounded-full border-2 border-t-transparent"
                 style={{ borderColor: '#57058B', borderTopColor: 'transparent' }}
               />
+            </div>
+          ) : isConfirmingPayment ? (
+            <div className="flex flex-col items-center gap-4 py-32">
+              <div
+                className="h-8 w-8 animate-spin rounded-full border-2 border-t-transparent"
+                style={{ borderColor: '#57058B', borderTopColor: 'transparent' }}
+              />
+              <p
+                className="text-sm font-medium"
+                style={{ color: '#737373' }}
+              >
+                Confirming your payment…
+              </p>
             </div>
           ) : isPaid ? (
             /* ---- Paid: centered receipt ---- */

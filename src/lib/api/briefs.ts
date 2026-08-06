@@ -161,11 +161,7 @@ export interface BriefResumeCommitmentFee {
   status: string;
   amount: number | null;
   paidAt: string | null;
-  /**
-   * Transaction reference for the settled fee, shown on the paid receipt.
-   * Optional - the backend doesn't document it yet, so the receipt falls back
-   * to a dash rather than inventing one.
-   */
+  /** Transaction reference for the settled fee, shown on the paid receipt. */
   paymentReference?: string | null;
 }
 
@@ -216,6 +212,17 @@ export interface BriefResumeResponse {
  */
 export function resumeBrief(token: string) {
   return post<BriefResumeResponse>('/briefs/resume', { token });
+}
+
+/**
+ * Independently asks Paystack to verify the brief's payment (`POST
+ * /briefs/find-a-creator/verify-payment`, unauthenticated) instead of
+ * waiting on our own async webhook - call this right after the inline
+ * checkout SDK reports success. Same response shape as `resumeBrief`; the
+ * backend races this against the webhook, so whichever confirms first wins.
+ */
+export function verifyBriefPayment(token: string) {
+  return post<BriefResumeResponse>('/briefs/find-a-creator/verify-payment', { token });
 }
 
 /**
