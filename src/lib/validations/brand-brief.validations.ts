@@ -265,6 +265,16 @@ export const apiBrandBriefSchema = z.object({
   }),
   creatorPreferences: z.object({
     preferredCreatorTier: z.string().optional(),
+    // Per-platform tier selections, e.g. [{ platform: 'Instagram', tiers: ['Micro'] }].
+    // The standalone /brief page collects these; BrandBriefForm doesn't.
+    preferredTiers: z
+      .array(
+        z.object({
+          platform: z.string(),
+          tiers: z.array(z.string()),
+        })
+      )
+      .optional(),
     contentCategories: z.array(z.string()).optional(),
     platformFocus: z.array(z.string()).optional(),
     brandCreatorFit: z.string().optional(),
@@ -292,6 +302,9 @@ export const apiBrandBriefSchema = z.object({
     authorizedConfirmed: z.boolean().optional(),
     termsAgreed: z.boolean().optional(),
   }),
+  // Explicit single-vs-multi path choice. Omitted by both forms today, which
+  // lets the backend derive the path from creatorCountNeeded instead.
+  intendedPath: z.enum(['single-creator', 'multi-creator']).optional(),
   // Additional metadata
   location: z.string(),
   submittedAt: z.string().datetime(),

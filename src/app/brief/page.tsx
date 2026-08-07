@@ -2,8 +2,17 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
+import { persistGuestBriefToken } from '@/lib/guest-brief-token';
+import { submitBrief } from '@/lib/api/briefs';
+import {
+  extractUTMParams,
+  resolveBudgetKobo,
+  synthesizeCampaignBrief,
+  synthesizeTimeline,
+} from '@/lib/brief-payload';
 
 const COUNTRIES = ['Nigeria', 'United Kingdom', 'Other'];
 const INDUSTRIES = [
@@ -355,6 +364,7 @@ function TierCard({
 }
 
 export default function BriefPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = STEP_LABELS.length;
   const percentComplete = Math.round((currentStep / totalSteps) * 100);
@@ -430,70 +440,84 @@ export default function BriefPage() {
     const parsedNumCreators = parseInt(numCreators, 10);
 
     try {
-      const response = await fetch('/api/brand-brief', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          brandCompanyInformation: {
-            brandName,
-            companyWebsite: website,
-            country,
-            industry,
-            businessType,
-            contactPerson,
-            email,
-            phoneNumber: phone,
-            marketingConsent: consent,
-          },
-          campaignObjectives: {
-            campaignName,
-            campaignGoals,
-            campaignType,
-            targetAudiences,
-            targetMarkets,
-          },
-          creatorPreferences: {
-            preferredTiers: platformFocus
-              .filter(platform => (preferredTiers[platform] ?? []).length > 0)
-              .map(platform => ({ platform, tiers: preferredTiers[platform] })),
-            contentCategories,
-            platformFocus,
-            brandCreatorFit,
-            creatorCountNeeded: Number.isNaN(parsedNumCreators) ? undefined : parsedNumCreators,
-            creatorGender,
-            creatorAgeRange,
-          },
-          budgetPaymentPreference: {
-            estimatedBudget,
-            paymentModel,
-            ongoingCollaboration,
-          },
-          timelineDeliverables: {
-            campaignStartDate,
-            campaignDuration,
-            deliverables,
-          },
-          additionalInformation: {
-            referralSource,
-            collaborationType,
-            communityInterest,
-            additionalNotes,
-          },
-          agreementSubmission: {
-            authorizedConfirmed,
-            termsAgreed,
-          },
-          location: country,
-          submittedAt: new Date().toISOString(),
-        }),
+      const utm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
+
+      // The backend rejects unknown properties, so this must be the flat
+      // payload it documents - not the grouped shape the wizard holds in
+      // state. Send only fields it knows about.
+      const result = await submitBrief({
+        brandName,
+        contactEmail: email,
+        contactName: contactPerson || undefined,
+        budget: resolveBudgetKobo(country, estimatedBudget),
+        timeline: synthesizeTimeline({ campaignStartDate, campaignDuration }),
+        campaignBrief: synthesizeCampaignBrief(
+          { campaignName, campaignGoals },
+          { brandCreatorFit },
+          { additionalNotes }
+        ),
+
+        companyWebsite: website || undefined,
+        country,
+        industry: industry || undefined,
+        typeOfBusiness: businessType || undefined,
+        contactPhone: phone || undefined,
+        marketingOptIn: consent,
+
+        campaignName: campaignName || undefined,
+        campaignGoals,
+        campaignType: campaignType || undefined,
+        targetAudiences,
+        targetMarkets,
+
+        preferredTiers: platformFocus
+          .filter(platform => (preferredTiers[platform] ?? []).length > 0)
+          .map(platform => ({ platform, tiers: preferredTiers[platform] })),
+        contentCategories,
+        platforms: platformFocus,
+        brandCreatorFit: brandCreatorFit || undefined,
+        creatorCountNeeded: Number.isNaN(parsedNumCreators) ? undefined : parsedNumCreators,
+        creatorGender: creatorGender || undefined,
+        creatorAgeRange: creatorAgeRange || undefined,
+
+        budgetRange: estimatedBudget || undefined,
+        paymentModel: paymentModel || undefined,
+        ongoingCollaboration: ongoingCollaboration || undefined,
+
+        campaignStartDate: campaignStartDate || undefined,
+        campaignDuration: campaignDuration || undefined,
+        deliverables,
+
+        howHeard: referralSource || undefined,
+        collaborationType: collaborationType || undefined,
+        communityInterest: communityInterest || undefined,
+        additionalNotes: additionalNotes || undefined,
+
+        authorizationConfirmed: authorizedConfirmed,
+        termsAgreed,
+
+        locationDetected: country,
+        utmSource: utm.utm_source,
+        utmMedium: utm.utm_medium,
+        utmCampaign: utm.utm_campaign,
+        referrerUrl: typeof document === 'undefined' ? undefined : document.referrer || undefined,
       });
 
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Failed to submit brief. Please try again.');
+      if (result.briefId && result.guestToken) {
+        persistGuestBriefToken(result.briefId, result.guestToken);
       }
 
+      // The backend decides where a submitted brief goes next - single-
+      // creator to the pitch route, multi-creator to the sourcing tail
+      // (terms, mobilization payment, sourcing desk). `nextRoute` is the
+      // single routing authority; the guest token is how each destination
+      // reads the brief back, so both are needed to navigate.
+      if (result.nextRoute && result.guestToken) {
+        router.push(`/${result.nextRoute}?token=${encodeURIComponent(result.guestToken)}`);
+        return;
+      }
+
+      // No routing signal (older backend) - stay on the inline success step.
       setCurrentStep(8);
     } catch (error) {
       setSubmitError(
@@ -1589,6 +1613,13 @@ export default function BriefPage() {
                     Our partnerships team will review your brief and contact you within 72 hours
                     with curated creator shortlist and tailored proposal.
                   </p>
+                  <Link
+                    href="/brief-status"
+                    className="inline-block mt-4 font-semibold"
+                    style={{ color: '#57058B' }}
+                  >
+                    View your brief anytime, no sign-in needed →
+                  </Link>
                 </div>
 
                 <div
