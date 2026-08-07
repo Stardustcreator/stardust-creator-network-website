@@ -21,6 +21,20 @@ const TAG_TOKENS: Record<string, { bg: string; text: string }> = {
   Closed: { bg: 'var(--color-surface-error-primary)', text: 'var(--color-text-error)' },
 };
 
+// `paidAt` is the reliable signal, `status` a secondary check - mirrors the
+// same check in BriefPaymentClient.
+function isBriefPaid(brief: BriefResumeResponse): boolean {
+  return brief.commitmentFee?.paidAt != null || brief.commitmentFee?.status === 'Paid';
+}
+
+// The backend withholds a total when a brief's creator count falls outside
+// its configured pricing range - only offer payment once there's a real
+// amount due, same gate BriefPaymentClient uses.
+function isBriefPayable(brief: BriefResumeResponse): boolean {
+  const total = brief.pricing?.totalDueNowKobo;
+  return total != null && total > 0;
+}
+
 function TagPill({ tag }: { tag: string }) {
   const tokens = TAG_TOKENS[tag] ?? { bg: '#F1F5F9', text: '#334155' };
   return (
@@ -51,6 +65,7 @@ function BriefStatusContent() {
   const [state, setState] = useState<LoadState>('loading');
   const [brief, setBrief] = useState<BriefResumeResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const token = tokenFromUrl ?? getStoredGuestBriefToken()?.guestToken;
@@ -59,6 +74,8 @@ function BriefStatusContent() {
       setState('no-token');
       return;
     }
+
+    setToken(token);
 
     fetch('/api/brief-status', {
       method: 'POST',
@@ -169,27 +186,27 @@ function BriefStatusContent() {
             )}
           </div>
 
-          {brief.paymentUrl && brief.commitmentFee?.amount && (
+          {!isBriefPaid(brief) && isBriefPayable(brief) && token && (
             <div
               className="rounded-xl p-6 mb-6"
               style={{ backgroundColor: '#FAFAF9' }}
             >
               <p className="text-neutral-700 mb-4">
-                Complete the one-time commitment fee of{' '}
-                <strong>{formatPrice(brief.commitmentFee.amount / 100, 'NGN')}</strong> to get your
-                brief in front of creators.
+                Complete the one-time mobilization payment of{' '}
+                <strong>{formatPrice((brief.pricing?.totalDueNowKobo ?? 0) / 100, 'NGN')}</strong>{' '}
+                to get your brief in front of creators.
               </p>
-              <a
-                href={brief.paymentUrl}
+              <Link
+                href={`/brief/payment?token=${encodeURIComponent(token)}`}
                 className="inline-block px-6 py-3 rounded-full font-semibold text-white"
                 style={{ backgroundColor: '#57058B' }}
               >
-                Pay commitment fee
-              </a>
+                Proceed to payment
+              </Link>
             </div>
           )}
 
-          {brief.commitmentFee?.status === 'Paid' && (
+          {isBriefPaid(brief) && (
             <p
               className="text-sm"
               style={{ color: 'var(--color-text-success)' }}
