@@ -330,6 +330,18 @@ function RadioOption({
   );
 }
 
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="mt-1.5 text-sm text-red-600">{message}</p>;
+}
+
+/** Swaps the shared input border for a red one when the field has a validation error. */
+function fieldClass(hasError: boolean) {
+  return hasError ? inputClass.replace('border-[#E7E5E4]', 'border-red-400') : inputClass;
+}
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function TierCard({
   tierName,
   range,
@@ -410,12 +422,93 @@ export default function BriefPage() {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const phonePlaceholder = country === 'United Kingdom' ? '+44 XXXX XXXXXX' : '+234 XXX XXX XXXX';
   const today = new Date().toISOString().split('T')[0];
 
+  const clearError = (field: string) => {
+    setErrors(prev => {
+      if (!(field in prev)) return prev;
+      const { [field]: _removed, ...rest } = prev;
+      return rest;
+    });
+  };
+
   const toggleValue = (list: string[], value: string, setList: (v: string[]) => void) => {
     setList(list.includes(value) ? list.filter(v => v !== value) : [...list, value]);
+  };
+
+  /**
+   * Required fields per step, mirroring the Brand OS wizard's own required-field spec
+   * (src/components/campaigns/brief-builder/steps.ts) so the two brief-intake surfaces
+   * agree on what "required" means - the backend itself is deliberately lenient here
+   * (an incomplete brief is saved and flagged, not rejected), so there's no DTO-level
+   * source of truth to check against beyond brandName/contactEmail/the two agreements.
+   */
+  const validateStep = (step: number): Record<string, string> => {
+    const errs: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!brandName.trim()) errs.brandName = 'Enter your brand/company name';
+      if (!website.trim()) errs.website = "Enter your company's website";
+      if (!industry) errs.industry = 'Select your industry';
+      if (!businessType) errs.businessType = 'Select your business type';
+      if (!contactPerson.trim()) errs.contactPerson = 'Enter a contact person';
+      if (!email.trim()) errs.email = 'Enter your email';
+      else if (!EMAIL_PATTERN.test(email.trim())) errs.email = 'Enter a valid email address';
+    }
+
+    if (step === 2) {
+      if (!campaignName.trim()) errs.campaignName = 'Enter your campaign name';
+      if (campaignGoals.length === 0) errs.campaignGoals = 'Select at least one campaign goal';
+      if (!campaignType) errs.campaignType = 'Select a campaign type';
+      if (targetAudiences.length === 0) {
+        errs.targetAudiences = 'Select at least one target audience';
+      }
+      if (targetMarkets.length === 0) errs.targetMarkets = 'Select at least one target market';
+    }
+
+    if (step === 3) {
+      const parsedCount = parseInt(numCreators, 10);
+      if (!numCreators.trim()) errs.numCreators = 'Enter the number of creators you need';
+      else if (!Number.isInteger(parsedCount) || parsedCount < 1) {
+        errs.numCreators = 'Enter a valid number of creators';
+      }
+      if (!creatorGender) errs.creatorGender = 'Select the creator(s) gender';
+      if (!creatorAgeRange) errs.creatorAgeRange = 'Select a preferred age range';
+      if (contentCategories.length === 0) {
+        errs.contentCategories = 'Select at least one content category';
+      }
+      if (platformFocus.length === 0) errs.platformFocus = 'Select at least one platform';
+    }
+
+    if (step === 4) {
+      if (!estimatedBudget) errs.estimatedBudget = 'Select your budget range';
+      if (!ongoingCollaboration) {
+        errs.ongoingCollaboration = 'Select an ongoing collaboration option';
+      }
+    }
+
+    if (step === 5) {
+      if (!campaignStartDate) errs.campaignStartDate = 'Select a campaign start date';
+      if (deliverables.length === 0) errs.deliverables = 'Select at least one deliverable';
+    }
+
+    return errs;
+  };
+
+  /** Only validates on a forward move - Back always works, even from a half-filled step. */
+  const goToStep = (target: number) => {
+    if (target > currentStep) {
+      const stepErrors = validateStep(currentStep);
+      if (Object.keys(stepErrors).length > 0) {
+        setErrors(stepErrors);
+        return;
+      }
+    }
+    setErrors({});
+    setCurrentStep(target);
   };
 
   const togglePreferredTier = (platform: string, tierName: string) => {
@@ -632,10 +725,14 @@ export default function BriefPage() {
                     <input
                       type="text"
                       value={brandName}
-                      onChange={e => setBrandName(e.target.value)}
+                      onChange={e => {
+                        setBrandName(e.target.value);
+                        clearError('brandName');
+                      }}
                       placeholder="Enter your brand name/company"
-                      className={inputClass}
+                      className={fieldClass(!!errors.brandName)}
                     />
+                    <FieldError message={errors.brandName} />
                   </div>
 
                   <div>
@@ -645,10 +742,14 @@ export default function BriefPage() {
                     <input
                       type="text"
                       value={website}
-                      onChange={e => setWebsite(e.target.value)}
+                      onChange={e => {
+                        setWebsite(e.target.value);
+                        clearError('website');
+                      }}
                       placeholder="https://your company.com"
-                      className={inputClass}
+                      className={fieldClass(!!errors.website)}
                     />
+                    <FieldError message={errors.website} />
                   </div>
 
                   <div>
@@ -677,8 +778,11 @@ export default function BriefPage() {
                     </label>
                     <select
                       value={industry}
-                      onChange={e => setIndustry(e.target.value)}
-                      className={`${inputClass} appearance-none bg-white`}
+                      onChange={e => {
+                        setIndustry(e.target.value);
+                        clearError('industry');
+                      }}
+                      className={`${fieldClass(!!errors.industry)} appearance-none bg-white`}
                     >
                       <option value="">Select your Industry</option>
                       {INDUSTRIES.map(option => (
@@ -690,6 +794,7 @@ export default function BriefPage() {
                         </option>
                       ))}
                     </select>
+                    <FieldError message={errors.industry} />
                   </div>
 
                   <div>
@@ -698,8 +803,11 @@ export default function BriefPage() {
                     </label>
                     <select
                       value={businessType}
-                      onChange={e => setBusinessType(e.target.value)}
-                      className={`${inputClass} appearance-none bg-white`}
+                      onChange={e => {
+                        setBusinessType(e.target.value);
+                        clearError('businessType');
+                      }}
+                      className={`${fieldClass(!!errors.businessType)} appearance-none bg-white`}
                     >
                       <option value="">Select business type</option>
                       {BUSINESS_TYPES.map(option => (
@@ -711,6 +819,7 @@ export default function BriefPage() {
                         </option>
                       ))}
                     </select>
+                    <FieldError message={errors.businessType} />
                   </div>
 
                   <div>
@@ -720,10 +829,14 @@ export default function BriefPage() {
                     <input
                       type="text"
                       value={contactPerson}
-                      onChange={e => setContactPerson(e.target.value)}
+                      onChange={e => {
+                        setContactPerson(e.target.value);
+                        clearError('contactPerson');
+                      }}
                       placeholder="Enter contact person name"
-                      className={inputClass}
+                      className={fieldClass(!!errors.contactPerson)}
                     />
+                    <FieldError message={errors.contactPerson} />
                   </div>
 
                   <div>
@@ -733,10 +846,14 @@ export default function BriefPage() {
                     <input
                       type="email"
                       value={email}
-                      onChange={e => setEmail(e.target.value)}
+                      onChange={e => {
+                        setEmail(e.target.value);
+                        clearError('email');
+                      }}
                       placeholder="you@example.com"
-                      className={inputClass}
+                      className={fieldClass(!!errors.email)}
                     />
+                    <FieldError message={errors.email} />
                   </div>
 
                   <div>
@@ -762,7 +879,7 @@ export default function BriefPage() {
                       />
                       <span className="text-sm text-neutral-700 leading-relaxed">
                         I agree to receive updates, opportunities, and resources from Stardust
-                        Creator Network via email. You can unsubscribe at any time. *
+                        Creator Network via email. You can unsubscribe at any time.
                       </span>
                     </label>
                   </div>
@@ -797,7 +914,7 @@ export default function BriefPage() {
 
                 <button
                   type="button"
-                  onClick={() => setCurrentStep(2)}
+                  onClick={() => goToStep(2)}
                   className="mt-8 px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                   style={{ backgroundColor: '#57058B' }}
                 >
@@ -827,10 +944,14 @@ export default function BriefPage() {
                     <input
                       type="text"
                       value={campaignName}
-                      onChange={e => setCampaignName(e.target.value)}
+                      onChange={e => {
+                        setCampaignName(e.target.value);
+                        clearError('campaignName');
+                      }}
                       placeholder="Enter your campaign name"
-                      className={inputClass}
+                      className={fieldClass(!!errors.campaignName)}
                     />
+                    <FieldError message={errors.campaignName} />
                   </div>
 
                   <div>
@@ -843,10 +964,14 @@ export default function BriefPage() {
                           key={goal}
                           label={goal}
                           checked={campaignGoals.includes(goal)}
-                          onChange={() => toggleValue(campaignGoals, goal, setCampaignGoals)}
+                          onChange={() => {
+                            toggleValue(campaignGoals, goal, setCampaignGoals);
+                            clearError('campaignGoals');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.campaignGoals} />
                   </div>
 
                   <div>
@@ -855,8 +980,11 @@ export default function BriefPage() {
                     </label>
                     <select
                       value={campaignType}
-                      onChange={e => setCampaignType(e.target.value)}
-                      className={`${inputClass} appearance-none bg-white`}
+                      onChange={e => {
+                        setCampaignType(e.target.value);
+                        clearError('campaignType');
+                      }}
+                      className={`${fieldClass(!!errors.campaignType)} appearance-none bg-white`}
                     >
                       <option value="">Select campaign type</option>
                       {CAMPAIGN_TYPES.map(type => (
@@ -868,6 +996,7 @@ export default function BriefPage() {
                         </option>
                       ))}
                     </select>
+                    <FieldError message={errors.campaignType} />
                   </div>
 
                   <div>
@@ -880,12 +1009,14 @@ export default function BriefPage() {
                           key={audience}
                           label={audience}
                           checked={targetAudiences.includes(audience)}
-                          onChange={() =>
-                            toggleValue(targetAudiences, audience, setTargetAudiences)
-                          }
+                          onChange={() => {
+                            toggleValue(targetAudiences, audience, setTargetAudiences);
+                            clearError('targetAudiences');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.targetAudiences} />
                   </div>
 
                   <div>
@@ -898,24 +1029,28 @@ export default function BriefPage() {
                           key={market}
                           label={market}
                           checked={targetMarkets.includes(market)}
-                          onChange={() => toggleValue(targetMarkets, market, setTargetMarkets)}
+                          onChange={() => {
+                            toggleValue(targetMarkets, market, setTargetMarkets);
+                            clearError('targetMarkets');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.targetMarkets} />
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 mt-8">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(1)}
+                    onClick={() => goToStep(1)}
                     className="px-6 py-3 rounded-lg font-semibold text-neutral-700 border border-[#E7E5E4] hover:bg-neutral-50 transition-all"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(3)}
+                    onClick={() => goToStep(3)}
                     className="px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                     style={{ backgroundColor: '#57058B' }}
                   >
@@ -943,10 +1078,14 @@ export default function BriefPage() {
                       type="text"
                       inputMode="numeric"
                       value={numCreators}
-                      onChange={e => setNumCreators(e.target.value)}
+                      onChange={e => {
+                        setNumCreators(e.target.value);
+                        clearError('numCreators');
+                      }}
                       placeholder="Enter number of Creator(s)"
-                      className={inputClass}
+                      className={fieldClass(!!errors.numCreators)}
                     />
+                    <FieldError message={errors.numCreators} />
                   </div>
 
                   <div>
@@ -960,10 +1099,14 @@ export default function BriefPage() {
                           name="creatorGender"
                           label={gender}
                           selected={creatorGender === gender}
-                          onSelect={() => setCreatorGender(gender)}
+                          onSelect={() => {
+                            setCreatorGender(gender);
+                            clearError('creatorGender');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.creatorGender} />
                   </div>
 
                   <div>
@@ -977,10 +1120,14 @@ export default function BriefPage() {
                           name="creatorAgeRange"
                           label={range}
                           selected={creatorAgeRange === range}
-                          onSelect={() => setCreatorAgeRange(range)}
+                          onSelect={() => {
+                            setCreatorAgeRange(range);
+                            clearError('creatorAgeRange');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.creatorAgeRange} />
                   </div>
 
                   <div>
@@ -993,12 +1140,14 @@ export default function BriefPage() {
                           key={category}
                           label={category}
                           checked={contentCategories.includes(category)}
-                          onChange={() =>
-                            toggleValue(contentCategories, category, setContentCategories)
-                          }
+                          onChange={() => {
+                            toggleValue(contentCategories, category, setContentCategories);
+                            clearError('contentCategories');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.contentCategories} />
                   </div>
 
                   <div>
@@ -1011,10 +1160,14 @@ export default function BriefPage() {
                           key={platform}
                           label={platform}
                           checked={platformFocus.includes(platform)}
-                          onChange={() => toggleValue(platformFocus, platform, setPlatformFocus)}
+                          onChange={() => {
+                            toggleValue(platformFocus, platform, setPlatformFocus);
+                            clearError('platformFocus');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.platformFocus} />
                   </div>
 
                   <div>
@@ -1090,14 +1243,14 @@ export default function BriefPage() {
                 <div className="flex items-center gap-3 mt-8">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(2)}
+                    onClick={() => goToStep(2)}
                     className="px-6 py-3 rounded-lg font-semibold text-neutral-700 border border-[#E7E5E4] hover:bg-neutral-50 transition-all"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(4)}
+                    onClick={() => goToStep(4)}
                     className="px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                     style={{ backgroundColor: '#57058B' }}
                   >
@@ -1123,8 +1276,11 @@ export default function BriefPage() {
                     </label>
                     <select
                       value={estimatedBudget}
-                      onChange={e => setEstimatedBudget(e.target.value)}
-                      className={`${inputClass} appearance-none bg-white`}
+                      onChange={e => {
+                        setEstimatedBudget(e.target.value);
+                        clearError('estimatedBudget');
+                      }}
+                      className={`${fieldClass(!!errors.estimatedBudget)} appearance-none bg-white`}
                     >
                       <option value="">Select your budget range</option>
                       {(country === 'United Kingdom'
@@ -1139,6 +1295,7 @@ export default function BriefPage() {
                         </option>
                       ))}
                     </select>
+                    <FieldError message={errors.estimatedBudget} />
                   </div>
 
                   <div className="hidden">
@@ -1172,10 +1329,14 @@ export default function BriefPage() {
                           name="ongoingCollaboration"
                           label={option}
                           selected={ongoingCollaboration === option}
-                          onSelect={() => setOngoingCollaboration(option)}
+                          onSelect={() => {
+                            setOngoingCollaboration(option);
+                            clearError('ongoingCollaboration');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.ongoingCollaboration} />
                   </div>
                 </div>
 
@@ -1209,14 +1370,14 @@ export default function BriefPage() {
                 <div className="flex items-center gap-3 mt-8">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(3)}
+                    onClick={() => goToStep(3)}
                     className="px-6 py-3 rounded-lg font-semibold text-neutral-700 border border-[#E7E5E4] hover:bg-neutral-50 transition-all"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(5)}
+                    onClick={() => goToStep(5)}
                     className="px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                     style={{ backgroundColor: '#57058B' }}
                   >
@@ -1244,9 +1405,13 @@ export default function BriefPage() {
                       type="date"
                       min={today}
                       value={campaignStartDate}
-                      onChange={e => setCampaignStartDate(e.target.value)}
-                      className={inputClass}
+                      onChange={e => {
+                        setCampaignStartDate(e.target.value);
+                        clearError('campaignStartDate');
+                      }}
+                      className={fieldClass(!!errors.campaignStartDate)}
                     />
+                    <FieldError message={errors.campaignStartDate} />
                   </div>
 
                   <div>
@@ -1280,10 +1445,14 @@ export default function BriefPage() {
                           key={deliverable}
                           label={deliverable}
                           checked={deliverables.includes(deliverable)}
-                          onChange={() => toggleValue(deliverables, deliverable, setDeliverables)}
+                          onChange={() => {
+                            toggleValue(deliverables, deliverable, setDeliverables);
+                            clearError('deliverables');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.deliverables} />
                   </div>
                 </div>
 
@@ -1315,14 +1484,14 @@ export default function BriefPage() {
                 <div className="flex items-center gap-3 mt-8">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(4)}
+                    onClick={() => goToStep(4)}
                     className="px-6 py-3 rounded-lg font-semibold text-neutral-700 border border-[#E7E5E4] hover:bg-neutral-50 transition-all"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(6)}
+                    onClick={() => goToStep(6)}
                     className="px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                     style={{ backgroundColor: '#57058B' }}
                   >
@@ -1449,14 +1618,14 @@ export default function BriefPage() {
                 <div className="flex items-center gap-3 mt-8">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(5)}
+                    onClick={() => goToStep(5)}
                     className="px-6 py-3 rounded-lg font-semibold text-neutral-700 border border-[#E7E5E4] hover:bg-neutral-50 transition-all"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(7)}
+                    onClick={() => goToStep(7)}
                     className="px-8 py-3 rounded-lg font-semibold text-white hover:opacity-90 transition-all"
                     style={{ backgroundColor: '#57058B' }}
                   >
