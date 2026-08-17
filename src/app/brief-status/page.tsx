@@ -105,7 +105,7 @@ function BriefStatusContent() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-white flex items-center justify-center px-4">
+        <main className="min-h-screen bg-white flex items-center justify-center px-4 pt-32">
           <div className="text-center max-w-md">
             <h1 className="text-2xl font-bold text-black mb-3">No brief found on this device</h1>
             <p className="text-neutral-500 mb-6">
@@ -130,7 +130,7 @@ function BriefStatusContent() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-white flex items-center justify-center px-4">
+        <main className="min-h-screen bg-white flex items-center justify-center px-4 pt-32">
           <div className="text-center max-w-md">
             <h1 className="text-2xl font-bold text-black mb-3">We couldn&apos;t load your brief</h1>
             <p className="text-neutral-500 mb-6">{errorMessage}</p>
@@ -154,7 +154,7 @@ function BriefStatusContent() {
     <>
       <Header />
       <main className="min-h-screen bg-white">
-        <div className="max-w-2xl mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto px-4 pt-32 pb-16">
           <p className="text-sm text-neutral-500 mb-2">Reference: {brief.id}</p>
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-black">{brief.brandName}</h1>
