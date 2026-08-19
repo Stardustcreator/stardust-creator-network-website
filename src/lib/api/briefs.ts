@@ -129,12 +129,11 @@ export interface SubmitBriefResponse {
  * to friendlier labels, or every amount silently renders as ₦0 (formatNaira
  * turns `undefined` into ₦0 rather than throwing).
  *
- * `sourcingFeeKobo + engagementFeeKobo = totalDueNowKobo`.
+ * `totalDueNowKobo` equals `sourcingFeeKobo`.
  */
 export interface BriefPricing {
   requestedCreators?: number;
   sourcingFeeKobo?: number;
-  engagementFeeKobo?: number;
   totalDueNowKobo?: number;
 }
 
