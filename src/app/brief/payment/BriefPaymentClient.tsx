@@ -36,7 +36,7 @@ const BRIEF_TERMS = [
   },
   {
     title: 'Mobilization Payment',
-    body: 'A mobilization payment of 50% of the total commitment fee is required before creator sourcing begins. This payment is non-refundable once creator contracts have been issued. Payment must be received within 7 business days of brief submission.',
+    body: 'A mobilization payment of 50% of the total sourcing fee is required before creator sourcing begins. This payment is non-refundable once creator contracts have been issued. Payment must be received within 7 business days of brief submission.',
   },
   {
     title: 'Creator Sourcing',
@@ -533,12 +533,6 @@ export default function BriefPaymentClient() {
                       <SummaryRow
                         label="Sourcing Fee"
                         value={formatNaira(pricing?.sourcingFeeKobo)}
-                      />
-                      {/* Labelled "Commitment fee" per the design; the backend
-                          calls the same figure engagementFeeKobo. */}
-                      <SummaryRow
-                        label="Commitment fee"
-                        value={formatNaira(pricing?.engagementFeeKobo)}
                       />
                     </div>
 
