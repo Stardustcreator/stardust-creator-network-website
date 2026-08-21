@@ -93,7 +93,7 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
-      { source: '/event', destination: 'https://zoom.us/meeting/register/84Hhuf3gSlG4S7ZH_xzMzA', permanent: false },
+      { source: '/event', destination: 'https://zoom.us/meeting/register/DbjTUWLgShitp9nvR4IcGQ', permanent: false },
     ];
   },
 
