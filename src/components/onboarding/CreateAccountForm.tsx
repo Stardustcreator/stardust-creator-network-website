@@ -11,6 +11,7 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
+import { extractUTMParams } from '@/lib/brief-payload';
 import PlanBanner from './PlanBanner';
 import PromoBanner from '@/components/shared/PromoBanner';
 
@@ -131,13 +132,20 @@ export default function CreateAccountForm({
     setApiError('');
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
+      const utm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
+      const referrerUrl =
+        typeof document === 'undefined' ? undefined : document.referrer || undefined;
 
       const result = await initiateRegistration(
         formData.email,
         formData.firstName,
         formData.lastName,
         formData.phone,
-        backendPlanId
+        backendPlanId,
+        utm.utm_source,
+        utm.utm_medium,
+        utm.utm_campaign,
+        referrerUrl
       );
 
       if (result.message) {
