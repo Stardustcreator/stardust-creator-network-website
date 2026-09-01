@@ -93,7 +93,11 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
-      { source: '/event', destination: 'https://zoom.us/meeting/register/DbjTUWLgShitp9nvR4IcGQ', permanent: false },
+      {
+        source: '/event',
+        destination: 'https://zoom.us/meeting/register/NJgEaV2pSTqFu6daQ3uS7g',
+        permanent: false,
+      },
     ];
   },
 
@@ -107,7 +111,10 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -137,37 +144,37 @@ const nextConfig = {
       },
       ...(isProduction
         ? [
-          {
-            // Cache static assets aggressively in production only.
-            source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
-            headers: [
-              {
-                key: 'Cache-Control',
-                value: 'public, max-age=31536000, immutable',
-              },
-            ],
-          },
-          {
-            // Cache images with longer duration in production only.
-            source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
-            headers: [
-              {
-                key: 'Cache-Control',
-                value: 'public, max-age=31536000, immutable',
-              },
-            ],
-          },
-          {
-            // Cache video files in production only.
-            source: '/(.*)\\.(webm|mp4|mov)',
-            headers: [
-              {
-                key: 'Cache-Control',
-                value: 'public, max-age=31536000, immutable',
-              },
-            ],
-          },
-        ]
+            {
+              // Cache static assets aggressively in production only.
+              source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+            {
+              // Cache images with longer duration in production only.
+              source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+            {
+              // Cache video files in production only.
+              source: '/(.*)\\.(webm|mp4|mov)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+          ]
         : []),
     ];
   },
