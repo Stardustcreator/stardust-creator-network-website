@@ -93,11 +93,8 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
-      {
-        source: '/event',
-        destination: 'https://zoom.us/meeting/register/NJgEaV2pSTqFu6daQ3uS7g',
-        permanent: false,
-      },
+      // /event is now handled dynamically by src/app/event/route.ts so it can
+      // be updated from the admin app without a redeploy.
     ];
   },
 
