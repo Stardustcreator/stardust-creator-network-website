@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import { extractUTMParams } from '@/lib/brief-payload';
+import { getStoredAttribution } from '@/lib/attribution';
 import PlanBanner from './PlanBanner';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password';
@@ -131,9 +132,19 @@ export default function CreateAccountForm({
     setApiError('');
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
-      const utm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
+
+      // Prefer first-touch attribution captured on the visitor's entry page -
+      // by the time they reach this form, the URL only ever has plan/billing,
+      // never the UTM params they actually arrived with. Fall back to a fresh
+      // read for the rare case of landing on this page directly.
+      const stored = getStoredAttribution();
+      const urlUtm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
+      const utmSource = stored.utmSource ?? urlUtm.utm_source;
+      const utmMedium = stored.utmMedium ?? urlUtm.utm_medium;
+      const utmCampaign = stored.utmCampaign ?? urlUtm.utm_campaign;
       const referrerUrl =
-        typeof document === 'undefined' ? undefined : document.referrer || undefined;
+        stored.referrerUrl ??
+        (typeof document === 'undefined' ? undefined : document.referrer || undefined);
 
       const result = await initiateRegistration(
         formData.email,
@@ -141,9 +152,9 @@ export default function CreateAccountForm({
         formData.lastName,
         formData.phone,
         backendPlanId,
-        utm.utm_source,
-        utm.utm_medium,
-        utm.utm_campaign,
+        utmSource,
+        utmMedium,
+        utmCampaign,
         referrerUrl
       );
 
