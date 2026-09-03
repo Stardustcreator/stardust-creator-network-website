@@ -26,16 +26,16 @@ interface PlanConfig {
 }
 
 const PLANS: PlanConfig[] = [
-  // {
-  //   id: 'starter',
-  //   name: 'Starter',
-  //   recommended: false,
-  //   price: { annual: '₦0', monthly: '₦0' },
-  //   suffix: '/month',
-  //   caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
-  //   cta: { label: 'Get Started for free', withArrow: false },
-  //   commission: '5%',
-  // },
+  {
+    id: 'starter',
+    name: 'Starter',
+    recommended: false,
+    price: { annual: '₦0', monthly: '₦0' },
+    suffix: '/month',
+    caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
+    cta: { label: 'Get Started for free', withArrow: false },
+    commission: '5%',
+  },
   {
     id: 'builder',
     name: 'Builder',
@@ -126,7 +126,7 @@ export default function PlanPricingSection({
         </div>
 
         {/* Plan cards */}
-        <div className="grid gap-8 max-w-md mx-auto">
+        <div className="grid gap-8 md:grid-cols-2 md:items-start max-w-3xl mx-auto md:max-w-none">
           {PLANS.map(plan => {
             const isBuilder = plan.id === 'builder';
             return (
