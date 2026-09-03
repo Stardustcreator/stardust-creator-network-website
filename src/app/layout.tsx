@@ -9,6 +9,7 @@ import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
+import AttributionCapture from '@/components/analytics/AttributionCapture';
 import dynamic from 'next/dynamic';
 import { Toaster } from '@/components/ui/Toaster';
 
@@ -201,6 +202,8 @@ tap('detect');`,
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         {/* Outbound Link Tracking - Tracks external link clicks */}
         <OutboundLinkTracker />
+        {/* Records first-touch UTM/referrer once per session, before any internal navigation can drop it */}
+        <AttributionCapture />
         {/* Essential: Country Provider for location-based content */}
         <CountryProvider>{children}</CountryProvider>
         <Toaster />

@@ -42,12 +42,6 @@ export default function PricingSection({
           >
             Choose your Plan
           </Heading>
-          <Text
-            variant="body"
-            className="text-text-secondary!"
-          >
-            Start free with Community, upgrade when you&apos;re ready to grow
-          </Text>
         </div>
 
         {/* Billing toggle */}
