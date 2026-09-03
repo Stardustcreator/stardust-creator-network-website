@@ -7,7 +7,6 @@ import CheckIcon from '@/components/icons/CheckIcon';
 import LockIcon from '@/components/icons/LockIcon';
 import Image from 'next/image';
 import { ArrowRightIcon, ChevronRightIcon } from '@sanity/icons';
-import PromoBanner from '@/components/shared/PromoBanner';
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'starter' | 'builder';
@@ -77,9 +76,6 @@ export default function PlanPricingSection({
   return (
     <section className="py-10 px-6 pb-24">
       <div className="max-w-7xl mx-auto">
-        {/* Promo banner */}
-        <PromoBanner />
-
         {/* Heading */}
         <div className="text-center mb-8">
           <Heading
@@ -89,12 +85,6 @@ export default function PlanPricingSection({
           >
             Choose your Plan
           </Heading>
-          <Text
-            variant="body"
-            className="text-text-secondary!"
-          >
-            Start free with Community, upgrade when you&apos;re ready to grow
-          </Text>
         </div>
 
         {/* Billing toggle */}

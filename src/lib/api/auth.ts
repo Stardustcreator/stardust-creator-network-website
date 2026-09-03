@@ -106,7 +106,11 @@ export function initiateRegistration(
   firstName: string,
   lastName: string,
   phone: string,
-  planId?: string
+  planId?: string,
+  utmSource?: string,
+  utmMedium?: string,
+  utmCampaign?: string,
+  referrerUrl?: string
 ) {
   return post<{ message: string }>('/auth/initiate-registration', {
     email,
@@ -114,6 +118,10 @@ export function initiateRegistration(
     lastName,
     phone,
     planId,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    referrerUrl,
   });
 }
 
