@@ -93,8 +93,7 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
-      // /event is now handled dynamically by src/app/event/route.ts so it can
-      // be updated from the admin app without a redeploy.
+      { source: '/event', destination: 'https://zoom.us/meeting/register/NJgEaV2pSTqFu6daQ3uS7g', permanent: false },
     ];
   },
 
@@ -141,37 +140,49 @@ const nextConfig = {
       },
       ...(isProduction
         ? [
-            {
-              // Cache static assets aggressively in production only.
-              source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache images with longer duration in production only.
-              source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-            {
-              // Cache video files in production only.
-              source: '/(.*)\\.(webm|mp4|mov)',
-              headers: [
-                {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-                },
-              ],
-            },
-          ]
+          {
+            // Cache static assets aggressively in production only.
+            source: '/(.*)\\.(js|css|woff|woff2|eot|ttf|otf)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // Cache images with longer duration in production only.
+            source: '/(.*)\\.(jpg|jpeg|png|gif|svg|webp|avif)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // favicon.ico is served from a fixed, non-hashed URL, so it must
+            // revalidate instead of being cached as immutable, or a browser
+            // that cached the old icon will never pick up a new one.
+            source: '/favicon.ico',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=3600, must-revalidate',
+              },
+            ],
+          },
+          {
+            // Cache video files in production only.
+            source: '/(.*)\\.(webm|mp4|mov)',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+        ]
         : []),
     ];
   },
