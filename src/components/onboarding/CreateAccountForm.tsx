@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Heading, Text } from '@/components/typography';
 import FormInput from '@/components/ui/FormInput';
+import CountryFlag from '@/components/layout/Header/CountryFlag';
 import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
@@ -273,12 +274,21 @@ export default function CreateAccountForm({
             name="phone"
             type="tel"
             inputMode="tel"
-            placeholder="+234 xxx xxx xxxx"
+            placeholder="xxx xxx xxxx"
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
             required
             autoComplete="tel"
+            prefix={
+              <>
+                <CountryFlag
+                  country="nigeria"
+                  className="w-5 h-3.5 rounded-xs"
+                />
+                <span className="text-text-primary">+234</span>
+              </>
+            }
           />
         </div>
 
