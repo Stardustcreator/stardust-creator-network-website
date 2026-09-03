@@ -133,9 +133,6 @@ export default function CreateAccountForm({
     setApiError('');
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
-      const utm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
-      const referrerUrl =
-        typeof document === 'undefined' ? undefined : document.referrer || undefined;
 
       // Prefer first-touch attribution captured on the visitor's entry page -
       // by the time they reach this form, the URL only ever has plan/billing,
@@ -156,9 +153,9 @@ export default function CreateAccountForm({
         formData.lastName,
         formData.phone,
         backendPlanId,
-        utm.utm_source,
-        utm.utm_medium,
-        utm.utm_campaign,
+        utmSource,
+        utmMedium,
+        utmCampaign,
         referrerUrl
       );
 
