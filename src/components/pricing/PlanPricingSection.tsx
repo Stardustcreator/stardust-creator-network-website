@@ -28,7 +28,7 @@ const PLANS: PlanConfig[] = [
   {
     id: 'starter',
     name: 'Starter',
-    recommended: false,
+    recommended: true,
     price: { annual: '₦0', monthly: '₦0' },
     suffix: '/month',
     caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
@@ -38,7 +38,7 @@ const PLANS: PlanConfig[] = [
   {
     id: 'builder',
     name: 'Builder',
-    recommended: true,
+    recommended: false,
     price: { annual: '₦6,250', monthly: '₦7,500' },
     suffix: '/month',
     caption: { annual: 'Billed as ₦75,000/year', monthly: 'Billed monthly' },
