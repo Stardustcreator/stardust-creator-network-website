@@ -28,7 +28,7 @@ const PLANS: PlanConfig[] = [
   {
     id: 'starter',
     name: 'Starter',
-    recommended: true,
+    recommended: false,
     price: { annual: '₦0', monthly: '₦0' },
     suffix: '/month',
     caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
@@ -38,7 +38,7 @@ const PLANS: PlanConfig[] = [
   {
     id: 'builder',
     name: 'Builder',
-    recommended: false,
+    recommended: true,
     price: { annual: '₦6,250', monthly: '₦7,500' },
     suffix: '/month',
     caption: { annual: 'Billed as ₦75,000/year', monthly: 'Billed monthly' },
@@ -47,21 +47,20 @@ const PLANS: PlanConfig[] = [
   },
 ];
 
-const FEATURES: { label: string; starter: FeatureValue; builder: FeatureValue }[] = [
-  { label: 'Rate Card Output', starter: 'Total price only', builder: 'Full Breakdown' },
-  { label: 'Rate card generations', starter: '3 / month', builder: '10 / month' },
-  { label: 'Invoicing', starter: '3 / month', builder: '10 / month' },
-  { label: 'Commission', starter: '5%', builder: '3%' },
-  { label: 'Email captures', starter: '100 subscribers', builder: '500 subscribers' },
-  { label: 'Email Broadcasts', starter: '2 / month', builder: '5 / month' },
+const FEATURES: { label: string; starter?: FeatureValue; builder: FeatureValue }[] = [
+  { label: 'Pricing Calculator', starter: 'Yes, One-time use', builder: 'Yes' },
+  { label: 'Rate card Builder', starter: 'Yes', builder: 'Yes' },
+  { label: 'Invoicing', starter: 'Yes', builder: 'Yes' },
+  { label: 'Platform Fee', starter: '5% of transaction value', builder: '3% of transaction value' },
+  { label: 'Email Captures', starter: '100 subscribers', builder: '500 subscribers' },
+  { label: 'Email Broadcasts', starter: '2/month', builder: '5/month' },
   {
     label: 'Community access',
     starter: 'Weekly community digest/newsletter only',
     builder: 'Full access',
   },
-  // { label: 'UGC package', starter: { locked: true, text: 'Locked' }, builder: 'Included' },
-  { label: 'Brand deals', starter: { locked: true, text: 'Locked' }, builder: 'Basic access' },
-  { label: 'Templates', starter: 'Preview Only', builder: 'Full library' },
+  { label: 'Brand Deals', starter: 'Yes', builder: 'Priority Access' },
+  { label: 'Templates', builder: 'Yes' },
 ];
 
 interface PlanPricingSectionProps {
@@ -71,7 +70,7 @@ interface PlanPricingSectionProps {
 export default function PlanPricingSection({
   ctaBase = '/onboarding/create-account',
 }: PlanPricingSectionProps) {
-  const [billing, setBilling] = useState<BillingPeriod>('monthly');
+  const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   return (
     <section className="py-10 px-6 pb-24">
@@ -85,6 +84,12 @@ export default function PlanPricingSection({
           >
             Choose your Plan
           </Heading>
+          <Text
+            variant="body"
+            className="text-text-secondary!"
+          >
+            Start free with Community, upgrade when you&apos;re ready to grow
+          </Text>
         </div>
 
         {/* Billing toggle */}
@@ -213,6 +218,7 @@ export default function PlanPricingSection({
                 <ul>
                   {FEATURES.map(feature => {
                     const value = plan.id === 'starter' ? feature.starter : feature.builder;
+                    if (value === undefined) return null;
                     const locked = typeof value !== 'string' && value.locked;
                     const text = typeof value === 'string' ? value : value.text;
                     return (
