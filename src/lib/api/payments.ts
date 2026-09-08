@@ -1,3 +1,5 @@
+import { DiscountPreview } from './auth';
+
 const BASE = process.env.NEXT_PUBLIC_API_URL;
 
 type BillingPeriod = 'annual' | 'monthly';
@@ -35,8 +37,33 @@ const PLAN_IDS: Record<PaymentPlanId, Record<BillingPeriod, string>> = {
   },
 };
 
-export function initializePayment(billing: BillingPeriod, plan: PaymentPlanId = 'community') {
-  return post<{ checkoutUrl: string; reference: string }>('/payments/initialize', {
+export interface InitializePaymentResult {
+  requiresPayment?: boolean;
+  checkoutUrl?: string;
+  reference?: string;
+  message?: string;
+}
+
+export function initializePayment(
+  billing: BillingPeriod,
+  plan: PaymentPlanId = 'community',
+  discountCode?: string
+) {
+  return post<InitializePaymentResult>('/payments/initialize', {
     planId: PLAN_IDS[plan][billing],
+    ...(discountCode ? { discountCode } : {}),
   });
 }
+
+/**
+ * Validate a discount code against a plan before checkout. Amounts come back
+ * server-computed in kobo, so totals are never derived on the client.
+ */
+export function previewDiscount(planId: string, discountCode: string) {
+  return post<DiscountPreview>('/payments/discount-preview', {
+    planId,
+    discountCode,
+  });
+}
+
+export type { DiscountPreview };

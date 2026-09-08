@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Image from 'next/image';
+import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 
 const REDIRECT_MS = 4000;
 
@@ -21,7 +22,10 @@ function SuccessContent() {
   const [dashboardUrl, setDashboardUrl] = useState('');
 
   useEffect(() => {
-    if (!reference) return;
+    if (!reference) {
+      setDashboardUrl(getScnDashboardUrl());
+      return;
+    }
     const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
     if (!base) return;
 

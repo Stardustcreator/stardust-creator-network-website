@@ -6,34 +6,46 @@ import { Heading, Text } from '@/components/typography';
 import PlanBanner from './PlanBanner';
 import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/Button';
-import CheckIcon from '@/components/icons/CheckIcon';
-import { completeRegistration, type DiscountPreview } from '@/lib/api/auth';
+import { completeRegistration } from '@/lib/api/auth';
 import { getScnDashboardUrl } from '@/lib/scn-dashboard';
 import { toast } from '@/lib/toast';
 import { validatePassword } from '@/lib/validations/password.validations';
+import { CheckoutForm, type CheckoutValues } from './CheckoutForm';
+import { initializePayment } from '@/lib/api/payments';
+import Modal from '../ui/modal';
 
 interface SetPasswordStepProps {
   billing: 'annual' | 'monthly';
   plan: 'community' | 'starter' | 'builder';
   registrationToken: string;
-  discountPreview?: DiscountPreview;
+  firstName: string;
+  lastName: string;
+  email: string;
   onComplete: (reference: string) => void;
 }
 
-function SuccessBanner() {
-  return (
-    <div className="w-full flex items-center justify-center gap-2 rounded-lg px-5 py-3 mb-6 bg-green-50 border border-green-200">
-      <CheckIcon className="w-4 h-4 text-green-600 shrink-0" />
-      <span className="text-sm font-medium text-green-700">Email verified successfully</span>
-    </div>
-  );
-}
+const CHECKOUT_PRICE: Record<
+  SetPasswordStepProps['plan'],
+  Record<SetPasswordStepProps['billing'], string>
+> = {
+  community: { annual: '₦50,000', monthly: '₦5,000' },
+  starter: { annual: '₦0', monthly: '₦0' },
+  builder: { annual: '₦75,000', monthly: '₦7,500' },
+};
+
+const PLAN_NAME: Record<SetPasswordStepProps['plan'], string> = {
+  community: 'Community',
+  starter: 'Starter',
+  builder: 'Builder',
+};
 
 export default function SetPasswordStep({
   billing,
   plan,
   registrationToken,
-  discountPreview,
+  firstName,
+  lastName,
+  email,
   onComplete,
 }: SetPasswordStepProps) {
   const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
@@ -41,6 +53,7 @@ export default function SetPasswordStep({
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationCompleted, setRegistrationCompleted] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -74,14 +87,9 @@ export default function SetPasswordStep({
     }
     setIsSubmitting(true);
     try {
-      let checkoutUrl: string | undefined;
-      let reference: string | undefined;
-
       if (!registrationCompleted) {
         const result = await completeRegistration(registrationToken, formData.password, true);
         setRegistrationCompleted(true);
-        checkoutUrl = result.subscription.checkoutUrl;
-        reference = result.subscription.reference;
 
         if (!result.subscription.requiresPayment) {
           window.location.href = getScnDashboardUrl();
@@ -89,29 +97,47 @@ export default function SetPasswordStep({
         }
       }
 
-      if (!checkoutUrl || !reference) throw new Error('Invalid payment session. Please try again.');
+      setShowCheckout(true);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    }
+    setIsSubmitting(false);
+  }
 
-      const accessCode = checkoutUrl.split('/').pop();
-      if (!accessCode) throw new Error('Invalid payment session. Please try again.');
+  async function handleCheckoutSubmit(values: CheckoutValues) {
+    setIsSubmitting(true);
+    try {
+      const { checkoutUrl, reference, requiresPayment } = await initializePayment(
+        billing,
+        plan,
+        values.couponCode
+      );
+
+      if (!requiresPayment) {
+        onComplete(reference ?? '');
+        return;
+      }
+
+      const accessCode = checkoutUrl?.split('/').pop();
+      if (!accessCode) {
+        throw new Error('Invalid payment session. Please try again.');
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { default: PaystackPop } = (await import('@paystack/inline-js')) as any;
       const popup = new PaystackPop();
       const trans = popup.resumeTransaction(accessCode);
 
-      trans.onSuccess = () => onComplete(reference!);
+      trans.onSuccess = () => onComplete(reference ?? '');
       trans.onError = () => {
         toast.error('Payment failed. Please try again.');
         setIsSubmitting(false);
       };
       trans.onCancel = () => setIsSubmitting(false);
-
-      // Don't reset isSubmitting here — Paystack callbacks handle it
-      return;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   }
 
   return (
@@ -230,13 +256,32 @@ export default function SetPasswordStep({
         >
           {isSubmitting
             ? 'Please wait…'
-            : plan === 'starter' || discountPreview?.finalAmount === 0
+            : plan === 'starter'
               ? 'Complete Registration'
               : registrationCompleted
                 ? 'Retry Payment'
                 : 'Continue to Payment'}
         </Button>
       </form>
+      <Modal
+        open={showCheckout}
+        onClose={() => setShowCheckout(false)}
+        mobileSheet
+        ariaLabel="Subscription Checkout"
+        className="w-xl"
+      >
+        <CheckoutForm
+          offerId={plan === 'starter' ? 'starter_free' : `${plan}_${billing}`}
+          priceLabel={CHECKOUT_PRICE[plan][billing]}
+          planLabel={`${PLAN_NAME[plan]} Plan (${billing === 'monthly' ? 'Monthly' : 'Annual'})`}
+          busy={isSubmitting}
+          initialFirstName={firstName}
+          initialLastName={lastName}
+          initialEmail={email}
+          onSubmit={handleCheckoutSubmit}
+          onCancel={() => setShowCheckout(false)}
+        />
+      </Modal>
     </div>
   );
 }

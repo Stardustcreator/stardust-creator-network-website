@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { checkSubscriptionAccess } from '@/lib/api/subscriptions';
 import { getScnDashboardUrl } from '@/lib/scn-dashboard';
-import { getMyProfile } from '@/lib/api/user';
 
 interface RedirectAuthenticatedUserProps {
   children: ReactNode;
@@ -24,24 +23,22 @@ export default function RedirectAuthenticatedUser({
 
     async function redirectIfAuthenticated() {
       try {
-        // const result = await checkSubscriptionAccess();
-        const result = await getMyProfile();
-        console.log(result);
+        const result = await checkSubscriptionAccess();
 
-        if (result.id) {
+        if (result.ok) {
           window.location.replace(getScnDashboardUrl());
           return;
         }
 
-        // if (result.reason === 'inactive' && inactiveRedirect) {
-        //   window.location.replace(inactiveRedirect);
-        //   return;
-        // }
+        if (result.reason === 'inactive' && inactiveRedirect) {
+          window.location.replace(inactiveRedirect);
+          return;
+        }
 
-        // if (result.reason === 'no-subscription' && noSubscriptionRedirect) {
-        //   window.location.replace(noSubscriptionRedirect);
-        //   return;
-        // }
+        if (result.reason === 'no-subscription' && noSubscriptionRedirect) {
+          window.location.replace(noSubscriptionRedirect);
+          return;
+        }
       } catch {
         // If the auth probe fails, keep the current page usable.
       }

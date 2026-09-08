@@ -127,7 +127,7 @@ export default function VerificationStep({
 
       <form onSubmit={handleVerify}>
         <div
-          className="flex items-center justify-between gap-3 mb-6"
+          className="grid grid-cols-6 items-center gap-3 mb-6"
           onPaste={handlePaste}
         >
           {otp.map((digit, i) => (
@@ -142,7 +142,7 @@ export default function VerificationStep({
               value={digit}
               onChange={e => handleChange(i, e.target.value)}
               onKeyDown={e => handleKeyDown(i, e)}
-              className="w-12 lg:w-14 h-12 lg:h-14 text-center text-xl font-semibold rounded-lg outline-none transition-colors duration-150 text-neutral-900"
+              className="w-auto lg:w-14 h-auto aspect-square lg:h-14 text-center text-lg lg:text-xl font-semibold rounded-lg outline-none transition-colors duration-150 text-neutral-900"
               style={{
                 border: `0.6px solid ${
                   error
