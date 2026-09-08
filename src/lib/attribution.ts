@@ -35,3 +35,24 @@ export function getStoredAttribution(): StoredAttribution {
     return {};
   }
 }
+
+const FORWARDED_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign'] as const;
+
+/**
+ * Some in-app browsers (TikTok's in particular) don't reliably persist
+ * sessionStorage across an internal navigation, which silently drops the
+ * captureAttributionOnce() write before signup. Re-deriving the query
+ * string from the current page and forwarding it onto CTA links removes
+ * the dependency on storage surviving that hop at all.
+ */
+export function buildForwardedUtmQuery(search: string): string {
+  const current = new URLSearchParams(search);
+  const forwarded = new URLSearchParams();
+
+  for (const key of FORWARDED_UTM_KEYS) {
+    const value = current.get(key);
+    if (value) forwarded.set(key, value);
+  }
+
+  return forwarded.toString();
+}

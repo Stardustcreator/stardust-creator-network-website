@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 import CheckIcon from '@/components/icons/CheckIcon';
 import LockIcon from '@/components/icons/LockIcon';
 import Image from 'next/image';
 import { ArrowRightIcon, ChevronRightIcon } from '@sanity/icons';
+import { buildForwardedUtmQuery } from '@/lib/attribution';
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'starter' | 'builder';
@@ -71,6 +72,11 @@ export default function PlanPricingSection({
   ctaBase = '/onboarding/create-account',
 }: PlanPricingSectionProps) {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
+  const [utmQuery, setUtmQuery] = useState('');
+
+  useEffect(() => {
+    setUtmQuery(buildForwardedUtmQuery(window.location.search));
+  }, []);
 
   return (
     <section className="py-10 px-6 pb-24">
@@ -165,7 +171,7 @@ export default function PlanPricingSection({
 
                 {/* CTA */}
                 <Link
-                  href={`${ctaBase}?plan=${plan.id}&billing=${billing}`}
+                  href={`${ctaBase}?plan=${plan.id}&billing=${billing}${utmQuery ? `&${utmQuery}` : ''}`}
                   className={`mt-6 mb-6 flex w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-all duration-200 md:text-base ${
                     isBuilder
                       ? 'bg-brand-purple text-white hover:bg-brand-purple-dark'
