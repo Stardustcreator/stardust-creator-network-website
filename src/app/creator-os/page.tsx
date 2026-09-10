@@ -206,8 +206,8 @@ export default function CreatorOSPage() {
                     Rate Calculator
                   </h3>
                   <p className="text-white/90 text-sm md:text-base font-lato leading-relaxed">
-                    Stop guessing what to charge. In 560 Fill × 28 Hug ouls and get a rate you can
-                    actually defend - built around your deliverables and the scope of the campaign.
+                    Stop guessing what to charge. Input your brief details and get a rate you can
+                    actually defend, built around your deliverables and the scope of the campaign.
                   </p>
                 </div>
                 <div
@@ -243,7 +243,7 @@ export default function CreatorOSPage() {
                     <div className="text-xs text-gray-600 mt-2">55% of total</div>
                     <div className="border-t border-gray-200 pt-3 flex justify-between items-center">
                       <span className="text-gray-700 font-semibold text-sm">Total rate</span>
-                      <span className="text-purple-600 font-bold text-sm">₦807,921,476</span>
+                      <span className="text-purple-600 font-bold text-sm">₦1,360,000</span>
                     </div>
                   </div>
                 </div>
@@ -688,7 +688,7 @@ export default function CreatorOSPage() {
                     Rate Card Builder
                   </h3>
                   <p className="text-white/90 text-sm md:text-base font-lato leading-relaxed">
-                    Drive you know what is charge. We tool Earn real number into a clean,
+                    Once you know what to charge, this tool turns that number into a clean,
                     professional rate card you can send straight to any brand.
                   </p>
                 </div>
@@ -815,8 +815,8 @@ export default function CreatorOSPage() {
                     Brand deal access
                   </h3>
                   <p className="text-white/90 text-sm md:text-base font-lato leading-relaxed">
-                    Send professional invoices and get paid directly to your account. This makes it
-                    easier to keep track of your earnings as a creator business owner.
+                    Stop waiting to get discovered. Browse live brand campaigns, see the budget and
+                    deliverables up front, and apply to the ones that fit your audience.
                   </p>
                 </div>
                 <div
@@ -1051,12 +1051,13 @@ export default function CreatorOSPage() {
         >
           <div className="max-w-3xl mx-auto">
             <h2 className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black leading-tight">
-              Ready to Find Creators Who Help You Achieve Your Campaign Goals?
+              Ready to build something that lasts?
             </h2>
 
             <p className="text-sm sm:text-base md:text-lg leading-relaxed font-lato text-gray-700 mb-6 sm:mb-8 md:mb-10">
-              Tell us about your brand and your campaign objective. We will match you with the right
-              creators from our vetted pool within your timeline.
+              Whether you're just starting out or already building an audience, SCN gives you the
+              community, the education, and the opportunities to run your content like a real
+              business.
             </p>
 
             <Link href="/signin">
