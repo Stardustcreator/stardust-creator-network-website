@@ -110,7 +110,9 @@ export function initiateRegistration(
   utmSource?: string,
   utmMedium?: string,
   utmCampaign?: string,
-  referrerUrl?: string
+  referrerUrl?: string,
+  utmTerm?: string,
+  utmContent?: string
 ) {
   return post<{ message: string }>('/auth/initiate-registration', {
     email,
@@ -122,6 +124,8 @@ export function initiateRegistration(
     utmMedium,
     utmCampaign,
     referrerUrl,
+    utmTerm,
+    utmContent,
   });
 }
 

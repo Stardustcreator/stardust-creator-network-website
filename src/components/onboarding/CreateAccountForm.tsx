@@ -143,6 +143,8 @@ export default function CreateAccountForm({
       const utmSource = stored.utmSource ?? urlUtm.utm_source;
       const utmMedium = stored.utmMedium ?? urlUtm.utm_medium;
       const utmCampaign = stored.utmCampaign ?? urlUtm.utm_campaign;
+      const utmTerm = stored.utmTerm ?? urlUtm.utm_term;
+      const utmContent = stored.utmContent ?? urlUtm.utm_content;
       const referrerUrl =
         stored.referrerUrl ??
         (typeof document === 'undefined' ? undefined : document.referrer || undefined);
@@ -156,7 +158,9 @@ export default function CreateAccountForm({
         utmSource,
         utmMedium,
         utmCampaign,
-        referrerUrl
+        referrerUrl,
+        utmTerm,
+        utmContent
       );
 
       if (result.message) {
