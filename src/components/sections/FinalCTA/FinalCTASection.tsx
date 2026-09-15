@@ -3,7 +3,22 @@ import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
 
-export default function FinalCTASection() {
+interface FinalCTASectionProps {
+  finalCtaTitle?: string;
+  finalCtaDescription?: string;
+  finalCtaButton?: string;
+}
+
+const DEFAULT_FINAL_CTA_TITLE = 'Start Building the Creator Business You Deserve.';
+const DEFAULT_FINAL_CTA_DESCRIPTION =
+  'Whether you are just starting out or already building an audience, SCN gives you the community, the education, the tools, and the opportunities to accelerate your creator journey and build something that lasts.';
+const DEFAULT_FINAL_CTA_BUTTON = 'Sign Up Now';
+
+export default function FinalCTASection({
+  finalCtaTitle = DEFAULT_FINAL_CTA_TITLE,
+  finalCtaDescription = DEFAULT_FINAL_CTA_DESCRIPTION,
+  finalCtaButton = DEFAULT_FINAL_CTA_BUTTON,
+}: FinalCTASectionProps) {
   const router = useRouter();
 
   const handleSignUp = () => {

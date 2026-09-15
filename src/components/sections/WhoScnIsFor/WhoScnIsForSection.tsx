@@ -4,43 +4,41 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-const cards = [
-  {
-    id: 1,
-    label: 'Learn',
-    description:
-      'Access creator-focused education built for the African creator. From pricing your work to understanding usage rights to building a business around your content.',
-    buttonText: 'Start Learning',
-    buttonLink: '/pricing',
-    image: '/who we are/card 1.webp',
-  },
-  {
-    id: 2,
-    label: 'Build',
-    description:
-      'Turn your content into a lasting business. The tools, systems, and strategy to grow something that belongs to you - beyond any algorithm or platform.',
-    buttonText: 'Start Building',
-    buttonLink: '/pricing',
-    image: '/who we are/card 2.webp',
-  },
-  {
-    id: 3,
-    label: 'Earn',
-    description:
-      'Stop guessing what to charge and start earning what your work is worth. Build defensible rates, invoice professionally, and connect with brands already looking for creators like you.',
-    buttonText: 'Calculate Rate',
-    buttonLink: '/pricing',
-    image: '/who we are/card 3.webp',
-  },
-  {
-    id: 4,
-    label: 'Grow',
-    description:
-      'Build an audience you actually own, not just followers on a platform you cannot control. Every visitor to your profile or storefront can join your mailing list.',
-    buttonText: 'Grow your List',
-    buttonLink: '/pricing',
-    image: '/who we are/card 4.webp',
-  },
+// Each of the four pillar cards' label + description come from the CMS as a
+// single "Title | Description" pipe-separated string (learnContent,
+// buildContent, earnContent, growContent). buttonText/buttonLink/image have
+// no CMS equivalent and stay hardcoded here.
+const DEFAULT_LEARN_CONTENT =
+  'Learn | Access creator-focused education built for the African creator. From pricing your work to understanding usage rights to building a business around your content.';
+const DEFAULT_BUILD_CONTENT =
+  'Build | Turn your content into a lasting business. The tools, systems, and strategy to grow something that belongs to you - beyond any algorithm or platform.';
+const DEFAULT_EARN_CONTENT =
+  'Earn | Stop guessing what to charge and start earning what your work is worth. Build defensible rates, invoice professionally, and connect with brands already looking for creators like you.';
+const DEFAULT_GROW_CONTENT =
+  'Grow | Build an audience you actually own, not just followers on a platform you cannot control. Every visitor to your profile or storefront can join your mailing list.';
+
+interface WhoScnIsForSectionProps {
+  learnContent?: string;
+  buildContent?: string;
+  earnContent?: string;
+  growContent?: string;
+}
+
+// Parses a "Title | Description" string, falling back to the given label if
+// the pipe or either half is missing so a malformed CMS value never renders
+// blank.
+function parsePillarContent(value: string, fallbackLabel: string) {
+  const [labelPart, ...descriptionParts] = value.split('|');
+  const label = labelPart?.trim() || fallbackLabel;
+  const description = descriptionParts.join('|').trim();
+  return { label, description };
+}
+
+const cardMeta = [
+  { id: 1, buttonText: 'Start Learning', buttonLink: '/pricing', image: '/who we are/card 1.webp' },
+  { id: 2, buttonText: 'Start Building', buttonLink: '/pricing', image: '/who we are/card 2.webp' },
+  { id: 3, buttonText: 'Calculate Rate', buttonLink: '/pricing', image: '/who we are/card 3.webp' },
+  { id: 4, buttonText: 'Grow your List', buttonLink: '/pricing', image: '/who we are/card 4.webp' },
 ];
 
 // Animation variants
@@ -66,8 +64,19 @@ const wordVariants = {
   },
 };
 
-export default function WhoScnIsForSection() {
+export default function WhoScnIsForSection({
+  learnContent = DEFAULT_LEARN_CONTENT,
+  buildContent = DEFAULT_BUILD_CONTENT,
+  earnContent = DEFAULT_EARN_CONTENT,
+  growContent = DEFAULT_GROW_CONTENT,
+}: WhoScnIsForSectionProps) {
   const words = ['How', 'SCN', 'Helps'];
+
+  const cards = cardMeta.map((meta, index) => {
+    const content = [learnContent, buildContent, earnContent, growContent][index];
+    const fallbackLabel = ['Learn', 'Build', 'Earn', 'Grow'][index];
+    return { ...meta, ...parsePillarContent(content, fallbackLabel) };
+  });
 
   return (
     <section className="relative w-full py-16 sm:py-20 md:py-32 bg-white">

@@ -8,6 +8,105 @@ import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 
+// Content editors change this in the admin CMS - fetched here rather than
+// hardcoded in Hero itself. Falls back to Hero's own defaults (which match
+// what shipped before this existed) on any failure, so a backend outage or
+// missing env var never breaks the page - same resilience pattern as
+// src/app/event/route.ts's own backend fetch.
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+
+interface ChangeItem {
+  before: string;
+  after: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface HomepageContent {
+  heroTitle?: string;
+  heroSubtitle?: string;
+  heroButton?: string;
+  featuresTitle?: string;
+  featuresSubtitle?: string;
+  learnContent?: string;
+  buildContent?: string;
+  earnContent?: string;
+  growContent?: string;
+  testimonialsTitle?: string;
+  changesTitle?: string;
+  changes?: ChangeItem[];
+  faqTitle?: string;
+  faqs?: FaqItem[];
+  finalCtaTitle?: string;
+  finalCtaDescription?: string;
+  finalCtaButton?: string;
+}
+
+function asString(value: unknown): string | undefined {
+  return typeof value === 'string' ? value : undefined;
+}
+
+function asChangeArray(value: unknown): ChangeItem[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const items = value.filter(
+    (item): item is ChangeItem =>
+      !!item && typeof item.before === 'string' && typeof item.after === 'string'
+  );
+  return items.length > 0 ? items : undefined;
+}
+
+function asFaqArray(value: unknown): FaqItem[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const items = value.filter(
+    (item): item is FaqItem =>
+      !!item && typeof item.question === 'string' && typeof item.answer === 'string'
+  );
+  return items.length > 0 ? items : undefined;
+}
+
+// Fetches the full `homepage` CMS content object once so every section below
+// can pull its own slice out of it. Falls back to each section's own
+// defaults (which match what shipped before this existed) on any failure, so
+// a backend outage or missing env var never breaks the page - same
+// resilience pattern as src/app/event/route.ts's own backend fetch.
+async function getHomepageContent(): Promise<HomepageContent> {
+  if (!API_URL) return {};
+
+  try {
+    const res = await fetch(`${API_URL}/cms/pages/homepage`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return {};
+
+    const data = await res.json();
+    const content = data?.content ?? {};
+    return {
+      heroTitle: asString(content.heroTitle),
+      heroSubtitle: asString(content.heroSubtitle),
+      heroButton: asString(content.heroButton),
+      featuresTitle: asString(content.featuresTitle),
+      featuresSubtitle: asString(content.featuresSubtitle),
+      learnContent: asString(content.learnContent),
+      buildContent: asString(content.buildContent),
+      earnContent: asString(content.earnContent),
+      growContent: asString(content.growContent),
+      testimonialsTitle: asString(content.testimonialsTitle),
+      changesTitle: asString(content.changesTitle),
+      changes: asChangeArray(content.changes),
+      faqTitle: asString(content.faqTitle),
+      faqs: asFaqArray(content.faqs),
+      finalCtaTitle: asString(content.finalCtaTitle),
+      finalCtaDescription: asString(content.finalCtaDescription),
+      finalCtaButton: asString(content.finalCtaButton),
+    };
+  } catch {
+    return {};
+  }
+}
+
 // Lazy load below-the-fold sections for better initial load performance
 const ConnectCollaborateCreateSection = dynamic(
   () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
@@ -61,8 +160,9 @@ export const metadata: Metadata = generateMetaTags({
   tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
 });
 
-export default function Home() {
+export default async function Home() {
   const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
+  const homepageContent = await getHomepageContent();
 
   return (
     <>
@@ -84,25 +184,47 @@ export default function Home() {
         className="bg-black"
       >
         {/* ========== SECTION 1 ========== */}
-        <Hero />
+        <Hero
+          title={homepageContent.heroTitle}
+          subtitle={homepageContent.heroSubtitle}
+          buttonText={homepageContent.heroButton}
+        />
 
         {/* ========== SECTION 2 ========== */}
-        <ConnectCollaborateCreateSection />
+        <ConnectCollaborateCreateSection
+          featuresTitle={homepageContent.featuresTitle}
+          featuresSubtitle={homepageContent.featuresSubtitle}
+        />
 
         {/* ========== SECTION 3 ========== */}
-        <WhoScnIsForSection />
+        <WhoScnIsForSection
+          learnContent={homepageContent.learnContent}
+          buildContent={homepageContent.buildContent}
+          earnContent={homepageContent.earnContent}
+          growContent={homepageContent.growContent}
+        />
 
         {/* ========== SECTION 4 ========== */}
-        <TestimonialsSection />
+        <TestimonialsSection testimonialsTitle={homepageContent.testimonialsTitle} />
 
         {/* ========== SECTION 5 ========== */}
-        <WhatChangesWhenYouJoinSection />
+        <WhatChangesWhenYouJoinSection
+          changesTitle={homepageContent.changesTitle}
+          changes={homepageContent.changes}
+        />
 
         {/* ========== SECTION 6 ========== */}
-        <FAQSection />
+        <FAQSection
+          faqTitle={homepageContent.faqTitle}
+          faqs={homepageContent.faqs}
+        />
 
         {/* ========== SECTION 7 - Final CTA ========== */}
-        <FinalCTASection />
+        <FinalCTASection
+          finalCtaTitle={homepageContent.finalCtaTitle}
+          finalCtaDescription={homepageContent.finalCtaDescription}
+          finalCtaButton={homepageContent.finalCtaButton}
+        />
       </main>
 
       {/* Footer */}
