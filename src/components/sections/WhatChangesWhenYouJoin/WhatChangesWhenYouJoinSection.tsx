@@ -3,7 +3,17 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-const changes = [
+interface Change {
+  before: string;
+  after: string;
+}
+
+// The desktop before/after rows map 1:1 to the CMS `changes` array. The
+// mobile-only "You Stop" / "And You Start" lists below have no CMS
+// equivalent (different shape, different item count) and stay hardcoded.
+const DEFAULT_CHANGES_TITLE = 'What Changes when you Join';
+
+const DEFAULT_CHANGES: Change[] = [
   {
     before: 'Guessing your rates every deal',
     after: 'Confident, defensible pricing backed by data',
@@ -26,6 +36,11 @@ const changes = [
   },
 ];
 
+interface WhatChangesWhenYouJoinSectionProps {
+  changesTitle?: string;
+  changes?: Change[];
+}
+
 const stopItems = [
   'Guessing your rates',
   'Waiting for brands to DM you',
@@ -41,7 +56,10 @@ const startItems = [
   'Thinking like a business',
 ];
 
-export default function WhatChangesWhenYouJoinSection() {
+export default function WhatChangesWhenYouJoinSection({
+  changesTitle = DEFAULT_CHANGES_TITLE,
+  changes = DEFAULT_CHANGES,
+}: WhatChangesWhenYouJoinSectionProps) {
   // Animation variants
   const titleVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -82,7 +100,7 @@ export default function WhatChangesWhenYouJoinSection() {
               letterSpacing: '-0.02em',
             }}
           >
-            What Changes when you Join
+            {changesTitle}
           </h2>
         </motion.div>
 

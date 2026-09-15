@@ -4,7 +4,21 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-const faqs = [
+interface Faq {
+  question: string;
+  answer: string;
+}
+
+interface FAQSectionProps {
+  faqTitle?: string;
+  faqs?: Faq[];
+}
+
+const DEFAULT_FAQ_TITLE = 'Frequently Asked Questions';
+
+// The subtitle below the title ("Things most people want to know...") has no
+// corresponding CMS key and stays hardcoded.
+const DEFAULT_FAQS: Faq[] = [
   {
     question: 'What is Stardust Creator Network?',
     answer:
@@ -47,7 +61,10 @@ const faqs = [
   },
 ];
 
-export default function FAQSection() {
+export default function FAQSection({
+  faqTitle = DEFAULT_FAQ_TITLE,
+  faqs = DEFAULT_FAQS,
+}: FAQSectionProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   const titleVariants = {
@@ -98,7 +115,7 @@ export default function FAQSection() {
               letterSpacing: '-0.02em',
             }}
           >
-            Frequently Asked Questions
+            {faqTitle}
           </h2>
         </motion.div>
 

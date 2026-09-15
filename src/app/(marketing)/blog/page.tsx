@@ -20,6 +20,38 @@ export const metadata: Metadata = generateMetaTags({
 // Revalidate this page every 30 seconds
 export const revalidate = 30;
 
+// Content editors change this in the admin CMS - fetched here rather than
+// hardcoded in BlogHeader itself. Falls back to BlogHeader's own defaults
+// (which match what shipped before this existed) on any failure, so a
+// backend outage or missing env var never breaks the page - same
+// resilience pattern as the homepage's getHomepageHeroContent().
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+
+interface BlogHeroContent {
+  heroTitle?: string;
+  heroSubtitle?: string;
+}
+
+async function getBlogHeroContent(): Promise<BlogHeroContent> {
+  if (!API_URL) return {};
+
+  try {
+    const res = await fetch(`${API_URL}/cms/pages/blog`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return {};
+
+    const data = await res.json();
+    const content = data?.content ?? {};
+    return {
+      heroTitle: typeof content.heroTitle === 'string' ? content.heroTitle : undefined,
+      heroSubtitle: typeof content.heroSubtitle === 'string' ? content.heroSubtitle : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
+
 function calculateCategories(posts: Array<{ category: string }>) {
   const categoryMap = new Map<string, number>();
 
@@ -46,6 +78,8 @@ function calculateCategories(posts: Array<{ category: string }>) {
 export default async function BlogPage() {
   let posts: (BlogPost & { body: PortableTextBlock[] })[] = [];
   let error: string | null = null;
+
+  const heroContent = await getBlogHeroContent();
 
   try {
     posts = await getAllPosts();
@@ -74,7 +108,10 @@ export default async function BlogPage() {
       />
       <Header />
       <main className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black pt-24">
-        <BlogHeader />
+        <BlogHeader
+          title={heroContent.heroTitle}
+          subtitle={heroContent.heroSubtitle}
+        />
         {error ? (
           <div className="max-w-7xl mx-auto px-6 py-20">
             <div className="text-center p-8 bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-2xl">

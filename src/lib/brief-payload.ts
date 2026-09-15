@@ -66,6 +66,8 @@ export function extractUTMParams(url: string | null | undefined): {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
 } {
   if (!url) return {};
 
@@ -75,6 +77,8 @@ export function extractUTMParams(url: string | null | undefined): {
       utm_source: urlObj.searchParams.get('utm_source') || undefined,
       utm_medium: urlObj.searchParams.get('utm_medium') || undefined,
       utm_campaign: urlObj.searchParams.get('utm_campaign') || undefined,
+      utm_term: urlObj.searchParams.get('utm_term') || undefined,
+      utm_content: urlObj.searchParams.get('utm_content') || undefined,
     };
   } catch {
     return {};

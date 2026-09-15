@@ -25,7 +25,15 @@ const creatorTestimonials = [
   },
 ];
 
-export default function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonialsTitle?: string;
+}
+
+const DEFAULT_TESTIMONIALS_TITLE = 'What Creators Are Saying About SCN';
+
+export default function TestimonialsSection({
+  testimonialsTitle = DEFAULT_TESTIMONIALS_TITLE,
+}: TestimonialsSectionProps) {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   const openVideo = (videoId: string) => {
@@ -79,7 +87,7 @@ export default function TestimonialsSection() {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6 }}
             >
-              What Creators Are Saying About SCN
+              {testimonialsTitle}
             </motion.h2>
           </div>
 

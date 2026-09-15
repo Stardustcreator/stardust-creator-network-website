@@ -6,6 +6,8 @@ export interface StoredAttribution {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
   referrerUrl?: string;
 }
 
@@ -19,6 +21,8 @@ export function captureAttributionOnce(): void {
     utmSource: utm.utm_source,
     utmMedium: utm.utm_medium,
     utmCampaign: utm.utm_campaign,
+    utmTerm: utm.utm_term,
+    utmContent: utm.utm_content,
     referrerUrl: document.referrer || undefined,
   };
 
@@ -36,7 +40,13 @@ export function getStoredAttribution(): StoredAttribution {
   }
 }
 
-const FORWARDED_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign'] as const;
+const FORWARDED_UTM_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+] as const;
 
 /**
  * Some in-app browsers (TikTok's in particular) don't reliably persist
