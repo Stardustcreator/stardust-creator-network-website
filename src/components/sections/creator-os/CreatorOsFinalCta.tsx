@@ -4,7 +4,7 @@ interface CreatorOsFinalCtaProps {
   title?: string;
 }
 
-const DEFAULT_TITLE = 'Ready to Find Creators Who Help You Achieve Your Campaign Goals?';
+const DEFAULT_TITLE = 'Ready to build something that lasts?';
 
 export default function CreatorOsFinalCta({ title = DEFAULT_TITLE }: CreatorOsFinalCtaProps) {
   return (
@@ -18,8 +18,8 @@ export default function CreatorOsFinalCta({ title = DEFAULT_TITLE }: CreatorOsFi
         </h2>
 
         <p className="text-sm sm:text-base md:text-lg leading-relaxed font-lato text-gray-700 mb-6 sm:mb-8 md:mb-10">
-          Tell us about your brand and your campaign objective. We will match you with the right
-          creators from our vetted pool within your timeline.
+          Whether you're just starting out or already building an audience, SCN gives you the
+          community, the education, and the opportunities to run your content like a real business.
         </p>
 
         <Link href="/signin">
