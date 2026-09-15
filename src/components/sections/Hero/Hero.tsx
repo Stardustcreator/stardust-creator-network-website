@@ -4,21 +4,29 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export default function Hero() {
-  const words = [
-    'Your',
-    'Content',
-    'Is',
-    'a',
-    'Business.',
-    "It's",
-    'Time',
-    'to',
-    'Run',
-    'It',
-    'Like',
-    'One.',
-  ];
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+}
+
+const DEFAULT_TITLE = "Your Content Is a Business. It's Time to Run It Like One.";
+const DEFAULT_SUBTITLE =
+  'SCN is the operating system for African creators. The tools, the community, and the education you need to turn your content into a real business.';
+const DEFAULT_BUTTON_TEXT = 'Join the Network';
+
+export default function Hero({
+  title = DEFAULT_TITLE,
+  subtitle = DEFAULT_SUBTITLE,
+  buttonText = DEFAULT_BUTTON_TEXT,
+}: HeroProps) {
+  // Word-by-word fade animation splits on whitespace, so this now drives
+  // off whatever title the CMS returns rather than a fixed array - the
+  // per-word underline highlight below still only lights up "Content" and
+  // "Business." specifically, which is cosmetic and won't follow an
+  // admin's edit to different wording, but the fade-in itself works for
+  // any title.
+  const words = title.split(' ');
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -140,8 +148,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          SCN is the operating system for African creators. The tools, the community, and the
-          education you need to turn your content into a real business.
+          {subtitle}
         </motion.p>
 
         {/* CTA Button */}
@@ -155,7 +162,7 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-7 md:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-xs sm:text-sm md:text-base"
               style={{ backgroundColor: '#57058B', color: 'white' }}
             >
-              Join the Network
+              {buttonText}
               <svg
                 width="16"
                 height="16"
