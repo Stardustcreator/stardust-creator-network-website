@@ -8,19 +8,46 @@ import TermsOfServiceNigeria from '@/components/legal/TermsOfServiceNigeria';
 import TermsOfServiceUK from '@/components/legal/TermsOfServiceUK';
 import TermsOfServiceSidebar from '@/components/legal/TermsOfServiceSidebar';
 
-export const metadata: Metadata = generateMetaTags({
-  title: 'Terms of Service – Stardust Creator Network',
-  description:
-    'Read the Terms of Service for Stardust Creator Network. Learn about platform rules, user rights, content ownership, and guidelines for creators and brands.',
-  image: '/who we are/creators.webp',
-  url: '/legal/terms',
-});
+// Content editors change this in the admin CMS - fetched here rather than
+// hardcoded in TermsOfServiceNigeria itself. Falls back to that component's
+// own default (which matches what shipped before this existed) on any
+// failure, so a backend outage or missing env var never breaks the page -
+// same resilience pattern as src/app/page.tsx's getHomepageHeroContent().
+// The CMS's "terms-conditions" slug is independent of this route's actual
+// /legal/terms path. Note: this only covers the Nigeria/fallback variant -
+// TermsOfServiceUK stays fully hardcoded since the CMS has no UK-specific
+// content for this page.
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
 
-export default function TermsOfServicePage() {
+interface TermsContent {
+  fullContent?: string;
+}
+
+async function getTermsContent(): Promise<TermsContent> {
+  if (!API_URL) return {};
+
+  try {
+    const res = await fetch(`${API_URL}/cms/pages/terms-conditions`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return {};
+
+    const data = await res.json();
+    const content = data?.content ?? {};
+    return {
+      fullContent: typeof content.fullContent === 'string' ? content.fullContent : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
+
+export default async function TermsOfServicePage() {
   const breadcrumbData = generateStructuredData.breadcrumb([
     { name: 'Home', url: '/' },
     { name: 'Terms of Service', url: '/legal/terms' },
   ]);
+  const termsContent = await getTermsContent();
 
   return (
     <>
@@ -76,7 +103,7 @@ export default function TermsOfServicePage() {
               {/* Main Content */}
               <div className="lg:col-span-3">
                 <TermsOfServiceContent
-                  nigeriaContent={<TermsOfServiceNigeria />}
+                  nigeriaContent={<TermsOfServiceNigeria fullContent={termsContent.fullContent} />}
                   ukContent={<TermsOfServiceUK />}
                 />
               </div>

@@ -4,7 +4,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export default function ConnectCollaborateCreateSection() {
+interface ConnectCollaborateCreateSectionProps {
+  featuresTitle?: string;
+  featuresSubtitle?: string;
+}
+
+const DEFAULT_FEATURES_TITLE = 'All features for your creator business in One place';
+const DEFAULT_FEATURES_SUBTITLE =
+  'Everything you need in one place, not scattered across five tools.';
+
+export default function ConnectCollaborateCreateSection({
+  featuresTitle = DEFAULT_FEATURES_TITLE,
+  featuresSubtitle = DEFAULT_FEATURES_SUBTITLE,
+}: ConnectCollaborateCreateSectionProps) {
   // Animation variants for the heading
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -66,7 +78,9 @@ export default function ConnectCollaborateCreateSection() {
     },
   };
 
-  const words = ['All', 'features', 'for', 'your', 'creator', 'business', 'in', 'One', 'place'];
+  // Word-by-word fade animation splits on whitespace, same pattern as Hero,
+  // so this drives off whatever title the CMS returns.
+  const words = featuresTitle.split(' ');
 
   return (
     <section
@@ -102,7 +116,7 @@ export default function ConnectCollaborateCreateSection() {
             className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto"
             style={{ fontFamily: 'var(--font-lato)' }}
           >
-            Everything you need in one place, not scattered across five tools.
+            {featuresSubtitle}
           </p>
         </div>
 
