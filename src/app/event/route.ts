@@ -11,7 +11,7 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 // Used if the backend setting can't be reached, so the link never breaks.
-const FALLBACK_URL = 'https://zoom.us/meeting/register/NJgEaV2pSTqFu6daQ3uS7g';
+const FALLBACK_URL = 'https://zoom.us/meeting/register/_C2XcI6kTz6Np8TFjjba7w';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
 
