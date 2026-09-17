@@ -139,6 +139,15 @@ export default function CmsPage() {
       if (error) {
         setErrorMessage('Error: ' + error.message);
       } else {
+        // Best-effort: the Supabase write already succeeded, so a failure
+        // here just means the live site waits out the normal 60s ISR cache
+        // instead of updating immediately.
+        fetch('/api/revalidate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: currentPage }),
+        }).catch(() => {});
+
         setSuccessMessage('✓ Saved!');
         setTimeout(() => setSuccessMessage(''), 3000);
       }
