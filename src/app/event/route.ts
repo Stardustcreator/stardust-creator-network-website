@@ -1,7 +1,17 @@
 import { NextResponse } from 'next/server';
 
+// Without an explicit dynamic/revalidate config, a GET Route Handler with no
+// dynamic function usage (no headers()/cookies()/request access) is eligible
+// for Next's build-time static optimization - the redirect below would then
+// get computed once at build time and frozen into the deployment, only ever
+// updating on the next rebuild, never picking up the admin-set URL until
+// then regardless of the 60s revalidate on the fetch below (that window
+// bounds the *data* fetch's own cache, not whether this route re-runs at
+// all). Forcing dynamic makes every request re-resolve the URL fresh.
+export const dynamic = 'force-dynamic';
+
 // Used if the backend setting can't be reached, so the link never breaks.
-const FALLBACK_URL = 'https://zoom.us/meeting/register/NJgEaV2pSTqFu6daQ3uS7g';
+const FALLBACK_URL = 'https://zoom.us/meeting/register/_C2XcI6kTz6Np8TFjjba7w';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
 
