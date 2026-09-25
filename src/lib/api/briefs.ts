@@ -10,7 +10,14 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    throw new Error(data.message ?? 'Something went wrong. Please try again.');
+    // NestJS's ValidationPipe returns `message` as an array of internal
+    // field-validation strings (e.g. "property X should not exist") - never
+    // fit for display. A single string `message` is a deliberate backend
+    // error (e.g. a business-rule rejection) and is safe to show as-is.
+    const message = Array.isArray(data.message)
+      ? 'We could not process your submission. Please check your details and try again.'
+      : (data.message ?? 'Something went wrong. Please try again.');
+    throw new Error(message);
   }
 
   return data as T;
@@ -35,7 +42,9 @@ export interface SubmitBriefPayload {
 
   // Step 2: Campaign Objectives
   campaignName?: string;
-  campaignGoals?: string[];
+  /** Single-select on the backend (CreateBriefDto.campaignGoal) - one value, not an array. */
+  campaignGoal?: string;
+  /** Must be one of the backend's CampaignType enum values: sponsored_content, ugc_content_only, posting_only. */
   campaignType?: string;
   targetAudiences?: string[];
   targetMarkets?: string[];
@@ -50,21 +59,42 @@ export interface SubmitBriefPayload {
   /** Only collected by the standalone /brief page today. */
   creatorCountNeeded?: number;
   creatorGender?: string;
+  /**
+   * Only accepted (and required) when creatorGender is 'Both' - the backend
+   * rejects either being present for any other gender selection, and
+   * rejects a 'Both' brief that's missing either one.
+   */
+  maleCreatorCount?: number;
+  femaleCreatorCount?: number;
   creatorAgeRange?: string;
 
   // Step 4: Budget & Payment Preference
-  /** Raw budget bucket text, e.g. '₦5M–₦10M'. */
+  /** One of the backend's five Naira buckets, e.g. '₦1M - ₦2.5M'. No other currency is accepted yet. */
   budgetRange?: string;
   paymentModel?: string;
-  ongoingCollaboration?: string;
 
   // Step 5: Timeline & Deliverables
   campaignStartDate?: string;
   campaignDuration?: string;
-  deliverables?: string[];
+  /** Backend-recognized deliverable labels only - see CreateBriefDto.deliverables. */
+  deliverables?: Array<{ label: string; quantity: number; otherDetail?: string }>;
+  /**
+   * Required when creatorCountNeeded > 1, rejected when it's 1 or unset.
+   * 'per_creator' | 'aggregate' (Prisma DeliverablesScope enum).
+   */
+  deliverablesScope?: string;
+  /**
+   * Required when campaignType is 'posting_only' and the deliverables'
+   * quantities sum to more than 1 post; rejected otherwise. Unit is one of
+   * the Prisma DurationUnit values: days | weeks | months | years.
+   */
+  postingWindowValue?: number;
+  postingWindowUnit?: string;
 
   // Step 6: Additional Information
-  howHeard?: string;
+  // No `howHeard`/referral-source field exists on the backend DTO - fold any
+  // such answer into `campaignBrief` instead of sending it (it was rejected
+  // outright as an unknown property).
   collaborationType?: string;
   communityInterest?: string;
   additionalNotes?: string;
