@@ -12,15 +12,24 @@
 // - there's no currency field on the admin Brief record, so a GBP bucket
 // (or any non-Nigeria country) is left unresolved rather than guessing an
 // exchange rate. Closed buckets use the midpoint of their two bounds; the
-// one open-ended bucket ("₦10M+") has no upper bound to average, so it uses
-// its stated floor as a conservative estimate.
+// one open-ended bucket has no upper bound to average, so it uses its stated
+// floor as a conservative estimate.
 //
-// Two entries per bucket because BrandBriefForm and the standalone /brief
-// page format the same ranges slightly differently (en dash vs hyphen with
-// spaces) and both submit through this mapping.
+// Entries below '₦100k - ₦500k' through '₦5M+' are the backend's own five
+// buckets (CreateBriefDto.budgetRange / BUDGET_RANGE_OPTIONS), which the
+// standalone /brief page now sends verbatim. The remaining entries are
+// BrandBriefForm's still-unreconciled bucket strings (en dash vs hyphen
+// spacing, and a wider ₦2.5M-₦10M+ range) - kept so its `budget` figure keeps
+// resolving even though its `budgetRange` itself doesn't yet match the
+// backend's enum.
 export const NGN_BUDGET_TO_KOBO: Record<string, number> = {
+  '₦100k - ₦500k': 30_000_000, // midpoint ₦300k
+  '₦500k - ₦1M': 75_000_000, // midpoint ₦750k
+  '₦1M - ₦2.5M': 175_000_000, // midpoint ₦1.75M
+  '₦2.5M - ₦5M': 375_000_000, // midpoint ₦3.75M
+  '₦5M+': 500_000_000, // floor: ₦5M
+
   '₦2.5M–₦5M': 375_000_000, // midpoint ₦3.75M
-  '₦2.5M - ₦5M': 375_000_000,
   '₦5M–₦10M': 750_000_000, // midpoint ₦7.5M
   '₦5M - ₦10M': 750_000_000,
   '₦10M+': 1_000_000_000, // floor: ₦10M
