@@ -32,11 +32,14 @@ export async function POST(request: NextRequest) {
         budgetPaymentPreference.estimatedBudget
       ),
       timeline: synthesizeTimeline(timelineDeliverables),
-      campaignBrief: synthesizeCampaignBrief(
-        campaignObjectives,
-        creatorPreferences,
-        additionalInformation
-      ),
+      // No backend field exists for "how did you hear about us" (CreateBriefDto
+      // has no howHeard/referral-source property) - folded into the free-text
+      // brief instead of sent as its own field, same as /brief page.
+      campaignBrief:
+        synthesizeCampaignBrief(campaignObjectives, creatorPreferences, additionalInformation) +
+        (additionalInformation.referralSource
+          ? `\nHeard about SCN via: ${additionalInformation.referralSource}`
+          : ''),
 
       companyWebsite: brandCompanyInformation.companyWebsite,
       country: brandCompanyInformation.country,
@@ -46,7 +49,10 @@ export async function POST(request: NextRequest) {
       marketingOptIn: brandCompanyInformation.marketingConsent,
 
       campaignName: campaignObjectives.campaignName,
-      campaignGoals: campaignObjectives.campaignGoals,
+      // Backend is single-select (CreateBriefDto.campaignGoal) - BrandBriefForm
+      // still collects a multi-select, so only the first pick reaches the
+      // backend today. See @/lib/api/briefs.ts SubmitBriefPayload.
+      campaignGoal: campaignObjectives.campaignGoals?.[0],
       campaignType: campaignObjectives.campaignType,
       targetAudiences: campaignObjectives.targetAudiences,
       targetMarkets: campaignObjectives.targetMarkets,
@@ -62,13 +68,18 @@ export async function POST(request: NextRequest) {
 
       budgetRange: budgetPaymentPreference.estimatedBudget,
       paymentModel: budgetPaymentPreference.paymentModel,
-      ongoingCollaboration: budgetPaymentPreference.ongoingCollaboration,
+      // ongoingCollaboration has no backend field (CreateBriefDto rejects
+      // unknown properties) - intentionally not sent.
 
       campaignStartDate: timelineDeliverables.campaignStartDate,
       campaignDuration: timelineDeliverables.campaignDuration,
-      deliverables: timelineDeliverables.deliverables,
+      // Backend validates each label against its own deliverable vocabulary
+      // and requires a quantity - BrandBriefForm's plain string list doesn't
+      // match it, so only well-formed items would validate. Left as a
+      // best-effort shape rather than reworked here (deferred alongside the
+      // rest of BrandBriefForm's vocabulary alignment).
+      deliverables: timelineDeliverables.deliverables?.map(label => ({ label, quantity: 1 })),
 
-      howHeard: additionalInformation.referralSource,
       collaborationType: additionalInformation.collaborationType,
       communityInterest: additionalInformation.communityInterest,
       additionalNotes: additionalInformation.additionalNotes,
