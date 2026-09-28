@@ -21,6 +21,7 @@ interface FormInputProps {
   inputClassName?: string;
   showFilledIndicator?: boolean;
   inputMode?: React.InputHTMLAttributes<HTMLInputElement>['inputMode'];
+  prefix?: React.ReactNode;
 }
 
 export default function FormInput({
@@ -40,6 +41,7 @@ export default function FormInput({
   inputClassName,
   showFilledIndicator = true,
   inputMode,
+  prefix,
 }: FormInputProps) {
   const [focused, setFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -73,6 +75,11 @@ export default function FormInput({
       </div>
 
       <div className="relative">
+        {prefix && (
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
+            {prefix}
+          </span>
+        )}
         <input
           type={resolvedType}
           id={id}
@@ -85,7 +92,7 @@ export default function FormInput({
           required={required}
           autoComplete={autoComplete}
           inputMode={inputMode}
-          className={`w-full px-3.5 py-2.5 focus-visible:outline-none! rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-surface-action text-text-primary placeholder:text-text-secondary transition-colors duration-150 ${showFilledStyles ? 'pr-10 bg-surface-primary' : 'pr-10'} ${inputClassName ?? ''}`.trim()}
+          className={`w-full px-3.5 py-2.5 focus-visible:outline-none! rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-surface-action text-text-primary placeholder:text-text-secondary transition-colors duration-150 ${prefix ? 'pl-20' : ''} ${showFilledStyles ? 'pr-10 bg-surface-primary' : 'pr-10'} ${inputClassName ?? ''}`.trim()}
           style={borderStyle}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}

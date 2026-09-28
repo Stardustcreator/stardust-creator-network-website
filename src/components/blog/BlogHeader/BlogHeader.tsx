@@ -5,9 +5,19 @@ import { motion } from 'framer-motion';
 
 interface BlogHeaderProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
 }
 
-export default function BlogHeader({ className = '' }: BlogHeaderProps) {
+const DEFAULT_TITLE = 'Everything You Need to Know to Build a Profitable Creator Business.';
+const DEFAULT_SUBTITLE =
+  "Expert insights, strategies, and stories from the forefront of the creator economy. Learn how to build authentic partnerships, grow your brand, and thrive in today's digital landscape.";
+
+export default function BlogHeader({
+  className = '',
+  title = DEFAULT_TITLE,
+  subtitle = DEFAULT_SUBTITLE,
+}: BlogHeaderProps) {
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -66,7 +76,7 @@ export default function BlogHeader({ className = '' }: BlogHeaderProps) {
           initial="hidden"
           animate="visible"
         >
-          Everything You Need to Know to Build a Profitable Creator Business.
+          {title}
         </motion.h1>
 
         <motion.p
@@ -80,9 +90,7 @@ export default function BlogHeader({ className = '' }: BlogHeaderProps) {
           initial="hidden"
           animate="visible"
         >
-          Expert insights, strategies, and stories from the forefront of the creator economy. Learn
-          how to build authentic partnerships, grow your brand, and thrive in today's digital
-          landscape.
+          {subtitle}
         </motion.p>
       </div>
     </section>

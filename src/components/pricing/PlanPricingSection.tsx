@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 import CheckIcon from '@/components/icons/CheckIcon';
 import LockIcon from '@/components/icons/LockIcon';
 import Image from 'next/image';
 import { ArrowRightIcon, ChevronRightIcon } from '@sanity/icons';
-import PromoBanner from '@/components/shared/PromoBanner';
+import { buildForwardedUtmQuery } from '@/lib/attribution';
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'starter' | 'builder';
@@ -26,16 +26,16 @@ interface PlanConfig {
 }
 
 const PLANS: PlanConfig[] = [
-  // {
-  //   id: 'starter',
-  //   name: 'Starter',
-  //   recommended: false,
-  //   price: { annual: '₦0', monthly: '₦0' },
-  //   suffix: '/month',
-  //   caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
-  //   cta: { label: 'Get Started for free', withArrow: false },
-  //   commission: '5%',
-  // },
+  {
+    id: 'starter',
+    name: 'Starter',
+    recommended: false,
+    price: { annual: '₦0', monthly: '₦0' },
+    suffix: '/month',
+    caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
+    cta: { label: 'Get Started for free', withArrow: false },
+    commission: '5%',
+  },
   {
     id: 'builder',
     name: 'Builder',
@@ -48,21 +48,20 @@ const PLANS: PlanConfig[] = [
   },
 ];
 
-const FEATURES: { label: string; starter: FeatureValue; builder: FeatureValue }[] = [
-  { label: 'Rate Card Output', starter: 'Total price only', builder: 'Full Breakdown' },
-  { label: 'Rate card generations', starter: '3 / month', builder: '10 / month' },
-  { label: 'Invoicing', starter: '3 / month', builder: '10 / month' },
-  { label: 'Commission', starter: '5%', builder: '3%' },
-  { label: 'Email captures', starter: '100 subscribers', builder: '500 subscribers' },
-  { label: 'Email Broadcasts', starter: '2 / month', builder: '5 / month' },
+const FEATURES: { label: string; starter?: FeatureValue; builder: FeatureValue }[] = [
+  { label: 'Pricing Calculator', starter: 'Yes, One-time use', builder: 'Yes' },
+  { label: 'Rate card Builder', starter: 'Yes', builder: 'Yes' },
+  { label: 'Invoicing', starter: 'Yes', builder: 'Yes' },
+  { label: 'Platform Fee', starter: '5% of transaction value', builder: '3% of transaction value' },
+  { label: 'Email Captures', starter: '100 subscribers', builder: '500 subscribers' },
+  { label: 'Email Broadcasts', starter: '2/month', builder: '5/month' },
   {
     label: 'Community access',
     starter: 'Weekly community digest/newsletter only',
     builder: 'Full access',
   },
-  // { label: 'UGC package', starter: { locked: true, text: 'Locked' }, builder: 'Included' },
-  { label: 'Brand deals', starter: { locked: true, text: 'Locked' }, builder: 'Basic access' },
-  { label: 'Templates', starter: 'Preview Only', builder: 'Full library' },
+  { label: 'Brand Deals', starter: 'Yes', builder: 'Priority Access' },
+  { label: 'Templates', builder: 'Yes' },
 ];
 
 interface PlanPricingSectionProps {
@@ -73,13 +72,15 @@ export default function PlanPricingSection({
   ctaBase = '/onboarding/create-account',
 }: PlanPricingSectionProps) {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
+  const [utmQuery, setUtmQuery] = useState('');
+
+  useEffect(() => {
+    setUtmQuery(buildForwardedUtmQuery(window.location.search));
+  }, []);
 
   return (
     <section className="py-10 px-6 pb-24">
       <div className="max-w-7xl mx-auto">
-        {/* Promo banner */}
-        <PromoBanner />
-
         {/* Heading */}
         <div className="text-center mb-8">
           <Heading
@@ -126,7 +127,7 @@ export default function PlanPricingSection({
         </div>
 
         {/* Plan cards */}
-        <div className="grid gap-8 max-w-md mx-auto">
+        <div className="grid gap-8 md:grid-cols-2 md:items-start max-w-3xl mx-auto md:max-w-none">
           {PLANS.map(plan => {
             const isBuilder = plan.id === 'builder';
             return (
@@ -170,7 +171,7 @@ export default function PlanPricingSection({
 
                 {/* CTA */}
                 <Link
-                  href={`${ctaBase}?plan=${plan.id}&billing=${billing}`}
+                  href={`${ctaBase}?plan=${plan.id}&billing=${billing}${utmQuery ? `&${utmQuery}` : ''}`}
                   className={`mt-6 mb-6 flex w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-all duration-200 md:text-base ${
                     isBuilder
                       ? 'bg-brand-purple text-white hover:bg-brand-purple-dark'
@@ -223,6 +224,7 @@ export default function PlanPricingSection({
                 <ul>
                   {FEATURES.map(feature => {
                     const value = plan.id === 'starter' ? feature.starter : feature.builder;
+                    if (value === undefined) return null;
                     const locked = typeof value !== 'string' && value.locked;
                     const text = typeof value === 'string' ? value : value.text;
                     return (

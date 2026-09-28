@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Heading, Text } from '@/components/typography';
 import FormInput from '@/components/ui/FormInput';
+import CountryFlag from '@/components/layout/Header/CountryFlag';
 import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
+import { extractUTMParams } from '@/lib/brief-payload';
+import { getStoredAttribution } from '@/lib/attribution';
 import PlanBanner from './PlanBanner';
-import PromoBanner from '@/components/shared/PromoBanner';
 
 type OnboardingSubstep = 'form' | 'otp' | 'password';
 type BillingPeriod = 'annual' | 'monthly';
@@ -132,12 +134,33 @@ export default function CreateAccountForm({
     try {
       const backendPlanId = toBackendPlanId(planId, billing);
 
+      // Prefer first-touch attribution captured on the visitor's entry page -
+      // by the time they reach this form, the URL only ever has plan/billing,
+      // never the UTM params they actually arrived with. Fall back to a fresh
+      // read for the rare case of landing on this page directly.
+      const stored = getStoredAttribution();
+      const urlUtm = extractUTMParams(typeof window === 'undefined' ? null : window.location.href);
+      const utmSource = stored.utmSource ?? urlUtm.utm_source;
+      const utmMedium = stored.utmMedium ?? urlUtm.utm_medium;
+      const utmCampaign = stored.utmCampaign ?? urlUtm.utm_campaign;
+      const utmTerm = stored.utmTerm ?? urlUtm.utm_term;
+      const utmContent = stored.utmContent ?? urlUtm.utm_content;
+      const referrerUrl =
+        stored.referrerUrl ??
+        (typeof document === 'undefined' ? undefined : document.referrer || undefined);
+
       const result = await initiateRegistration(
         formData.email,
         formData.firstName,
         formData.lastName,
         formData.phone,
-        backendPlanId
+        backendPlanId,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        referrerUrl,
+        utmTerm,
+        utmContent
       );
 
       if (result.message) {
@@ -157,9 +180,6 @@ export default function CreateAccountForm({
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Promo banner */}
-      <PromoBanner />
-
       {/* Plan summary */}
       <div className="mb-8">
         <PlanBanner
@@ -258,12 +278,21 @@ export default function CreateAccountForm({
             name="phone"
             type="tel"
             inputMode="tel"
-            placeholder="+234 xxx xxx xxxx"
+            placeholder="xxx xxx xxxx"
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
             required
             autoComplete="tel"
+            prefix={
+              <>
+                <CountryFlag
+                  country="nigeria"
+                  className="w-5 h-3.5 rounded-xs"
+                />
+                <span className="text-text-primary">+234</span>
+              </>
+            }
           />
         </div>
 
@@ -276,14 +305,14 @@ export default function CreateAccountForm({
           {isSubmitting ? 'Please wait…' : 'Continue'}
         </Button>
 
-        {apiError && (
+        {/* {apiError && (
           <p
-            className="mt-3 text-sm text-center text-surface-error"
+            className="mt-3 text-sm text-center text-surface-error hidden"
             role="alert"
           >
             {apiError}
           </p>
-        )}
+        )} */}
 
         {/* Sign in link */}
         <p className="text-center text-sm text-text-secondary mt-5">

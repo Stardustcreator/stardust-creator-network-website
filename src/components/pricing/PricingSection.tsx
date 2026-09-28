@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Heading, Text } from '@/components/typography';
 import CheckIcon from '@/components/icons/CheckIcon';
+import { buildForwardedUtmQuery } from '@/lib/attribution';
 
 type BillingPeriod = 'annual' | 'monthly';
 
@@ -27,6 +28,11 @@ export default function PricingSection({
   ctaBase = '/onboarding/create-account',
 }: PricingSectionProps) {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
+  const [utmQuery, setUtmQuery] = useState('');
+
+  useEffect(() => {
+    setUtmQuery(buildForwardedUtmQuery(window.location.search));
+  }, []);
 
   const pricing = PRICING[billing];
 
@@ -42,12 +48,6 @@ export default function PricingSection({
           >
             Choose your Plan
           </Heading>
-          <Text
-            variant="body"
-            className="text-text-secondary!"
-          >
-            Start free with Community, upgrade when you&apos;re ready to grow
-          </Text>
         </div>
 
         {/* Billing toggle */}
@@ -96,7 +96,7 @@ export default function PricingSection({
           </div>
 
           <Link
-            href={`${ctaBase}?plan=community&billing=${billing}`}
+            href={`${ctaBase}?plan=community&billing=${billing}${utmQuery ? `&${utmQuery}` : ''}`}
             className="block w-full text-center bg-white font-semibold py-3 shadow-xs px-6 text-sm md:text-base rounded-xl transition-all duration-200 hover:bg-white/90 mb-4"
             style={{ color: 'var(--color-deep-purple)' }}
           >

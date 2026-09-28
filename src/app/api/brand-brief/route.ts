@@ -1,316 +1,118 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiBrandBriefSchema } from '@/lib/validations/brand-brief.validations';
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { submitBrief } from '@/lib/api/briefs';
+import {
+  extractUTMParams,
+  resolveBudgetKobo,
+  synthesizeCampaignBrief,
+  synthesizeTimeline,
+} from '@/lib/brief-payload';
 
-// Helper function to get client IP address
-function getClientIP(request: NextRequest): string {
-  const forwardedFor = request.headers.get('x-forwarded-for');
-  const realIP = request.headers.get('x-real-ip');
-  const remoteAddr = request.headers.get('x-forwarded-for')?.split(',')[0];
-
-  return forwardedFor?.split(',')[0] || realIP || remoteAddr || 'unknown';
-}
-
-// Helper function to extract UTM parameters from referrer
-function extractUTMParams(url: string | null): {
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
-} {
-  if (!url) return {};
-
-  try {
-    const urlObj = new URL(url);
-    return {
-      utm_source: urlObj.searchParams.get('utm_source') || undefined,
-      utm_medium: urlObj.searchParams.get('utm_medium') || undefined,
-      utm_campaign: urlObj.searchParams.get('utm_campaign') || undefined,
-    };
-  } catch {
-    return {};
-  }
-}
-
-// Helper function to determine which table to use based on country
-function getBrandBriefTable(country: string): string {
-  switch (country) {
-    case 'Nigeria':
-      return 'scn_brands_registration_ng';
-    case 'United Kingdom':
-      return 'scn_brands_registration_uk';
-    default:
-      // Default to Nigeria table for other countries
-      return 'scn_brands_registration_ng';
-  }
-}
-
-// Brand brief record interface for Supabase
-interface BrandBriefRecord {
-  // Brand Company Information
-  brand_name: string;
-  company_website: string;
-  country: string;
-  industry: string;
-  business_type: string;
-  contact_person: string;
-  email: string;
-  phone_number?: string;
-
-  // Campaign Objectives
-  campaign_name: string;
-  campaign_goals: string[];
-  campaign_type: string;
-  target_audiences: string[];
-  target_markets: string[];
-
-  // Creator Preferences
-  preferred_creator_tier: string;
-  content_categories: string[];
-  platform_focus: string[];
-  brand_creator_fit?: string;
-
-  // Budget & Payment Preference
-  estimated_budget: string;
-  payment_model: string;
-  ongoing_collaboration: string;
-
-  // Timeline & Deliverables
-  campaign_start_date: string;
-  campaign_duration: string;
-  deliverables: string[];
-
-  // Additional Information
-  referral_source: string;
-  collaboration_type: string;
-  community_interest: string;
-  additional_notes?: string;
-
-  // Agreement & Submission
-  authorized_confirmed: boolean;
-  terms_agreed: boolean;
-
-  // Metadata
-  brief_status: 'submitted' | 'under-review' | 'matched' | 'completed';
-  location_detected: string;
-  user_agent?: string;
-  ip_address: string;
-  referrer_url?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
-  submitted_at: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
+// Still used by BrandBriefForm. The standalone /brief page calls the backend
+// directly instead - both share the mapping helpers in @/lib/brief-payload so
+// they submit identical payloads.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    // Debug: Log the incoming request data
-    console.log('Brand brief API received data:', JSON.stringify(body, null, 2));
-
-    // Validate the incoming data
     const validatedData = apiBrandBriefSchema.parse(body);
 
-    // Extract metadata from request
-    const userAgent = request.headers.get('user-agent') || undefined;
     const referrer = request.headers.get('referer') || undefined;
-    const clientIP = getClientIP(request);
     const utmParams = extractUTMParams(referrer || null);
 
-    // Determine which table to use based on country
-    const tableName = getBrandBriefTable(validatedData.brandCompanyInformation.country);
+    const { brandCompanyInformation, campaignObjectives, creatorPreferences } = validatedData;
+    const { budgetPaymentPreference, timelineDeliverables, additionalInformation } = validatedData;
+    const { agreementSubmission } = validatedData;
 
-    // Initialize Supabase client (may throw if env vars are missing)
-    let supabaseClient: ReturnType<typeof getSupabaseAdmin>;
-    try {
-      supabaseClient = getSupabaseAdmin();
-    } catch (supabaseInitError) {
-      console.error('Failed to initialize Supabase client:', supabaseInitError);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Server configuration error. Please contact support.',
-          details:
-            process.env.NODE_ENV === 'development'
-              ? supabaseInitError instanceof Error
-                ? supabaseInitError.message
-                : 'Supabase client initialization failed'
-              : undefined,
-        },
-        { status: 500 }
-      );
-    }
+    const result = await submitBrief({
+      brandName: brandCompanyInformation.brandName,
+      contactEmail: brandCompanyInformation.email,
+      contactName: brandCompanyInformation.contactPerson,
+      budget: resolveBudgetKobo(
+        brandCompanyInformation.country,
+        budgetPaymentPreference.estimatedBudget
+      ),
+      timeline: synthesizeTimeline(timelineDeliverables),
+      // No backend field exists for "how did you hear about us" (CreateBriefDto
+      // has no howHeard/referral-source property) - folded into the free-text
+      // brief instead of sent as its own field, same as /brief page.
+      campaignBrief:
+        synthesizeCampaignBrief(campaignObjectives, creatorPreferences, additionalInformation) +
+        (additionalInformation.referralSource
+          ? `\nHeard about SCN via: ${additionalInformation.referralSource}`
+          : ''),
 
-    // Check if there's an existing draft
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: existingDraft } = (await (supabaseClient as any)
-      .from(tableName)
-      .select('id')
-      .eq('email', validatedData.brandCompanyInformation.email)
-      .eq('brief_status', 'draft')
-      .single()) as { data: { id: string } | null };
+      companyWebsite: brandCompanyInformation.companyWebsite,
+      country: brandCompanyInformation.country,
+      industry: brandCompanyInformation.industry,
+      typeOfBusiness: brandCompanyInformation.businessType,
+      contactPhone: brandCompanyInformation.phoneNumber,
+      marketingOptIn: brandCompanyInformation.marketingConsent,
 
-    // Prepare data for database insertion
-    const briefData: BrandBriefRecord = {
-      // Brand Company Information
-      brand_name: validatedData.brandCompanyInformation.brandName,
-      company_website: validatedData.brandCompanyInformation.companyWebsite,
-      country: validatedData.brandCompanyInformation.country,
-      industry: validatedData.brandCompanyInformation.industry,
-      business_type: validatedData.brandCompanyInformation.businessType,
-      contact_person: validatedData.brandCompanyInformation.contactPerson,
-      email: validatedData.brandCompanyInformation.email,
-      phone_number: validatedData.brandCompanyInformation.phoneNumber,
+      campaignName: campaignObjectives.campaignName,
+      // Backend is single-select (CreateBriefDto.campaignGoal) - BrandBriefForm
+      // still collects a multi-select, so only the first pick reaches the
+      // backend today. See @/lib/api/briefs.ts SubmitBriefPayload.
+      campaignGoal: campaignObjectives.campaignGoals?.[0],
+      campaignType: campaignObjectives.campaignType,
+      targetAudiences: campaignObjectives.targetAudiences,
+      targetMarkets: campaignObjectives.targetMarkets,
 
-      // Campaign Objectives
-      campaign_name: validatedData.campaignObjectives.campaignName,
-      campaign_goals: validatedData.campaignObjectives.campaignGoals,
-      campaign_type: validatedData.campaignObjectives.campaignType,
-      target_audiences: validatedData.campaignObjectives.targetAudiences,
-      target_markets: validatedData.campaignObjectives.targetMarkets,
+      preferredCreatorTier: creatorPreferences.preferredCreatorTier,
+      preferredTiers: creatorPreferences.preferredTiers,
+      contentCategories: creatorPreferences.contentCategories,
+      platforms: creatorPreferences.platformFocus,
+      brandCreatorFit: creatorPreferences.brandCreatorFit,
+      creatorCountNeeded: creatorPreferences.creatorCountNeeded,
+      creatorGender: creatorPreferences.creatorGender,
+      creatorAgeRange: creatorPreferences.creatorAgeRange,
 
-      // Creator Preferences
-      preferred_creator_tier: validatedData.creatorPreferences.preferredCreatorTier,
-      content_categories: validatedData.creatorPreferences.contentCategories,
-      platform_focus: validatedData.creatorPreferences.platformFocus,
-      brand_creator_fit: validatedData.creatorPreferences.brandCreatorFit,
+      budgetRange: budgetPaymentPreference.estimatedBudget,
+      paymentModel: budgetPaymentPreference.paymentModel,
+      // ongoingCollaboration has no backend field (CreateBriefDto rejects
+      // unknown properties) - intentionally not sent.
 
-      // Budget & Payment Preference
-      estimated_budget: validatedData.budgetPaymentPreference.estimatedBudget,
-      payment_model: validatedData.budgetPaymentPreference.paymentModel,
-      ongoing_collaboration: validatedData.budgetPaymentPreference.ongoingCollaboration,
+      campaignStartDate: timelineDeliverables.campaignStartDate,
+      campaignDuration: timelineDeliverables.campaignDuration,
+      // Backend validates each label against its own deliverable vocabulary
+      // and requires a quantity - BrandBriefForm's plain string list doesn't
+      // match it, so only well-formed items would validate. Left as a
+      // best-effort shape rather than reworked here (deferred alongside the
+      // rest of BrandBriefForm's vocabulary alignment).
+      deliverables: timelineDeliverables.deliverables?.map(label => ({ label, quantity: 1 })),
 
-      // Timeline & Deliverables
-      campaign_start_date: validatedData.timelineDeliverables.campaignStartDate,
-      campaign_duration: validatedData.timelineDeliverables.campaignDuration,
-      deliverables: validatedData.timelineDeliverables.deliverables,
+      collaborationType: additionalInformation.collaborationType,
+      communityInterest: additionalInformation.communityInterest,
+      additionalNotes: additionalInformation.additionalNotes,
 
-      // Additional Information
-      referral_source: validatedData.additionalInformation.referralSource,
-      collaboration_type: validatedData.additionalInformation.collaborationType,
-      community_interest: validatedData.additionalInformation.communityInterest,
-      additional_notes: validatedData.additionalInformation.additionalNotes,
+      authorizationConfirmed: agreementSubmission.authorizedConfirmed,
+      termsAgreed: agreementSubmission.termsAgreed,
 
-      // Agreement & Submission
-      authorized_confirmed: validatedData.agreementSubmission.authorizedConfirmed,
-      terms_agreed: validatedData.agreementSubmission.termsAgreed,
+      intendedPath: validatedData.intendedPath,
 
-      // Metadata
-      brief_status: 'submitted',
-      location_detected: validatedData.location,
-      user_agent: userAgent,
-      ip_address: clientIP,
-      referrer_url: referrer,
-      submitted_at: validatedData.submittedAt,
-      ...utmParams,
-    };
+      locationDetected: validatedData.location,
+      utmSource: utmParams.utm_source,
+      utmMedium: utmParams.utm_medium,
+      utmCampaign: utmParams.utm_campaign,
+      referrerUrl: referrer,
+    });
 
-    let data: { id: string; brief_status: string; created_at: string } | null;
-    let error: unknown;
-
-    if (existingDraft) {
-      // Update existing draft to submitted status
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = (await (supabaseClient as any)
-        .from(tableName)
-        .update(briefData)
-        .eq('id', existingDraft.id)
-        .select('id, brief_status, created_at')
-        .single()) as {
-        data: { id: string; brief_status: string; created_at: string } | null;
-        error: unknown;
-      };
-
-      data = result.data;
-      error = result.error;
-
-      console.log('Draft converted to submitted:', { id: existingDraft.id });
-    } else {
-      // Debug: Log the data being inserted
-      console.log('Inserting brand brief data into table:', tableName);
-      console.log('Brief data:', JSON.stringify(briefData, null, 2));
-
-      // Insert into Supabase using the appropriate country-specific table
-      // Type assertion needed because Supabase types require generated database types
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = (await (supabaseClient as any)
-        .from(tableName)
-        .insert([briefData])
-        .select('id, brief_status, created_at')
-        .single()) as {
-        data: { id: string; brief_status: string; created_at: string } | null;
-        error: unknown;
-      };
-
-      data = result.data;
-      error = result.error;
-    }
-
-    if (error) {
-      console.error('Supabase insertion error:', error);
-
-      // Handle duplicate email error
-      const dbError = error as { code?: string; message?: string };
-      if (dbError.code === '23505' && dbError.message?.includes('email')) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'A brand brief with this email address already exists.',
-            code: 'DUPLICATE_EMAIL',
-          },
-          { status: 409 }
-        );
-      }
-
-      // Handle other constraint errors
-      if (dbError.code === '23505') {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'This brand brief has already been submitted.',
-            code: 'DUPLICATE_SUBMISSION',
-          },
-          { status: 409 }
-        );
-      }
-
-      // Generic database error
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Failed to save brand brief. Please try again.',
-          details: process.env.NODE_ENV === 'development' ? dbError.message : undefined,
-        },
-        { status: 500 }
-      );
-    }
-
-    if (!data) {
-      console.error('Database insertion returned no data');
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Failed to create brand brief record. Please try again.',
-        },
-        { status: 500 }
-      );
-    }
-
-    console.log('Brand brief submitted successfully:', data);
-
-    // Note: Google Sheets and Mailchimp syncs are handled by scheduled cron jobs
-    // This keeps form submissions fast and reliable
-    // Syncs run every 4 hours via /api/cron/sync-google-sheets and /api/cron/sync-mailchimp
-
-    // Return success response
+    // `reference` and `pricing` drive the /brief/payment hand-off. Both are
+    // optional, so the brand falls back to the inline success step when the
+    // backend doesn't send them.
     return NextResponse.json({
       success: true,
       data: {
-        briefId: data.id,
-        status: data.brief_status,
-        submittedAt: data.created_at,
+        message: result.message,
+        briefId: result.briefId,
+        guestToken: result.guestToken,
+        pathTag: result.pathTag,
+        nextRoute: result.nextRoute,
+        budget: result.budget,
+        budgetMinKobo: result.budgetMinKobo,
+        budgetMaxKobo: result.budgetMaxKobo,
+        reference: result.reference,
+        contactEmail: result.contactEmail ?? brandCompanyInformation.email,
+        pricing: result.pricing,
       },
     });
   } catch (error) {
@@ -346,12 +148,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generic server error
+    // Generic server error (includes admin backend failures - this is now
+    // the only persistence path, so a failure must be visible to the brand)
     return NextResponse.json(
       {
         success: false,
-        error: 'Internal server error. Please try again later.',
-        details: process.env.NODE_ENV === 'development' ? (error as Error).message : undefined,
+        error:
+          error instanceof Error ? error.message : 'Internal server error. Please try again later.',
       },
       { status: 500 }
     );

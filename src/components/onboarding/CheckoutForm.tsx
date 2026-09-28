@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FormInput from '../ui/FormInput';
-import { OrderDetails } from './OrderDetails';
-import { type DiscountPreview } from '@/lib/api/payments';
+import { OrderDetails, type AppliedDiscount } from './OrderDetails';
 import { InfoOutlineIcon } from '@sanity/icons';
 import Button from '../ui/Button';
 
@@ -14,6 +13,11 @@ export interface CheckoutValues {
   couponCode?: string;
 }
 
+type ContactField = 'firstName' | 'lastName' | 'email';
+type FieldErrors = Partial<Record<ContactField, string>>;
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 interface CheckoutFormProps {
   offerId: string;
   priceLabel: string;
@@ -22,6 +26,15 @@ interface CheckoutFormProps {
   initialFirstName?: string;
   initialLastName?: string;
   initialEmail?: string;
+  /**
+   * Lets the payer edit and correct their own contact details. Off by default:
+   * the subscription flows show the signed-in user's details as read-only, but
+   * the brief checkout has no session and must collect a real payer, since
+   * `POST /briefs/find-a-creator/pay` requires all three fields.
+   */
+  editableContact?: boolean;
+  /** Overrides discount-code validation - see `OrderDetails.onPreview`. */
+  onPreviewDiscount?: (code: string) => Promise<AppliedDiscount>;
   onSubmit: (values: CheckoutValues) => void;
   onCancel: () => void;
 }
@@ -34,22 +47,76 @@ export function CheckoutForm({
   initialFirstName = '',
   initialLastName = '',
   initialEmail = '',
+  editableContact = false,
+  onPreviewDiscount,
   onSubmit,
   onCancel,
 }: CheckoutFormProps) {
-  const [values] = useState<CheckoutValues>({
+  const [values, setValues] = useState<CheckoutValues>({
     firstName: initialFirstName,
     lastName: initialLastName,
     email: initialEmail,
   });
-  const [coupon, setCoupon] = useState<DiscountPreview | null>(null);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [coupon, setCoupon] = useState<AppliedDiscount | null>(null);
+
+  // Re-sync when the prefill arrives after mount. The brief checkout loads its
+  // brand contact asynchronously, so a mount-time snapshot would stay blank.
+  useEffect(() => {
+    setValues(current => ({
+      ...current,
+      firstName: initialFirstName,
+      lastName: initialLastName,
+      email: initialEmail,
+    }));
+  }, [initialFirstName, initialLastName, initialEmail]);
 
   const isFree = coupon?.finalAmount === 0;
 
+  const setField = (field: ContactField, value: string) => {
+    setValues(current => ({ ...current, [field]: value }));
+    setErrors(current => (current[field] ? { ...current, [field]: undefined } : current));
+  };
+
+  const validateContact = (): FieldErrors => {
+    const found: FieldErrors = {};
+    if (!values.firstName.trim()) found.firstName = 'First name is required';
+    if (!values.lastName.trim()) found.lastName = 'Last name is required';
+    if (!values.email.trim()) {
+      found.email = 'Email address is required';
+    } else if (!EMAIL_PATTERN.test(values.email.trim())) {
+      found.email = 'Please enter a valid email address';
+    }
+    return found;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ ...values, couponCode: coupon?.code });
+
+    // Read-only mode has nothing to validate - the values came from a trusted
+    // session and the inputs can't be changed.
+    if (!editableContact) {
+      onSubmit({ ...values, couponCode: coupon?.code });
+      return;
+    }
+
+    const found = validateContact();
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      return;
+    }
+
+    onSubmit({
+      firstName: values.firstName.trim(),
+      lastName: values.lastName.trim(),
+      email: values.email.trim(),
+      couponCode: coupon?.code,
+    });
   };
+
+  const readOnlyProps = editableContact
+    ? {}
+    : { disabled: true, inputClassName: 'disabled:bg-surface-primary' };
 
   return (
     <form
@@ -80,10 +147,12 @@ export function CheckoutForm({
           id="checkout-first-name"
           name="firstName"
           value={values.firstName}
-          onChange={() => {}}
+          onChange={e => setField('firstName', e.target.value)}
+          error={errors.firstName}
+          required={editableContact}
+          autoComplete={editableContact ? 'given-name' : undefined}
           showFilledIndicator={false}
-          inputClassName="disabled:bg-surface-primary"
-          disabled
+          {...readOnlyProps}
         />
 
         <FormInput
@@ -91,10 +160,12 @@ export function CheckoutForm({
           id="checkout-last-name"
           name="lastName"
           value={values.lastName}
-          onChange={() => {}}
+          onChange={e => setField('lastName', e.target.value)}
+          error={errors.lastName}
+          required={editableContact}
+          autoComplete={editableContact ? 'family-name' : undefined}
           showFilledIndicator={false}
-          inputClassName="disabled:bg-surface-primary"
-          disabled
+          {...readOnlyProps}
         />
       </div>
 
@@ -104,10 +175,12 @@ export function CheckoutForm({
         name="email"
         type="email"
         value={values.email}
-        onChange={() => {}}
+        onChange={e => setField('email', e.target.value)}
+        error={errors.email}
+        required={editableContact}
+        autoComplete={editableContact ? 'email' : undefined}
         showFilledIndicator={false}
-        inputClassName="disabled:bg-surface-primary"
-        disabled
+        {...readOnlyProps}
       />
 
       <OrderDetails
@@ -116,6 +189,7 @@ export function CheckoutForm({
         planLabel={planLabel}
         busy={busy}
         onChange={setCoupon}
+        onPreview={onPreviewDiscount}
       />
 
       <div className="space-y-3 pt-1">

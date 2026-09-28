@@ -6,16 +6,14 @@
  *
  * Syncs:
  * - Creator applications (all countries)
- * - Brand briefs (all countries)
+ *
+ * Brand brief sync was removed when brand brief submissions stopped writing
+ * to Supabase (they now go straight to the admin backend).
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
-import {
-  addCreatorToMailchimp,
-  addBrandToMailchimp,
-  updateMailchimpTags,
-} from '@/lib/services/mailchimp.service';
+import { addCreatorToMailchimp, updateMailchimpTags } from '@/lib/services/mailchimp.service';
 
 // Maximum records to process per run (to avoid timeouts)
 const BATCH_SIZE = 50;
@@ -110,87 +108,6 @@ async function syncCreatorRegistrations(tableName: string): Promise<SyncResult> 
 }
 
 /**
- * Sync unsynced brand briefs to Mailchimp
- */
-async function syncBrandBriefs(tableName: string): Promise<SyncResult> {
-  const supabase = getSupabaseAdmin();
-  const result: SyncResult = {
-    processed: 0,
-    succeeded: 0,
-    failed: 0,
-    errors: [],
-  };
-
-  // Fetch unsynced brand briefs
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: unsyncedRecords, error: fetchError } = await (supabase as any)
-    .from(tableName)
-    .select('*')
-    .eq('synced_to_mailchimp', false)
-    .eq('brief_status', 'submitted')
-    .order('created_at', { ascending: true })
-    .limit(BATCH_SIZE);
-
-  if (fetchError) {
-    console.error(`Failed to fetch unsynced brand briefs from ${tableName}:`, fetchError);
-    return result;
-  }
-
-  if (!unsyncedRecords || unsyncedRecords.length === 0) {
-    console.log(`No unsynced brand briefs in ${tableName}`);
-    return result;
-  }
-
-  console.log(`Processing ${unsyncedRecords.length} unsynced brand briefs from ${tableName}...`);
-
-  for (const record of unsyncedRecords) {
-    result.processed++;
-
-    try {
-      // Add to Mailchimp audience
-      await addBrandToMailchimp(
-        {
-          email: record.email,
-          contactPerson: record.contact_person,
-          phoneNumber: record.phone_number || '',
-          brandName: record.brand_name,
-        },
-        {
-          isPartialSubmission: false,
-        }
-      );
-
-      // Update tags (remove partial, add full)
-      await updateMailchimpTags({
-        email: record.email,
-        tagsToRemove: ['partial-brand-inquiry'],
-        tagsToAdd: ['Brands-Find-Creators'],
-      });
-
-      // Mark as synced in database
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase as any)
-        .from(tableName)
-        .update({
-          synced_to_mailchimp: true,
-          synced_to_mailchimp_at: new Date().toISOString(),
-        })
-        .eq('id', record.id);
-
-      result.succeeded++;
-      console.log(`Synced brand ${record.email} to Mailchimp from ${tableName}`);
-    } catch (error) {
-      result.failed++;
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      result.errors.push({ id: record.id, error: errorMessage });
-      console.error(`Failed to sync brand ${record.id} to Mailchimp:`, errorMessage);
-    }
-  }
-
-  return result;
-}
-
-/**
  * Combine results from multiple sync operations
  */
 function combineResults(results: SyncResult[]): SyncResult {
@@ -228,11 +145,6 @@ export async function POST(request: NextRequest) {
     const creatorUkResult = await syncCreatorRegistrations('scn_creator_registrations_uk');
     const creatorResult = combineResults([creatorNgResult, creatorUkResult]);
 
-    // Sync brands from both Nigeria and UK tables
-    const brandNgResult = await syncBrandBriefs('scn_brands_registration_ng');
-    const brandUkResult = await syncBrandBriefs('scn_brands_registration_uk');
-    const brandResult = combineResults([brandNgResult, brandUkResult]);
-
     const duration = Date.now() - startTime;
 
     const summary = {
@@ -256,32 +168,12 @@ export async function POST(request: NextRequest) {
           },
         },
       },
-      brands: {
-        processed: brandResult.processed,
-        succeeded: brandResult.succeeded,
-        failed: brandResult.failed,
-        by_region: {
-          nigeria: {
-            processed: brandNgResult.processed,
-            succeeded: brandNgResult.succeeded,
-            failed: brandNgResult.failed,
-          },
-          uk: {
-            processed: brandUkResult.processed,
-            succeeded: brandUkResult.succeeded,
-            failed: brandUkResult.failed,
-          },
-        },
-      },
       total: {
-        processed: creatorResult.processed + brandResult.processed,
-        succeeded: creatorResult.succeeded + brandResult.succeeded,
-        failed: creatorResult.failed + brandResult.failed,
+        processed: creatorResult.processed,
+        succeeded: creatorResult.succeeded,
+        failed: creatorResult.failed,
       },
-      errors:
-        creatorResult.errors.length + brandResult.errors.length > 0
-          ? [...creatorResult.errors, ...brandResult.errors]
-          : undefined,
+      errors: creatorResult.errors.length > 0 ? creatorResult.errors : undefined,
     };
 
     console.log('Mailchimp sync completed:', summary);
@@ -322,20 +214,6 @@ export async function GET() {
       .select('synced_to_mailchimp')
       .eq('application_status', 'submitted');
 
-    // Get counts for Nigeria brands
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: brandNgStats } = await (supabase as any)
-      .from('scn_brands_registration_ng')
-      .select('synced_to_mailchimp')
-      .eq('brief_status', 'submitted');
-
-    // Get counts for UK brands
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: brandUkStats } = await (supabase as any)
-      .from('scn_brands_registration_uk')
-      .select('synced_to_mailchimp')
-      .eq('brief_status', 'submitted');
-
     const countSynced = (data: Array<{ synced_to_mailchimp: boolean }> | null) =>
       data?.filter(r => r.synced_to_mailchimp).length || 0;
     const countUnsynced = (data: Array<{ synced_to_mailchimp: boolean }> | null) =>
@@ -354,18 +232,6 @@ export async function GET() {
             synced: countSynced(creatorUkStats),
             unsynced: countUnsynced(creatorUkStats),
             total: creatorUkStats?.length || 0,
-          },
-        },
-        brands: {
-          nigeria: {
-            synced: countSynced(brandNgStats),
-            unsynced: countUnsynced(brandNgStats),
-            total: brandNgStats?.length || 0,
-          },
-          uk: {
-            synced: countSynced(brandUkStats),
-            unsynced: countUnsynced(brandUkStats),
-            total: brandUkStats?.length || 0,
           },
         },
       },

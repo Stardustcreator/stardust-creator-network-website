@@ -16,6 +16,33 @@ import { caseStudies } from '@/lib/data/case-studies.data';
  * - Expandable detail modal
  */
 
+export interface CaseStudyStat {
+  label: string;
+  value: string;
+}
+
+interface CaseStudiesContentProps {
+  heroTitle?: string;
+  heroDescription?: string;
+  stats?: CaseStudyStat[];
+  finalCtaTitle?: string;
+}
+
+// Defaults match the copy that shipped before the CMS wiring - fetched by
+// src/app/case-studies/page.tsx from GET /cms/pages/case-studies and passed
+// down as props, same resilience pattern as the homepage's Hero component:
+// falls back to this hardcoded content on any fetch failure or missing key.
+const DEFAULT_HERO_TITLE =
+  'Discover how Stardust Creator Network connects brands with creators to deliver authentic campaigns that drive real results.';
+const DEFAULT_HERO_DESCRIPTION =
+  'From consumer goods to financial services, our strategic partnerships create meaningful engagement that converts audiences into customers.';
+const DEFAULT_STATS: CaseStudyStat[] = [
+  { label: 'Campaign Success', value: '85%' },
+  { label: 'Impressions', value: '10M+' },
+  { label: 'Avg. Engagement', value: '15%' },
+];
+const DEFAULT_FINAL_CTA_TITLE = 'Ready to work with us?';
+
 // Array of all influencer images for the header grid (27 images total)
 const headerImages = [
   '/case-studies/Influencer 3.webp',
@@ -47,7 +74,12 @@ const headerImages = [
   "/case-studies/Omoye's Cooks.webp",
 ];
 
-export default function CaseStudiesContent() {
+export default function CaseStudiesContent({
+  heroTitle = DEFAULT_HERO_TITLE,
+  heroDescription = DEFAULT_HERO_DESCRIPTION,
+  stats = DEFAULT_STATS,
+  finalCtaTitle = DEFAULT_FINAL_CTA_TITLE,
+}: CaseStudiesContentProps) {
   // Safety check - ensure caseStudies is available
   const studies = Array.isArray(caseStudies) ? caseStudies : [];
 
@@ -113,26 +145,20 @@ export default function CaseStudiesContent() {
               color="white"
               className="text-white text-base sm:text-lg md:text-xl leading-relaxed font-medium drop-shadow-lg mb-6"
             >
-              Discover how Stardust Creator Network connects brands with creators to deliver
-              authentic campaigns that drive real results. From consumer goods to financial
-              services, our strategic partnerships create meaningful engagement that converts
-              audiences into customers.
+              {heroTitle} {heroDescription}
             </Text>
 
             {/* Success metrics (removed '500+ Brands Served' as requested) */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-2">85%</div>
-                <div className="text-white/80 text-sm">Campaign Success</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-2">10M+</div>
-                <div className="text-white/80 text-sm">Impressions</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-2">15%</div>
-                <div className="text-white/80 text-sm">Avg. Engagement</div>
-              </div>
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="text-center"
+                >
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-2">{stat.value}</div>
+                  <div className="text-white/80 text-sm">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -178,7 +204,7 @@ export default function CaseStudiesContent() {
                   className="font-semibold mb-3"
                   style={{ fontSize: '36px', color: '#000000' }}
                 >
-                  Ready to work with us?
+                  {finalCtaTitle}
                 </h2>
                 <p
                   className="mb-5"

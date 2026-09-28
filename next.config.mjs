@@ -93,7 +93,6 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
-      { source: '/event', destination: 'https://zoom.us/meeting/register/dkJZOaYuRTaj5-jR8OkvTQ', permanent: false },
     ];
   },
 
@@ -107,7 +106,10 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -149,11 +151,23 @@ const nextConfig = {
           },
           {
             // Cache images with longer duration in production only.
-            source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif)',
+            source: '/(.*)\\.(jpg|jpeg|png|gif|svg|webp|avif)',
             headers: [
               {
                 key: 'Cache-Control',
                 value: 'public, max-age=31536000, immutable',
+              },
+            ],
+          },
+          {
+            // favicon.ico is served from a fixed, non-hashed URL, so it must
+            // revalidate instead of being cached as immutable, or a browser
+            // that cached the old icon will never pick up a new one.
+            source: '/favicon.ico',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'public, max-age=3600, must-revalidate',
               },
             ],
           },

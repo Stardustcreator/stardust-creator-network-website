@@ -1,0 +1,47 @@
+import { NextResponse } from 'next/server';
+
+// Without an explicit dynamic/revalidate config, a GET Route Handler with no
+// dynamic function usage (no headers()/cookies()/request access) is eligible
+// for Next's build-time static optimization - the redirect below would then
+// get computed once at build time and frozen into the deployment, only ever
+// updating on the next rebuild, never picking up the admin-set URL until
+// then regardless of the 60s revalidate on the fetch below (that window
+// bounds the *data* fetch's own cache, not whether this route re-runs at
+// all). Forcing dynamic makes every request re-resolve the URL fresh.
+export const dynamic = 'force-dynamic';
+
+// Used if the backend setting can't be reached, so the link never breaks.
+const FALLBACK_URL = 'https://zoom.us/meeting/register/_C2XcI6kTz6Np8TFjjba7w';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+
+function isHttpUrl(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+async function resolveEventUrl(): Promise<string> {
+  if (!API_URL) return FALLBACK_URL;
+
+  try {
+    const res = await fetch(`${API_URL}/site-settings/event-registration-url`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return FALLBACK_URL;
+
+    const data = await res.json();
+    return isHttpUrl(data?.url) ? data.url : FALLBACK_URL;
+  } catch {
+    return FALLBACK_URL;
+  }
+}
+
+export async function GET() {
+  const destination = await resolveEventUrl();
+  return NextResponse.redirect(destination, { status: 307 });
+}

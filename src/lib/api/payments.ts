@@ -56,6 +56,19 @@ export function initializePayment(
 }
 
 /**
+ * Start a mobilization payment for a brand brief. Unlike `initializePayment`
+ * this is keyed by the brief's reference rather than a subscription plan id,
+ * because the brand isn't signed in - they arrive from `/brief` or an emailed
+ * payment link.
+ */
+export function initializeBriefPayment(briefReference: string, discountCode?: string) {
+  return post<InitializePaymentResult>('/payments/brief/initialize', {
+    briefReference,
+    ...(discountCode ? { discountCode } : {}),
+  });
+}
+
+/**
  * Validate a discount code against a plan before checkout. Amounts come back
  * server-computed in kobo, so totals are never derived on the client.
  */

@@ -93,9 +93,6 @@ export default function SCNPaidCommunityPage() {
           {/* Title Section */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Choose your Plan</h1>
-            <p className="text-gray-600 text-sm md:text-base">
-              Start free with Community, upgrade when you're ready to grow
-            </p>
           </div>
 
           {/* Billing Toggle */}
