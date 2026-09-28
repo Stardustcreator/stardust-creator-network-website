@@ -1,156 +1,584 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { Heading, Text } from '@/components/typography';
-import { encodeImagePath } from '@/lib/utils';
-import { caseStudies } from '@/lib/data/case-studies.data';
+import Link from 'next/link';
+import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
-/**
- * Case Studies Section Component
- *
- * Displays a split-screen layout matching the Creator Network carousel design:
- * - Left: Image with purple gradient overlay
- * - Right: Content with title, subtitle, bullet points, metrics grid, and CTA
- */
-export default function CaseStudiesSection() {
-  const imagePath = '/case-studies/case-study image.webp';
-  const encodedImagePath = encodeImagePath(imagePath);
-  const totalCaseStudies = caseStudies.length;
+const caseStudies = [
+  {
+    title: 'HONEYWELL RELAUNCH',
+    logo: '/brand logos/honeywell.webp',
+    logoAlt: 'Honeywell',
+    logoBackground: '#F5F5F5',
+    description:
+      'A comprehensive relaunch campaign that connected Honeywell with top creators to drive brand awareness and engagement.',
+    metrics: [
+      { value: '70m', label: 'Total Impression' },
+      { value: '26m+', label: 'Reach' },
+      { value: '5m+', label: 'Total Engagement' },
+      { value: '7.2%', label: 'Engagement rate' },
+    ],
+    tags: ['Technology', 'Relaunch', 'Brand Awareness'],
+    link: '/case-studies/honeywell',
+  },
+  {
+    title: 'LEADWAY TRAVEL INSURANCE CAMPAIGN',
+    logo: '/brand logos/original leadway.webp',
+    logoAlt: 'Leadway',
+    logoBackground: '#2D2D2D',
+    description:
+      'A strategic travel insurance campaign that educated young Nigerians traveling abroad about travel insurance while positioning Leadway as the accessible, trusted choice for protection.',
+    metrics: [
+      { value: '93k+', label: 'Views' },
+      { value: '18.3k+', label: 'Likes' },
+      { value: '500+', label: 'Comments' },
+      { value: '344', label: 'Saves' },
+    ],
+    tags: ['Technology', 'Relaunch', 'Brand Awareness'],
+    link: '/case-studies/leadway',
+  },
+  {
+    title: 'AXA MANSARD AUTOFLEX',
+    logo: '/brand logos/image.webp',
+    logoAlt: 'AXA Mansard',
+    logoBackground: '#F5F5F5',
+    description:
+      'A comprehensive motor insurance campaign aimed at providing flexibility to vehicle owners who are price sensitive but still need comprehensive insurance coverage.',
+    metrics: [
+      { value: '68%', label: 'Impression' },
+      { value: '18.3k+', label: 'CPA' },
+      { value: '6.1x', label: 'ROAS' },
+    ],
+    tags: ['Technology', 'Relaunch', 'Brand Awareness'],
+    link: '/case-studies/axa',
+  },
+];
 
-  const bulletPoints = [
-    'Strategic creator selection and authentic brand partnerships',
-    'Data-driven campaign execution with measurable results',
-    'Cross-industry expertise from technology to insurance',
-    'Proven track record of exceeding campaign objectives',
-  ];
+/* =========================================================
+   CARD ANIMATION
+========================================================= */
 
-  const metrics = [
-    { value: '76m+', label: 'Total Impressions' },
-    { value: '30m+', label: 'Total Reach' },
-    { value: '5m+', label: 'Total Engagement' },
-    { value: totalCaseStudies.toString(), label: 'Case Studies' },
-  ];
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+  },
+
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: index * 0.1,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+
+  hover: {
+    y: -8,
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+};
+
+/* =========================================================
+   ANIMATED METRIC
+========================================================= */
+
+function AnimatedMetric({ value }: { value: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.5,
+  });
+
+  const [displayValue, setDisplayValue] = useState('0');
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    /*
+      Extract:
+
+      70m   -> 70 + m
+      26m+  -> 26 + m+
+      7.2%  -> 7.2 + %
+      6.1x  -> 6.1 + x
+    */
+
+    const match = value.match(/^([\d.]+)(.*)$/);
+
+    if (!match) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const target = parseFloat(match[1]);
+    const suffix = match[2];
+
+    const duration = 1400;
+    const startTime = performance.now();
+
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+
+      const progress = Math.min(elapsed / duration, 1);
+
+      /*
+        Ease-out animation.
+        Starts quickly and slows down naturally.
+      */
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+      const currentValue = target * easedProgress;
+
+      let formattedValue: string;
+
+      /*
+        Keep decimals when the original value has decimals.
+      */
+      if (String(target).includes('.')) {
+        formattedValue = currentValue.toFixed(1);
+      } else {
+        formattedValue = Math.floor(currentValue).toString();
+      }
+
+      setDisplayValue(`${formattedValue}${suffix}`);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [isInView, value]);
 
   return (
-    <section
-      id="case-studies"
-      className="py-32 bg-gradient-to-b from-black via-neutral-950 to-black"
+    <motion.p
+      ref={ref}
+      className="font-bricolage-grotesque text-lg font-bold text-black"
+      initial={{
+        opacity: 0,
+        y: 8,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.5,
+      }}
+      transition={{
+        duration: 0.4,
+        delay: 0.15,
+      }}
     >
-      <div className="container mx-auto px-6">
-        <div className="relative w-full max-w-7xl mx-auto">
-          {/* Main Container - Matching SplitScreenCarousel styling */}
-          <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-[40px] overflow-hidden">
-            {/* Split Screen Layout */}
-            <div className="flex flex-col md:flex-row">
-              {/* Left Side - Image */}
-              <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-[600px]">
-                <div className="relative w-full h-full overflow-hidden">
-                  {/* Image Display */}
-                  <div className="absolute inset-0">
-                    <Image
-                      src={encodedImagePath}
-                      alt="Case studies and success stories showcasing brand-creator partnerships"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
-                      loading="lazy"
-                      quality={85}
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                    />
-                  </div>
+      {displayValue}
+    </motion.p>
+  );
+}
 
-                  {/* Brand-Colored Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-purple-500/20 to-pink-500/20" />
+/* =========================================================
+   MAIN SECTION
+========================================================= */
 
-                  {/* Subtle Darkening for Depth */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+export default function CaseStudySection() {
+  return (
+    <section className="w-full overflow-hidden bg-white px-4 py-12 sm:px-6 sm:py-16 md:py-24 lg:px-8 lg:py-32">
+      <div className="mx-auto max-w-6xl">
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
+
+        <div className="mb-12 text-center md:mb-16">
+          <motion.h2
+            className="
+              font-bricolage-grotesque
+              mb-3
+              text-2xl
+              font-bold
+              leading-tight
+              text-black
+              sm:text-3xl
+              md:text-4xl
+              lg:text-5xl
+            "
+            initial={{
+              opacity: 0,
+              y: 30,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            Brands who've already found their match
+          </motion.h2>
+
+          <motion.p
+            className="
+              font-lato
+              text-sm
+              text-gray-600
+              sm:text-base
+            "
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            A look at the campaigns we've run and the numbers behind them.
+          </motion.p>
+        </div>
+
+        {/* =====================================================
+            CASE STUDY CARDS
+        ===================================================== */}
+
+        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+          {caseStudies.map((study, index) => (
+            <motion.div
+              key={study.title}
+              className="
+                flex
+                h-full
+                flex-col
+                rounded-[12px]
+                border
+                border-[#E7E5E4]
+                bg-[#FAFAF9]
+                p-6
+              "
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              viewport={{
+                once: true,
+                amount: 0.2,
+              }}
+            >
+              {/* =================================================
+                  TITLE
+              ================================================= */}
+
+              <motion.h3
+                className="
+                  font-bricolage-grotesque
+                  mb-4
+                  text-sm
+                  font-bold
+                  tracking-wide
+                  text-black
+                  sm:text-base
+                "
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1 + 0.15,
+                }}
+              >
+                {study.title}
+              </motion.h3>
+
+              {/* =================================================
+                  LOGO
+              ================================================= */}
+
+              <motion.div
+                className="mb-6 flex h-24 items-center"
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.55,
+                  delay: index * 0.1 + 0.2,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <div
+                  className="relative flex h-20 w-20 items-center justify-center overflow-hidden"
+                  style={{
+                    backgroundColor: study.logoBackground,
+                    borderRadius: '8px',
+                  }}
+                >
+                  <Image
+                    src={study.logo}
+                    alt={study.logoAlt}
+                    width={80}
+                    height={80}
+                    className="object-contain"
+                  />
                 </div>
+              </motion.div>
+
+              {/* =================================================
+                  DESCRIPTION
+              ================================================= */}
+
+              <motion.p
+                className="
+                  font-lato
+                  mb-6
+                  text-xs
+                  leading-relaxed
+                  text-gray-600
+                  sm:text-sm
+                "
+                initial={{
+                  opacity: 0,
+                  y: 12,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1 + 0.25,
+                }}
+              >
+                {study.description}
+              </motion.p>
+
+              {/* =================================================
+                  RESULTS HEADING
+              ================================================= */}
+
+              <motion.h4
+                className="
+                  mb-4
+                  text-xs
+                  font-bold
+                  tracking-widest
+                  text-gray-500
+                "
+                initial={{
+                  opacity: 0,
+                  y: 8,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.45,
+                  delay: index * 0.1 + 0.3,
+                }}
+              >
+                MONTHLY INTERACTIONS RESULTS
+              </motion.h4>
+
+              {/* =================================================
+                  METRICS
+              ================================================= */}
+
+              <div className="mb-6 grid flex-grow grid-cols-2 gap-x-4 gap-y-6">
+                {study.metrics.map((metric, metricIndex) => (
+                  <motion.div
+                    key={metric.label}
+                    initial={{
+                      opacity: 0,
+                      y: 15,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.5,
+                    }}
+                    transition={{
+                      duration: 0.45,
+                      delay: index * 0.1 + 0.35 + metricIndex * 0.08,
+                    }}
+                  >
+                    <p className="font-lato mb-1 text-sm text-gray-500">{metric.label}</p>
+
+                    {/* Animated Number */}
+                    <AnimatedMetric value={metric.value} />
+                  </motion.div>
+                ))}
               </div>
 
-              {/* Right Side - Content */}
-              <div className="w-full md:w-1/2 relative border-t md:border-t-0 md:border-l border-white/10">
-                <div className="w-full h-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center p-8 md:p-12 text-left">
-                  {/* Title */}
-                  <div>
-                    <Heading
-                      level={3}
-                      className="!text-white mb-2 text-3xl md:text-4xl lg:text-5xl text-left"
-                    >
-                      Case Studies
-                    </Heading>
-                  </div>
+              {/* =================================================
+                  TAGS
+              ================================================= */}
 
-                  {/* Subtitle */}
-                  <div>
-                    <Text
-                      variant="large"
-                      className="text-purple-300 mb-8 text-left"
-                    >
-                      Success Stories
-                    </Text>
-                  </div>
+              <motion.div
+                className="mb-6 flex flex-wrap gap-2"
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1 + 0.55,
+                }}
+              >
+                {study.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="
+                      font-lato
+                      rounded-full
+                      bg-gray-100
+                      px-2.5
+                      py-1
+                      text-xs
+                      text-gray-600
+                    "
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </motion.div>
 
-                  {/* Bullet Points */}
-                  <ul className="space-y-4 text-left mb-8">
-                    {bulletPoints.map((point, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-4"
-                      >
-                        {/* Bullet Point */}
-                        <div className="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
+              {/* =================================================
+                  VIEW CASE STUDY
+              ================================================= */}
 
-                        {/* Feature Text */}
-                        <Text
-                          variant="body"
-                          className="text-gray-300 leading-relaxed text-left"
-                        >
-                          {point}
-                        </Text>
-                      </li>
-                    ))}
-                  </ul>
+              <Link
+                href={study.link}
+                className="mt-auto block w-full"
+              >
+                <motion.div
+                  whileHover={{
+                    scale: 1.02,
+                  }}
+                  whileTap={{
+                    scale: 0.98,
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
+                  className="
+                    w-full
+                    rounded
+                    bg-[#F1F5F9]
+                    px-6
+                    py-2.5
+                    text-center
+                    text-xs
+                    font-medium
+                    text-[#262626]
+                    transition-colors
+                    duration-200
+                    hover:bg-[#E8EDF3]
+                    sm:text-sm
+                  "
+                >
+                  View Case Study
+                </motion.div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
 
-                  {/* Decorative Line */}
-                  <div className="mt-8 mb-8 h-1 w-32 bg-gradient-to-r from-purple-500/50 via-pink-500/50 to-transparent rounded-full" />
+        {/* =====================================================
+            SEE MORE
+        ===================================================== */}
 
-                  {/* Metrics Grid (2x2) */}
-                  <div className="grid grid-cols-2 gap-4 md:gap-6 mb-8">
-                    {metrics.map((metric, index) => (
-                      <div
-                        key={index}
-                        className="text-left"
-                      >
-                        {/* Metric Value */}
-                        <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-1">
-                          {metric.value}
-                        </div>
-                        {/* Metric Label */}
-                        <Text
-                          variant="small"
-                          className="text-gray-300 text-sm md:text-base"
-                        >
-                          {metric.label}
-                        </Text>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA Button */}
-                  <div className="mt-4">
-                    <Link
-                      href="/case-studies"
-                      className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 focus-visible:outline-2 focus-visible:outline-purple-400 focus-visible:outline-offset-2 text-base md:text-lg"
-                    >
-                      View All Case Studies
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center">
+          <Link href="/case-studies">
+            <motion.div
+              whileHover={{
+                scale: 1.04,
+                y: -2,
+              }}
+              whileTap={{
+                scale: 0.97,
+              }}
+              transition={{
+                duration: 0.2,
+              }}
+              className="
+                rounded-lg
+                bg-[#57058B]
+                px-6
+                py-2
+                text-sm
+                font-semibold
+                text-white
+                transition-opacity
+                duration-200
+                hover:opacity-90
+                md:px-8
+                md:py-3
+                md:text-base
+              "
+            >
+              See more
+            </motion.div>
+          </Link>
         </div>
       </div>
     </section>

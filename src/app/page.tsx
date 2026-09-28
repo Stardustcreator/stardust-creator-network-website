@@ -3,12 +3,15 @@ import dynamic from 'next/dynamic';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 import PerformanceTracker from '@/components/performance/PerformanceTracker';
 
-// Critical above-the-fold components (load immediately)
+// Critical above-the-fold components
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 
-// Lazy load below-the-fold sections for better initial load performance
+// =====================================================
+// SECTION 2 - CONNECT, COLLABORATE, CREATE
+// =====================================================
+
 const ConnectCollaborateCreateSection = dynamic(
   () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
   {
@@ -16,6 +19,10 @@ const ConnectCollaborateCreateSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
+// =====================================================
+// SECTION 3 - WHO SCN IS FOR
+// =====================================================
 
 const WhoScnIsForSection = dynamic(
   () => import('@/components/sections/WhoScnIsFor/WhoScnIsForSection'),
@@ -25,6 +32,10 @@ const WhoScnIsForSection = dynamic(
   }
 );
 
+// =====================================================
+// SECTION 4 - TESTIMONIALS
+// =====================================================
+
 const TestimonialsSection = dynamic(
   () => import('@/components/sections/Testimonials/TestimonialsSection'),
   {
@@ -32,6 +43,10 @@ const TestimonialsSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
+// =====================================================
+// SECTION 5 - WHAT CHANGES WHEN YOU JOIN
+// =====================================================
 
 const WhatChangesWhenYouJoinSection = dynamic(
   () => import('@/components/sections/WhatChangesWhenYouJoin/WhatChangesWhenYouJoinSection'),
@@ -41,32 +56,95 @@ const WhatChangesWhenYouJoinSection = dynamic(
   }
 );
 
+// =====================================================
+// SECTION 6 - CREATOR GROWTH
+// =====================================================
+
+const CreatorGrowthSection = dynamic(
+  () => import('@/components/sections/CreatorGrowth/CreatorGrowthSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 7 - LIVE CAMPAIGN
+// =====================================================
+
+const LiveCampaignSection = dynamic(
+  () => import('@/components/sections/LiveCampaign/LiveCampaignSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 8 - CASE STUDIES
+// =====================================================
+
+const CaseStudiesSection = dynamic(
+  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 9 - FAQ
+// =====================================================
+
 const FAQSection = dynamic(() => import('@/components/sections/FAQS/FAQSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
+
+// =====================================================
+// SECTION 10 - FINAL CTA
+// =====================================================
 
 const FinalCTASection = dynamic(() => import('@/components/sections/FinalCTA/FinalCTASection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
 
-// ✅ Page-specific SEO metadata
+// =====================================================
+// PAGE SEO METADATA
+// =====================================================
+
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
+
   description:
     'Stardust Creator Network connects creators with top brands for high-value partnerships, campaign collaborations, and scalable monetization opportunities across the creator economy',
+
   image: '/who we are/creators.webp',
+
   url: '/',
+
   tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
 });
 
+// =====================================================
+// HOME PAGE
+// =====================================================
+
 export default function Home() {
-  const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
+  const breadcrumbData = generateStructuredData.breadcrumb([
+    {
+      name: 'Home',
+      url: '/',
+    },
+  ]);
 
   return (
     <>
-      {/* Breadcrumb Structured Data */}
+      {/* =================================================
+          BREADCRUMB STRUCTURED DATA
+      ================================================= */}
+
       <script
         type="application/ld+json"
         defer
@@ -75,40 +153,91 @@ export default function Home() {
         }}
       />
 
-      {/* Header */}
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
       <Header />
 
-      {/* Main Content */}
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
+
       <main
         id="main-content"
         className="bg-black"
       >
-        {/* ========== SECTION 1 ========== */}
+        {/* ===============================================
+            SECTION 1 - HERO
+        =============================================== */}
+
         <Hero />
 
-        {/* ========== SECTION 2 ========== */}
+        {/* ===============================================
+            SECTION 2 - CONNECT, COLLABORATE, CREATE
+        =============================================== */}
+
         <ConnectCollaborateCreateSection />
 
-        {/* ========== SECTION 3 ========== */}
+        {/* ===============================================
+            SECTION 3 - WHO SCN IS FOR
+        =============================================== */}
+
         <WhoScnIsForSection />
 
-        {/* ========== SECTION 4 ========== */}
+        {/* ===============================================
+            SECTION 4 - TESTIMONIALS
+        =============================================== */}
+
         <TestimonialsSection />
 
-        {/* ========== SECTION 5 ========== */}
+        {/* ===============================================
+            SECTION 5 - WHAT CHANGES WHEN YOU JOIN
+        =============================================== */}
+
         <WhatChangesWhenYouJoinSection />
 
-        {/* ========== SECTION 6 ========== */}
+        {/* ===============================================
+            SECTION 6 - CREATOR GROWTH
+        =============================================== */}
+
+        <CreatorGrowthSection />
+
+        {/* ===============================================
+            SECTION 7 - LIVE CAMPAIGN
+        =============================================== */}
+
+        <LiveCampaignSection />
+
+        {/* ===============================================
+            SECTION 8 - CASE STUDIES
+        =============================================== */}
+
+        <CaseStudiesSection />
+
+        {/* ===============================================
+            SECTION 9 - FAQ
+        =============================================== */}
+
         <FAQSection />
 
-        {/* ========== SECTION 7 - Final CTA ========== */}
+        {/* ===============================================
+            SECTION 10 - FINAL CTA
+        =============================================== */}
+
         <FinalCTASection />
       </main>
 
-      {/* Footer */}
+      {/* =================================================
+          FOOTER
+      ================================================= */}
+
       <Footer />
 
-      {/* Performance Tracking */}
+      {/* =================================================
+          PERFORMANCE TRACKING
+      ================================================= */}
+
       <PerformanceTracker />
     </>
   );
