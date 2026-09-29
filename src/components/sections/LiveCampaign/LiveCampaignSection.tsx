@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const steps = [
   {
@@ -28,7 +28,11 @@ const steps = [
   },
 ];
 
-const cardVariants = {
+/* =========================================================
+   CARD ANIMATION
+========================================================= */
+
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 45,
@@ -42,7 +46,7 @@ const cardVariants = {
     transition: {
       duration: 0.7,
       delay: index * 0.12,
-      ease: [0.22, 1, 0.36, 1],
+      ease: 'easeOut',
     },
   }),
 };

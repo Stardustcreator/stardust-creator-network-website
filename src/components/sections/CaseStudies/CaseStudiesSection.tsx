@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 const caseStudies = [
@@ -59,7 +59,7 @@ const caseStudies = [
    CARD ANIMATION
 ========================================================= */
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
