@@ -4,6 +4,96 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+const heroImages = [
+  '/who we are/Frame 1.png',
+  '/who we are/Frame 2.png',
+  '/who we are/Frame 3.png',
+  '/who we are/Frame 4.png',
+  '/who we are/Frame 5.png',
+  '/who we are/Frame 6.png',
+];
+
+const leftColumnImages = [heroImages[0], heroImages[2], heroImages[4]];
+
+const rightColumnImages = [heroImages[1], heroImages[3], heroImages[5]];
+
+/* =========================================================
+   VERTICAL IMAGE COLUMN
+========================================================= */
+
+function VerticalImageColumn({
+  images,
+  direction = 'up',
+}: {
+  images: string[];
+  direction?: 'up' | 'down';
+}) {
+  const duplicatedImages = [...images, ...images];
+
+  return (
+    <div className="relative h-[760px] w-full overflow-hidden">
+      <motion.div
+        className="flex w-full flex-col gap-[10px]"
+        initial={
+          direction === 'down'
+            ? {
+                y: 'calc(-50% - 5px)',
+              }
+            : {
+                y: 0,
+              }
+        }
+        animate={
+          direction === 'down'
+            ? {
+                y: ['calc(-50% - 5px)', '0%'],
+              }
+            : {
+                y: ['0%', 'calc(-50% - 5px)'],
+              }
+        }
+        transition={{
+          duration: 35,
+          ease: 'linear',
+          repeat: Infinity,
+          repeatType: 'loop',
+        }}
+      >
+        {duplicatedImages.map((image, index) => (
+          <motion.div
+            key={`${image}-${index}`}
+            className="
+              relative
+              h-[245px]
+              w-full
+              shrink-0
+              overflow-hidden
+              rounded-[24px]
+              bg-transparent
+            "
+            whileHover={{
+              scale: 1.015,
+              transition: {
+                duration: 0.25,
+                ease: 'easeOut',
+              },
+            }}
+          >
+            <Image
+              src={image}
+              alt="Creator"
+              fill
+              sizes="269px"
+              className="object-cover"
+              priority={index < 3}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Hero() {
   return (
     <section
@@ -25,10 +115,22 @@ export default function Hero() {
       {/* =====================================================
           DESKTOP HERO
       ====================================================== */}
-      <div className="relative mx-auto hidden min-h-[795px] w-full max-w-[1440px] lg:block">
+
+      <div
+        className="
+          relative
+          mx-auto
+          hidden
+          min-h-[795px]
+          w-full
+          max-w-[1440px]
+          lg:block
+        "
+      >
         {/* ===================================================
             LEFT CONTENT
         ==================================================== */}
+
         <motion.div
           className="
             absolute
@@ -37,8 +139,14 @@ export default function Hero() {
             z-20
             w-[680px]
           "
-          initial={{ opacity: 0, x: -35 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{
+            opacity: 0,
+            x: -35,
+          }}
+          animate={{
+            opacity: 1,
+            x: 0,
+          }}
           transition={{
             duration: 0.8,
             ease: 'easeOut',
@@ -47,6 +155,7 @@ export default function Hero() {
           {/* =================================================
               HEADING
           ================================================== */}
+
           <motion.h1
             className="
               max-w-[650px]
@@ -57,8 +166,14 @@ export default function Hero() {
               tracking-[-2.8px]
               text-[#262626]
             "
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
             transition={{
               duration: 0.8,
               delay: 0.15,
@@ -90,6 +205,7 @@ export default function Hero() {
           {/* =================================================
               DESCRIPTION
           ================================================== */}
+
           <motion.p
             className="
               mt-[16px]
@@ -101,8 +217,14 @@ export default function Hero() {
               tracking-[-0.2px]
               text-[#262626]
             "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
             transition={{
               duration: 0.8,
               delay: 0.35,
@@ -116,19 +238,25 @@ export default function Hero() {
           {/* =================================================
               CTA BUTTONS
           ================================================== */}
+
           <motion.div
             className="mt-[24px] flex items-center gap-[16px]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
             transition={{
               duration: 0.8,
               delay: 0.5,
               ease: 'easeOut',
             }}
           >
-            {/* =================================================
-                START A CAMPAIGN
-            ================================================== */}
+            {/* START A CAMPAIGN */}
+
             <Link
               href="https://www.stardustcreatornetwork.com/signin"
               className="
@@ -178,9 +306,8 @@ export default function Hero() {
               </svg>
             </Link>
 
-            {/* =================================================
-                BECOME A CREATOR
-            ================================================== */}
+            {/* BECOME A CREATOR */}
+
             <Link
               href="https://www.stardustcreatornetwork.com/creator-os"
               className="
@@ -210,221 +337,59 @@ export default function Hero() {
         </motion.div>
 
         {/* ===================================================
-            RIGHT IMAGE GRID
+            RIGHT IMAGE AREA
+            TWO VERTICAL LOOPING COLUMNS
         ==================================================== */}
+
         <div
           className="
             absolute
             right-[61px]
-            top-[132px]
+            top-[85px]
             z-10
             grid
             w-[554px]
             grid-cols-2
-            gap-[16px]
+            gap-[10px]
           "
         >
-          {/* =================================================
-              FRAME 2
-          ================================================== */}
-          <motion.div
-            className="
-              relative
-              h-[299px]
-              w-[269px]
-              overflow-hidden
-              rounded-[24px]
-            "
-            initial={{
-              opacity: 0,
-              y: -30,
-            }}
-            animate={{
-              opacity: 1,
-              y: [0, -7, 0, 7, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.25,
-              },
-              y: {
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 0.2,
-              },
-            }}
-            whileHover={{
-              scale: 1.02,
-              transition: {
-                duration: 0.25,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 2.webp"
-              alt="Creator working on content"
-              fill
-              priority
-              sizes="269px"
-              className="object-cover"
-            />
-          </motion.div>
+          {/* LEFT COLUMN
+              Frame 1 → 3 → 5
+              Moves upward */}
 
-          {/* =================================================
-              FRAME 4
-          ================================================== */}
-          <motion.div
-            className="
-              relative
-              h-[299px]
-              w-[269px]
-              overflow-hidden
-              rounded-[24px]
-            "
-            initial={{
-              opacity: 0,
-              y: -30,
-            }}
-            animate={{
-              opacity: 1,
-              y: [0, 7, 0, -7, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.35,
-              },
-              y: {
-                duration: 6.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 0.5,
-              },
-            }}
-            whileHover={{
-              scale: 1.02,
-              transition: {
-                duration: 0.25,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 4.webp"
-              alt="Content creator"
-              fill
-              priority
-              sizes="269px"
-              className="object-cover"
-            />
-          </motion.div>
+          <VerticalImageColumn
+            images={leftColumnImages}
+            direction="up"
+          />
 
-          {/* =================================================
-              FRAME 1
-          ================================================== */}
-          <motion.div
-            className="
-              relative
-              h-[289px]
-              w-[269px]
-              overflow-hidden
-              rounded-[24px]
-            "
-            initial={{
-              opacity: 0,
-              y: 30,
-            }}
-            animate={{
-              opacity: 1,
-              y: [0, -6, 0, 6, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.45,
-              },
-              y: {
-                duration: 7,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 0.8,
-              },
-            }}
-            whileHover={{
-              scale: 1.02,
-              transition: {
-                duration: 0.25,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 1.webp"
-              alt="Creator"
-              fill
-              priority
-              sizes="269px"
-              className="object-cover"
-            />
-          </motion.div>
+          {/* RIGHT COLUMN
+              Frame 2 → 4 → 6
+              Moves downward */}
 
-          {/* =================================================
-              FRAME 3
-          ================================================== */}
-          <motion.div
-            className="
-              relative
-              h-[289px]
-              w-[269px]
-              overflow-hidden
-              rounded-[24px]
-            "
-            initial={{
-              opacity: 0,
-              y: 30,
-            }}
-            animate={{
-              opacity: 1,
-              y: [0, 6, 0, -6, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.55,
-              },
-              y: {
-                duration: 6.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 1,
-              },
-            }}
-            whileHover={{
-              scale: 1.02,
-              transition: {
-                duration: 0.25,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 3.webp"
-              alt="Creator"
-              fill
-              priority
-              sizes="269px"
-              className="object-cover"
-            />
-          </motion.div>
+          <VerticalImageColumn
+            images={rightColumnImages}
+            direction="down"
+          />
         </div>
       </div>
 
       {/* =====================================================
           MOBILE / TABLET HERO
       ====================================================== */}
-      <div className="block px-6 pb-16 pt-28 lg:hidden">
+
+      <div
+        className="
+          block
+          px-6
+          pb-16
+          pt-28
+          lg:hidden
+        "
+      >
         {/* =================================================
             MOBILE HEADING
         ================================================== */}
+
         <motion.h1
           className="
             max-w-[700px]
@@ -473,6 +438,7 @@ export default function Hero() {
         {/* =================================================
             MOBILE DESCRIPTION
         ================================================== */}
+
         <motion.p
           className="
             mt-5
@@ -502,6 +468,7 @@ export default function Hero() {
         {/* =================================================
             MOBILE CTA BUTTONS
         ================================================== */}
+
         <motion.div
           className="mt-6 flex flex-wrap gap-3"
           initial={{
@@ -517,7 +484,8 @@ export default function Hero() {
             delay: 0.4,
           }}
         >
-          {/* Primary */}
+          {/* PRIMARY */}
+
           <Link
             href="https://www.stardustcreatornetwork.com/signin"
             className="
@@ -566,7 +534,8 @@ export default function Hero() {
             </svg>
           </Link>
 
-          {/* Secondary */}
+          {/* SECONDARY */}
+
           <Link
             href="https://www.stardustcreatornetwork.com/creator-os"
             className="
@@ -594,147 +563,117 @@ export default function Hero() {
         </motion.div>
 
         {/* =================================================
-            MOBILE IMAGE GRID
+            MOBILE IMAGE LOOP
         ================================================== */}
-        <div className="mt-12 grid grid-cols-2 gap-3">
-          {/* Frame 2 */}
-          <motion.div
-            className="
-              relative
-              aspect-[0.9]
-              overflow-hidden
-              rounded-[20px]
-            "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: [0, -5, 0, 5, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.5,
-              },
-              y: {
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 2.webp"
-              alt="Creator working on content"
-              fill
-              sizes="50vw"
-              className="object-cover"
-            />
-          </motion.div>
 
-          {/* Frame 4 */}
-          <motion.div
-            className="
-              relative
-              aspect-[0.9]
-              overflow-hidden
-              rounded-[20px]
-            "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: [0, 5, 0, -5, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.6,
-              },
-              y: {
-                duration: 6.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 0.4,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 4.webp"
-              alt="Content creator"
-              fill
-              sizes="50vw"
-              className="object-cover"
-            />
-          </motion.div>
+        <div
+          className="
+            relative
+            mt-12
+            grid
+            grid-cols-2
+            gap-3
+            overflow-hidden
+          "
+        >
+          {/* =================================================
+              LEFT MOBILE COLUMN
+              Frame 1 → 3 → 5
+              Moves upward
+          ================================================== */}
 
-          {/* Frame 1 */}
-          <motion.div
-            className="
-              relative
-              aspect-[0.9]
-              overflow-hidden
-              rounded-[20px]
-            "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: [0, -4, 0, 4, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.7,
-              },
-              y: {
-                duration: 7,
+          <div className="relative h-[650px] overflow-hidden">
+            <motion.div
+              className="flex flex-col gap-3"
+              animate={{
+                y: ['0%', 'calc(-50% - 6px)'],
+              }}
+              transition={{
+                duration: 30,
+                ease: 'linear',
                 repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 0.7,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 1.webp"
-              alt="Creator"
-              fill
-              sizes="50vw"
-              className="object-cover"
-            />
-          </motion.div>
+                repeatType: 'loop',
+              }}
+            >
+              {[...leftColumnImages, ...leftColumnImages].map((image, index) => (
+                <motion.div
+                  key={`${image}-mobile-left-${index}`}
+                  className="
+                      relative
+                      h-[210px]
+                      w-full
+                      shrink-0
+                      overflow-hidden
+                      rounded-[20px]
+                      bg-transparent
+                    "
+                  whileHover={{
+                    scale: 1.015,
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt="Creator"
+                    fill
+                    sizes="50vw"
+                    className="object-cover"
+                    priority={index < 2}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
 
-          {/* Frame 3 */}
-          <motion.div
-            className="
-              relative
-              aspect-[0.9]
-              overflow-hidden
-              rounded-[20px]
-            "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: [0, 4, 0, -4, 0],
-            }}
-            transition={{
-              opacity: {
-                duration: 0.8,
-                delay: 0.8,
-              },
-              y: {
-                duration: 6.5,
+          {/* =================================================
+              RIGHT MOBILE COLUMN
+              Frame 2 → 4 → 6
+              Moves downward
+          ================================================== */}
+
+          <div className="relative h-[650px] overflow-hidden">
+            <motion.div
+              className="flex flex-col gap-3"
+              initial={{
+                y: 'calc(-50% - 6px)',
+              }}
+              animate={{
+                y: ['calc(-50% - 6px)', '0%'],
+              }}
+              transition={{
+                duration: 30,
+                ease: 'linear',
                 repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 1,
-              },
-            }}
-          >
-            <Image
-              src="/who we are/Frame 3.webp"
-              alt="Creator"
-              fill
-              sizes="50vw"
-              className="object-cover"
-            />
-          </motion.div>
+                repeatType: 'loop',
+              }}
+            >
+              {[...rightColumnImages, ...rightColumnImages].map((image, index) => (
+                <motion.div
+                  key={`${image}-mobile-right-${index}`}
+                  className="
+                      relative
+                      h-[210px]
+                      w-full
+                      shrink-0
+                      overflow-hidden
+                      rounded-[20px]
+                      bg-transparent
+                    "
+                  whileHover={{
+                    scale: 1.015,
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt="Creator"
+                    fill
+                    sizes="50vw"
+                    className="object-cover"
+                    priority={index < 2}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

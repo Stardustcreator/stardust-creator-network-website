@@ -10,19 +10,15 @@ export const navigationItems: NavigationItem[] = [
     href: '/who-we-are',
   },
   {
-    label: 'Creator OS',
-    href: '/creator-os',
+    label: 'For Creators',
+    href: '/creators/join',
   },
   {
-    label: 'Find Creators',
-    href: '/find-creators',
+    label: 'Case Studies',
+    href: '/case-studies',
   },
   {
     label: 'Blog',
     href: '/blog',
-  },
-  {
-    label: 'Pricing',
-    href: '/pricing',
   },
 ];
