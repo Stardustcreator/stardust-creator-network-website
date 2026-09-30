@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 interface WhoWeAreContentProps {
   heroTitle?: string;
@@ -68,11 +68,17 @@ const creators = [
   '/creators/creator 6.webp',
 ];
 
-const fadeUp = {
+/* =========================================================
+   ANIMATION VARIANTS
+   Explicitly typed to prevent Framer Motion TypeScript errors.
+========================================================= */
+
+const fadeUp: Variants = {
   hidden: {
     opacity: 0,
     y: 24,
   },
+
   visible: {
     opacity: 1,
     y: 0,
@@ -83,8 +89,9 @@ const fadeUp = {
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: {},
+
   visible: {
     transition: {
       staggerChildren: 0.1,
@@ -101,10 +108,14 @@ export default function WhoWeAreContent({
       {/* =========================================================
           HERO
       ========================================================== */}
+
       <section className="relative min-h-[795px] w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07]">
         <div className="relative z-20 mx-auto flex min-h-[795px] w-full max-w-[1440px] items-center px-6 pb-20 pt-32 sm:px-10 lg:px-[57px]">
           <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
-            {/* HERO COPY */}
+            {/* =================================================
+                HERO COPY
+            ================================================= */}
+
             <motion.div
               initial="hidden"
               animate="visible"
@@ -183,6 +194,7 @@ export default function WhoWeAreContent({
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
                   >
                     <path
                       d="M5 12H19M19 12L13 6M19 12L13 18"
@@ -196,11 +208,13 @@ export default function WhoWeAreContent({
               </motion.div>
             </motion.div>
 
-            {/* =====================================================
+            {/* =================================================
                 HERO IMAGE COLLAGE
-            ====================================================== */}
+            ================================================= */}
+
             <div className="relative mx-auto h-[430px] w-full max-w-[610px] lg:h-[520px]">
               {/* LEFT IMAGE */}
+
               <motion.div
                 initial={{
                   opacity: 0,
@@ -260,6 +274,7 @@ export default function WhoWeAreContent({
               </motion.div>
 
               {/* CENTER / TOP IMAGE */}
+
               <motion.div
                 initial={{
                   opacity: 0,
@@ -313,6 +328,7 @@ export default function WhoWeAreContent({
               </motion.div>
 
               {/* RIGHT IMAGE */}
+
               <motion.div
                 initial={{
                   opacity: 0,
@@ -378,11 +394,15 @@ export default function WhoWeAreContent({
       {/* =========================================================
           TURN CREATOR TRUST INTO BRAND GROWTH
       ========================================================== */}
+
       <section className="w-full bg-[#F5F5F4] px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[80px]">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{
+            once: true,
+            amount: 0.25,
+          }}
           variants={staggerContainer}
           className="mx-auto w-full max-w-[1440px]"
         >
@@ -430,6 +450,7 @@ export default function WhoWeAreContent({
                   height="24"
                   viewBox="0 0 24 24"
                   fill="none"
+                  aria-hidden="true"
                 >
                   <path
                     d="M5 12H19M19 12L13 6M19 12L13 18"
@@ -448,6 +469,7 @@ export default function WhoWeAreContent({
       {/* =========================================================
           WHAT WE DO
       ========================================================== */}
+
       <section
         className="
           relative
@@ -470,7 +492,10 @@ export default function WhoWeAreContent({
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
             variants={staggerContainer}
             className="text-center"
           >
@@ -515,7 +540,10 @@ export default function WhoWeAreContent({
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{
+              once: true,
+              amount: 0.15,
+            }}
             variants={staggerContainer}
             className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3"
           >
@@ -573,13 +601,25 @@ export default function WhoWeAreContent({
       {/* =========================================================
           BECOME THE BRAND PEOPLE REMEMBER
       ========================================================== */}
+
       <section className="w-full border-y border-[#E0E0E0] bg-[#FAFAF9]">
         <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 lg:grid-cols-[683px_1fr]">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.7 }}
+            initial={{
+              opacity: 0,
+              x: -30,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
             className="px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[64px]"
           >
             <h2 className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#170F24] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
@@ -655,6 +695,7 @@ export default function WhoWeAreContent({
       {/* =========================================================
           TRUSTED BY
       ========================================================== */}
+
       <section className="w-full bg-white py-[56px]">
         <p className="text-center font-bricolage-grotesque text-[18px] font-medium leading-[20px] tracking-[-0.4px] text-[#737373]">
           Trusted by
@@ -693,12 +734,16 @@ export default function WhoWeAreContent({
       {/* =========================================================
           CREATOR NETWORK
       ========================================================== */}
+
       <section className="w-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px] bg-white py-[80px]">
         <div className="mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-[80px]">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
             variants={staggerContainer}
             className="text-center"
           >
@@ -782,11 +827,15 @@ export default function WhoWeAreContent({
       {/* =========================================================
           FINAL CTA
       ========================================================== */}
+
       <section className="w-full rounded-[16px] bg-[#FBF3FF] px-6 py-16 sm:px-10 lg:h-[388px] lg:py-[64px]">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{
+            once: true,
+            amount: 0.25,
+          }}
           variants={staggerContainer}
           className="mx-auto flex h-full max-w-[880px] flex-col items-center justify-center text-center"
         >
