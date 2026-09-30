@@ -1,199 +1,639 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-// Each of the four pillar cards' label + description come from the CMS as a
-// single "Title | Description" pipe-separated string (learnContent,
-// buildContent, earnContent, growContent). buttonText/buttonLink/image have
-// no CMS equivalent and stay hardcoded here.
-const DEFAULT_LEARN_CONTENT =
-  'Learn | Access creator-focused education built for the African creator. From pricing your work to understanding usage rights to building a business around your content.';
-const DEFAULT_BUILD_CONTENT =
-  'Build | Turn your content into a lasting business. The tools, systems, and strategy to grow something that belongs to you - beyond any algorithm or platform.';
-const DEFAULT_EARN_CONTENT =
-  'Earn | Stop guessing what to charge and start earning what your work is worth. Build defensible rates, invoice professionally, and connect with brands already looking for creators like you.';
-const DEFAULT_GROW_CONTENT =
-  'Grow | Build an audience you actually own, not just followers on a platform you cannot control. Every visitor to your profile or storefront can join your mailing list.';
-
-interface WhoScnIsForSectionProps {
-  learnContent?: string;
-  buildContent?: string;
-  earnContent?: string;
-  growContent?: string;
-}
-
-// Parses a "Title | Description" string, falling back to the given label if
-// the pipe or either half is missing so a malformed CMS value never renders
-// blank.
-function parsePillarContent(value: string, fallbackLabel: string) {
-  const [labelPart, ...descriptionParts] = value.split('|');
-  const label = labelPart?.trim() || fallbackLabel;
-  const description = descriptionParts.join('|').trim();
-  return { label, description };
-}
-
-const cardMeta = [
-  { id: 1, buttonText: 'Start Learning', buttonLink: '/pricing', image: '/who we are/card 1.webp' },
-  { id: 2, buttonText: 'Start Building', buttonLink: '/pricing', image: '/who we are/card 2.webp' },
-  { id: 3, buttonText: 'Calculate Rate', buttonLink: '/pricing', image: '/who we are/card 3.webp' },
-  { id: 4, buttonText: 'Grow your List', buttonLink: '/pricing', image: '/who we are/card 4.webp' },
+const features = [
+  {
+    title: 'Brand-aligned from the start',
+    description:
+      "Every creator is checked for content quality and conduct before they're ever recommended to you. We find creators who get your brand seen and remembered.",
+  },
+  {
+    title: 'Your yes unlocks their payday',
+    description:
+      'Creators receive their final payment only after the work is approved. This ensures you get satisfactory value for your investment.',
+  },
+  {
+    title: 'Your team, freed up',
+    description:
+      'We handle contracts, payments and settlement. Your people stay on strategy, aiding their focus and productivity on what matters most.',
+  },
+  {
+    title: 'Doors already open',
+    description:
+      'Our creators know, trust, and have an existing relationship with us, so things move faster.',
+  },
 ];
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const wordVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-    },
-  },
-};
-
-export default function WhoScnIsForSection({
-  learnContent = DEFAULT_LEARN_CONTENT,
-  buildContent = DEFAULT_BUILD_CONTENT,
-  earnContent = DEFAULT_EARN_CONTENT,
-  growContent = DEFAULT_GROW_CONTENT,
-}: WhoScnIsForSectionProps) {
-  const words = ['How', 'SCN', 'Helps'];
-
-  const cards = cardMeta.map((meta, index) => {
-    const content = [learnContent, buildContent, earnContent, growContent][index];
-    const fallbackLabel = ['Learn', 'Build', 'Earn', 'Grow'][index];
-    return { ...meta, ...parsePillarContent(content, fallbackLabel) };
-  });
-
+export default function FindCreatorsSection() {
   return (
-    <section className="relative w-full py-16 sm:py-20 md:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="text-center mb-12 sm:mb-16">
-          {/* ANIMATED HEADING */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-3 mb-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
+    <section className="relative w-full bg-white">
+      <div className="mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-20">
+        {/* =========================================
+            SECTION HEADING
+        ========================================= */}
+        <div className="mx-auto max-w-[850px] pt-16 text-center sm:pt-20 lg:pt-24">
+          <motion.h2
+            initial={{
+              opacity: 0,
+              y: 35,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: 'easeOut',
+            }}
+            style={{
+              fontFamily: 'var(--font-instrument-sans)',
+              fontWeight: 600,
+              fontStyle: 'normal',
+              fontSize: '40px',
+              lineHeight: '48px',
+              letterSpacing: '-1.5px',
+              textAlign: 'center',
+            }}
+            className="text-[#242424]"
           >
-            {words.map((word, index) => (
-              <motion.span
-                key={index}
-                variants={wordVariants}
-                style={{
-                  fontFamily: 'var(--font-bricolage-grotesque)',
-                  fontSize: 'clamp(2rem, 5vw, 3rem)',
-                  fontWeight: 700,
-                  lineHeight: '1.3',
-                  letterSpacing: '-0.02em',
-                  color: '#000000',
-                }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </motion.div>
+            Why brands stop searching once they find us.
+          </motion.h2>
 
-          {/* Rest stays the same */}
-          <p
-            className="text-black/70 max-w-2xl mx-auto"
+          <motion.p
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: 'easeOut',
+            }}
+            className="mx-auto mt-6 max-w-[760px] text-[#777777]"
             style={{
               fontFamily: 'var(--font-lato)',
-              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-              lineHeight: '1.6',
+              fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+              lineHeight: '1.5',
             }}
           >
-            Level up your creator game with the tools you need to learn, grow, monetize, and
-            connect-all in one place.
-          </p>
+            Whether it’s creator sourcing or end-to-end campaign management, we’ve got you covered.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {cards.map(card => (
-            <div
-              key={card.id}
-              className="group relative h-96 md:h-130 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        {/* =========================================
+            VETTED CREATORS
+        ========================================= */}
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 45,
+            scale: 0.98,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.8,
+            ease: 'easeOut',
+          }}
+          className="
+            relative
+            mt-12
+            overflow-hidden
+            rounded-[20px]
+            bg-[#F0EAFB]
+            sm:mt-14
+            lg:mt-16
+          "
+          style={{
+            minHeight: '144px',
+          }}
+        >
+          {/* =========================================
+              TEXT
+          ========================================= */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: -25,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.3,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: 'easeOut',
+            }}
+            className="
+              relative
+              z-10
+              flex
+              min-h-[144px]
+              items-center
+              px-8
+              py-8
+              sm:px-10
+              lg:px-12
+            "
+          >
+            <div className="max-w-[570px]">
+              <h3
+                className="text-[#161616]"
+                style={{
+                  fontFamily: 'var(--font-instrument-sans)',
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  lineHeight: '1.2',
+                  letterSpacing: '-0.5px',
+                }}
+              >
+                Creators who've done the homework
+              </h3>
+
+              <p
+                className="mt-3 max-w-[600px] text-[#777777]"
+                style={{
+                  fontFamily: 'var(--font-lato)',
+                  fontSize: '16px',
+                  lineHeight: '1.55',
+                }}
+              >
+                Our live business clinics teach briefs, deadlines and professionalism. It shows up
+                in your campaign.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* =========================================
+              DESKTOP CREATOR CARDS
+          ========================================= */}
+          <div
+            className="
+              absolute
+              right-[30px]
+              top-1/2
+              hidden
+              -translate-y-1/2
+              lg:block
+            "
+            style={{
+              width: '570px',
+              height: '100px',
+            }}
+          >
+            {/* Aisha */}
+            <motion.div
+              className="absolute"
+              initial={{
+                opacity: 0,
+                x: -40,
+                y: 25,
+                rotate: -8,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                y: 12,
+                rotate: -8,
+              }}
+              animate={{
+                y: [12, 7, 12],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.15,
+                },
+                x: {
+                  duration: 0.7,
+                  delay: 0.15,
+                  ease: 'easeOut',
+                },
+                y: {
+                  duration: 3.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1,
+                },
+                rotate: {
+                  duration: 0.7,
+                  delay: 0.15,
+                },
+              }}
+              style={{
+                left: '0px',
+                top: '12px',
+                width: '165px',
+                transformOrigin: 'center center',
+              }}
             >
               <Image
-                src={card.image}
-                alt={card.label}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={90}
+                src="/creators/Aisha K..webp"
+                alt="Aisha"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
               />
+            </motion.div>
 
-              {/* Dark Overlay Gradient */}
-              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+            {/* Chiamaka */}
+            <motion.div
+              className="absolute"
+              initial={{
+                opacity: 0,
+                y: 35,
+                scale: 0.9,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              animate={{
+                y: [0, -6, 0],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.3,
+                },
+                scale: {
+                  duration: 0.6,
+                  delay: 0.3,
+                  ease: 'easeOut',
+                },
+                y: {
+                  duration: 3.8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1.2,
+                },
+              }}
+              style={{
+                left: '175px',
+                top: '8px',
+                width: '165px',
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src="/creators/Chiamaka O..webp"
+                alt="Chiamaka"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </motion.div>
 
-              {/* Content - All at Bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                {/* Label */}
-                <h3
-                  className="text-white mb-2"
-                  style={{
-                    fontFamily: 'var(--font-bricolage-grotesque)',
-                    fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
-                    fontWeight: 700,
-                    letterSpacing: '-0.01em',
-                  }}
-                >
-                  {card.label}
-                </h3>
+            {/* Tobi */}
+            <motion.div
+              className="absolute"
+              initial={{
+                opacity: 0,
+                x: 40,
+                y: 25,
+                rotate: 7,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                y: 12,
+                rotate: 7,
+              }}
+              animate={{
+                y: [12, 6, 12],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.45,
+                },
+                x: {
+                  duration: 0.7,
+                  delay: 0.45,
+                  ease: 'easeOut',
+                },
+                rotate: {
+                  duration: 0.7,
+                  delay: 0.45,
+                },
+                y: {
+                  duration: 3.6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1.4,
+                },
+              }}
+              style={{
+                left: '355px',
+                top: '12px',
+                width: '165px',
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src="/creators/Tobi B..webp"
+                alt="Tobi"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </motion.div>
+          </div>
 
-                {/* Description */}
-                <p
-                  className="text-white/90 mb-6 sm:mb-8 text-sm sm:text-base"
-                  style={{
-                    fontFamily: 'var(--font-lato)',
-                    fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-                    lineHeight: '1.5',
-                  }}
-                >
-                  {card.description}
-                </p>
+          {/* =========================================
+              MOBILE CREATOR CARDS
+          ========================================= */}
+          <div className="relative z-20 flex items-center justify-center gap-3 px-6 pb-7 lg:hidden">
+            {/* Aisha */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                x: -30,
+                rotate: -8,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                rotate: -8,
+              }}
+              animate={{
+                y: [0, -5, 0],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.1,
+                },
+                x: {
+                  duration: 0.6,
+                  delay: 0.1,
+                },
+                y: {
+                  duration: 3.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1,
+                },
+              }}
+              style={{
+                width: '125px',
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src="/creators/Aisha K..webp"
+                alt="Aisha"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </motion.div>
 
-                {/* Button */}
-                <Link href={card.buttonLink}>
-                  <button
-                    className="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-                    style={{ backgroundColor: '#FFFFFF', color: '#000000' }}
-                  >
-                    {card.buttonText}
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="inline"
-                    >
-                      <path
-                        d="M4 10H16M16 10L11 5M16 10L11 15"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                </Link>
-              </div>
-            </div>
+            {/* Chiamaka */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 25,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              animate={{
+                y: [0, -5, 0],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.25,
+                },
+                y: {
+                  duration: 3.8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1.2,
+                },
+              }}
+              style={{
+                width: '125px',
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src="/creators/Chiamaka O..webp"
+                alt="Chiamaka"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </motion.div>
+
+            {/* Tobi */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                x: 30,
+                rotate: 7,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                rotate: 7,
+              }}
+              animate={{
+                y: [0, -5, 0],
+              }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.6,
+                  delay: 0.4,
+                },
+                x: {
+                  duration: 0.6,
+                  delay: 0.4,
+                },
+                y: {
+                  duration: 3.6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1.4,
+                },
+              }}
+              style={{
+                width: '125px',
+                transformOrigin: 'center center',
+              }}
+            >
+              <Image
+                src="/creators/Tobi B..webp"
+                alt="Tobi"
+                width={165}
+                height={62}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* =========================================
+            FEATURE CARDS
+        ========================================= */}
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 md:grid-cols-2">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{
+                opacity: 0,
+                y: 35,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              whileHover={{
+                y: -5,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.2,
+              }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: 'easeOut',
+              }}
+              className="
+                min-h-[145px]
+                rounded-[20px]
+                border
+                border-[#E9DDFB]
+                bg-white
+                px-7
+                py-7
+                transition-shadow
+                duration-300
+                hover:shadow-lg
+                sm:px-8
+                sm:py-8
+              "
+            >
+              <motion.h3
+                initial={{
+                  opacity: 0,
+                  x: -15,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.15 + index * 0.1,
+                }}
+                className="text-[#170038]"
+                style={{
+                  fontFamily: 'var(--font-instrument-sans)',
+                  fontSize: '22px',
+                  fontWeight: 600,
+                  lineHeight: '1.25',
+                  letterSpacing: '-0.4px',
+                }}
+              >
+                {feature.title}
+              </motion.h3>
+
+              <motion.p
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.25 + index * 0.1,
+                }}
+                className="mt-3 text-[#777777]"
+                style={{
+                  fontFamily: 'var(--font-lato)',
+                  fontSize: '16px',
+                  lineHeight: '1.55',
+                }}
+              >
+                {feature.description}
+              </motion.p>
+            </motion.div>
           ))}
         </div>
       </div>

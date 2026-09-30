@@ -3,111 +3,15 @@ import dynamic from 'next/dynamic';
 import { generateMetaTags, generateStructuredData } from '@/lib/seo';
 import PerformanceTracker from '@/components/performance/PerformanceTracker';
 
-// Critical above-the-fold components (load immediately)
+// Critical above-the-fold components
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
 
-// Content editors change this in the admin CMS - fetched here rather than
-// hardcoded in Hero itself. Falls back to Hero's own defaults (which match
-// what shipped before this existed) on any failure, so a backend outage or
-// missing env var never breaks the page - same resilience pattern as
-// src/app/event/route.ts's own backend fetch.
-const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
+// =====================================================
+// SECTION 2 - CONNECT, COLLABORATE, CREATE
+// =====================================================
 
-interface ChangeItem {
-  before: string;
-  after: string;
-}
-
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-
-interface HomepageContent {
-  heroTitle?: string;
-  heroSubtitle?: string;
-  heroButton?: string;
-  featuresTitle?: string;
-  featuresSubtitle?: string;
-  learnContent?: string;
-  buildContent?: string;
-  earnContent?: string;
-  growContent?: string;
-  testimonialsTitle?: string;
-  changesTitle?: string;
-  changes?: ChangeItem[];
-  faqTitle?: string;
-  faqs?: FaqItem[];
-  finalCtaTitle?: string;
-  finalCtaDescription?: string;
-  finalCtaButton?: string;
-}
-
-function asString(value: unknown): string | undefined {
-  return typeof value === 'string' ? value : undefined;
-}
-
-function asChangeArray(value: unknown): ChangeItem[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-  const items = value.filter(
-    (item): item is ChangeItem =>
-      !!item && typeof item.before === 'string' && typeof item.after === 'string'
-  );
-  return items.length > 0 ? items : undefined;
-}
-
-function asFaqArray(value: unknown): FaqItem[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-  const items = value.filter(
-    (item): item is FaqItem =>
-      !!item && typeof item.question === 'string' && typeof item.answer === 'string'
-  );
-  return items.length > 0 ? items : undefined;
-}
-
-// Fetches the full `homepage` CMS content object once so every section below
-// can pull its own slice out of it. Falls back to each section's own
-// defaults (which match what shipped before this existed) on any failure, so
-// a backend outage or missing env var never breaks the page - same
-// resilience pattern as src/app/event/route.ts's own backend fetch.
-async function getHomepageContent(): Promise<HomepageContent> {
-  if (!API_URL) return {};
-
-  try {
-    const res = await fetch(`${API_URL}/cms/pages/homepage`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return {};
-
-    const data = await res.json();
-    const content = data?.content ?? {};
-    return {
-      heroTitle: asString(content.heroTitle),
-      heroSubtitle: asString(content.heroSubtitle),
-      heroButton: asString(content.heroButton),
-      featuresTitle: asString(content.featuresTitle),
-      featuresSubtitle: asString(content.featuresSubtitle),
-      learnContent: asString(content.learnContent),
-      buildContent: asString(content.buildContent),
-      earnContent: asString(content.earnContent),
-      growContent: asString(content.growContent),
-      testimonialsTitle: asString(content.testimonialsTitle),
-      changesTitle: asString(content.changesTitle),
-      changes: asChangeArray(content.changes),
-      faqTitle: asString(content.faqTitle),
-      faqs: asFaqArray(content.faqs),
-      finalCtaTitle: asString(content.finalCtaTitle),
-      finalCtaDescription: asString(content.finalCtaDescription),
-      finalCtaButton: asString(content.finalCtaButton),
-    };
-  } catch {
-    return {};
-  }
-}
-
-// Lazy load below-the-fold sections for better initial load performance
 const ConnectCollaborateCreateSection = dynamic(
   () => import('@/components/sections/ConnectCollaborateCreate/ConnectCollaborateCreateSection'),
   {
@@ -115,6 +19,10 @@ const ConnectCollaborateCreateSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
+// =====================================================
+// SECTION 3 - WHO SCN IS FOR
+// =====================================================
 
 const WhoScnIsForSection = dynamic(
   () => import('@/components/sections/WhoScnIsFor/WhoScnIsForSection'),
@@ -124,6 +32,10 @@ const WhoScnIsForSection = dynamic(
   }
 );
 
+// =====================================================
+// SECTION 4 - TESTIMONIALS
+// =====================================================
+
 const TestimonialsSection = dynamic(
   () => import('@/components/sections/Testimonials/TestimonialsSection'),
   {
@@ -131,6 +43,10 @@ const TestimonialsSection = dynamic(
     loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
   }
 );
+
+// =====================================================
+// SECTION 5 - WHAT CHANGES WHEN YOU JOIN
+// =====================================================
 
 const WhatChangesWhenYouJoinSection = dynamic(
   () => import('@/components/sections/WhatChangesWhenYouJoin/WhatChangesWhenYouJoinSection'),
@@ -140,33 +56,95 @@ const WhatChangesWhenYouJoinSection = dynamic(
   }
 );
 
+// =====================================================
+// SECTION 6 - CREATOR GROWTH
+// =====================================================
+
+const CreatorGrowthSection = dynamic(
+  () => import('@/components/sections/CreatorGrowth/CreatorGrowthSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 7 - LIVE CAMPAIGN
+// =====================================================
+
+const LiveCampaignSection = dynamic(
+  () => import('@/components/sections/LiveCampaign/LiveCampaignSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 8 - CASE STUDIES
+// =====================================================
+
+const CaseStudiesSection = dynamic(
+  () => import('@/components/sections/CaseStudies/CaseStudiesSection'),
+  {
+    ssr: true,
+    loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
+  }
+);
+
+// =====================================================
+// SECTION 9 - FAQ
+// =====================================================
+
 const FAQSection = dynamic(() => import('@/components/sections/FAQS/FAQSection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
+
+// =====================================================
+// SECTION 10 - FINAL CTA
+// =====================================================
 
 const FinalCTASection = dynamic(() => import('@/components/sections/FinalCTA/FinalCTASection'), {
   ssr: true,
   loading: () => <div className="h-96 w-full animate-pulse bg-gray-200"></div>,
 });
 
-// ✅ Page-specific SEO metadata
+// =====================================================
+// PAGE SEO METADATA
+// =====================================================
+
 export const metadata: Metadata = generateMetaTags({
   title: 'Stardust Creator Network – Empowering Creators in Nigeria & Beyond',
+
   description:
     'Stardust Creator Network connects creators with top brands for high-value partnerships, campaign collaborations, and scalable monetization opportunities across the creator economy',
+
   image: '/who we are/creators.webp',
+
   url: '/',
+
   tags: ['creators', 'network', 'monetization', 'collaboration', 'digital business'],
 });
 
-export default async function Home() {
-  const breadcrumbData = generateStructuredData.breadcrumb([{ name: 'Home', url: '/' }]);
-  const homepageContent = await getHomepageContent();
+// =====================================================
+// HOME PAGE
+// =====================================================
+
+export default function Home() {
+  const breadcrumbData = generateStructuredData.breadcrumb([
+    {
+      name: 'Home',
+      url: '/',
+    },
+  ]);
 
   return (
     <>
-      {/* Breadcrumb Structured Data */}
+      {/* =================================================
+          BREADCRUMB STRUCTURED DATA
+      ================================================= */}
+
       <script
         type="application/ld+json"
         defer
@@ -175,62 +153,91 @@ export default async function Home() {
         }}
       />
 
-      {/* Header */}
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
       <Header />
 
-      {/* Main Content */}
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
+
       <main
         id="main-content"
         className="bg-black"
       >
-        {/* ========== SECTION 1 ========== */}
-        <Hero
-          title={homepageContent.heroTitle}
-          subtitle={homepageContent.heroSubtitle}
-          buttonText={homepageContent.heroButton}
-        />
+        {/* ===============================================
+            SECTION 1 - HERO
+        =============================================== */}
 
-        {/* ========== SECTION 2 ========== */}
-        <ConnectCollaborateCreateSection
-          featuresTitle={homepageContent.featuresTitle}
-          featuresSubtitle={homepageContent.featuresSubtitle}
-        />
+        <Hero />
 
-        {/* ========== SECTION 3 ========== */}
-        <WhoScnIsForSection
-          learnContent={homepageContent.learnContent}
-          buildContent={homepageContent.buildContent}
-          earnContent={homepageContent.earnContent}
-          growContent={homepageContent.growContent}
-        />
+        {/* ===============================================
+            SECTION 2 - CONNECT, COLLABORATE, CREATE
+        =============================================== */}
 
-        {/* ========== SECTION 4 ========== */}
-        <TestimonialsSection testimonialsTitle={homepageContent.testimonialsTitle} />
+        <ConnectCollaborateCreateSection />
 
-        {/* ========== SECTION 5 ========== */}
-        <WhatChangesWhenYouJoinSection
-          changesTitle={homepageContent.changesTitle}
-          changes={homepageContent.changes}
-        />
+        {/* ===============================================
+            SECTION 3 - WHO SCN IS FOR
+        =============================================== */}
 
-        {/* ========== SECTION 6 ========== */}
-        <FAQSection
-          faqTitle={homepageContent.faqTitle}
-          faqs={homepageContent.faqs}
-        />
+        <WhoScnIsForSection />
 
-        {/* ========== SECTION 7 - Final CTA ========== */}
-        <FinalCTASection
-          finalCtaTitle={homepageContent.finalCtaTitle}
-          finalCtaDescription={homepageContent.finalCtaDescription}
-          finalCtaButton={homepageContent.finalCtaButton}
-        />
+        {/* ===============================================
+            SECTION 4 - TESTIMONIALS
+        =============================================== */}
+
+        <TestimonialsSection />
+
+        {/* ===============================================
+            SECTION 5 - WHAT CHANGES WHEN YOU JOIN
+        =============================================== */}
+
+        <WhatChangesWhenYouJoinSection />
+
+        {/* ===============================================
+            SECTION 6 - CREATOR GROWTH
+        =============================================== */}
+
+        <CreatorGrowthSection />
+
+        {/* ===============================================
+            SECTION 7 - LIVE CAMPAIGN
+        =============================================== */}
+
+        <LiveCampaignSection />
+
+        {/* ===============================================
+            SECTION 8 - CASE STUDIES
+        =============================================== */}
+
+        <CaseStudiesSection />
+
+        {/* ===============================================
+            SECTION 9 - FAQ
+        =============================================== */}
+
+        <FAQSection />
+
+        {/* ===============================================
+            SECTION 10 - FINAL CTA
+        =============================================== */}
+
+        <FinalCTASection />
       </main>
 
-      {/* Footer */}
+      {/* =================================================
+          FOOTER
+      ================================================= */}
+
       <Footer />
 
-      {/* Performance Tracking */}
+      {/* =================================================
+          PERFORMANCE TRACKING
+      ================================================= */}
+
       <PerformanceTracker />
     </>
   );
