@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && next-sitemap",
+    "build": "set NODE_OPTIONS=--max-old-space-size=4096 && next build && next-sitemap",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "lint": "next lint",
     "lint:fix": "next lint --fix",

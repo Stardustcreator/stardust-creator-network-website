@@ -1,65 +1,209 @@
 'use client';
-import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-interface FinalCTASectionProps {
-  finalCtaTitle?: string;
-  finalCtaDescription?: string;
-  finalCtaButton?: string;
-}
-
-const DEFAULT_FINAL_CTA_TITLE = 'Start Building the Creator Business You Deserve.';
-const DEFAULT_FINAL_CTA_DESCRIPTION =
-  'Whether you are just starting out or already building an audience, SCN gives you the community, the education, the tools, and the opportunities to accelerate your creator journey and build something that lasts.';
-const DEFAULT_FINAL_CTA_BUTTON = 'Sign Up Now';
-
-export default function FinalCTASection({
-  finalCtaTitle = DEFAULT_FINAL_CTA_TITLE,
-  finalCtaDescription = DEFAULT_FINAL_CTA_DESCRIPTION,
-  finalCtaButton = DEFAULT_FINAL_CTA_BUTTON,
-}: FinalCTASectionProps) {
-  const router = useRouter();
-
-  const handleSignUp = () => {
-    router.push('/onboarding');
-  };
-
+export default function FinalCTASection() {
   return (
     <section
-      className="w-full py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 text-center"
-      style={{ backgroundColor: '#FAFAF9' }}
+      className="w-full overflow-hidden bg-[#FBF3FF]"
+      style={{
+        minHeight: '388px',
+      }}
     >
-      <div className="max-w-3xl mx-auto">
-        <h2
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black leading-tight"
+      <div
+        className="
+          mx-auto
+          flex
+          w-full
+          max-w-[1440px]
+          flex-col
+          items-center
+          justify-center
+          px-6
+          py-16
+          text-center
+          sm:px-8
+          sm:py-20
+          lg:min-h-[388px]
+          lg:px-20
+          lg:py-16
+        "
+      >
+        {/* =========================
+            HEADING
+        ========================== */}
+        <motion.h2
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="
+            max-w-[620px]
+            text-[32px]
+            font-semibold
+            leading-[36px]
+            tracking-[-1.4px]
+            text-[#262626]
+            sm:text-[36px]
+            sm:leading-[40px]
+            md:text-[40px]
+            md:leading-[44px]
+            lg:text-[42px]
+            lg:leading-[46px]
+          "
           style={{
-            fontFamily: 'var(--font-bricolage-grotesque)',
-            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-instrument-sans)',
           }}
         >
-          Start Building the Creator Business You Deserve.
-        </h2>
+          Your next campaign is two
+          <br />
+          minutes away.
+        </motion.h2>
 
-        <p
-          className="text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 mb-6 sm:mb-8 md:mb-10"
+        {/* =========================
+            DESCRIPTION
+        ========================== */}
+        <motion.p
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          transition={{
+            duration: 0.65,
+            delay: 0.12,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="
+            mt-3
+            max-w-[560px]
+            text-[14px]
+            leading-[20px]
+            tracking-[-0.1px]
+            text-[#737373]
+            sm:text-[15px]
+            sm:leading-[21px]
+          "
           style={{
             fontFamily: 'var(--font-lato)',
           }}
         >
-          Whether you are just starting out or already building an audience, SCN gives you the
-          community, the education, the tools, and the opportunities to accelerate your creator
-          journey and build something that lasts.
-        </p>
+          That's how long it takes to tell us about your campaign goals.
+          <br className="hidden sm:block" />
+          We handle everything after.
+        </motion.p>
 
-        <Link href="/onboarding">
-          <button
-            className="px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-            style={{ backgroundColor: '#57058B', color: 'white' }}
+        {/* =========================
+            BUTTONS
+        ========================== */}
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          transition={{
+            duration: 0.6,
+            delay: 0.22,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="
+            mt-5
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-3
+          "
+        >
+          {/* Find your Creator match */}
+          <Link
+            href="/find-creators"
+            className="
+              inline-flex
+              h-[40px]
+              items-center
+              justify-center
+              rounded-[6px]
+              bg-[#57058B]
+              px-5
+              text-[12px]
+              font-medium
+              leading-[18px]
+              text-white
+              transition-all
+              duration-200
+              hover:opacity-90
+              hover:shadow-[0_8px_20px_rgba(87,5,139,0.2)]
+              sm:h-[42px]
+              sm:px-6
+              sm:text-[13px]
+            "
+            style={{
+              fontFamily: 'var(--font-lato)',
+            }}
           >
-            Sign Up Now
-          </button>
-        </Link>
+            Find your Creator match
+          </Link>
+
+          {/* I'm a Creator */}
+          <Link
+            href="/signin"
+            className="
+              inline-flex
+              h-[40px]
+              items-center
+              justify-center
+              rounded-[6px]
+              border
+              border-[#E5E5E5]
+              bg-white
+              px-5
+              text-[12px]
+              font-medium
+              leading-[18px]
+              text-[#262626]
+              transition-all
+              duration-200
+              hover:bg-[#f8f8f8]
+              sm:h-[42px]
+              sm:px-6
+              sm:text-[13px]
+            "
+            style={{
+              fontFamily: 'var(--font-lato)',
+            }}
+          >
+            I'm a Creator
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
