@@ -260,7 +260,7 @@ export default function ForCreatorsContent() {
             <p>Get found, price with confidence and get paid properly. All in one place.</p>
 
             <Link
-              href="/creators/join"
+              href="/signup"
               className="hero-button"
             >
               <span>Join SCN</span>
@@ -563,7 +563,7 @@ export default function ForCreatorsContent() {
                 </Link>
 
                 <Link
-                  href="/creators/join"
+                  href="/signin"
                   className="white-button"
                 >
                   I&apos;m a Creator
@@ -616,11 +616,6 @@ export default function ForCreatorsContent() {
           background: #faf9fc;
         }
 
-        /*
-          The background is completely independent from
-          the creator positioning and hero text.
-        */
-
         .hero-background {
           position: absolute;
 
@@ -635,11 +630,6 @@ export default function ForCreatorsContent() {
 
           z-index: 1;
         }
-
-        /*
-          HERO COPY IS CENTERED AGAINST THE ACTUAL HERO,
-          NOT A 1440px DESIGN CANVAS.
-        */
 
         .hero-copy {
           position: absolute;
@@ -822,15 +812,8 @@ export default function ForCreatorsContent() {
 
         /* =====================================================
            CREATOR ARC
+           DESKTOP - UNCHANGED
         ===================================================== */
-
-        /*
-          This remains a 1440px design canvas.
-
-          It is now completely independent of hero-copy,
-          so changing its size/position cannot move the
-          headline away from the center.
-        */
 
         .creator-arc {
           position: absolute;
@@ -2045,29 +2028,45 @@ export default function ForCreatorsContent() {
           }
         }
 
-        @media (max-width: 640px) {
-          .scn-hero {
-            height: 620px;
-          }
+        /* =====================================================
+           MOBILE
+           ONLY MOBILE IS CHANGED BELOW
+        ===================================================== */
 
+        @media (max-width: 640px) {
           /*
-            IMPORTANT:
-            The hero background stays full width.
-            Only the creator arc is scaled.
+            HERO
+
+            The mobile hero is intentionally taller than the
+            original version. This gives the navigation, headline,
+            description, button and creator arc their own space.
           */
+
+          .scn-hero {
+            height: 760px;
+          }
 
           .hero-background {
             width: 100%;
-            height: 620px;
+            height: 760px;
           }
 
+          /*
+            MOBILE HERO COPY
+
+            More top spacing so the headline does not sit against
+            the header/navigation.
+          */
+
           .hero-copy {
-            top: 105px;
+            top: 120px;
 
             width: calc(100% - 40px);
             max-width: 600px;
 
             gap: 16px;
+
+            z-index: 40;
           }
 
           .hero-copy h1 {
@@ -2095,19 +2094,223 @@ export default function ForCreatorsContent() {
           }
 
           /*
-            Scale ONLY the creator artwork.
+            =====================================================
+            MOBILE CREATOR ARC
+            =====================================================
+
+            IMPORTANT:
+
+            We are NOT scaling the 1440px desktop canvas anymore.
+
+            Instead, mobile gets its own 7-image composition.
+
+            Desktop:
+            10 images
+
+            Mobile:
+            7 images
           */
 
           .creator-arc {
-            width: 1440px;
-            height: 795px;
+            position: absolute;
 
-            left: 50%;
+            top: 545px;
+            left: 0;
 
-            transform: translateX(-50%) scale(0.43);
+            width: 100%;
+            height: 190px;
 
-            transform-origin: top center;
+            transform: none;
+
+            pointer-events: none;
+
+            z-index: 20;
           }
+
+          /*
+            Hide creators 8, 9 and 10 on mobile.
+
+            This leaves exactly the 7 creators used in the
+            mobile Figma design.
+          */
+
+          .creator-8,
+          .creator-9,
+          .creator-10 {
+            display: none;
+          }
+
+          /*
+            Mobile creator images are intentionally smaller.
+          */
+
+          .creator {
+            pointer-events: auto;
+          }
+
+          /*
+            Creator 1
+            Left side / upper part of arc
+          */
+
+          .creator-1 {
+            left: 2%;
+            top: 4px;
+
+            width: 58px;
+            height: 76px;
+
+            border-radius: 29px 29px 9px 9px;
+          }
+
+          .creator-1 .creator-image {
+            inset: -10% -14% !important;
+
+            width: 128% !important;
+            height: 120% !important;
+          }
+
+          /*
+            Creator 2
+            Moves slightly downward toward the middle.
+          */
+
+          .creator-2 {
+            left: 15%;
+            top: 42px;
+
+            width: 48px;
+            height: 76px;
+
+            border-radius: 999px;
+          }
+
+          .creator-2 .creator-image {
+            inset: -9% -38% !important;
+
+            width: 176% !important;
+            height: 118% !important;
+          }
+
+          /*
+            Creator 3
+          */
+
+          .creator-3 {
+            left: 29%;
+            top: 70px;
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 999px;
+          }
+
+          .creator-3 .creator-image {
+            inset: -13% !important;
+
+            width: 126% !important;
+            height: 126% !important;
+          }
+
+          /*
+            Creator 4
+            Lowest central point of the arc.
+          */
+
+          .creator-4 {
+            left: 43%;
+            top: 88px;
+
+            width: 52px;
+            height: 62px;
+
+            border-radius: 15px;
+          }
+
+          .creator-4 .creator-image {
+            inset: -13% -14% !important;
+
+            width: 128% !important;
+            height: 126% !important;
+          }
+
+          /*
+            Creator 5
+          */
+
+          .creator-5 {
+            left: 56%;
+            top: 78px;
+
+            width: 60px;
+            height: 60px;
+
+            border-radius: 999px;
+          }
+
+          .creator-5 .creator-image {
+            inset: -16% !important;
+
+            width: 132% !important;
+            height: 132% !important;
+          }
+
+          /*
+            Creator 6
+          */
+
+          .creator-6 {
+            left: 70%;
+            top: 48px;
+
+            width: 45px;
+            height: 68px;
+
+            border-radius: 25px 25px 8px 8px;
+          }
+
+          .creator-6 .creator-image {
+            inset: -10% -18% !important;
+
+            width: 136% !important;
+            height: 120% !important;
+          }
+
+          /*
+            Creator 7
+            Right side / upper part of arc.
+          */
+
+          .creator-7 {
+            left: 83%;
+            top: 10px;
+
+            width: 58px;
+            height: 68px;
+
+            border-radius: 16px;
+          }
+
+          .creator-7 .creator-image {
+            inset: -12% -14% !important;
+
+            width: 128% !important;
+            height: 124% !important;
+          }
+
+          /*
+            Hide the floating desktop chips on mobile.
+            They are not part of the mobile composition.
+          */
+
+          .hero-chip {
+            display: none;
+          }
+
+          /* =====================================================
+             MOBILE CONTENT BELOW HERO
+          ===================================================== */
 
           .tools-intro {
             padding: 56px 20px;
