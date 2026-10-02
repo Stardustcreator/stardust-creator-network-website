@@ -180,26 +180,7 @@ export default function Hero() {
               ease: 'easeOut',
             }}
           >
-            Creators your customers already trust.
-            <br />
-            <span>
-              <motion.span
-                className="inline-block"
-                animate={{
-                  y: [0, -3, 0],
-                  color: ['#262626', '#57058B', '#262626'],
-                }}
-                transition={{
-                  duration: 2.2,
-                  repeat: Infinity,
-                  repeatDelay: 2.5,
-                  ease: 'easeInOut',
-                }}
-              >
-                Campaigns
-              </motion.span>{' '}
-              that actually move them.
-            </span>
+            The right creators. Your campaign. Managed end to end.
           </motion.h1>
 
           {/* =================================================
@@ -231,8 +212,9 @@ export default function Hero() {
               ease: 'easeOut',
             }}
           >
-            Skip the search, get memorable content from vetted creators and report that proves what
-            it achieved. Whatever your goal, we handle everything in between.
+            Access thousands of vetted and trusted creators across niches, tiers and locations. SCN
+            manages the entire process, from creator matching to campaign execution and performance
+            reporting.
           </motion.p>
 
           {/* =================================================
@@ -309,7 +291,7 @@ export default function Hero() {
             {/* BECOME A CREATOR */}
 
             <Link
-              href="https://www.stardustcreatornetwork.com/creator-os"
+              href="/for-creators"
               className="
                 inline-flex
                 h-[48px]
@@ -413,26 +395,7 @@ export default function Hero() {
             duration: 0.8,
           }}
         >
-          Creators your customers already trust.
-          <br />
-          <span>
-            <motion.span
-              className="inline-block"
-              animate={{
-                y: [0, -3, 0],
-                color: ['#262626', '#57058B', '#262626'],
-              }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                repeatDelay: 2.5,
-                ease: 'easeInOut',
-              }}
-            >
-              Campaigns
-            </motion.span>{' '}
-            that actually move them.
-          </span>
+          The right creators. Your campaign. Managed end to end.
         </motion.h1>
 
         {/* =================================================
@@ -461,8 +424,9 @@ export default function Hero() {
             delay: 0.25,
           }}
         >
-          Skip the search, get memorable content from vetted creators and report that proves what it
-          achieved. Whatever your goal, we handle everything in between.
+          Access thousands of vetted and trusted creators across niches, tiers and locations. SCN
+          manages the entire process, from creator matching to campaign execution and performance
+          reporting.
         </motion.p>
 
         {/* =================================================
@@ -537,7 +501,7 @@ export default function Hero() {
           {/* SECONDARY */}
 
           <Link
-            href="https://www.stardustcreatornetwork.com/creator-os"
+            href="/for-creators"
             className="
               inline-flex
               h-[48px]
@@ -599,14 +563,14 @@ export default function Hero() {
                 <motion.div
                   key={`${image}-mobile-left-${index}`}
                   className="
-                      relative
-                      h-[210px]
-                      w-full
-                      shrink-0
-                      overflow-hidden
-                      rounded-[20px]
-                      bg-transparent
-                    "
+                    relative
+                    h-[210px]
+                    w-full
+                    shrink-0
+                    overflow-hidden
+                    rounded-[20px]
+                    bg-transparent
+                  "
                   whileHover={{
                     scale: 1.015,
                   }}
@@ -650,14 +614,14 @@ export default function Hero() {
                 <motion.div
                   key={`${image}-mobile-right-${index}`}
                   className="
-                      relative
-                      h-[210px]
-                      w-full
-                      shrink-0
-                      overflow-hidden
-                      rounded-[20px]
-                      bg-transparent
-                    "
+                    relative
+                    h-[210px]
+                    w-full
+                    shrink-0
+                    overflow-hidden
+                    rounded-[20px]
+                    bg-transparent
+                  "
                   whileHover={{
                     scale: 1.015,
                   }}

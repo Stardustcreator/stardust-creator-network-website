@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function TestimonialsSection() {
-  const youtubeVideo = 'https://www.youtube.com/embed/TKtV4O0e3w0';
+  const youtubeVideo = 'https://www.youtube.com/embed/6T0WrpKlSTM';
 
   return (
     <section
