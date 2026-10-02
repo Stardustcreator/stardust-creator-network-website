@@ -902,7 +902,7 @@ export default function WhoWeAreContent({
             </Link>
 
             <Link
-              href="/signin"
+              href="/for-creators"
               className="
                 inline-flex
                 h-[48px]
