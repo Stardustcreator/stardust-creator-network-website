@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
-import { Lato, Bricolage_Grotesque, Instrument_Sans } from 'next/font/google';
 import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
-// Commented out unused imports
-// import { StructuredDataInjector } from '@/components/shared/StructuredDataInjector';
-// import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schemaGenerators';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
@@ -18,37 +14,6 @@ const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredA
 
 import './globals-new.css';
 
-const lato = Lato({
-  variable: '--font-lato',
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial'],
-  adjustFontFallback: true,
-});
-
-const bricolageGrotesque = Bricolage_Grotesque({
-  variable: '--font-bricolage-grotesque',
-  subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
-  display: 'swap',
-  preload: true,
-});
-
-/* =========================================
-   INSTRUMENT SANS
-   Used for the new Figma heading styles
-========================================= */
-const instrumentSans = Instrument_Sans({
-  variable: '--font-instrument-sans',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  preload: true,
-});
-
-// Google Analytics Measurement ID
 const GA_MEASUREMENT_ID = 'G-8CMEVERXXG';
 
 export const metadata: Metadata = {
@@ -116,11 +81,7 @@ export const metadata: Metadata = {
     },
   },
 
-  verification: {
-    // Add your verification IDs here when ready
-    // google: "your-google-verification-id",
-    // yandex: "your-yandex-verification-id",
-  },
+  verification: {},
 };
 
 export default function RootLayout({
@@ -131,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning={true}
+      suppressHydrationWarning
     >
       <head>
         {/* Google Site Verification */}
@@ -140,10 +101,9 @@ export default function RootLayout({
           content="sIXklRTJlN89f-fY2f1_Yd5lpiyuixk00AHGF7KKOII"
         />
 
-        {/* Structured Data - Deferred, non-blocking */}
+        {/* Structured Data */}
         <script
           type="application/ld+json"
-          defer
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               generateStructuredData.organization(),
@@ -152,19 +112,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* Preconnect to external domains for performance */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-
-        {/* DNS prefetch for non-critical resources */}
+        {/* External resource hints */}
         <link
           rel="dns-prefetch"
           href="https://cdn.sanity.io"
@@ -185,7 +133,7 @@ export default function RootLayout({
           href="https://www.google-analytics.com"
         />
 
-        {/* Preload critical hero image (LCP element) */}
+        {/* Critical hero image */}
         <link
           rel="preload"
           href="/hero.webp"
@@ -193,42 +141,33 @@ export default function RootLayout({
           type="image/webp"
           fetchPriority="high"
         />
+
+        {/* Microsoft Clarity */}
         {process.env.NEXT_PUBLIC_APP_ENV === 'production' && (
           <Script
             id="microsoft-clarity"
             strategy="afterInteractive"
           >
             {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "xb45y9afql");
-          `}
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){
+                  (c[a].q=c[a].q||[]).push(arguments)
+                };
+                t=l.createElement(r);
+                t.async=1;
+                t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];
+                y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "xb45y9afql");
+            `}
           </Script>
         )}
       </head>
 
-      {/* 
-        KEEPING ALL THREE FONTS AVAILABLE:
-        - Lato
-        - Bricolage Grotesque
-        - Instrument Sans
-      */}
-      <body
-        className={`
-          ${lato.variable}
-          ${bricolageGrotesque.variable}
-          ${instrumentSans.variable}
-          antialiased
-          font-lato
-        `}
-      >
-        {/* Deferred analytics: GTM & Meta Pixel load after interaction/idle */}
-        {/* eslint-disable-next-line @next/next/no-server-import-in-page */}
+      <body className="antialiased font-lato">
         <DeferredAnalytics />
 
-        {/* Tapfiliate - Affiliate tracking */}
+        {/* Tapfiliate */}
         <Script
           src="https://script.tapfiliate.com/tapfiliate.js"
           strategy="afterInteractive"
@@ -238,22 +177,29 @@ export default function RootLayout({
           id="tapfiliate-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){ (t[a].q=t[a].q||[]).push(arguments)}})(window,'tapfiliate');`,
+            __html: `
+              (function(t,a,p){
+                t.TapfiliateObject=a;
+                t[a]=t[a]||function(){
+                  (t[a].q=t[a].q||[]).push(arguments)
+                }
+              })(window,'tapfiliate');
+            `,
           }}
         />
 
-        {/* Google Analytics - Loads after page is interactive */}
+        {/* Google Analytics */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
 
         {/* Outbound Link Tracking */}
         <OutboundLinkTracker />
 
-        {/* Essential: Country Provider for location-based content */}
+        {/* Country Provider */}
         <CountryProvider>{children}</CountryProvider>
 
         <Toaster />
 
-        {/* Vercel Analytics - Lazy loaded, non-essential */}
+        {/* Vercel Analytics */}
         <VercelAnalytics />
       </body>
     </html>

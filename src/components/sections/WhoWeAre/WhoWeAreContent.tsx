@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 interface WhoWeAreContentProps {
   heroTitle?: string;
@@ -14,434 +14,922 @@ interface WhoWeAreContentProps {
   finalCtaDescription?: string;
 }
 
-const DEFAULT_HERO_TITLE = 'We Built the Infrastructure Creators Deserved but Never Had';
-const DEFAULT_HERO_SUBTITLE =
-  'Stardust Creator Network is the operating system for African creators - the tools, the community, and the education you need to turn your content into a real, sustainable business.';
+const heroImages = [
+  '/who we are/header 1.webp',
+  '/who we are/header 2.webp',
+  '/who we are/header 3.webp',
+];
 
-// Original hardcoded copy, joined with a blank line between paragraphs so the
-// CMS's plain-text block (if it ever differs) can be split back into the
-// same paragraph-by-paragraph layout below.
-const DEFAULT_ABOUT_CONTENT = [
-  'There is no shortage of creators in Nigeria. But creating consistently and actually building a sustainable income from your content are two very different things, and most creators are stuck somewhere in between.',
-  'The gap is not always the content. Most of the time, it is the structure around it - not knowing what to charge, not having a system for invoicing, not understanding usage rights, not having a way to connect with brands that are ready to pay, and not having a community of serious people around you who understand the journey. That is what keeps talented creators underpaid, overwhelmed, and building for everyone else but themselves.',
-  'SCN was built to close that specific gap; to give you the tools, the knowledge, and the community to turn what you already create into a business that actually pays you.',
-].join('\n\n');
+const benefitItems = [
+  {
+    icon: '/icons/icon-1.png',
+    title: 'Own the moments that matter',
+    description:
+      'With the right creators and a clear strategy, your brand joins cultural conversations early and becomes the name people link to them.',
+    className: 'bg-[#FBF3FF]',
+  },
+  {
+    icon: '/icons/icon-2.png',
+    title: 'More impact from every naira',
+    description:
+      'Your budget goes to the creators and moments that move your audience, not to guesswork.',
+    className: 'bg-[#FFFEE7]',
+  },
+  {
+    icon: '/icons/icon-3.png',
+    title: 'Recognised in every scroll',
+    description:
+      'Every creator tells your story the way you would, so your brand stays consistent and credible wherever it shows up.',
+    className: 'bg-[#FFF7EC]',
+  },
+  {
+    icon: '/icons/icon-4.png',
+    title: 'Marketing that earns its seat at the table',
+    description:
+      'Show leadership what creator marketing did for the brand, and make the case for your next big idea with confidence.',
+    className: 'bg-[#F5F5F5]',
+  },
+];
 
-const DEFAULT_PROBLEM_CONTENT = [
-  'Many Nigerian creators are creating consistently without building consistently.',
-  'They are pricing by guesswork because nobody gave them a formula.',
-  'They are closing brand deals over DMs with no contract, no clear deliverables, and no usage rights conversation.',
-  'They are delivering content and handing over rights they did not even know had a price.',
-  'They are learning alone, making mistakes that a structured community could have helped them avoid.',
-  'And they are showing up every single day without a system that compounds their effort into real, predictable income.',
-  'SCN is built to solve exactly that: the pricing, the structure, the brand access, the community, and the business infrastructure that turns a creator into a creative business owner.',
-].join('\n\n');
+const logos = [
+  '/brand logos/logo 1.webp',
+  '/brand logos/logo 3.webp',
+  '/brand logos/logo 4.webp',
+  '/brand logos/logo 5.webp',
+  '/brand logos/logo 6.webp',
+];
 
-const DEFAULT_BUILDING_CONTENT = [
-  'We are building an operating system for the African creator economy, starting in Nigeria.',
-  'A rate card calculator that helps you arrive at a defensible rate for every campaign based on your deliverables, usage rights, niche, and platform.',
-  'A professional invoicing tool so you get paid properly and on time.',
-  'A storefront where brands can find you, see your work, and book your UGC services without the unnecessary back and forth.',
-  'An audience builder that turns every profile visit into an email subscriber you own regardless of what any algorithm decides.',
-  'A brand desk that connects vetted creators to campaigns from brands that are actively looking and ready to pay.',
-  'And a community where serious creators come to learn from each other, access live clinics and resources, and build with people who are moving in the same direction.',
-  'This is not a bundle of separate tools. It is one connected platform where every part of your creator business lives together, grows together, and works for you.',
-].join('\n\n');
+const creators = [
+  '/creators/creator 1.webp',
+  '/creators/creator 2.webp',
+  '/creators/creator 3.webp',
+  '/creators/creator 4.webp',
+  '/creators/creator 5.webp',
+  '/creators/creator 6.webp',
+];
 
-const DEFAULT_FINAL_CTA_TITLE = 'Start Building the Creator Business That Actually Sustains You';
-const DEFAULT_FINAL_CTA_DESCRIPTION =
-  "Whether you are just starting out or already creating consistently without seeing the financial results you deserve, SCN gives you the tools, the community, and the knowledge to bridge that gap. You have put in the work. Now let's build the business around it.";
+/* =========================================================
+   ANIMATION VARIANTS
+   Explicitly typed to prevent Framer Motion TypeScript errors.
+========================================================= */
 
-// Splits a plain-text CMS block back into paragraphs on blank lines, mirroring
-// how the original hardcoded copy was authored as separate paragraph strings.
-function toParagraphs(content: string): string[] {
-  return content
-    .split(/\n\s*\n/)
-    .map(paragraph => paragraph.trim())
-    .filter(Boolean);
-}
+const fadeUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 export default function WhoWeAreContent({
-  heroTitle = DEFAULT_HERO_TITLE,
-  heroSubtitle = DEFAULT_HERO_SUBTITLE,
-  aboutContent = DEFAULT_ABOUT_CONTENT,
-  problemContent = DEFAULT_PROBLEM_CONTENT,
-  buildingContent = DEFAULT_BUILDING_CONTENT,
-  finalCtaTitle = DEFAULT_FINAL_CTA_TITLE,
-  finalCtaDescription = DEFAULT_FINAL_CTA_DESCRIPTION,
+  heroTitle = 'We help brands grow through the creators people trust most.',
+  heroSubtitle = `SCN is Africa's creator marketplace. We connect brands with vetted creators and manage every campaign from brief to results, so creator marketing becomes a growth channel you can count on.`,
 }: WhoWeAreContentProps) {
-  const paragraphs = toParagraphs(aboutContent);
-  const problemParagraphs = toParagraphs(problemContent);
-  const buildingParagraphs = toParagraphs(buildingContent);
-
-  // Animation Variants
-  const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8 },
-    },
-  };
-
-  const subtitleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, delay: 0.2 },
-    },
-  };
-
-  const buttonVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.6, delay: 0.4 },
-    },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (index: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: index * 0.1,
-      },
-    }),
-  };
-
   return (
-    <>
-      {/* Hero Section */}
-      <section className="relative w-full h-screen min-h-[500px] sm:min-h-[600px] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/who we are/Hero.webp"
-          alt="Who We Are Hero"
-          fill
-          priority
-          className="object-cover object-center"
-          quality={90}
-        />
+    <div className="w-full overflow-hidden bg-white">
+      {/* =========================================================
+          HERO
+      ========================================================== */}
 
-        <div
-          className="absolute inset-0"
-          style={{ backgroundColor: 'rgba(87, 5, 139, 0.15)' }}
-        />
-
-        <motion.div
-          className="relative z-10 px-4 py-12 sm:py-16 md:px-6 lg:px-8 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="max-w-3xl mx-auto">
-            <motion.h1
-              className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight"
-              variants={titleVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {heroTitle}
-            </motion.h1>
-
-            <motion.p
-              className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 md:mb-10 leading-relaxed font-lato"
-              variants={subtitleVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {heroSubtitle}
-            </motion.p>
+      <section className="relative min-h-[795px] w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07]">
+        <div className="relative z-20 mx-auto flex min-h-[795px] w-full max-w-[1440px] items-center px-6 pb-20 pt-32 sm:px-10 lg:px-[57px]">
+          <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+            {/* =================================================
+                HERO COPY
+            ================================================= */}
 
             <motion.div
-              variants={buttonVariants}
               initial="hidden"
               animate="visible"
+              variants={staggerContainer}
+              className="relative z-30 max-w-[685px]"
             >
-              <Link href="/signin">
-                <button
-                  className="inline-flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-                  style={{ backgroundColor: '#57058B', color: 'white' }}
+              <motion.h1
+                variants={fadeUp}
+                className="
+                  font-bricolage-grotesque
+                  text-[40px]
+                  font-semibold
+                  leading-[1.08]
+                  tracking-[-2px]
+                  text-white
+                  sm:text-[48px]
+                  lg:text-[56px]
+                  lg:leading-[70px]
+                  lg:tracking-[-3px]
+                "
+              >
+                {heroTitle}
+              </motion.h1>
+
+              <motion.p
+                variants={fadeUp}
+                className="
+                  mt-5
+                  max-w-[685px]
+                  font-lato
+                  text-[16px]
+                  leading-[25px]
+                  tracking-[-0.2px]
+                  text-[#F2F2F2]
+                  sm:text-[18px]
+                  sm:leading-[28px]
+                "
+              >
+                {heroSubtitle}
+              </motion.p>
+
+              <motion.div
+                variants={fadeUp}
+                className="mt-7"
+              >
+                <Link
+                  href="/signin"
+                  className="
+                    inline-flex
+                    h-[48px]
+                    items-center
+                    justify-center
+                    gap-[6px]
+                    rounded-[8px]
+                    bg-[#57058B]
+                    px-[24px]
+                    py-[12px]
+                    font-lato
+                    text-[16px]
+                    font-medium
+                    leading-[24px]
+                    tracking-[-0.2px]
+                    text-white
+                    shadow-[0_4px_4px_rgba(0,0,0,0.1),0_2px_2px_rgba(0,0,0,0.04)]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-0.5
+                    hover:opacity-95
+                  "
                 >
-                  Join the Network
+                  <span>Start a Campaign</span>
+
                   <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 20 20"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="hidden sm:inline"
+                    aria-hidden="true"
                   >
                     <path
-                      d="M4 10H16M16 10L11 5M16 10L11 15"
+                      d="M5 12H19M19 12L13 6M19 12L13 18"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="1.8"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* About Us Section */}
-      <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center">
-            <motion.div
-              className="order-2 md:order-1"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div
-                className="relative w-full overflow-hidden rounded-lg shadow-lg"
-                style={{ aspectRatio: '635/542' }}
-              >
-                <Image
-                  src="/who we are/about us.webp"
-                  alt="About Us"
-                  fill
-                  className="object-cover"
-                  quality={90}
-                  priority
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="order-1 md:order-2"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.h2
-                className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                About Us
-              </motion.h2>
-
-              <div className="space-y-4 sm:space-y-6 text-gray-700">
-                {paragraphs.map((paragraph, index) => (
-                  <motion.p
-                    key={index}
-                    className="text-sm sm:text-base md:text-lg leading-relaxed font-lato"
-                    custom={index}
-                    variants={textVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    {paragraph}
-                  </motion.p>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Problem We Are Solving Section */}
-      <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
-            <motion.div
-              className="order-1"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.h2
-                className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                The problem we are solving
-              </motion.h2>
-
-              <div className="space-y-3 sm:space-y-4 text-gray-700">
-                {problemParagraphs.map((paragraph, index) => (
-                  <motion.p
-                    key={index}
-                    className="text-sm sm:text-base md:text-lg leading-relaxed font-lato"
-                    custom={index}
-                    variants={textVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    {paragraph}
-                  </motion.p>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="order-2"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div
-                className="relative w-full overflow-hidden rounded-lg shadow-lg"
-                style={{ aspectRatio: '4/3' }}
-              >
-                <Image
-                  src="/who we are/problem.webp"
-                  alt="The Problem We Are Solving"
-                  fill
-                  className="object-cover"
-                  quality={90}
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* What We Are Building Section */}
-      <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-stretch">
-            <motion.div
-              className="order-1 h-full"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="relative w-full h-full overflow-hidden rounded-lg shadow-lg min-h-[300px] sm:min-h-[400px]">
-                <Image
-                  src="/who we are/full-length-portrait-lovely-afro-american-woman.webp"
-                  alt="What we are building"
-                  fill
-                  className="object-cover"
-                  quality={90}
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="order-2"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              <motion.h2
-                className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                What we are building
-              </motion.h2>
-
-              <div className="space-y-3 sm:space-y-4 text-gray-700">
-                {buildingParagraphs.map((paragraph, index) => (
-                  <motion.p
-                    key={index}
-                    className="text-sm sm:text-base md:text-lg leading-relaxed font-lato"
-                    custom={index}
-                    variants={textVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    {paragraph}
-                  </motion.p>
-                ))}
-              </div>
-
-              <motion.div
-                className="mt-6 sm:mt-8"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-              >
-                <Link href="/signin">
-                  <button
-                    className="px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-                    style={{ backgroundColor: '#57058B', color: 'white' }}
-                  >
-                    Get Started
-                  </button>
                 </Link>
               </motion.div>
             </motion.div>
+
+            {/* =================================================
+                HERO IMAGE COLLAGE
+            ================================================= */}
+
+            <div className="relative mx-auto h-[430px] w-full max-w-[610px] lg:h-[520px]">
+              {/* LEFT IMAGE */}
+
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: 80,
+                  y: 20,
+                  rotate: -5,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  rotate: -9,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.7,
+                  },
+                  x: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  y: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  rotate: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                }}
+                whileHover={{
+                  y: -6,
+                  rotate: -7,
+                  transition: {
+                    duration: 0.3,
+                  },
+                }}
+                className="
+                  absolute
+                  left-[8%]
+                  top-[34%]
+                  z-20
+                  h-[243px]
+                  w-[218px]
+                  overflow-hidden
+                  rounded-[19px]
+                "
+              >
+                <Image
+                  src={heroImages[0]}
+                  alt="Creator"
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="218px"
+                />
+              </motion.div>
+
+              {/* CENTER / TOP IMAGE */}
+
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y: 80,
+                  rotate: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  rotate: 2,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.7,
+                  },
+                  y: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  rotate: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                }}
+                whileHover={{
+                  y: -7,
+                  rotate: 3,
+                  transition: {
+                    duration: 0.3,
+                  },
+                }}
+                className="
+                  absolute
+                  left-[38%]
+                  top-[6%]
+                  z-30
+                  h-[243px]
+                  w-[218px]
+                  overflow-hidden
+                  rounded-[19px]
+                "
+              >
+                <Image
+                  src={heroImages[1]}
+                  alt="Creator"
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="218px"
+                />
+              </motion.div>
+
+              {/* RIGHT IMAGE */}
+
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: -80,
+                  y: 20,
+                  rotate: 5,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  rotate: 9,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.7,
+                  },
+                  x: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  y: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                  rotate: {
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                }}
+                whileHover={{
+                  y: -6,
+                  rotate: 7,
+                  transition: {
+                    duration: 0.3,
+                  },
+                }}
+                className="
+                  absolute
+                  right-[3%]
+                  top-[36%]
+                  z-10
+                  h-[243px]
+                  w-[218px]
+                  overflow-hidden
+                  rounded-[19px]
+                "
+              >
+                <Image
+                  src={heroImages[2]}
+                  alt="Creator"
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="218px"
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <motion.section
-        className="w-full py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 text-center"
-        style={{ backgroundColor: '#FAFAF9' }}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="max-w-3xl mx-auto">
-          <motion.h2
-            className="font-bricolage-grotesque text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-black leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+      {/* =========================================================
+          TURN CREATOR TRUST INTO BRAND GROWTH
+      ========================================================== */}
+
+      <section className="w-full bg-[#F5F5F4] px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[80px]">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.25,
+          }}
+          variants={staggerContainer}
+          className="mx-auto w-full max-w-[1440px]"
+        >
+          <motion.div
+            variants={fadeUp}
+            className="max-w-[760px]"
           >
-            {finalCtaTitle}
+            <h2 className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#262626] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
+              Turn creator trust into brand growth
+            </h2>
+
+            <p className="mt-3 max-w-[727px] font-lato text-[17px] leading-[27px] tracking-[-0.2px] text-[#737373] sm:text-[20px] sm:leading-[28px] sm:tracking-[-0.4px]">
+              Your audience already trusts creators. We connect your budget to the right ones and
+              take the mess out of the middle, so every campaign reaches people who listen and moves
+              your brand forward.
+            </p>
+
+            <div className="mt-6">
+              <Link
+                href="/signin"
+                className="
+                  inline-flex
+                  h-[48px]
+                  items-center
+                  justify-center
+                  gap-[6px]
+                  rounded-[8px]
+                  bg-[#57058B]
+                  px-[24px]
+                  py-[12px]
+                  font-lato
+                  text-[16px]
+                  font-medium
+                  leading-[24px]
+                  tracking-[-0.2px]
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:opacity-90
+                "
+              >
+                Start a Campaign
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12H19M19 12L13 6M19 12L13 18"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* =========================================================
+          WHAT WE DO
+      ========================================================== */}
+
+      <section
+        className="
+          relative
+          w-full
+          overflow-hidden
+          rounded-tl-[32px]
+          rounded-tr-[32px]
+          bg-gradient-to-b
+          from-[rgba(131,52,248,0.20)]
+          via-[rgba(172,61,244,0.70)]
+          to-[rgba(25,1,39,0.12)]
+          px-6
+          py-16
+          sm:px-10
+          lg:px-[80px]
+          lg:py-[64px]
+        "
+      >
+        <div className="mx-auto w-full max-w-[1440px]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            variants={staggerContainer}
+            className="text-center"
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="
+                mx-auto
+                max-w-[650px]
+                font-bricolage-grotesque
+                text-[32px]
+                font-semibold
+                leading-[40px]
+                tracking-[-1.2px]
+                text-[#262626]
+                sm:text-[40px]
+                sm:leading-[48px]
+                sm:tracking-[-1.5px]
+              "
+            >
+              From brief to live campaign, handled start to finish.
+            </motion.h2>
+
+            <motion.p
+              variants={fadeUp}
+              className="
+                mx-auto
+                mt-2
+                max-w-[578px]
+                font-lato
+                text-[16px]
+                font-medium
+                leading-[24px]
+                tracking-[-0.2px]
+                text-[#262626]
+              "
+            >
+              Get your brand in front of the right people, content that lands on the first try, and
+              results you can stand behind, without a single follow-up thread.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.15,
+            }}
+            variants={staggerContainer}
+            className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3"
+          >
+            {[
+              {
+                number: '01',
+                title: 'The right creators, matched to your brief',
+                description:
+                  'Send the brief. Get a vetted shortlist back, picked for fit, not followers.',
+              },
+              {
+                number: '02',
+                title: 'We keep you in control, every step',
+                description:
+                  'You pick from the shortlist, sign off on content and request changes anytime. We handle the logistics behind it.',
+              },
+              {
+                number: '03',
+                title: 'Results, delivered with proof',
+                description:
+                  'Real numbers on what ran, what it reached, what it did. Ready for leadership.',
+              },
+            ].map(step => (
+              <motion.div
+                key={step.number}
+                variants={fadeUp}
+                className="
+                  min-h-[235px]
+                  rounded-[20px]
+                  border
+                  border-[#EDE3FF]
+                  bg-white
+                  px-[29px]
+                  py-[33px]
+                  text-left
+                "
+              >
+                <div className="font-bricolage-grotesque text-[40px] font-semibold leading-[48px] tracking-[-1.5px] text-[#EDE3FF]">
+                  {step.number}
+                </div>
+
+                <h3 className="mt-5 font-bricolage-grotesque text-[20px] font-semibold leading-[24px] tracking-[-0.7px] text-[#1A002E]">
+                  {step.title}
+                </h3>
+
+                <p className="mt-2 font-lato text-[16px] leading-[24px] tracking-[-0.2px] text-[#6B6B6B]">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          BECOME THE BRAND PEOPLE REMEMBER
+      ========================================================== */}
+
+      <section className="w-full border-y border-[#E0E0E0] bg-[#FAFAF9]">
+        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 lg:grid-cols-[683px_1fr]">
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: -30,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
+            className="px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[64px]"
+          >
+            <h2 className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#170F24] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
+              Become the brand people remember
+            </h2>
+
+            <p className="mt-4 max-w-[500px] font-lato text-[17px] leading-[1.55] text-[#6B6B6B]">
+              Show up in the right cultural moments, through voices your audience trusts, with the
+              numbers to back every decision you make.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 border-t border-[#E0E0E0] sm:grid-cols-2 lg:border-l lg:border-t-0">
+            {benefitItems.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{
+                  opacity: 0,
+                  y: 25,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.08,
+                }}
+                className={`
+                  ${item.className}
+                  flex
+                  min-h-[275px]
+                  flex-col
+                  justify-end
+                  gap-4
+                  border-[#E0E0E0]
+                  px-8
+                  pb-8
+                  pt-14
+                  ${index % 2 === 1 ? 'sm:border-l' : ''}
+                  ${index >= 2 ? 'border-t' : ''}
+                `}
+              >
+                <div className="h-7 w-7">
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    width={28}
+                    height={28}
+                    className="h-7 w-7 object-contain"
+                  />
+                </div>
+
+                <div>
+                  <h3 className="font-bricolage-grotesque text-[20px] font-medium leading-[24px] tracking-[-0.7px] text-[#170F24]">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 font-lato text-[15px] leading-[1.5] text-[#6B6B6B]">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          TRUSTED BY
+      ========================================================== */}
+
+      <section className="w-full bg-white py-[56px]">
+        <p className="text-center font-bricolage-grotesque text-[18px] font-medium leading-[20px] tracking-[-0.4px] text-[#737373]">
+          Trusted by
+        </p>
+
+        <div className="relative mt-6 w-full overflow-hidden">
+          <motion.div
+            animate={{
+              x: ['0%', '-50%'],
+            }}
+            transition={{
+              duration: 45,
+              ease: 'linear',
+              repeat: Infinity,
+            }}
+            className="flex w-max items-center gap-[72px] px-12"
+          >
+            {[...logos, ...logos].map((logo, index) => (
+              <div
+                key={`${logo}-${index}`}
+                className="flex h-[60px] w-[110px] shrink-0 items-center justify-center"
+              >
+                <Image
+                  src={logo}
+                  alt="Brand logo"
+                  width={110}
+                  height={60}
+                  className="max-h-[56px] w-auto max-w-[110px] object-contain"
+                />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          CREATOR NETWORK
+      ========================================================== */}
+
+      <section className="w-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px] bg-white py-[80px]">
+        <div className="mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-[80px]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            variants={staggerContainer}
+            className="text-center"
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="
+                mx-auto
+                max-w-[520px]
+                font-bricolage-grotesque
+                text-[32px]
+                font-semibold
+                leading-[40px]
+                tracking-[-1.2px]
+                text-[#262626]
+                sm:text-[40px]
+                sm:leading-[48px]
+                sm:tracking-[-1.5px]
+              "
+            >
+              Creators who've done their homework.
+            </motion.h2>
+
+            <motion.p
+              variants={fadeUp}
+              className="
+                mx-auto
+                mt-2
+                max-w-[514px]
+                font-lato
+                text-[16px]
+                font-medium
+                leading-[24px]
+                tracking-[-0.2px]
+                text-[#737373]
+              "
+            >
+              Through our live business clinics, creators in our network learn briefs, deadlines and
+              professionalism. You feel it in your campaign.
+            </motion.p>
+          </motion.div>
+
+          <div className="relative mt-12 w-full overflow-hidden">
+            <motion.div
+              animate={{
+                x: [0, -1296, -1296],
+              }}
+              transition={{
+                duration: 45,
+                times: [0, 0.4526, 1],
+                ease: 'linear',
+                repeat: Infinity,
+              }}
+              className="flex w-max gap-4"
+            >
+              {[...creators, ...creators].map((creator, index) => (
+                <div
+                  key={`${creator}-${index}`}
+                  className="
+                    relative
+                    h-[300px]
+                    w-[200px]
+                    shrink-0
+                    overflow-hidden
+                    rounded-[16px]
+                  "
+                >
+                  <Image
+                    src={creator}
+                    alt="Creator in the SCN network"
+                    fill
+                    className="object-cover"
+                    sizes="200px"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          FINAL CTA
+      ========================================================== */}
+
+      <section className="w-full rounded-[16px] bg-[#FBF3FF] px-6 py-16 sm:px-10 lg:h-[388px] lg:py-[64px]">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.25,
+          }}
+          variants={staggerContainer}
+          className="mx-auto flex h-full max-w-[880px] flex-col items-center justify-center text-center"
+        >
+          <motion.h2
+            variants={fadeUp}
+            className="
+              max-w-[678px]
+              font-bricolage-grotesque
+              text-[32px]
+              font-semibold
+              leading-[40px]
+              tracking-[-1.2px]
+              text-[#262626]
+              sm:text-[40px]
+              sm:leading-[48px]
+              sm:tracking-[-1.5px]
+            "
+          >
+            Picture your next launch: on time, on brand and worth every naira.
           </motion.h2>
 
           <motion.p
-            className="text-sm sm:text-base md:text-lg leading-relaxed font-lato text-gray-700 mb-6 sm:mb-8 md:mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp}
+            className="
+              mt-2
+              font-lato
+              text-[16px]
+              font-medium
+              leading-[28px]
+              tracking-[-0.2px]
+              text-[#737373]
+            "
           >
-            {finalCtaDescription}
+            It starts with telling us what you want to achieve.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            variants={fadeUp}
+            className="mt-4 flex flex-col items-center gap-4 sm:flex-row"
           >
-            <Link href="/signin">
-              <button
-                className="px-5 sm:px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm sm:text-base"
-                style={{ backgroundColor: '#57058B', color: 'white' }}
-              >
-                Sign Up Now
-              </button>
+            <Link
+              href="/signin"
+              className="
+                inline-flex
+                h-[48px]
+                items-center
+                justify-center
+                rounded-[8px]
+                bg-[#57058B]
+                px-[24px]
+                py-[12px]
+                font-lato
+                text-[16px]
+                font-medium
+                leading-[24px]
+                tracking-[-0.2px]
+                text-white
+                transition-all
+                duration-300
+                hover:opacity-90
+              "
+            >
+              Find your Creator match
+            </Link>
+
+            <Link
+              href="/for-creators"
+              className="
+                inline-flex
+                h-[48px]
+                items-center
+                justify-center
+                rounded-[8px]
+                border
+                border-[#E2E8F0]
+                bg-white
+                px-[24px]
+                py-[12px]
+                font-lato
+                text-[14px]
+                font-medium
+                leading-[20px]
+                text-[#262626]
+                shadow-[0_1px_1px_rgba(0,0,0,0.05)]
+                transition-all
+                duration-300
+                hover:bg-gray-50
+              "
+            >
+              I'm a Creator
             </Link>
           </motion.div>
-        </div>
-      </motion.section>
-    </>
+        </motion.div>
+      </section>
+    </div>
   );
 }

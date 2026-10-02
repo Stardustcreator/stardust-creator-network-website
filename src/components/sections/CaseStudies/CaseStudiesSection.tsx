@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 const caseStudies = [
   {
     title: 'HONEYWELL RELAUNCH',
-    logo: '/brand logos/honeywell.webp',
+    logo: '/brand logos/logo 1.webp',
     logoAlt: 'Honeywell',
     logoBackground: '#F5F5F5',
     description:
@@ -40,7 +40,7 @@ const caseStudies = [
   },
   {
     title: 'AXA MANSARD AUTOFLEX',
-    logo: '/brand logos/image.webp',
+    logo: '/brand logos/logo 3.webp',
     logoAlt: 'AXA Mansard',
     logoBackground: '#F5F5F5',
     description:
@@ -456,7 +456,6 @@ export default function CaseStudySection() {
                   >
                     <p className="font-lato mb-1 text-sm text-gray-500">{metric.label}</p>
 
-                    {/* Animated Number */}
                     <AnimatedMetric value={metric.value} />
                   </motion.div>
                 ))}
