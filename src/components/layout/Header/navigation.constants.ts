@@ -11,7 +11,7 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     label: 'For Creators',
-    href: '/creators/join',
+    href: '/for-creators',
   },
   {
     label: 'Case Studies',
