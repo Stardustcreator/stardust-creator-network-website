@@ -2,53 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Heading, Text } from '@/components/typography';
-import CheckIcon from '@/components/icons/CheckIcon';
-import LockIcon from '@/components/icons/LockIcon';
-import Image from 'next/image';
-import { ArrowRightIcon, ChevronRightIcon } from '@sanity/icons';
 import { buildForwardedUtmQuery } from '@/lib/attribution';
+
+/* =========================================================
+   PLAN & PRICING  (Figma: SCN (For Uche) › Sign up › Plan & Pricing)
+
+   Design tokens used below (from the Figma file):
+   - Text/Primary #262626, Text/Secondary #737373
+   - Surface/Action & Stroke/Action #57058B, Surface/Action 2 #A51CFF
+   - Stroke/Primary #E7E5E4, Stroke/Tertiary #F3F4F6, divider #EEF0F1
+   - Corner radius: lg 12px, md 8px, theme/radius 8px
+   - H2/Bold 40/56 -1.6px · H3/Medium 32/44 -1.2px · H6 16/24 -0.2px
+     H7 14/20 0px · H8/Bold 12/16 +0.2px — all Lato
+========================================================= */
 
 type BillingPeriod = 'annual' | 'monthly';
 type PlanId = 'starter' | 'builder';
 
-type FeatureValue = string | { locked: true; text: string };
+// The design shows annual pricing only (the billing toggle is hidden in
+// Figma), so billing is fixed to annual. The value is still forwarded in
+// the CTA link exactly as before.
+const BILLING: BillingPeriod = 'annual';
 
-interface PlanConfig {
-  id: PlanId;
-  name: string;
-  recommended: boolean;
-  price: Record<BillingPeriod, string>;
-  suffix: string;
-  caption: Record<BillingPeriod, string>;
-  cta: { label: string; withArrow: boolean };
-  commission: string;
-}
-
-const PLANS: PlanConfig[] = [
-  {
-    id: 'starter',
-    name: 'Starter',
-    recommended: false,
-    price: { annual: '₦0', monthly: '₦0' },
-    suffix: '/month',
-    caption: { annual: 'Free Forever.', monthly: 'Free Forever.' },
-    cta: { label: 'Get Started for free', withArrow: false },
-    commission: '5%',
-  },
-  {
-    id: 'builder',
-    name: 'Builder',
-    recommended: true,
-    price: { annual: '₦6,250', monthly: '₦7,500' },
-    suffix: '/month',
-    caption: { annual: 'Billed as ₦75,000/year', monthly: 'Billed monthly' },
-    cta: { label: 'Start Building', withArrow: true },
-    commission: '3%',
-  },
-];
-
-const FEATURES: { label: string; starter?: FeatureValue; builder: FeatureValue }[] = [
+const FEATURES: { label: string; starter?: string; builder: string }[] = [
   { label: 'Pricing Calculator', starter: 'Yes, One-time use', builder: 'Yes' },
   { label: 'Rate card Builder', starter: 'Yes', builder: 'Yes' },
   { label: 'Invoicing', starter: 'Yes', builder: 'Yes' },
@@ -64,6 +40,157 @@ const FEATURES: { label: string; starter?: FeatureValue; builder: FeatureValue }
   { label: 'Templates', builder: 'Yes' },
 ];
 
+/* =========================================================
+   ICONS (drawn to the Figma vectors)
+========================================================= */
+
+function CheckmarkIcon({ id }: { id: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <defs>
+        <linearGradient
+          id={id}
+          x1="5"
+          y1="5.83"
+          x2="15"
+          y2="14.16"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#A51CFF" />
+          <stop
+            offset="1"
+            stopColor="#57058B"
+          />
+        </linearGradient>
+      </defs>
+      <path
+        d="M5 10.4L8.33 14.16L15 5.83"
+        stroke={`url(#${id})`}
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <path
+        d="M3.75 10H16.25M11.25 5L16.25 10L11.25 15"
+        stroke="#F8FAFC"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ClockCircleIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <circle
+        cx="10"
+        cy="10"
+        r="8.33"
+        stroke="#57058B"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M10 5V10L13.33 11.67"
+        stroke="#57058B"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* =========================================================
+   SHARED PIECES
+========================================================= */
+
+function CardHeader({ name, price, caption }: { name: string; price: string; caption: string }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <p className="text-[16px] font-bold leading-[24px] tracking-[-0.2px] text-[#262626]">
+        {name}
+      </p>
+      <p className="text-[32px] font-medium leading-[44px] tracking-[-1.2px] text-[#262626]">
+        {price}
+      </p>
+      <p className="text-[14px] font-normal leading-[20px] text-[#737373]">{caption}</p>
+    </div>
+  );
+}
+
+function FeaturesList({ plan }: { plan: PlanId }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-[12px] font-bold uppercase leading-[16px] tracking-[0.2px] text-[#737373]">
+        What you get
+      </p>
+
+      <ul className="flex flex-col gap-4">
+        {FEATURES.map(feature => {
+          const value = plan === 'starter' ? feature.starter : feature.builder;
+          if (value === undefined) return null;
+
+          return (
+            <li
+              key={feature.label}
+              className="flex items-center justify-between gap-[2px] rounded-[8px] border-b border-[#F3F4F6] bg-white pb-2 pt-1"
+            >
+              <span className="flex min-h-[23.33px] min-w-0 items-center gap-2">
+                <CheckmarkIcon id={`scn-check-${plan}-${feature.label.replace(/\W+/g, '-')}`} />
+                <span className="text-[14px] font-normal leading-[20px] text-[#737373]">
+                  {feature.label}
+                </span>
+              </span>
+
+              <span className="text-right text-[14px] font-bold leading-[20px] text-[#737373]">
+                {value}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function Divider() {
+  return <div className="h-px w-full bg-[#EEF0F1]" />;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
 interface PlanPricingSectionProps {
   ctaBase?: string;
 }
@@ -71,198 +198,99 @@ interface PlanPricingSectionProps {
 export default function PlanPricingSection({
   ctaBase = '/onboarding/create-account',
 }: PlanPricingSectionProps) {
-  const [billing, setBilling] = useState<BillingPeriod>('annual');
   const [utmQuery, setUtmQuery] = useState('');
 
   useEffect(() => {
     setUtmQuery(buildForwardedUtmQuery(window.location.search));
   }, []);
 
+  const starterHref = `${ctaBase}?plan=starter&billing=${BILLING}${utmQuery ? `&${utmQuery}` : ''}`;
+
   return (
-    <section className="py-10 px-6 pb-24">
-      <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <div className="text-center mb-8">
-          <Heading
-            level={3}
-            variant="default"
-            className="text-text-primary! mb-3"
-          >
-            Choose your Plan
-          </Heading>
-          <Text
-            variant="body"
-            className="text-text-secondary!"
-          >
-            Start free with Community, upgrade when you&apos;re ready to grow
-          </Text>
+    <section
+      className="px-5 pb-20 pt-10 sm:px-8 sm:pb-32 sm:pt-20"
+      style={{ fontFamily: "var(--font-lato-pp, 'Lato'), 'Lato', sans-serif" }}
+    >
+      <div className="mx-auto flex w-full max-w-[1312px] flex-col gap-10 sm:gap-14">
+        {/* =================================================
+            HEADING
+        ================================================== */}
+
+        <div className="flex flex-col text-center">
+          <h1 className="text-[28px] font-bold leading-[36px] tracking-[-1px] text-[#262626] sm:text-[40px] sm:leading-[56px] sm:tracking-[-1.6px]">
+            Start free and get paid what you&apos;re worth
+          </h1>
+
+          <p className="mt-2 text-[16px] font-normal leading-[24px] tracking-[-0.2px] text-[#737373] sm:mt-0">
+            Price your work, send professional rate cards and invoices, and land brand deals.
+          </p>
         </div>
 
-        {/* Billing toggle */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center bg-surface-secondary rounded-md py-2 px-3 gap-0.5 w-full max-w-xs">
-            <button
-              type="button"
-              onClick={() => setBilling('annual')}
-              className={`flex-1 px-4 py-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-200 cursor-pointer text-center ${
-                billing === 'annual'
-                  ? 'bg-white text-text-primary shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-700'
-              }`}
-            >
-              Annual <span className="text-brand-purple font-medium">(Save 17%)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setBilling('monthly')}
-              className={`flex-1 px-4 py-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-200 cursor-pointer text-center ${
-                billing === 'monthly'
-                  ? 'bg-white text-text-primary shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-700'
-              }`}
-            >
-              Monthly
-            </button>
-          </div>
-        </div>
+        {/* =================================================
+            PLAN CARDS
+        ================================================== */}
 
-        {/* Plan cards */}
-        <div className="grid gap-8 md:grid-cols-2 md:items-start max-w-3xl mx-auto md:max-w-none">
-          {PLANS.map(plan => {
-            const isBuilder = plan.id === 'builder';
-            return (
-              <div
-                key={plan.id}
-                className={`relative rounded-2xl bg-white p-8 py-6 ${
-                  plan.recommended
-                    ? 'border-2 border-brand-purple shadow-xl'
-                    : 'border border-stroke-secondary'
-                }`}
-              >
-                {plan.recommended && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white px-4 py-1.5 rounded-full text-sm font-semibold text-surface-action-2 inner-shadow">
-                    Recommended
-                  </span>
-                )}
+        <div className="mx-auto grid w-full max-w-[1120px] grid-cols-1 gap-10 md:grid-cols-2 md:gap-14">
+          {/* STARTER */}
 
-                {/* Plan name */}
-                <Text
-                  variant="small"
-                  className="text-text-primary! font-bold! text-sm md:text-base"
-                >
-                  {plan.name}
-                </Text>
+          <div className="flex flex-col rounded-[12px] bg-white px-5 pb-8 pt-6 shadow-[0_0_0_2.5px_#57058B,0_4px_6px_-2px_rgba(0,0,0,0.03),0_12px_16px_-4px_rgba(0,0,0,0.08)] sm:px-8">
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
+                  <CardHeader
+                    name="Starter"
+                    price="₦0/month"
+                    caption="Free Forever."
+                  />
 
-                {/* Price */}
-                <div className="mt-2 mb-1 text-3xl md:text-4xl">
-                  <span className="font-medium text-text-primary">{plan.price[billing]}</span>
-                  <span className="text-text-primary font-medium">{plan.suffix}</span>
+                  <Link
+                    href={starterHref}
+                    className="flex h-[46px] w-full items-center justify-center gap-1 rounded-[8px] bg-[#57058B] px-5 py-3 text-[14px] font-medium leading-[20px] text-[#F8FAFC] transition-opacity duration-200 hover:opacity-90"
+                  >
+                    Get Started for Free
+                    <ArrowRightIcon />
+                  </Link>
                 </div>
 
-                {/* Caption */}
-                {billing == 'annual' && (
-                  <Text
-                    variant="small"
-                    className="text-text-secondary! text-sm"
-                  >
-                    {plan.caption[billing]}
-                  </Text>
-                )}
-
-                {/* CTA */}
-                <Link
-                  href={`${ctaBase}?plan=${plan.id}&billing=${billing}${utmQuery ? `&${utmQuery}` : ''}`}
-                  className={`mt-6 mb-6 flex w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-all duration-200 md:text-base ${
-                    isBuilder
-                      ? 'bg-brand-purple text-white hover:bg-brand-purple-dark'
-                      : 'border border-icon-action text-icon-action hover:bg-brand-purple/5'
-                  }`}
-                >
-                  {plan.cta.label}
-                  {plan.cta.withArrow && <ArrowRightIcon className="scale-120 mt-1" />}
-                </Link>
-
-                <div className="h-px w-full bg-surface-secondary" />
-
-                {/* What you get */}
-                <Text
-                  variant="small"
-                  className="text-text-secondary! my-4 block text-xs font-semibold uppercase tracking-wider"
-                >
-                  What you get
-                </Text>
-
-                {/* SCN Commission highlight */}
-                <div
-                  className={`hidden pflex items-center justify-between rounded-lg px-4 py-3 mb-3 ${
-                    isBuilder ? 'bg-surface-action-primary' : 'bg-surface-primary'
-                  }`}
-                >
-                  <div>
-                    <Text
-                      variant="small"
-                      className="text-text-secondary! text-sm md:text-base"
-                    >
-                      SCN Commission
-                    </Text>
-                    <Text
-                      variant="small"
-                      className="text-text-secondary! text-xs"
-                    >
-                      Per transaction
-                    </Text>
-                  </div>
-                  <Text
-                    variant="small"
-                    className="text-text-secondary! font-semibold! text-base"
-                  >
-                    {plan.commission}
-                  </Text>
-                </div>
-
-                {/* Feature list */}
-                <ul>
-                  {FEATURES.map(feature => {
-                    const value = plan.id === 'starter' ? feature.starter : feature.builder;
-                    if (value === undefined) return null;
-                    const locked = typeof value !== 'string' && value.locked;
-                    const text = typeof value === 'string' ? value : value.text;
-                    return (
-                      <li
-                        key={feature.label}
-                        className="flex items-center justify-between gap-3 border-b border-stroke-tertiary py-4 last:border-b-0"
-                      >
-                        <span className="flex items-center gap-2 min-w-0">
-                          <CheckIcon className="w-5 h-5 text-surface-action shrink-0" />
-                          {/* <Image
-                              src="/icons/CheckGradient.svg"
-                              alt=""
-                              width={20}
-                              height={20}
-                            /> */}
-                          <Text
-                            variant="small"
-                            className="text-text-secondary! text-sm md:text-base"
-                          >
-                            {feature.label}
-                          </Text>
-                        </span>
-                        <span className="flex items-center gap-1.5 text-right shrink-0 max-w-2/4 xl:max-w-3/4">
-                          {locked && <LockIcon className="w-4 h-4 text-text-secondary shrink-0" />}
-                          <Text
-                            variant="small"
-                            className="text-text-secondary! font-bold! text-sm md:text-base"
-                          >
-                            {text}
-                          </Text>
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <Divider />
               </div>
-            );
-          })}
+
+              <FeaturesList plan="starter" />
+            </div>
+          </div>
+
+          {/* BUILDER */}
+
+          <div className="relative flex flex-col rounded-[12px] bg-white px-5 pb-8 pt-6 shadow-[0_0_0_1.5px_#E7E5E4,0_1px_2px_0_rgba(0,0,0,0.06),0_1px_3px_0_rgba(0,0,0,0)] sm:px-8">
+            {/* Coming soon pill, centred on the card's top edge */}
+            <span className="absolute left-1/2 top-0 inline-flex h-9 -translate-x-1/2 -translate-y-1/2 items-center whitespace-nowrap rounded-full bg-white px-4 py-[6px] text-[16px] font-semibold leading-[24px] tracking-[-0.2px] text-[#A51CFF] shadow-[inset_0_1px_8px_0_rgba(0,0,0,0.25)]">
+              Coming soon
+            </span>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
+                  <CardHeader
+                    name="Builder"
+                    price="₦6,250/month"
+                    caption="Billed as ₦75,000/year"
+                  />
+
+                  <div className="flex w-full items-start gap-[10px] rounded-[8px] border border-[#57058B] bg-white px-[14px] py-3">
+                    <ClockCircleIcon />
+                    <p className="text-[14px] font-normal leading-[20px] text-[#262626]">
+                      Builder isn&apos;t available yet. Start on Starter now and upgrade when
+                      Builder launches.
+                    </p>
+                  </div>
+                </div>
+
+                <Divider />
+              </div>
+
+              <FeaturesList plan="builder" />
+            </div>
+          </div>
         </div>
       </div>
     </section>

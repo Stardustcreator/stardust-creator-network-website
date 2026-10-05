@@ -32,26 +32,20 @@ function VerticalImageColumn({
 
   return (
     <div className="relative h-[760px] w-full overflow-hidden">
+      {/*
+        pb-[10px] matches the gap, so the track is exactly two identical
+        sets tall and -50% lands precisely on the duplicate set. Keyframes
+        use plain percentages: Framer Motion cannot interpolate between '0%'
+        and a calc() value, which froze the upward column.
+      */}
       <motion.div
-        className="flex w-full flex-col gap-[10px]"
-        initial={
-          direction === 'down'
-            ? {
-                y: 'calc(-50% - 5px)',
-              }
-            : {
-                y: 0,
-              }
-        }
-        animate={
-          direction === 'down'
-            ? {
-                y: ['calc(-50% - 5px)', '0%'],
-              }
-            : {
-                y: ['0%', 'calc(-50% - 5px)'],
-              }
-        }
+        className="flex w-full flex-col gap-[10px] pb-[10px]"
+        initial={{
+          y: direction === 'down' ? '-50%' : '0%',
+        }}
+        animate={{
+          y: direction === 'down' ? ['-50%', '0%'] : ['0%', '-50%'],
+        }}
         transition={{
           duration: 35,
           ease: 'linear',
@@ -548,9 +542,12 @@ export default function Hero() {
 
           <div className="relative h-[650px] overflow-hidden">
             <motion.div
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-3 pb-3"
+              initial={{
+                y: '0%',
+              }}
               animate={{
-                y: ['0%', 'calc(-50% - 6px)'],
+                y: ['0%', '-50%'],
               }}
               transition={{
                 duration: 30,
@@ -596,12 +593,12 @@ export default function Hero() {
 
           <div className="relative h-[650px] overflow-hidden">
             <motion.div
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-3 pb-3"
               initial={{
-                y: 'calc(-50% - 6px)',
+                y: '-50%',
               }}
               animate={{
-                y: ['calc(-50% - 6px)', '0%'],
+                y: ['-50%', '0%'],
               }}
               transition={{
                 duration: 30,
