@@ -24,6 +24,8 @@ const benefitItems = [
   {
     icon: '/icons/icon-1.png',
     title: 'Own the moments that matter',
+    mobileTitle: 'Weeks back',
+    mobileDescription: 'No sourcing, chasing or follow-up threads.',
     description:
       'With the right creators and a clear strategy, your brand joins cultural conversations early and becomes the name people link to them.',
     className: 'bg-[#FBF3FF]',
@@ -31,6 +33,8 @@ const benefitItems = [
   {
     icon: '/icons/icon-2.png',
     title: 'More impact from every naira',
+    mobileTitle: 'Every naira accounted for',
+    mobileDescription: 'One budget, tracked start to finish.',
     description:
       'Your budget goes to the creators and moments that move your audience, not to guesswork.',
     className: 'bg-[#FFFEE7]',
@@ -38,6 +42,8 @@ const benefitItems = [
   {
     icon: '/icons/icon-3.png',
     title: 'Recognised in every scroll',
+    mobileTitle: "Content you're proud to repost",
+    mobileDescription: 'Checked against your brief before it goes live.',
     description:
       'Every creator tells your story the way you would, so your brand stays consistent and credible wherever it shows up.',
     className: 'bg-[#FFF7EC]',
@@ -45,6 +51,8 @@ const benefitItems = [
   {
     icon: '/icons/icon-4.png',
     title: 'Marketing that earns its seat at the table',
+    mobileTitle: 'Reports that make you look good',
+    mobileDescription: 'Real numbers for your next leadership meeting.',
     description:
       'Show leadership what creator marketing did for the brand, and make the case for your next big idea with confidence.',
     className: 'bg-[#F5F5F5]',
@@ -54,7 +62,6 @@ const benefitItems = [
 const logos = [
   '/brand logos/logo 1.webp',
   '/brand logos/logo 3.webp',
-  '/brand logos/logo 4.webp',
   '/brand logos/logo 5.webp',
   '/brand logos/logo 6.webp',
 ];
@@ -99,6 +106,21 @@ const staggerContainer: Variants = {
   },
 };
 
+/* =========================================================
+   RESPONSIVE COPY
+   The Figma mobile and desktop frames use different copy. Phones
+   (below 640px) get the mobile text, larger screens the desktop text.
+========================================================= */
+
+function Copy({ mobile, desktop }: { mobile: string; desktop: string }) {
+  return (
+    <>
+      <span className="sm:hidden">{mobile}</span>
+      <span className="hidden sm:inline">{desktop}</span>
+    </>
+  );
+}
+
 export default function WhoWeAreContent({
   heroTitle = 'We help brands grow through the creators people trust most.',
   heroSubtitle = `SCN is Africa's creator marketplace. We connect brands with vetted creators and manage every campaign from brief to results, so creator marketing becomes a growth channel you can count on.`,
@@ -109,9 +131,9 @@ export default function WhoWeAreContent({
           HERO
       ========================================================== */}
 
-      <section className="relative min-h-[795px] w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07]">
-        <div className="relative z-20 mx-auto flex min-h-[795px] w-full max-w-[1440px] items-center px-6 pb-20 pt-32 sm:px-10 lg:px-[57px]">
-          <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+      <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07] lg:min-h-[795px]">
+        <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center px-5 pb-10 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:min-h-[795px] lg:px-[57px]">
+          <div className="grid w-full grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
             {/* =================================================
                 HERO COPY
             ================================================= */}
@@ -126,12 +148,14 @@ export default function WhoWeAreContent({
                 variants={fadeUp}
                 className="
                   font-bricolage-grotesque
-                  text-[40px]
+                  text-[30px]
                   font-semibold
-                  leading-[1.08]
-                  tracking-[-2px]
+                  leading-[1.15]
+                  tracking-[-1px]
                   text-white
                   sm:text-[48px]
+                  sm:leading-[1.08]
+                  sm:tracking-[-2px]
                   lg:text-[56px]
                   lg:leading-[70px]
                   lg:tracking-[-3px]
@@ -143,11 +167,12 @@ export default function WhoWeAreContent({
               <motion.p
                 variants={fadeUp}
                 className="
-                  mt-5
+                  mt-4
                   max-w-[685px]
                   font-lato
-                  text-[16px]
-                  leading-[25px]
+                  text-[15px]
+                  leading-[23px]
+                  sm:mt-5
                   tracking-[-0.2px]
                   text-[#F2F2F2]
                   sm:text-[18px]
@@ -159,7 +184,7 @@ export default function WhoWeAreContent({
 
               <motion.div
                 variants={fadeUp}
-                className="mt-7"
+                className="mt-6 sm:mt-7"
               >
                 <Link
                   href="/signin"
@@ -212,7 +237,7 @@ export default function WhoWeAreContent({
                 HERO IMAGE COLLAGE
             ================================================= */}
 
-            <div className="relative mx-auto h-[430px] w-full max-w-[610px] lg:h-[520px]">
+            <div className="relative mx-auto h-[260px] w-full max-w-[360px] sm:h-[430px] sm:max-w-[610px] lg:h-[520px]">
               {/* LEFT IMAGE */}
 
               <motion.div
@@ -257,10 +282,13 @@ export default function WhoWeAreContent({
                   left-[8%]
                   top-[34%]
                   z-20
-                  h-[243px]
-                  w-[218px]
+                  h-[150px]
+                  w-[134px]
                   overflow-hidden
-                  rounded-[19px]
+                  rounded-[14px]
+                  sm:h-[243px]
+                  sm:w-[218px]
+                  sm:rounded-[19px]
                 "
               >
                 <Image
@@ -269,7 +297,7 @@ export default function WhoWeAreContent({
                   fill
                   priority
                   className="object-cover"
-                  sizes="218px"
+                  sizes="(max-width: 639px) 134px, 218px"
                 />
               </motion.div>
 
@@ -311,10 +339,13 @@ export default function WhoWeAreContent({
                   left-[38%]
                   top-[6%]
                   z-30
-                  h-[243px]
-                  w-[218px]
+                  h-[150px]
+                  w-[134px]
                   overflow-hidden
-                  rounded-[19px]
+                  rounded-[14px]
+                  sm:h-[243px]
+                  sm:w-[218px]
+                  sm:rounded-[19px]
                 "
               >
                 <Image
@@ -323,7 +354,7 @@ export default function WhoWeAreContent({
                   fill
                   priority
                   className="object-cover"
-                  sizes="218px"
+                  sizes="(max-width: 639px) 134px, 218px"
                 />
               </motion.div>
 
@@ -371,10 +402,13 @@ export default function WhoWeAreContent({
                   right-[3%]
                   top-[36%]
                   z-10
-                  h-[243px]
-                  w-[218px]
+                  h-[150px]
+                  w-[134px]
                   overflow-hidden
-                  rounded-[19px]
+                  rounded-[14px]
+                  sm:h-[243px]
+                  sm:w-[218px]
+                  sm:rounded-[19px]
                 "
               >
                 <Image
@@ -383,7 +417,7 @@ export default function WhoWeAreContent({
                   fill
                   priority
                   className="object-cover"
-                  sizes="218px"
+                  sizes="(max-width: 639px) 134px, 218px"
                 />
               </motion.div>
             </div>
@@ -395,7 +429,7 @@ export default function WhoWeAreContent({
           TURN CREATOR TRUST INTO BRAND GROWTH
       ========================================================== */}
 
-      <section className="w-full bg-[#F5F5F4] px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[80px]">
+      <section className="w-full bg-[#F5F5F4] px-5 py-12 sm:px-10 sm:py-16 lg:px-[80px] lg:py-[80px]">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -410,14 +444,18 @@ export default function WhoWeAreContent({
             variants={fadeUp}
             className="max-w-[760px]"
           >
-            <h2 className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#262626] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
-              Turn creator trust into brand growth
+            <h2 className="font-bricolage-grotesque text-[26px] font-semibold leading-[32px] tracking-[-1px] text-[#262626] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
+              <Copy
+                mobile="Creators had the trust. Brands had the budget. The middle was a mess."
+                desktop="Turn creator trust into brand growth"
+              />
             </h2>
 
-            <p className="mt-3 max-w-[727px] font-lato text-[17px] leading-[27px] tracking-[-0.2px] text-[#737373] sm:text-[20px] sm:leading-[28px] sm:tracking-[-0.4px]">
-              Your audience already trusts creators. We connect your budget to the right ones and
-              take the mess out of the middle, so every campaign reaches people who listen and moves
-              your brand forward.
+            <p className="mt-3 max-w-[727px] font-lato text-[15px] leading-[23px] tracking-[-0.2px] text-[#737373] sm:text-[20px] sm:leading-[28px] sm:tracking-[-0.4px]">
+              <Copy
+                mobile="Endless scrolling, missed deadlines and reports that proved nothing. We built SCN to fix the middle."
+                desktop="Your audience already trusts creators. We connect your budget to the right ones and take the mess out of the middle, so every campaign reaches people who listen and moves your brand forward."
+              />
             </p>
 
             <div className="mt-6">
@@ -444,13 +482,17 @@ export default function WhoWeAreContent({
                   hover:opacity-90
                 "
               >
-                Start a Campaign
+                <Copy
+                  mobile="Start a campaign"
+                  desktop="Start a Campaign"
+                />
                 <svg
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
                   fill="none"
                   aria-hidden="true"
+                  className="hidden sm:block"
                 >
                   <path
                     d="M5 12H19M19 12L13 6M19 12L13 18"
@@ -475,15 +517,18 @@ export default function WhoWeAreContent({
           relative
           w-full
           overflow-hidden
-          rounded-tl-[32px]
-          rounded-tr-[32px]
+          rounded-tl-[24px]
+          rounded-tr-[24px]
           bg-gradient-to-b
           from-[rgba(131,52,248,0.20)]
           via-[rgba(172,61,244,0.70)]
           to-[rgba(25,1,39,0.12)]
-          px-6
-          py-16
+          px-5
+          py-12
+          sm:rounded-tl-[32px]
+          sm:rounded-tr-[32px]
           sm:px-10
+          sm:py-16
           lg:px-[80px]
           lg:py-[64px]
         "
@@ -505,17 +550,20 @@ export default function WhoWeAreContent({
                 mx-auto
                 max-w-[650px]
                 font-bricolage-grotesque
-                text-[32px]
+                text-[26px]
                 font-semibold
-                leading-[40px]
-                tracking-[-1.2px]
+                leading-[32px]
+                tracking-[-1px]
                 text-[#262626]
                 sm:text-[40px]
                 sm:leading-[48px]
                 sm:tracking-[-1.5px]
               "
             >
-              From brief to live campaign, handled start to finish.
+              <Copy
+                mobile="What we do"
+                desktop="From brief to live campaign, handled start to finish."
+              />
             </motion.h2>
 
             <motion.p
@@ -525,15 +573,19 @@ export default function WhoWeAreContent({
                 mt-2
                 max-w-[578px]
                 font-lato
-                text-[16px]
+                text-[14px]
                 font-medium
-                leading-[24px]
+                leading-[22px]
                 tracking-[-0.2px]
                 text-[#262626]
+                sm:text-[16px]
+                sm:leading-[24px]
               "
             >
-              Get your brand in front of the right people, content that lands on the first try, and
-              results you can stand behind, without a single follow-up thread.
+              <Copy
+                mobile="Whether it's creator sourcing or end-to-end campaign management, we've got you covered."
+                desktop="Get your brand in front of the right people, content that lands on the first try, and results you can stand behind, without a single follow-up thread."
+              />
             </motion.p>
           </motion.div>
 
@@ -545,24 +597,33 @@ export default function WhoWeAreContent({
               amount: 0.15,
             }}
             variants={staggerContainer}
-            className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3"
+            className="mt-8 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3"
           >
             {[
               {
                 number: '01',
                 title: 'The right creators, matched to your brief',
+                mobileTitle: 'Match',
+                mobileDescription:
+                  'You send a brief. We match it to vetted creators in your niche.',
                 description:
                   'Send the brief. Get a vetted shortlist back, picked for fit, not followers.',
               },
               {
                 number: '02',
                 title: 'We keep you in control, every step',
+                mobileTitle: 'Manage',
+                mobileDescription:
+                  'We run the campaign end to end — briefing, content review, contracts and payments.',
                 description:
                   'You pick from the shortlist, sign off on content and request changes anytime. We handle the logistics behind it.',
               },
               {
                 number: '03',
                 title: 'Results, delivered with proof',
+                mobileTitle: 'Deliver',
+                mobileDescription:
+                  'You get results and a report you can take straight to leadership.',
                 description:
                   'Real numbers on what ran, what it reached, what it did. Ready for leadership.',
               },
@@ -571,26 +632,35 @@ export default function WhoWeAreContent({
                 key={step.number}
                 variants={fadeUp}
                 className="
-                  min-h-[235px]
-                  rounded-[20px]
+                  rounded-[16px]
                   border
                   border-[#EDE3FF]
                   bg-white
-                  px-[29px]
-                  py-[33px]
+                  px-5
+                  py-6
+                  sm:rounded-[20px]
+                  sm:px-[29px]
+                  sm:py-[33px]
+                  md:min-h-[235px]
                   text-left
                 "
               >
-                <div className="font-bricolage-grotesque text-[40px] font-semibold leading-[48px] tracking-[-1.5px] text-[#EDE3FF]">
+                <div className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#EDE3FF] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
                   {step.number}
                 </div>
 
-                <h3 className="mt-5 font-bricolage-grotesque text-[20px] font-semibold leading-[24px] tracking-[-0.7px] text-[#1A002E]">
-                  {step.title}
+                <h3 className="mt-3 font-bricolage-grotesque text-[18px] font-semibold leading-[24px] sm:mt-5 sm:text-[20px] tracking-[-0.7px] text-[#1A002E]">
+                  <Copy
+                    mobile={step.mobileTitle}
+                    desktop={step.title}
+                  />
                 </h3>
 
-                <p className="mt-2 font-lato text-[16px] leading-[24px] tracking-[-0.2px] text-[#6B6B6B]">
-                  {step.description}
+                <p className="mt-2 font-lato text-[15px] leading-[22px] tracking-[-0.2px] text-[#6B6B6B] sm:text-[16px] sm:leading-[24px]">
+                  <Copy
+                    mobile={step.mobileDescription}
+                    desktop={step.description}
+                  />
                 </p>
               </motion.div>
             ))}
@@ -620,15 +690,20 @@ export default function WhoWeAreContent({
             transition={{
               duration: 0.7,
             }}
-            className="px-6 py-16 sm:px-10 lg:px-[80px] lg:py-[64px]"
+            className="px-5 py-12 sm:px-10 sm:py-16 lg:px-[80px] lg:py-[64px]"
           >
-            <h2 className="font-bricolage-grotesque text-[32px] font-semibold leading-[40px] tracking-[-1.2px] text-[#170F24] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
-              Become the brand people remember
+            <h2 className="font-bricolage-grotesque text-[26px] font-semibold leading-[32px] tracking-[-1px] text-[#170F24] sm:text-[40px] sm:leading-[48px] sm:tracking-[-1.5px]">
+              <Copy
+                mobile="What brands get"
+                desktop="Become the brand people remember"
+              />
             </h2>
 
-            <p className="mt-4 max-w-[500px] font-lato text-[17px] leading-[1.55] text-[#6B6B6B]">
-              Show up in the right cultural moments, through voices your audience trusts, with the
-              numbers to back every decision you make.
+            <p className="mt-3 max-w-[500px] font-lato text-[15px] leading-[1.55] sm:mt-4 sm:text-[17px] text-[#6B6B6B]">
+              <Copy
+                mobile="Everything that used to eat your week — sourcing, chasing, checking, reporting — becomes one system you can trust from brief to results."
+                desktop="Show up in the right cultural moments, through voices your audience trusts, with the numbers to back every decision you make."
+              />
             </p>
           </motion.div>
 
@@ -655,16 +730,19 @@ export default function WhoWeAreContent({
                 className={`
                   ${item.className}
                   flex
-                  min-h-[275px]
                   flex-col
-                  justify-end
-                  gap-4
+                  gap-3
                   border-[#E0E0E0]
-                  px-8
-                  pb-8
-                  pt-14
+                  px-5
+                  py-7
+                  sm:min-h-[275px]
+                  sm:justify-end
+                  sm:gap-4
+                  sm:px-8
+                  sm:pb-8
+                  sm:pt-14
                   ${index % 2 === 1 ? 'sm:border-l' : ''}
-                  ${index >= 2 ? 'border-t' : ''}
+                  ${index >= 1 ? 'border-t' : ''} ${index === 1 ? 'sm:border-t-0' : ''}
                 `}
               >
                 <div className="h-7 w-7">
@@ -678,12 +756,18 @@ export default function WhoWeAreContent({
                 </div>
 
                 <div>
-                  <h3 className="font-bricolage-grotesque text-[20px] font-medium leading-[24px] tracking-[-0.7px] text-[#170F24]">
-                    {item.title}
+                  <h3 className="font-bricolage-grotesque text-[18px] font-medium leading-[24px] tracking-[-0.7px] text-[#170F24] sm:text-[20px]">
+                    <Copy
+                      mobile={item.mobileTitle}
+                      desktop={item.title}
+                    />
                   </h3>
 
                   <p className="mt-2 font-lato text-[15px] leading-[1.5] text-[#6B6B6B]">
-                    {item.description}
+                    <Copy
+                      mobile={item.mobileDescription}
+                      desktop={item.description}
+                    />
                   </p>
                 </div>
               </motion.div>
@@ -696,37 +780,42 @@ export default function WhoWeAreContent({
           TRUSTED BY
       ========================================================== */}
 
-      <section className="w-full bg-white py-[56px]">
+      <section className="w-full bg-white py-10 sm:py-[56px]">
         <p className="text-center font-bricolage-grotesque text-[18px] font-medium leading-[20px] tracking-[-0.4px] text-[#737373]">
           Trusted by
         </p>
 
         <div className="relative mt-6 w-full overflow-hidden">
+          {/* Eight copies of the 4 logos: -50% moves exactly four copies, so
+              the loop is seamless and always wider than the screen. Duration is
+              set so the scroll speed matches the old 5-logo row. */}
           <motion.div
             animate={{
               x: ['0%', '-50%'],
             }}
             transition={{
-              duration: 45,
+              duration: 144,
               ease: 'linear',
               repeat: Infinity,
             }}
-            className="flex w-max items-center gap-[72px] px-12"
+            className="flex w-max items-center gap-10 pr-10 sm:gap-[72px] sm:pr-[72px]"
           >
-            {[...logos, ...logos].map((logo, index) => (
-              <div
-                key={`${logo}-${index}`}
-                className="flex h-[60px] w-[110px] shrink-0 items-center justify-center"
-              >
-                <Image
-                  src={logo}
-                  alt="Brand logo"
-                  width={110}
-                  height={60}
-                  className="max-h-[56px] w-auto max-w-[110px] object-contain"
-                />
-              </div>
-            ))}
+            {Array.from({ length: 8 }, () => logos)
+              .flat()
+              .map((logo, index) => (
+                <div
+                  key={`${logo}-${index}`}
+                  className="flex h-[60px] w-[110px] shrink-0 items-center justify-center"
+                >
+                  <Image
+                    src={logo}
+                    alt="Brand logo"
+                    width={110}
+                    height={60}
+                    className="max-h-[56px] w-auto max-w-[110px] object-contain"
+                  />
+                </div>
+              ))}
           </motion.div>
         </div>
       </section>
@@ -735,8 +824,8 @@ export default function WhoWeAreContent({
           CREATOR NETWORK
       ========================================================== */}
 
-      <section className="w-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px] bg-white py-[80px]">
-        <div className="mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-[80px]">
+      <section className="w-full overflow-hidden rounded-tl-[24px] rounded-tr-[24px] bg-white py-12 sm:rounded-tl-[32px] sm:rounded-tr-[32px] sm:py-[80px]">
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-10 lg:px-[80px]">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -745,7 +834,7 @@ export default function WhoWeAreContent({
               amount: 0.2,
             }}
             variants={staggerContainer}
-            className="text-center"
+            className="text-left sm:text-center"
           >
             <motion.h2
               variants={fadeUp}
@@ -753,17 +842,20 @@ export default function WhoWeAreContent({
                 mx-auto
                 max-w-[520px]
                 font-bricolage-grotesque
-                text-[32px]
+                text-[26px]
                 font-semibold
-                leading-[40px]
-                tracking-[-1.2px]
+                leading-[32px]
+                tracking-[-1px]
                 text-[#262626]
                 sm:text-[40px]
                 sm:leading-[48px]
                 sm:tracking-[-1.5px]
               "
             >
-              Creators who've done their homework.
+              <Copy
+                mobile="Creators who've done the homework."
+                desktop="Creators who've done their homework."
+              />
             </motion.h2>
 
             <motion.p
@@ -785,10 +877,10 @@ export default function WhoWeAreContent({
             </motion.p>
           </motion.div>
 
-          <div className="relative mt-12 w-full overflow-hidden">
+          <div className="relative mt-8 w-full overflow-hidden sm:mt-12">
             <motion.div
               animate={{
-                x: [0, -1296, -1296],
+                x: ['0%', '-50%', '-50%'],
               }}
               transition={{
                 duration: 45,
@@ -796,18 +888,20 @@ export default function WhoWeAreContent({
                 ease: 'linear',
                 repeat: Infinity,
               }}
-              className="flex w-max gap-4"
+              className="flex w-max gap-4 pr-4"
             >
               {[...creators, ...creators].map((creator, index) => (
                 <div
                   key={`${creator}-${index}`}
                   className="
                     relative
-                    h-[300px]
-                    w-[200px]
+                    h-[250px]
+                    w-[170px]
                     shrink-0
                     overflow-hidden
                     rounded-[16px]
+                    sm:h-[300px]
+                    sm:w-[200px]
                   "
                 >
                   <Image
@@ -815,7 +909,7 @@ export default function WhoWeAreContent({
                     alt="Creator in the SCN network"
                     fill
                     className="object-cover"
-                    sizes="200px"
+                    sizes="(max-width: 639px) 170px, 200px"
                   />
                 </div>
               ))}
@@ -828,7 +922,7 @@ export default function WhoWeAreContent({
           FINAL CTA
       ========================================================== */}
 
-      <section className="w-full rounded-[16px] bg-[#FBF3FF] px-6 py-16 sm:px-10 lg:h-[388px] lg:py-[64px]">
+      <section className="w-full rounded-[16px] bg-[#FBF3FF] px-5 py-12 sm:px-10 sm:py-16 lg:h-[388px] lg:py-[64px]">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -844,17 +938,20 @@ export default function WhoWeAreContent({
             className="
               max-w-[678px]
               font-bricolage-grotesque
-              text-[32px]
+              text-[24px]
               font-semibold
-              leading-[40px]
-              tracking-[-1.2px]
+              leading-[30px]
+              tracking-[-1px]
               text-[#262626]
               sm:text-[40px]
               sm:leading-[48px]
               sm:tracking-[-1.5px]
             "
           >
-            Picture your next launch: on time, on brand and worth every naira.
+            <Copy
+              mobile="Your next campaign is two minutes away."
+              desktop="Picture your next launch: on time, on brand and worth every naira."
+            />
           </motion.h2>
 
           <motion.p
@@ -869,7 +966,10 @@ export default function WhoWeAreContent({
               text-[#737373]
             "
           >
-            It starts with telling us what you want to achieve.
+            <Copy
+              mobile="That's how long it takes to tell us about your campaign goals. We handle everything after."
+              desktop="It starts with telling us what you want to achieve."
+            />
           </motion.p>
 
           <motion.div
@@ -898,14 +998,18 @@ export default function WhoWeAreContent({
                 hover:opacity-90
               "
             >
-              Find your Creator match
+              <Copy
+                mobile="Start a campaign"
+                desktop="Find your Creator match"
+              />
             </Link>
 
             <Link
               href="/for-creators"
               className="
-                inline-flex
+                hidden
                 h-[48px]
+                sm:inline-flex
                 items-center
                 justify-center
                 rounded-[8px]
