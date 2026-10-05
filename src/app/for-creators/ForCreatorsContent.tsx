@@ -1,0 +1,2455 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import Header from '@/components/layout/Header/Header';
+import Footer from '@/components/layout/Footer/Footer';
+
+/* =========================================================
+   ASSETS
+========================================================= */
+
+const creators = [
+  {
+    src: '/creators/Creator 1 · Finance (arch).webp',
+    className: 'creator creator-1',
+  },
+  {
+    src: '/creators/Creator 2 · Tech (pill).webp',
+    className: 'creator creator-2',
+  },
+  {
+    src: '/creators/Creator 3 · Beauty (circle).webp',
+    className: 'creator creator-3',
+  },
+  {
+    src: '/creators/Creator 4 · Unboxing (squircle).webp',
+    className: 'creator creator-4',
+  },
+  {
+    src: '/creators/Creator make up.webp',
+    className: 'creator creator-5',
+  },
+  {
+    src: '/creators/Creator food.webp',
+    className: 'creator creator-6',
+  },
+  {
+    src: '/creators/Creator 7 · Food (squircle).webp',
+    className: 'creator creator-7',
+  },
+  {
+    src: '/creators/Creator 8 · Finance (circle).webp',
+    className: 'creator creator-8',
+  },
+  {
+    src: '/creators/Creator 9 · Tech (pill).webp',
+    className: 'creator creator-9',
+  },
+  {
+    src: '/creators/Creator 10 · Food (arch).webp',
+    className: 'creator creator-10',
+  },
+];
+
+const creatorFeatures = [
+  {
+    title: 'Rate Calculator',
+    subtitle: 'Build an Income that matches your talent.',
+    description:
+      'Know your true rate before any brand asks, negotiate with confidence and turn every deal into income that finally reflects the work you put in.',
+    image: '/creator community/Visual Card.png',
+    reverse: false,
+  },
+  {
+    title: 'Service Creation',
+    subtitle: 'Turn your skills into offers brands can buy.',
+    description:
+      'Package what you create into ready-to-book services with clear deliverables, timelines and prices, so you never have to quote from scratch again.',
+    image: '/creator community/Visual Card (1).png',
+    reverse: true,
+  },
+  {
+    title: 'Rate Card Builder',
+    subtitle: 'Be the creator brands pick first.',
+    description:
+      'A polished rate card sets you apart from creators still sending prices in DMs, so brands see a professional worth booking, and booking again.',
+    image: '/creator community/Visual Card (2).png',
+    reverse: false,
+  },
+  {
+    title: 'Brand Deals',
+    subtitle: 'Build a career on brand deals that fit.',
+    description:
+      'Get matched with campaigns in your niche, so every partnership grows your name, your portfolio and your next opportunity.',
+    image: '/creator community/Visual Card (3).png',
+    reverse: true,
+  },
+  {
+    title: 'Storefront',
+    subtitle: "Earn even when you're not pitching.",
+    description:
+      'Your UGC packages live in one storefront brands can browse and book, so your income keeps moving while you focus on creating.',
+    image: '/creator community/Visual Card (5).png',
+    reverse: false,
+  },
+  {
+    title: 'Audience Builder',
+    subtitle: 'Build a community no algorithm can erase.',
+    description:
+      'Turn profile visits into subscribers you can reach directly, so your income and influence stay yours whatever the platforms change.',
+    image: '/creator community/Visual Card (6).png',
+    reverse: true,
+  },
+];
+
+const communityImages = [
+  '/creatives/image 182 (1).webp',
+  '/creatives/image 183 (1).webp',
+  '/creatives/Photo.webp',
+  '/creatives/Photo (1).webp',
+  '/creatives/Photo (2).webp',
+  '/creatives/image 158.webp',
+];
+
+const faqs = [
+  {
+    question: 'What is Stardust Creator Network?',
+    answer:
+      "SCN is Africa's creator marketplace. Brands submit campaign briefs and get matched to vetted creators who are the right fit for their campaign. Creators get access to brand deals, a rate calculator, a UGC storefront, an audience builder, and a live creator community. We are the infrastructure that connects both sides of the African creator economy.",
+  },
+  {
+    question: 'Who can join SCN as a creator?',
+    answer:
+      'SCN is for nano, micro, and mid-tier creators in food, beauty, lifestyle, tech, and finance who want to monetize their content through brand deals. You do not need a huge following. You need the right positioning, the right tools, and access to the right campaigns. SCN gives you all three.',
+  },
+  {
+    question: 'How does the brand matching process work?',
+    answer:
+      'Brands submit a campaign brief through SCN. Our team reviews it, handpicks creators from our vetted pool who fit the niche, audience, and campaign objectives, and presents the brand with a shortlist to approve. Once approved, SCN manages the campaign from briefing through to final delivery and settlement.',
+  },
+  {
+    question: 'How do I know what to charge brands?',
+    answer:
+      'The SCN rate calculator factors in your deliverables, usage rights, exclusivity, platform scope, and niche so you always have a rate you can justify and negotiate from. It is available to every creator on the platform.',
+  },
+  {
+    question: 'Can I get brand deals with a small following?',
+    answer:
+      "Yes. Brands on SCN are actively looking for nano and micro creators. What matters most is your niche, your content quality, and how well your audience aligns with the brand's campaign goals. If your positioning is right and your profile is complete, you will be considered for campaigns that match your category.",
+  },
+  {
+    question: 'How much does SCN cost for creators?',
+    answer:
+      'SCN has a free Starter plan and a paid Builder plan. The Starter plan gives you access to the rate calculator, storefront, and community. The Builder plan unlocks advanced features. Full pricing details are available under Creator OS.',
+  },
+  {
+    question: 'Is SCN only for Nigerian creators?',
+    answer:
+      'SCN is built for African creators, starting in Nigeria. Our tools, community, and brand connections reflect the realities of the African creator economy, not Western templates adapted to fit. We are expanding across the continent as we grow.',
+  },
+];
+
+/* =========================================================
+   SMALL COMPONENTS
+========================================================= */
+
+function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: 'easeOut',
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* =========================================================
+   HERO CREATOR
+========================================================= */
+
+function CreatorPortrait({ src, className }: { src: string; className: string }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{
+        opacity: 0,
+        y: 32,
+        scale: 0.92,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }}
+      transition={{
+        duration: 0.9,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+    >
+      <Image
+        src={src}
+        alt=""
+        fill
+        sizes="120px"
+        className="creator-image"
+        priority
+      />
+    </motion.div>
+  );
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+export default function ForCreatorsContent() {
+  return (
+    <>
+      <Header />
+
+      <main className="scn-creators-page">
+        {/* =====================================================
+            HERO
+        ===================================================== */}
+
+        <section className="scn-hero">
+          {/* FULL-WIDTH HERO BACKGROUND */}
+
+          <div className="hero-background">
+            <div className="hero-blob hero-blob-purple" />
+            <div className="hero-blob hero-blob-blue" />
+            <div className="hero-blob hero-blob-yellow" />
+            <div className="hero-blob hero-blob-dark" />
+          </div>
+
+          {/* HERO CONTENT */}
+
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.65,
+              ease: 'easeOut',
+            }}
+          >
+            <h1>
+              Stop chasing brand deals.
+              <br />
+              Start getting booked.
+            </h1>
+
+            <p>Get found, price with confidence and get paid properly. All in one place.</p>
+
+            <Link
+              href="/signup"
+              className="hero-button"
+            >
+              <span>Join SCN</span>
+              <span className="hero-arrow">→</span>
+            </Link>
+          </motion.div>
+
+          {/* CREATOR ARC */}
+
+          <div className="creator-arc">
+            {creators.map(creator => (
+              <CreatorPortrait
+                key={creator.src}
+                src={creator.src}
+                className={creator.className}
+              />
+            ))}
+
+            {/* Booked chip */}
+
+            <motion.div
+              className="hero-chip hero-chip-booked"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: 1.4,
+                duration: 0.4,
+                ease: 'easeOut',
+              }}
+            >
+              <span className="chip-dot purple-dot" />
+              <span>Booked · ₦150k</span>
+            </motion.div>
+
+            {/* Subscribers chip */}
+
+            <motion.div
+              className="hero-chip hero-chip-subscribers"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: 1.55,
+                duration: 0.4,
+                ease: 'easeOut',
+              }}
+            >
+              <span className="chip-dot blue-dot" />
+              <span>+86 subscribers</span>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            TOOLS INTRO
+        ===================================================== */}
+
+        <section className="tools-intro">
+          <Reveal>
+            <h2>
+              The Infrastructure Your Creator
+              <br />
+              Business Has Been Missing
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <p>
+              Every tool on your SCN dashboard helps you earn what you&apos;re worth, get booked by
+              brands and grow a creator business that lasts.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <Link
+              href="/creators/join"
+              className="purple-button"
+            >
+              Sign Up
+              <span>→</span>
+            </Link>
+          </Reveal>
+        </section>
+
+        {/* =====================================================
+            CREATOR TOOLS
+        ===================================================== */}
+
+        <section className="tools-section">
+          <div className="tools-rows">
+            {creatorFeatures.map((feature, index) => (
+              <Reveal
+                key={feature.title}
+                delay={index * 0.04}
+                className={`tool-row ${feature.reverse ? 'tool-row-reverse' : ''}`}
+              >
+                <div className="tool-copy">
+                  <h3>{feature.title}</h3>
+
+                  <h4>{feature.subtitle}</h4>
+
+                  <p>{feature.description}</p>
+                </div>
+
+                <div className="visual-card">
+                  <Image
+                    src={feature.image}
+                    alt={feature.title}
+                    fill
+                    sizes="608px"
+                    className="visual-card-image"
+                  />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* =====================================================
+            COMMUNITY
+        ===================================================== */}
+
+        <section className="community-section">
+          <div className="community-head">
+            <Reveal>
+              <h2>
+                Join a community of
+                <br />
+                like-minded creators
+              </h2>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <p>
+                Live clinics, expert mentorship, templates, and a community of creators who are
+                building real businesses from their content. You do not have to figure this out
+                alone.
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="community-window">
+            <motion.div
+              className="community-track"
+              animate={{
+                x: [0, -1296],
+              }}
+              transition={{
+                duration: 45,
+                ease: 'linear',
+                repeat: Infinity,
+              }}
+            >
+              {[...communityImages, ...communityImages].map((image, index) => (
+                <div
+                  className="community-photo"
+                  key={`${image}-${index}`}
+                >
+                  <Image
+                    src={image}
+                    alt="SCN creator community"
+                    fill
+                    sizes="200px"
+                    className="community-photo-image"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            FREE / STARTER
+        ===================================================== */}
+
+        <section className="starter-section">
+          <Reveal>
+            <p className="starter-eyebrow">
+              Price your work, send a pro rate card, get matched with brand deals and sell your UGC
+              packages.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.05}>
+            <h2>Start getting booked. It&apos;s free.</h2>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="starter-layout">
+              <div className="starter-card">
+                <div className="starter-header">
+                  <p className="starter-name">Starter</p>
+
+                  <h3>₦0/month</h3>
+
+                  <Link
+                    href="/creators/join"
+                    className="starter-button"
+                  >
+                    Get Started for free
+                  </Link>
+                </div>
+
+                <div className="starter-divider" />
+
+                <div className="features-heading">WHAT YOU GET</div>
+
+                <div className="feature-list">
+                  {[
+                    ['Pricing Calculator', 'Yes'],
+                    ['Rate card Builder', 'Yes'],
+                    ['Invoicing', 'Yes'],
+                    ['Platform Fee', '5% of transaction value'],
+                    ['Email Captures', '100 subscribers'],
+                    ['Email Broadcasts', '2/month'],
+                    ['Community access', 'Weekly community digest/newsletter only'],
+                    ['Brand Deals', 'Yes'],
+                    ['Templates', 'Yes'],
+                  ].map(([name, value]) => (
+                    <div
+                      className="starter-feature"
+                      key={name}
+                    >
+                      <div className="check">✓</div>
+
+                      <span>{name}</span>
+
+                      <strong>{value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="builder-teaser">
+                <span>A Builder plan with higher limits is coming.</span>
+
+                <Link href="/creators/join">Get notified →</Link>
+              </div>
+
+              <div className="free-badge">Free for everyone</div>
+            </div>
+          </Reveal>
+        </section>
+
+        {/* =====================================================
+            FAQ
+        ===================================================== */}
+
+        <section className="faq-section">
+          <div className="faq-inner">
+            <Reveal className="faq-header">
+              <h2>Frequently Asked Questions</h2>
+
+              <p>Things most people want to know before they sign up.</p>
+            </Reveal>
+
+            <div className="faq-list">
+              {faqs.map((faq, index) => (
+                <Reveal
+                  key={faq.question}
+                  delay={index * 0.03}
+                >
+                  <details
+                    className="faq-item"
+                    open={index === 0}
+                  >
+                    <summary>
+                      <span>{faq.question}</span>
+
+                      <span className="faq-chevron">⌄</span>
+                    </summary>
+
+                    <p>{faq.answer}</p>
+                  </details>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            FINAL CTA
+        ===================================================== */}
+
+        <section className="final-cta">
+          <Reveal>
+            <div className="final-cta-inner">
+              <h2>Your next campaign is two minutes away.</h2>
+
+              <p>
+                That&apos;s how long it takes to tell us about your campaign goals. We handle
+                everything after.
+              </p>
+
+              <div className="final-buttons">
+                <Link
+                  href="/brands"
+                  className="purple-button"
+                >
+                  Find your Creator match
+                </Link>
+
+                <Link
+                  href="/signin"
+                  className="white-button"
+                >
+                  I&apos;m a Creator
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      </main>
+
+      <Footer />
+
+      <style
+        jsx
+        global
+      >{`
+        * {
+          box-sizing: border-box;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          margin: 0;
+          background: #ffffff;
+        }
+
+        .scn-creators-page {
+          width: 100%;
+          max-width: none;
+          overflow: hidden;
+          color: #262626;
+          background: #ffffff;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .scn-hero {
+          position: relative;
+
+          width: 100%;
+          height: 795px;
+
+          overflow: hidden;
+
+          background: #faf9fc;
+        }
+
+        .hero-background {
+          position: absolute;
+
+          inset: 0;
+
+          width: 100%;
+          height: 100%;
+
+          overflow: hidden;
+
+          background: #faf9fc;
+
+          z-index: 1;
+        }
+
+        .hero-copy {
+          position: absolute;
+          z-index: 30;
+
+          top: 229px;
+
+          left: 0;
+          right: 0;
+
+          width: 744px;
+          margin-left: auto;
+          margin-right: auto;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 20px;
+
+          text-align: center;
+        }
+
+        .hero-copy h1 {
+          width: 652px;
+          max-width: 100%;
+
+          margin: 0;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 56px;
+          line-height: 70px;
+          font-weight: 600;
+          letter-spacing: -3px;
+
+          color: #262626;
+
+          text-align: center;
+        }
+
+        .hero-copy p {
+          width: 100%;
+          max-width: 744px;
+
+          margin: 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 20px;
+          line-height: 32px;
+          font-weight: 400;
+          letter-spacing: -0.4px;
+
+          color: #262626;
+
+          text-align: center;
+        }
+
+        .hero-button {
+          height: 48px;
+
+          padding: 12px 24px;
+
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          gap: 6px;
+
+          border-radius: 8px;
+
+          background: #57058b;
+          color: #f8fafc;
+
+          text-decoration: none;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+
+          transition:
+            transform 180ms ease,
+            background 180ms ease;
+        }
+
+        .hero-button:hover {
+          transform: translateY(-2px);
+          background: #7805c4;
+        }
+
+        .hero-arrow {
+          font-size: 20px;
+          line-height: 1;
+        }
+
+        /* =====================================================
+           BACKGROUND BLOBS
+        ===================================================== */
+
+        .hero-blob {
+          position: absolute;
+
+          z-index: 1;
+
+          pointer-events: none;
+
+          border-radius: 50%;
+
+          filter: blur(70px);
+
+          opacity: 0.75;
+
+          animation: blobFloat 15s ease-in-out infinite;
+        }
+
+        .hero-blob-purple {
+          width: 780px;
+          height: 780px;
+
+          left: max(calc(50% - 1039px), -319px);
+          top: 152px;
+
+          background: rgba(191, 77, 255, 0.4);
+        }
+
+        .hero-blob-blue {
+          width: 650px;
+          height: 650px;
+
+          left: calc(50% + 228px);
+          top: 170px;
+
+          background: rgba(125, 166, 255, 0.27);
+
+          animation-delay: -4s;
+        }
+
+        .hero-blob-yellow {
+          width: 720px;
+          height: 720px;
+
+          left: calc(50% + 180px);
+          top: 380px;
+
+          background: rgba(255, 214, 84, 0.32);
+
+          animation-delay: -8s;
+        }
+
+        .hero-blob-dark {
+          width: 500px;
+          height: 500px;
+
+          left: max(calc(50% - 870px), -150px);
+          top: 500px;
+
+          background: rgba(33, 0, 47, 0.12);
+
+          animation-delay: -11s;
+        }
+
+        @keyframes blobFloat {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+
+          25% {
+            transform: translate(35px, -20px) scale(1.04);
+          }
+
+          50% {
+            transform: translate(55px, 25px) scale(0.96);
+          }
+
+          75% {
+            transform: translate(15px, 40px) scale(1.04);
+          }
+        }
+
+        /* =====================================================
+           CREATOR ARC
+           DESKTOP - UNCHANGED
+        ===================================================== */
+
+        .creator-arc {
+          position: absolute;
+
+          z-index: 20;
+
+          top: 0;
+          left: 50%;
+
+          width: 1440px;
+          height: 795px;
+
+          transform: translateX(-50%);
+
+          pointer-events: none;
+        }
+
+        .creator {
+          position: absolute;
+
+          overflow: hidden;
+
+          background: transparent;
+
+          border: none;
+
+          box-shadow: none;
+
+          pointer-events: auto;
+
+          isolation: isolate;
+        }
+
+        .creator-image {
+          position: absolute !important;
+
+          inset: -12% !important;
+
+          width: 124% !important;
+          height: 124% !important;
+
+          max-width: none !important;
+          max-height: none !important;
+
+          object-fit: cover !important;
+          object-position: center !important;
+
+          display: block !important;
+
+          transform: none !important;
+        }
+
+        /* Creator 1 */
+
+        .creator-1 {
+          left: 43px;
+          top: 414px;
+
+          width: 106px;
+          height: 140px;
+
+          border-radius: 53px 53px 12px 12px;
+        }
+
+        .creator-1 .creator-image {
+          inset: -10% -14% !important;
+
+          width: 128% !important;
+          height: 120% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 2 */
+
+        .creator-2 {
+          left: 197px;
+          top: 507px;
+
+          width: 78px;
+          height: 126px;
+
+          border-radius: 999px;
+        }
+
+        .creator-2 .creator-image {
+          inset: -9% -38% !important;
+
+          width: 176% !important;
+          height: 118% !important;
+
+          object-fit: cover !important;
+          object-position: center center !important;
+        }
+
+        /* Creator 3 */
+
+        .creator-3 {
+          left: 318px;
+          top: 578px;
+
+          width: 112px;
+          height: 112px;
+
+          border-radius: 999px;
+        }
+
+        .creator-3 .creator-image {
+          inset: -13% !important;
+
+          width: 126% !important;
+          height: 126% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 4 */
+
+        .creator-4 {
+          left: 474px;
+          top: 625px;
+
+          width: 89px;
+          height: 104px;
+
+          border-radius: 25px;
+        }
+
+        .creator-4 .creator-image {
+          inset: -13% -14% !important;
+
+          width: 128% !important;
+          height: 126% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 5 */
+
+        .creator-5 {
+          left: 602px;
+          top: 649px;
+
+          width: 96px;
+          height: 96px;
+
+          border-radius: 999px;
+        }
+
+        .creator-5 .creator-image {
+          inset: -16% !important;
+
+          width: 132% !important;
+          height: 132% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 6 */
+
+        .creator-6 {
+          left: 752px;
+          top: 647px;
+
+          width: 67px;
+          height: 100px;
+
+          border-radius: 38px 38px 12px 12px;
+        }
+
+        .creator-6 .creator-image {
+          inset: -10% -18% !important;
+
+          width: 136% !important;
+          height: 120% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 7 */
+
+        .creator-7 {
+          left: 876px;
+          top: 623px;
+
+          width: 93px;
+          height: 108px;
+
+          border-radius: 26px;
+        }
+
+        .creator-7 .creator-image {
+          inset: -12% -14% !important;
+
+          width: 128% !important;
+          height: 124% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 8 */
+
+        .creator-8 {
+          left: 1007px;
+          top: 577px;
+
+          width: 114px;
+          height: 114px;
+
+          border-radius: 999px;
+        }
+
+        .creator-8 .creator-image {
+          inset: -14% !important;
+
+          width: 128% !important;
+          height: 128% !important;
+
+          object-position: center center !important;
+        }
+
+        /* Creator 9 */
+
+        .creator-9 {
+          left: 1165px;
+          top: 506px;
+
+          width: 79px;
+          height: 128px;
+
+          border-radius: 999px;
+        }
+
+        .creator-9 .creator-image {
+          inset: -9% -38% !important;
+
+          width: 176% !important;
+          height: 118% !important;
+
+          object-fit: cover !important;
+          object-position: center center !important;
+        }
+
+        /* Creator 10 */
+
+        .creator-10 {
+          left: 1290px;
+          top: 413px;
+
+          width: 108px;
+          height: 142px;
+
+          border-radius: 54px 54px 12px 12px;
+        }
+
+        .creator-10 .creator-image {
+          inset: -10% -14% !important;
+
+          width: 128% !important;
+          height: 124% !important;
+
+          object-position: center center !important;
+        }
+
+        /* =====================================================
+           CHIPS
+        ===================================================== */
+
+        .hero-chip {
+          position: absolute;
+
+          display: flex;
+          align-items: center;
+
+          gap: 6px;
+
+          padding: 6px 12px 6px 10px;
+
+          background: #ffffff;
+
+          border-radius: 999px;
+
+          box-shadow: 0 8px 20px -4px rgba(56, 13, 102, 0.18);
+
+          font-family: 'Lato', sans-serif;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 600;
+          letter-spacing: 0.2px;
+
+          color: #262626;
+
+          white-space: nowrap;
+        }
+
+        .hero-chip-booked {
+          left: 727px;
+          top: 613px;
+        }
+
+        .hero-chip-subscribers {
+          left: 1089px;
+          top: 610px;
+        }
+
+        .chip-dot {
+          width: 8px;
+          height: 8px;
+
+          border-radius: 50%;
+
+          flex: 0 0 8px;
+        }
+
+        .purple-dot {
+          background: #a51cff;
+        }
+
+        .blue-dot {
+          background: #155dfc;
+        }
+
+        /* =====================================================
+           TOOLS INTRO
+        ===================================================== */
+
+        .tools-intro {
+          width: 100%;
+
+          padding: 80px;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 16px;
+
+          text-align: center;
+
+          background: #ffffff;
+        }
+
+        .tools-intro h2 {
+          width: 610px;
+
+          margin: 0;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 40px;
+          line-height: 48px;
+          font-weight: 600;
+          letter-spacing: -1.5px;
+
+          color: #262626;
+        }
+
+        .tools-intro p {
+          width: 610px;
+
+          margin: 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 20px;
+          line-height: 32px;
+          font-weight: 400;
+          letter-spacing: -0.4px;
+
+          color: #737373;
+        }
+
+        .purple-button {
+          min-height: 48px;
+
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          gap: 6px;
+
+          padding: 12px 24px;
+
+          border-radius: 8px;
+
+          background: #57058b;
+          color: #f8fafc;
+
+          text-decoration: none;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+
+          transition: 180ms ease;
+        }
+
+        .purple-button:hover {
+          background: #7805c4;
+          transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           TOOL ROWS
+        ===================================================== */
+
+        .tools-section {
+          width: 100%;
+
+          padding: 0 80px 80px;
+
+          background: #ffffff;
+        }
+
+        .tools-rows {
+          width: 1280px;
+          max-width: 100%;
+
+          margin: 0 auto;
+
+          display: flex;
+          flex-direction: column;
+
+          gap: 100px;
+        }
+
+        .tool-row {
+          width: 100%;
+          min-height: 554px;
+
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+
+          gap: 80px;
+        }
+
+        .tool-row-reverse {
+          flex-direction: row-reverse;
+          justify-content: flex-end;
+        }
+
+        .tool-copy {
+          width: 552px;
+          flex: 0 0 552px;
+
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          gap: 16px;
+
+          min-width: 0;
+
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .tool-copy h3 {
+          width: 100%;
+
+          margin: 0;
+
+          display: block;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 32px;
+          line-height: 44px;
+          font-weight: 600;
+          letter-spacing: -1.2px;
+
+          color: #262626;
+        }
+
+        .tool-copy h4 {
+          width: 100%;
+
+          margin: 0;
+
+          display: block;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 20px;
+          line-height: 24px;
+          font-weight: 500;
+          letter-spacing: -0.7px;
+
+          color: #262626;
+        }
+
+        .tool-copy p {
+          width: 100%;
+
+          margin: 0;
+
+          display: block;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 20px;
+          line-height: 28px;
+          font-weight: 400;
+          letter-spacing: -0.4px;
+
+          color: #6b6b6b;
+        }
+
+        .visual-card {
+          position: relative;
+
+          width: 608px;
+          height: 554px;
+
+          flex: 0 0 608px;
+
+          overflow: hidden;
+
+          border-radius: 32px;
+        }
+
+        .visual-card-image {
+          position: absolute !important;
+
+          inset: 0 !important;
+
+          width: 100% !important;
+          height: 100% !important;
+
+          object-fit: cover !important;
+        }
+
+        /* =====================================================
+           COMMUNITY
+        ===================================================== */
+
+        .community-section {
+          width: 100%;
+
+          padding: 80px;
+
+          background: #f5f5f4;
+
+          border-radius: 32px 32px 0 0;
+
+          overflow: hidden;
+        }
+
+        .community-head {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 48px;
+
+          text-align: center;
+        }
+
+        .community-head h2 {
+          width: 430px;
+
+          margin: 0;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 40px;
+          line-height: 48px;
+          font-weight: 600;
+          letter-spacing: -1.5px;
+
+          color: #262626;
+        }
+
+        .community-head p {
+          width: 514px;
+
+          margin: -28px 0 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+          letter-spacing: -0.2px;
+
+          color: #737373;
+        }
+
+        .community-window {
+          width: 100%;
+
+          margin-top: 48px;
+
+          overflow: hidden;
+        }
+
+        .community-track {
+          display: flex;
+
+          width: max-content;
+
+          gap: 16px;
+        }
+
+        .community-photo {
+          position: relative;
+
+          width: 200px;
+          height: 300px;
+
+          flex: 0 0 200px;
+
+          overflow: hidden;
+
+          border-radius: 16px;
+        }
+
+        .community-photo-image {
+          position: absolute !important;
+
+          inset: 0 !important;
+
+          width: 100% !important;
+          height: 100% !important;
+
+          object-fit: cover !important;
+        }
+
+        /* =====================================================
+           STARTER
+        ===================================================== */
+
+        .starter-section {
+          width: 100%;
+
+          padding: 64px;
+
+          background: #ffffff;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 32px;
+        }
+
+        .starter-eyebrow {
+          width: 418px;
+
+          margin: 0;
+
+          text-align: center;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 400;
+          letter-spacing: -0.2px;
+
+          color: #737373;
+        }
+
+        .starter-section > h2 {
+          margin: 0;
+
+          text-align: center;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 40px;
+          line-height: 48px;
+          font-weight: 600;
+          letter-spacing: -1.5px;
+
+          color: #262626;
+        }
+
+        .starter-layout {
+          position: relative;
+
+          width: 100%;
+
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+
+          gap: 40px;
+
+          padding: 0 96px;
+        }
+
+        .starter-card {
+          width: 560px;
+
+          padding: 24px 32px 32px;
+
+          border: 2.5px solid #57058b;
+
+          border-radius: 12px;
+
+          background: #ffffff;
+
+          box-shadow:
+            0 12px 8px rgba(0, 0, 0, 0.08),
+            0 4px 3px rgba(0, 0, 0, 0.03);
+        }
+
+        .starter-header {
+          display: flex;
+          flex-direction: column;
+
+          gap: 16px;
+        }
+
+        .starter-name {
+          margin: 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 700;
+
+          color: #262626;
+        }
+
+        .starter-card h3 {
+          margin: 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 32px;
+          line-height: 44px;
+          font-weight: 500;
+          letter-spacing: -1.2px;
+
+          color: #262626;
+        }
+
+        .starter-button {
+          height: 48px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 8px;
+
+          background: #57058b;
+          color: #f8fafc;
+
+          text-decoration: none;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+        }
+
+        .starter-divider {
+          width: 100%;
+          height: 1px;
+
+          margin: 24px 0;
+
+          background: #eeeeee;
+        }
+
+        .features-heading {
+          margin-bottom: 16px;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 700;
+
+          color: #737373;
+        }
+
+        .feature-list {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .starter-feature {
+          min-height: 42px;
+
+          display: grid;
+
+          grid-template-columns: 20px 1fr auto;
+
+          gap: 8px;
+
+          align-items: center;
+
+          padding: 8px 0;
+
+          border-bottom: 1px solid #f3f4f6;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+
+          color: #737373;
+        }
+
+        .starter-feature strong {
+          color: #262626;
+
+          font-weight: 700;
+
+          text-align: right;
+        }
+
+        .check {
+          width: 20px;
+          height: 20px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          color: #57058b;
+
+          font-weight: 700;
+        }
+
+        .builder-teaser {
+          position: absolute;
+
+          left: 50%;
+          bottom: -56px;
+
+          transform: translateX(-50%);
+
+          display: flex;
+          align-items: center;
+
+          gap: 6px;
+
+          white-space: nowrap;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+
+          color: #737373;
+        }
+
+        .builder-teaser a {
+          color: #57058b;
+
+          font-weight: 600;
+
+          text-decoration: underline;
+        }
+
+        .free-badge {
+          position: absolute;
+
+          top: -18px;
+          left: calc(50% + 115px);
+
+          padding: 6px 16px;
+
+          background: #ffffff;
+
+          border-radius: 999px;
+
+          color: #a51cff;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 600;
+
+          box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
+
+          white-space: nowrap;
+        }
+
+        /* =====================================================
+           FAQ
+        ===================================================== */
+
+        .faq-section {
+          width: 100%;
+
+          padding: 64px 24px;
+
+          background: #fafaf9;
+        }
+
+        .faq-inner {
+          width: 768px;
+          max-width: 100%;
+
+          margin: 0 auto;
+        }
+
+        .faq-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          text-align: center;
+
+          margin-bottom: 48px;
+        }
+
+        .faq-header h2 {
+          margin: 0;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 40px;
+          line-height: 48px;
+          font-weight: 600;
+          letter-spacing: -1.5px;
+
+          color: #262626;
+        }
+
+        .faq-header p {
+          margin: 8px 0 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+          letter-spacing: -0.2px;
+
+          color: #737373;
+        }
+
+        .faq-list {
+          width: 720px;
+          max-width: 100%;
+
+          margin: 0 auto;
+
+          display: flex;
+          flex-direction: column;
+
+          gap: 12px;
+        }
+
+        .faq-item {
+          border-bottom: 1px solid #e7e5e4;
+
+          background: #fafaf9;
+        }
+
+        .faq-item summary {
+          min-height: 56px;
+
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          gap: 24px;
+
+          padding: 16px;
+
+          cursor: pointer;
+
+          list-style: none;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 500;
+          letter-spacing: -0.2px;
+
+          color: #1a002e;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .faq-chevron {
+          width: 16px;
+          height: 16px;
+
+          flex: 0 0 16px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          font-size: 18px;
+
+          transition: transform 180ms ease;
+        }
+
+        .faq-item[open] .faq-chevron {
+          transform: rotate(180deg);
+        }
+
+        .faq-item p {
+          margin: 0;
+
+          padding: 0 16px 16px;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 400;
+
+          color: #737373;
+        }
+
+        /* =====================================================
+           FINAL CTA
+        ===================================================== */
+
+        .final-cta {
+          width: 100%;
+
+          height: 388px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 64px;
+
+          background: #fbf3ff;
+
+          border-radius: 16px;
+        }
+
+        .final-cta-inner {
+          width: 880px;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 16px;
+
+          text-align: center;
+        }
+
+        .final-cta h2 {
+          width: 478px;
+
+          margin: 0;
+
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 40px;
+          line-height: 48px;
+          font-weight: 600;
+          letter-spacing: -1.5px;
+
+          color: #262626;
+        }
+
+        .final-cta p {
+          width: 418px;
+
+          margin: 0;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 28px;
+          font-weight: 500;
+          letter-spacing: -0.2px;
+
+          color: #737373;
+        }
+
+        .final-buttons {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          gap: 24px;
+        }
+
+        .white-button {
+          min-height: 48px;
+
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 12px 24px;
+
+          border: 1px solid #e2e8f0;
+
+          border-radius: 8px;
+
+          background: #ffffff;
+
+          color: #262626;
+
+          text-decoration: none;
+
+          font-family: 'Lato', sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 500;
+
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1200px) {
+          .tools-section {
+            padding-left: 32px;
+            padding-right: 32px;
+          }
+
+          .tool-row {
+            gap: 40px;
+          }
+
+          .tool-copy {
+            width: 45%;
+            flex: 0 1 45%;
+          }
+
+          .visual-card {
+            width: 52%;
+            flex: 0 1 52%;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .hero-copy {
+            top: 190px;
+
+            width: 680px;
+          }
+
+          .hero-copy h1 {
+            font-size: 48px;
+            line-height: 58px;
+          }
+
+          .hero-copy p {
+            font-size: 18px;
+            line-height: 28px;
+          }
+
+          .tools-intro {
+            padding: 64px 24px;
+          }
+
+          .tools-intro h2,
+          .tools-intro p {
+            width: 100%;
+            max-width: 610px;
+          }
+
+          .tools-section {
+            padding: 0 24px 64px;
+          }
+
+          .tools-rows {
+            gap: 64px;
+          }
+
+          .tool-row,
+          .tool-row-reverse {
+            flex-direction: column;
+            align-items: stretch;
+
+            gap: 32px;
+          }
+
+          .tool-copy,
+          .visual-card {
+            width: 100%;
+            flex: none;
+          }
+
+          .visual-card {
+            height: auto;
+
+            aspect-ratio: 608 / 554;
+          }
+
+          .community-section {
+            padding: 64px 24px;
+          }
+
+          .community-head {
+            gap: 32px;
+          }
+
+          .community-head h2,
+          .community-head p {
+            width: 100%;
+            max-width: 514px;
+          }
+
+          .starter-section {
+            padding: 64px 24px;
+          }
+
+          .starter-layout {
+            padding: 0;
+          }
+
+          .starter-card {
+            width: 100%;
+            max-width: 560px;
+          }
+
+          .free-badge {
+            left: auto;
+            right: 0;
+          }
+        }
+
+        /* =====================================================
+           MOBILE
+           ONLY MOBILE IS CHANGED BELOW
+        ===================================================== */
+
+        @media (max-width: 640px) {
+          /*
+            HERO
+
+            The mobile hero is intentionally taller than the
+            original version. This gives the navigation, headline,
+            description, button and creator arc their own space.
+          */
+
+          .scn-hero {
+            height: 760px;
+          }
+
+          .hero-background {
+            width: 100%;
+            height: 760px;
+          }
+
+          /*
+            MOBILE HERO COPY
+
+            More top spacing so the headline does not sit against
+            the header/navigation.
+          */
+
+          .hero-copy {
+            top: 120px;
+
+            width: calc(100% - 40px);
+            max-width: 600px;
+
+            gap: 16px;
+
+            z-index: 40;
+          }
+
+          .hero-copy h1 {
+            width: 100%;
+
+            font-size: 36px;
+            line-height: 44px;
+
+            letter-spacing: -1.8px;
+          }
+
+          .hero-copy p {
+            width: 100%;
+
+            font-size: 16px;
+            line-height: 24px;
+
+            letter-spacing: -0.2px;
+          }
+
+          .hero-button {
+            height: 46px;
+
+            padding: 11px 22px;
+          }
+
+          /*
+            =====================================================
+            MOBILE CREATOR ARC
+            =====================================================
+
+            IMPORTANT:
+
+            We are NOT scaling the 1440px desktop canvas anymore.
+
+            Instead, mobile gets its own 7-image composition.
+
+            Desktop:
+            10 images
+
+            Mobile:
+            7 images
+          */
+
+          .creator-arc {
+            position: absolute;
+
+            top: 545px;
+            left: 0;
+
+            width: 100%;
+            height: 190px;
+
+            transform: none;
+
+            pointer-events: none;
+
+            z-index: 20;
+          }
+
+          /*
+            Hide creators 8, 9 and 10 on mobile.
+
+            This leaves exactly the 7 creators used in the
+            mobile Figma design.
+          */
+
+          .creator-8,
+          .creator-9,
+          .creator-10 {
+            display: none;
+          }
+
+          /*
+            Mobile creator images are intentionally smaller.
+          */
+
+          .creator {
+            pointer-events: auto;
+          }
+
+          /*
+            Creator 1
+            Left side / upper part of arc
+          */
+
+          .creator-1 {
+            left: 2%;
+            top: 4px;
+
+            width: 58px;
+            height: 76px;
+
+            border-radius: 29px 29px 9px 9px;
+          }
+
+          .creator-1 .creator-image {
+            inset: -10% -14% !important;
+
+            width: 128% !important;
+            height: 120% !important;
+          }
+
+          /*
+            Creator 2
+            Moves slightly downward toward the middle.
+          */
+
+          .creator-2 {
+            left: 15%;
+            top: 42px;
+
+            width: 48px;
+            height: 76px;
+
+            border-radius: 999px;
+          }
+
+          .creator-2 .creator-image {
+            inset: -9% -38% !important;
+
+            width: 176% !important;
+            height: 118% !important;
+          }
+
+          /*
+            Creator 3
+          */
+
+          .creator-3 {
+            left: 29%;
+            top: 70px;
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 999px;
+          }
+
+          .creator-3 .creator-image {
+            inset: -13% !important;
+
+            width: 126% !important;
+            height: 126% !important;
+          }
+
+          /*
+            Creator 4
+            Lowest central point of the arc.
+          */
+
+          .creator-4 {
+            left: 43%;
+            top: 88px;
+
+            width: 52px;
+            height: 62px;
+
+            border-radius: 15px;
+          }
+
+          .creator-4 .creator-image {
+            inset: -13% -14% !important;
+
+            width: 128% !important;
+            height: 126% !important;
+          }
+
+          /*
+            Creator 5
+          */
+
+          .creator-5 {
+            left: 56%;
+            top: 78px;
+
+            width: 60px;
+            height: 60px;
+
+            border-radius: 999px;
+          }
+
+          .creator-5 .creator-image {
+            inset: -16% !important;
+
+            width: 132% !important;
+            height: 132% !important;
+          }
+
+          /*
+            Creator 6
+          */
+
+          .creator-6 {
+            left: 70%;
+            top: 48px;
+
+            width: 45px;
+            height: 68px;
+
+            border-radius: 25px 25px 8px 8px;
+          }
+
+          .creator-6 .creator-image {
+            inset: -10% -18% !important;
+
+            width: 136% !important;
+            height: 120% !important;
+          }
+
+          /*
+            Creator 7
+            Right side / upper part of arc.
+          */
+
+          .creator-7 {
+            left: 83%;
+            top: 10px;
+
+            width: 58px;
+            height: 68px;
+
+            border-radius: 16px;
+          }
+
+          .creator-7 .creator-image {
+            inset: -12% -14% !important;
+
+            width: 128% !important;
+            height: 124% !important;
+          }
+
+          /*
+            Hide the floating desktop chips on mobile.
+            They are not part of the mobile composition.
+          */
+
+          .hero-chip {
+            display: none;
+          }
+
+          /* =====================================================
+             MOBILE CONTENT BELOW HERO
+          ===================================================== */
+
+          .tools-intro {
+            padding: 56px 20px;
+          }
+
+          .tools-intro h2 {
+            font-size: 32px;
+            line-height: 40px;
+          }
+
+          .tools-intro p {
+            font-size: 16px;
+            line-height: 24px;
+          }
+
+          .tool-copy h3 {
+            font-size: 28px;
+            line-height: 36px;
+          }
+
+          .tool-copy h4 {
+            font-size: 18px;
+            line-height: 24px;
+          }
+
+          .tool-copy p {
+            font-size: 16px;
+            line-height: 24px;
+          }
+
+          .community-section {
+            padding: 56px 20px;
+          }
+
+          .community-head h2 {
+            font-size: 32px;
+            line-height: 40px;
+          }
+
+          .community-head p {
+            font-size: 15px;
+          }
+
+          .community-photo {
+            width: 160px;
+            height: 240px;
+
+            flex-basis: 160px;
+          }
+
+          .starter-section {
+            padding: 56px 20px;
+          }
+
+          .starter-section > h2 {
+            font-size: 32px;
+            line-height: 40px;
+          }
+
+          .starter-eyebrow {
+            width: 100%;
+            max-width: 418px;
+          }
+
+          .starter-card {
+            padding: 20px;
+          }
+
+          .starter-feature {
+            grid-template-columns: 20px 1fr;
+          }
+
+          .starter-feature strong {
+            grid-column: 2;
+            text-align: left;
+          }
+
+          .builder-teaser,
+          .free-badge {
+            display: none;
+          }
+
+          .faq-section {
+            padding: 56px 20px;
+          }
+
+          .faq-header h2 {
+            font-size: 32px;
+            line-height: 40px;
+
+            white-space: normal;
+          }
+
+          .faq-item summary {
+            font-size: 15px;
+          }
+
+          .final-cta {
+            height: auto;
+
+            min-height: 388px;
+
+            padding: 56px 20px;
+          }
+
+          .final-cta h2,
+          .final-cta p {
+            width: 100%;
+          }
+
+          .final-cta h2 {
+            font-size: 32px;
+            line-height: 40px;
+          }
+
+          .final-buttons {
+            flex-direction: column;
+
+            width: 100%;
+          }
+
+          .final-buttons a {
+            width: 100%;
+
+            max-width: 320px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+      `}</style>
+    </>
+  );
+}

@@ -83,7 +83,7 @@ export default function CreatorGrowthSection() {
           >
             {/* Find your Creator match */}
             <Link
-              href="/find-creators"
+              href="/for-creators"
               className="inline-flex h-[48px] items-center justify-center rounded-[8px] bg-[#57058B] px-6 text-[14px] font-medium text-white transition-opacity duration-200 hover:opacity-90"
               style={{
                 fontFamily: 'var(--font-lato)',
