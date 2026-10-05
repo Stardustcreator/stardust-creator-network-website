@@ -16,7 +16,7 @@ const navigationItems: NavigationItem[] = [
   },
   {
     label: 'Stardust Creator Community',
-    href: '/#stardust-creator-community',
+    href: '/for-creators',
   },
   {
     label: 'CreatorOS',
@@ -50,6 +50,7 @@ export function Navigation({ className = '' }: NavigationProps) {
               >
                 <button className="flex items-center gap-1 text-neutral-700 hover:text-brand-purple font-medium transition-colors py-2">
                   {item.label}
+
                   <svg
                     className="w-4 h-4 transition-transform group-hover:rotate-180"
                     fill="none"

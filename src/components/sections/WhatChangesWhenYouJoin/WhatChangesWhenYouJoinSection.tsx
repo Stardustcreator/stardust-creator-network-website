@@ -160,7 +160,7 @@ export default function WhatChangesWhenYouJoinSection() {
             <div className="relative mb-5 flex h-[168px] w-full shrink-0 items-center justify-center overflow-hidden">
               <div className="relative h-[168px] w-[151px] overflow-hidden rounded-[16px]">
                 <Image
-                  src="/who%20we%20are/frame%202.webp"
+                  src="/who%20we%20are/TheFrame.webp"
                   alt="UGC content creator"
                   fill
                   sizes="151px"

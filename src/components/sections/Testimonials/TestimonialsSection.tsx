@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function TestimonialsSection() {
-  const googleDriveImage =
-    'https://drive.google.com/thumbnail?id=1fDisDYT2KiZqdZNKGkjDuiLWR9dFc5JA&sz=w1600';
+  const youtubeVideo = 'https://www.youtube.com/embed/6T0WrpKlSTM';
 
   return (
     <section
@@ -259,7 +258,7 @@ export default function TestimonialsSection() {
           "
         >
           {/* =========================
-              GOOGLE DRIVE IMAGE
+              YOUTUBE VIDEO
           ========================== */}
           <motion.div
             className="
@@ -267,6 +266,7 @@ export default function TestimonialsSection() {
               h-[300px]
               w-full
               overflow-hidden
+              bg-black
               sm:h-[380px]
               lg:h-[420px]
               lg:flex-1
@@ -279,10 +279,18 @@ export default function TestimonialsSection() {
               ease: 'easeOut',
             }}
           >
-            <img
-              src={googleDriveImage}
-              alt="Helen, UGC creator"
-              className="h-full w-full object-cover"
+            <iframe
+              src={youtubeVideo}
+              title="Helen, UGC creator"
+              className="
+                absolute
+                inset-0
+                h-full
+                w-full
+                border-0
+              "
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
             />
           </motion.div>
 
@@ -323,9 +331,7 @@ export default function TestimonialsSection() {
               lg:p-[48px]
             "
           >
-            {/* =========================
-                QUOTE
-            ========================== */}
+            {/* Quote */}
             <motion.p
               initial={{
                 opacity: 0,
@@ -365,9 +371,7 @@ export default function TestimonialsSection() {
               there.”
             </motion.p>
 
-            {/* =========================
-                CREATOR DETAILS
-            ========================== */}
+            {/* Creator Details */}
             <div className="flex w-full flex-col items-start gap-[2px]">
               {/* Helen */}
               <motion.p
@@ -402,7 +406,7 @@ export default function TestimonialsSection() {
                 Helen.
               </motion.p>
 
-              {/* UGC creator */}
+              {/* UGC Creator */}
               <motion.p
                 initial={{
                   opacity: 0,
