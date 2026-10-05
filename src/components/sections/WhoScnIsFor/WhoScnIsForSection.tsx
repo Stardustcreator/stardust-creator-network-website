@@ -124,6 +124,9 @@ export default function FindCreatorsSection() {
             bg-[#F0EAFB]
             sm:mt-14
             lg:mt-16
+            xl:flex
+            xl:items-center
+            xl:justify-between
           "
           style={{
             minHeight: '144px',
@@ -156,6 +159,8 @@ export default function FindCreatorsSection() {
               flex
               min-h-[144px]
               items-center
+              xl:min-w-0
+              xl:flex-1
               px-8
               py-8
               sm:px-10
@@ -195,12 +200,11 @@ export default function FindCreatorsSection() {
           ========================================= */}
           <div
             className="
-              absolute
-              right-[30px]
-              top-1/2
+              relative
+              mr-[30px]
               hidden
-              -translate-y-1/2
-              lg:block
+              shrink-0
+              xl:block
             "
             style={{
               width: '570px',
@@ -388,7 +392,7 @@ export default function FindCreatorsSection() {
           {/* =========================================
               MOBILE CREATOR CARDS
           ========================================= */}
-          <div className="relative z-20 flex items-center justify-center gap-3 px-6 pb-7 lg:hidden">
+          <div className="relative z-20 flex items-center justify-center gap-3 px-6 pb-7 xl:hidden">
             {/* Aisha */}
             <motion.div
               initial={{

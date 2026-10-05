@@ -14,13 +14,13 @@ const caseStudies = [
     description:
       'A comprehensive relaunch campaign that connected Honeywell with top creators to drive brand awareness and engagement.',
     metrics: [
-      { value: '70m', label: 'Total Impression' },
+      { value: '70m+', label: 'Total Impression' },
       { value: '26m+', label: 'Reach' },
       { value: '5m+', label: 'Total Engagement' },
       { value: '7.2%', label: 'Engagement rate' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies/honeywell',
+    link: '/case-studies',
   },
   {
     title: 'LEADWAY TRAVEL INSURANCE CAMPAIGN',
@@ -36,7 +36,7 @@ const caseStudies = [
       { value: '344', label: 'Saves' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies/leadway',
+    link: '/case-studies',
   },
   {
     title: 'AXA MANSARD AUTOFLEX',
@@ -51,7 +51,7 @@ const caseStudies = [
       { value: '6.1x', label: 'ROAS' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies/axa',
+    link: '/case-studies',
   },
 ];
 

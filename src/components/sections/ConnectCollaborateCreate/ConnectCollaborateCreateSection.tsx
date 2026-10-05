@@ -17,10 +17,6 @@ const logos = [
     alt: 'Brand logo 3',
   },
   {
-    src: '/brand logos/logo 4.webp',
-    alt: 'Brand logo 4',
-  },
-  {
     src: '/brand logos/logo 5.webp',
     alt: 'Brand logo 5',
   },
@@ -61,63 +57,45 @@ export default function ConnectCollaborateCreateSection() {
           }}
           transition={{
             x: {
-              duration: 38,
+              duration: 76,
               repeat: Infinity,
               repeatType: 'loop',
               ease: 'linear',
             },
           }}
         >
-          {/* FIRST SET */}
-          <div className="flex shrink-0 items-center gap-10 px-6 sm:gap-14 sm:px-8 md:gap-20 md:px-10 lg:gap-24">
-            {logos.map((logo, index) => (
-              <motion.div
-                key={`first-${index}`}
-                className="flex h-[65px] w-[150px] shrink-0 items-center justify-center sm:w-[170px] md:w-[180px]"
-                whileHover={{
-                  scale: 1.05,
-                }}
-                transition={{
-                  duration: 0.25,
-                }}
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={180}
-                  height={80}
-                  className="h-auto max-h-[60px] w-auto max-w-[165px] object-contain"
-                  sizes="180px"
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* SECOND SET
-              DUPLICATE FOR SEAMLESS LOOP */}
-          <div className="flex shrink-0 items-center gap-10 px-6 sm:gap-14 sm:px-8 md:gap-20 md:px-10 lg:gap-24">
-            {logos.map((logo, index) => (
-              <motion.div
-                key={`second-${index}`}
-                className="flex h-[65px] w-[150px] shrink-0 items-center justify-center sm:w-[170px] md:w-[180px]"
-                whileHover={{
-                  scale: 1.05,
-                }}
-                transition={{
-                  duration: 0.25,
-                }}
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={180}
-                  height={80}
-                  className="h-auto max-h-[60px] w-auto max-w-[165px] object-contain"
-                  sizes="180px"
-                />
-              </motion.div>
-            ))}
-          </div>
+          {/* Four identical sets. Moving -50% shifts exactly two sets, so the
+              loop is seamless, and four sets are always wider than the screen
+              even with only five logos. */}
+          {[0, 1, 2, 3].map(set => (
+            <div
+              key={`set-${set}`}
+              className="flex shrink-0 items-center gap-10 px-6 sm:gap-14 sm:px-8 md:gap-20 md:px-10 lg:gap-24"
+              aria-hidden={set > 0 ? true : undefined}
+            >
+              {logos.map((logo, index) => (
+                <motion.div
+                  key={`${set}-${index}`}
+                  className="flex h-[65px] w-[150px] shrink-0 items-center justify-center sm:w-[170px] md:w-[180px]"
+                  whileHover={{
+                    scale: 1.05,
+                  }}
+                  transition={{
+                    duration: 0.25,
+                  }}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={set > 0 ? '' : logo.alt}
+                    width={180}
+                    height={80}
+                    className="h-auto max-h-[60px] w-auto max-w-[165px] object-contain"
+                    sizes="180px"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

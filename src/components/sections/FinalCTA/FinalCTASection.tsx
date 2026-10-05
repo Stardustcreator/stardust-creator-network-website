@@ -145,7 +145,7 @@ export default function FinalCTASection() {
         >
           {/* Find your Creator match */}
           <Link
-            href="/find-creators"
+            href="/for-creators"
             className="
               inline-flex
               h-[40px]
