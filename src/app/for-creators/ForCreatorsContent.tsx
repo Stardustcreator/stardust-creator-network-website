@@ -55,12 +55,20 @@ const creators = [
 
 const creatorFeatures = [
   {
+    title: 'Brand Deals',
+    subtitle: 'Build a career on brand deals that fit.',
+    description:
+      'Get matched with campaigns in your niche, so every partnership grows your name, your portfolio and your next opportunity.',
+    image: '/creator community/Visual Card (4).png',
+    reverse: false,
+  },
+  {
     title: 'Rate Calculator',
-    subtitle: 'Build an Income that matches your talent.',
+    subtitle: 'Build an income that matches your talent.',
     description:
       'Know your true rate before any brand asks, negotiate with confidence and turn every deal into income that finally reflects the work you put in.',
     image: '/creator community/Visual Card.png',
-    reverse: false,
+    reverse: true,
   },
   {
     title: 'Service Creation',
@@ -68,7 +76,7 @@ const creatorFeatures = [
     description:
       'Package what you create into ready-to-book services with clear deliverables, timelines and prices, so you never have to quote from scratch again.',
     image: '/creator community/Visual Card (1).png',
-    reverse: true,
+    reverse: false,
   },
   {
     title: 'Rate Card Builder',
@@ -76,14 +84,6 @@ const creatorFeatures = [
     description:
       'A polished rate card sets you apart from creators still sending prices in DMs, so brands see a professional worth booking, and booking again.',
     image: '/creator community/Visual Card (2).png',
-    reverse: false,
-  },
-  {
-    title: 'Brand Deals',
-    subtitle: 'Build a career on brand deals that fit.',
-    description:
-      'Get matched with campaigns in your niche, so every partnership grows your name, your portfolio and your next opportunity.',
-    image: '/creator community/Visual Card (3).png',
     reverse: true,
   },
   {
@@ -369,7 +369,7 @@ export default function ForCreatorsContent() {
                     src={feature.image}
                     alt={feature.title}
                     fill
-                    sizes="608px"
+                    sizes="(max-width: 900px) 100vw, 608px"
                     className="visual-card-image"
                   />
                 </div>
@@ -405,7 +405,7 @@ export default function ForCreatorsContent() {
             <motion.div
               className="community-track"
               animate={{
-                x: [0, -1296],
+                x: ['0%', '-50%'],
               }}
               transition={{
                 duration: 45,
@@ -436,71 +436,25 @@ export default function ForCreatorsContent() {
         ===================================================== */}
 
         <section className="starter-section">
-          <Reveal>
-            <p className="starter-eyebrow">
+          <Reveal className="starter-inner">
+            <h2 className="starter-title">Start getting booked. It&apos;s free.</h2>
+
+            <p className="starter-text">
               Price your work, send a pro rate card, get matched with brand deals and sell your UGC
               packages.
             </p>
-          </Reveal>
 
-          <Reveal delay={0.05}>
-            <h2>Start getting booked. It&apos;s free.</h2>
-          </Reveal>
+            <Link
+              href="/signup"
+              className="purple-button"
+            >
+              Join SCN
+            </Link>
 
-          <Reveal delay={0.1}>
-            <div className="starter-layout">
-              <div className="starter-card">
-                <div className="starter-header">
-                  <p className="starter-name">Starter</p>
-
-                  <h3>₦0/month</h3>
-
-                  <Link
-                    href="/creators/join"
-                    className="starter-button"
-                  >
-                    Get Started for free
-                  </Link>
-                </div>
-
-                <div className="starter-divider" />
-
-                <div className="features-heading">WHAT YOU GET</div>
-
-                <div className="feature-list">
-                  {[
-                    ['Pricing Calculator', 'Yes'],
-                    ['Rate card Builder', 'Yes'],
-                    ['Invoicing', 'Yes'],
-                    ['Platform Fee', '5% of transaction value'],
-                    ['Email Captures', '100 subscribers'],
-                    ['Email Broadcasts', '2/month'],
-                    ['Community access', 'Weekly community digest/newsletter only'],
-                    ['Brand Deals', 'Yes'],
-                    ['Templates', 'Yes'],
-                  ].map(([name, value]) => (
-                    <div
-                      className="starter-feature"
-                      key={name}
-                    >
-                      <div className="check">✓</div>
-
-                      <span>{name}</span>
-
-                      <strong>{value}</strong>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="builder-teaser">
-                <span>A Builder plan with higher limits is coming.</span>
-
-                <Link href="/creators/join">Get notified →</Link>
-              </div>
-
-              <div className="free-badge">Free for everyone</div>
-            </div>
+            <p className="builder-note">
+              A Builder plan with higher limits is coming.
+              <Link href="/creators/join">Get notified →</Link>
+            </p>
           </Reveal>
         </section>
 
@@ -529,7 +483,17 @@ export default function ForCreatorsContent() {
                     <summary>
                       <span>{faq.question}</span>
 
-                      <span className="faq-chevron">⌄</span>
+                      <span
+                        className="faq-chevron"
+                        aria-hidden="true"
+                      >
+                        ⌄
+                      </span>
+
+                      <span
+                        className="faq-plus"
+                        aria-hidden="true"
+                      />
                     </summary>
 
                     <p>{faq.answer}</p>
@@ -547,26 +511,19 @@ export default function ForCreatorsContent() {
         <section className="final-cta">
           <Reveal>
             <div className="final-cta-inner">
-              <h2>Your next campaign is two minutes away.</h2>
+              <h2>Get paid for what you already create.</h2>
 
               <p>
-                That&apos;s how long it takes to tell us about your campaign goals. We handle
-                everything after.
+                Set up your creator profile in two minutes. We&apos;ll match you with brands that
+                fit your content and make sure you get paid.
               </p>
 
               <div className="final-buttons">
                 <Link
-                  href="/brands"
+                  href="/signup"
                   className="purple-button"
                 >
-                  Find your Creator match
-                </Link>
-
-                <Link
-                  href="/signin"
-                  className="white-button"
-                >
-                  I&apos;m a Creator
+                  Join the Network
                 </Link>
               </div>
             </div>
@@ -659,7 +616,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 56px;
           line-height: 70px;
           font-weight: 600;
@@ -676,7 +633,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 20px;
           line-height: 32px;
           font-weight: 400;
@@ -705,7 +662,7 @@ export default function ForCreatorsContent() {
 
           text-decoration: none;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
@@ -1098,7 +1055,7 @@ export default function ForCreatorsContent() {
 
           box-shadow: 0 8px 20px -4px rgba(56, 13, 102, 0.18);
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 12px;
           line-height: 16px;
           font-weight: 600;
@@ -1161,7 +1118,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 40px;
           line-height: 48px;
           font-weight: 600;
@@ -1175,7 +1132,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 20px;
           line-height: 32px;
           font-weight: 400;
@@ -1202,7 +1159,7 @@ export default function ForCreatorsContent() {
 
           text-decoration: none;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
@@ -1278,7 +1235,7 @@ export default function ForCreatorsContent() {
 
           display: block;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 32px;
           line-height: 44px;
           font-weight: 600;
@@ -1294,7 +1251,7 @@ export default function ForCreatorsContent() {
 
           display: block;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 20px;
           line-height: 24px;
           font-weight: 500;
@@ -1310,7 +1267,7 @@ export default function ForCreatorsContent() {
 
           display: block;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 20px;
           line-height: 28px;
           font-weight: 400;
@@ -1376,7 +1333,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 40px;
           line-height: 48px;
           font-weight: 600;
@@ -1390,7 +1347,7 @@ export default function ForCreatorsContent() {
 
           margin: -28px 0 0;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
@@ -1413,6 +1370,26 @@ export default function ForCreatorsContent() {
           width: max-content;
 
           gap: 16px;
+
+          /* trailing gap so the -50% loop lands exactly on the duplicate set */
+          padding-right: 16px;
+        }
+
+        @media (min-width: 1101px) {
+          /* Desktop design: all six photos in one static row */
+          .community-track {
+            width: 100%;
+
+            justify-content: center;
+
+            padding-right: 0;
+
+            transform: none !important;
+          }
+
+          .community-photo:nth-child(n + 7) {
+            display: none;
+          }
         }
 
         .community-photo {
@@ -1457,28 +1434,23 @@ export default function ForCreatorsContent() {
           gap: 32px;
         }
 
-        .starter-eyebrow {
-          width: 418px;
+        .starter-inner {
+          width: 100%;
+          max-width: 560px;
 
-          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          gap: 16px;
 
           text-align: center;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 16px;
-          line-height: 24px;
-          font-weight: 400;
-          letter-spacing: -0.2px;
-
-          color: #737373;
         }
 
-        .starter-section > h2 {
+        .starter-title {
           margin: 0;
 
-          text-align: center;
-
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 40px;
           line-height: 48px;
           font-weight: 600;
@@ -1487,206 +1459,42 @@ export default function ForCreatorsContent() {
           color: #262626;
         }
 
-        .starter-layout {
-          position: relative;
+        .starter-text {
+          max-width: 418px;
 
-          width: 100%;
+          margin: 0 0 8px;
 
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-
-          gap: 40px;
-
-          padding: 0 96px;
-        }
-
-        .starter-card {
-          width: 560px;
-
-          padding: 24px 32px 32px;
-
-          border: 2.5px solid #57058b;
-
-          border-radius: 12px;
-
-          background: #ffffff;
-
-          box-shadow:
-            0 12px 8px rgba(0, 0, 0, 0.08),
-            0 4px 3px rgba(0, 0, 0, 0.03);
-        }
-
-        .starter-header {
-          display: flex;
-          flex-direction: column;
-
-          gap: 16px;
-        }
-
-        .starter-name {
-          margin: 0;
-
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
+          font-weight: 400;
+          letter-spacing: -0.2px;
+
+          color: #737373;
+        }
+
+        .builder-note {
+          display: none;
+
+          margin: 8px 0 0;
+
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+
+          color: #737373;
+        }
+
+        .builder-note a {
+          display: block;
+
+          margin-top: 4px;
+
           font-weight: 700;
 
-          color: #262626;
-        }
-
-        .starter-card h3 {
-          margin: 0;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 32px;
-          line-height: 44px;
-          font-weight: 500;
-          letter-spacing: -1.2px;
-
-          color: #262626;
-        }
-
-        .starter-button {
-          height: 48px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          border-radius: 8px;
-
-          background: #57058b;
-          color: #f8fafc;
+          color: #57058b;
 
           text-decoration: none;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 16px;
-          line-height: 24px;
-          font-weight: 500;
-        }
-
-        .starter-divider {
-          width: 100%;
-          height: 1px;
-
-          margin: 24px 0;
-
-          background: #eeeeee;
-        }
-
-        .features-heading {
-          margin-bottom: 16px;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 12px;
-          line-height: 16px;
-          font-weight: 700;
-
-          color: #737373;
-        }
-
-        .feature-list {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .starter-feature {
-          min-height: 42px;
-
-          display: grid;
-
-          grid-template-columns: 20px 1fr auto;
-
-          gap: 8px;
-
-          align-items: center;
-
-          padding: 8px 0;
-
-          border-bottom: 1px solid #f3f4f6;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 14px;
-          line-height: 20px;
-
-          color: #737373;
-        }
-
-        .starter-feature strong {
-          color: #262626;
-
-          font-weight: 700;
-
-          text-align: right;
-        }
-
-        .check {
-          width: 20px;
-          height: 20px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          color: #57058b;
-
-          font-weight: 700;
-        }
-
-        .builder-teaser {
-          position: absolute;
-
-          left: 50%;
-          bottom: -56px;
-
-          transform: translateX(-50%);
-
-          display: flex;
-          align-items: center;
-
-          gap: 6px;
-
-          white-space: nowrap;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 14px;
-          line-height: 20px;
-
-          color: #737373;
-        }
-
-        .builder-teaser a {
-          color: #57058b;
-
-          font-weight: 600;
-
-          text-decoration: underline;
-        }
-
-        .free-badge {
-          position: absolute;
-
-          top: -18px;
-          left: calc(50% + 115px);
-
-          padding: 6px 16px;
-
-          background: #ffffff;
-
-          border-radius: 999px;
-
-          color: #a51cff;
-
-          font-family: 'Lato', sans-serif;
-          font-size: 16px;
-          line-height: 24px;
-          font-weight: 600;
-
-          box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
-
-          white-space: nowrap;
         }
 
         /* =====================================================
@@ -1721,7 +1529,7 @@ export default function ForCreatorsContent() {
         .faq-header h2 {
           margin: 0;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 40px;
           line-height: 48px;
           font-weight: 600;
@@ -1733,7 +1541,7 @@ export default function ForCreatorsContent() {
         .faq-header p {
           margin: 8px 0 0;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
@@ -1775,7 +1583,7 @@ export default function ForCreatorsContent() {
 
           list-style: none;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
@@ -1807,12 +1615,50 @@ export default function ForCreatorsContent() {
           transform: rotate(180deg);
         }
 
+        .faq-plus {
+          position: relative;
+
+          display: none;
+
+          width: 14px;
+          height: 14px;
+
+          flex: 0 0 14px;
+        }
+
+        .faq-plus::before,
+        .faq-plus::after {
+          content: '';
+
+          position: absolute;
+
+          top: 50%;
+          left: 0;
+
+          width: 14px;
+          height: 1.5px;
+
+          margin-top: -0.75px;
+
+          background: #262626;
+
+          transition: transform 180ms ease;
+        }
+
+        .faq-plus::after {
+          transform: rotate(90deg);
+        }
+
+        .faq-item[open] .faq-plus::after {
+          transform: rotate(0deg);
+        }
+
         .faq-item p {
           margin: 0;
 
           padding: 0 16px 16px;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 14px;
           line-height: 20px;
           font-weight: 400;
@@ -1840,8 +1686,16 @@ export default function ForCreatorsContent() {
           border-radius: 16px;
         }
 
+        /* the Reveal wrapper is the flex item - let it shrink on small screens */
+        .final-cta > div {
+          width: 100%;
+          max-width: 880px;
+
+          min-width: 0;
+        }
+
         .final-cta-inner {
-          width: 880px;
+          width: 100%;
 
           display: flex;
           flex-direction: column;
@@ -1857,7 +1711,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
           font-size: 40px;
           line-height: 48px;
           font-weight: 600;
@@ -1871,7 +1725,7 @@ export default function ForCreatorsContent() {
 
           margin: 0;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 16px;
           line-height: 28px;
           font-weight: 500;
@@ -1907,7 +1761,7 @@ export default function ForCreatorsContent() {
 
           text-decoration: none;
 
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-lato-fc), 'Lato', sans-serif;
           font-size: 14px;
           line-height: 20px;
           font-weight: 500;
@@ -2012,20 +1866,6 @@ export default function ForCreatorsContent() {
           .starter-section {
             padding: 64px 24px;
           }
-
-          .starter-layout {
-            padding: 0;
-          }
-
-          .starter-card {
-            width: 100%;
-            max-width: 560px;
-          }
-
-          .free-badge {
-            left: auto;
-            right: 0;
-          }
         }
 
         /* =====================================================
@@ -2043,12 +1883,12 @@ export default function ForCreatorsContent() {
           */
 
           .scn-hero {
-            height: 760px;
+            height: 610px;
           }
 
           .hero-background {
             width: 100%;
-            height: 760px;
+            height: 610px;
           }
 
           /*
@@ -2072,10 +1912,10 @@ export default function ForCreatorsContent() {
           .hero-copy h1 {
             width: 100%;
 
-            font-size: 36px;
-            line-height: 44px;
+            font-size: 34px;
+            line-height: 40px;
 
-            letter-spacing: -1.8px;
+            letter-spacing: -1.5px;
           }
 
           .hero-copy p {
@@ -2114,7 +1954,7 @@ export default function ForCreatorsContent() {
           .creator-arc {
             position: absolute;
 
-            top: 545px;
+            top: 410px;
             left: 0;
 
             width: 100%;
@@ -2317,8 +2157,9 @@ export default function ForCreatorsContent() {
           }
 
           .tools-intro h2 {
-            font-size: 32px;
-            line-height: 40px;
+            font-size: 26px;
+            line-height: 32px;
+            letter-spacing: -1px;
           }
 
           .tools-intro p {
@@ -2326,19 +2167,43 @@ export default function ForCreatorsContent() {
             line-height: 24px;
           }
 
+          .tools-section {
+            padding: 0 20px 56px;
+          }
+
+          .tools-rows {
+            gap: 56px;
+          }
+
+          .tool-row,
+          .tool-row-reverse {
+            min-height: 0;
+
+            gap: 20px;
+          }
+
+          .tool-copy {
+            gap: 8px;
+          }
+
           .tool-copy h3 {
-            font-size: 28px;
-            line-height: 36px;
+            font-size: 24px;
+            line-height: 30px;
+            letter-spacing: -0.8px;
           }
 
           .tool-copy h4 {
-            font-size: 18px;
-            line-height: 24px;
+            font-size: 16px;
+            line-height: 22px;
           }
 
           .tool-copy p {
-            font-size: 16px;
-            line-height: 24px;
+            font-size: 15px;
+            line-height: 22px;
+          }
+
+          .visual-card {
+            border-radius: 20px;
           }
 
           .community-section {
@@ -2346,51 +2211,31 @@ export default function ForCreatorsContent() {
           }
 
           .community-head h2 {
-            font-size: 32px;
-            line-height: 40px;
+            font-size: 26px;
+            line-height: 32px;
+            letter-spacing: -1px;
           }
 
           .community-head p {
             font-size: 15px;
           }
 
-          .community-photo {
-            width: 160px;
-            height: 240px;
-
-            flex-basis: 160px;
+          .community-section {
+            background: #fbf3ff;
           }
 
           .starter-section {
             padding: 56px 20px;
           }
 
-          .starter-section > h2 {
-            font-size: 32px;
-            line-height: 40px;
+          .starter-title {
+            font-size: 26px;
+            line-height: 32px;
+            letter-spacing: -1px;
           }
 
-          .starter-eyebrow {
-            width: 100%;
-            max-width: 418px;
-          }
-
-          .starter-card {
-            padding: 20px;
-          }
-
-          .starter-feature {
-            grid-template-columns: 20px 1fr;
-          }
-
-          .starter-feature strong {
-            grid-column: 2;
-            text-align: left;
-          }
-
-          .builder-teaser,
-          .free-badge {
-            display: none;
+          .builder-note {
+            display: block;
           }
 
           .faq-section {
@@ -2398,14 +2243,27 @@ export default function ForCreatorsContent() {
           }
 
           .faq-header h2 {
-            font-size: 32px;
-            line-height: 40px;
+            font-size: 26px;
+            line-height: 32px;
+            letter-spacing: -1px;
 
             white-space: normal;
           }
 
           .faq-item summary {
             font-size: 15px;
+          }
+
+          .faq-chevron {
+            display: none;
+          }
+
+          .faq-plus {
+            display: block;
+          }
+
+          .faq-list {
+            gap: 0;
           }
 
           .final-cta {
@@ -2422,8 +2280,9 @@ export default function ForCreatorsContent() {
           }
 
           .final-cta h2 {
-            font-size: 32px;
-            line-height: 40px;
+            font-size: 26px;
+            line-height: 32px;
+            letter-spacing: -1px;
           }
 
           .final-buttons {
