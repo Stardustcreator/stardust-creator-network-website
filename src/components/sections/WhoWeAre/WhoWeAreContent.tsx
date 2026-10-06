@@ -131,9 +131,9 @@ export default function WhoWeAreContent({
           HERO
       ========================================================== */}
 
-      <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07] lg:min-h-[795px]">
-        <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center px-5 pb-10 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:min-h-[795px] lg:px-[57px]">
-          <div className="grid w-full grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+      <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#FF3E1C] to-[#C52D07] lg:min-h-[795px] xl:min-h-[705px]">
+        <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center px-5 pb-10 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:min-h-[795px] lg:px-[57px] xl:min-h-[705px] xl:items-start xl:pb-0 xl:pt-[140px]">
+          <div className="grid w-full grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center xl:items-start">
             {/* =================================================
                 HERO COPY
             ================================================= */}
@@ -142,7 +142,7 @@ export default function WhoWeAreContent({
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="relative z-30 max-w-[685px]"
+              className="relative z-30 max-w-[685px] xl:mt-[79px]"
             >
               <motion.h1
                 variants={fadeUp}
@@ -237,7 +237,7 @@ export default function WhoWeAreContent({
                 HERO IMAGE COLLAGE
             ================================================= */}
 
-            <div className="relative mx-auto h-[260px] w-full max-w-[360px] sm:h-[430px] sm:max-w-[610px] lg:h-[520px]">
+            <div className="relative mx-auto h-[260px] w-full max-w-[360px] sm:h-[430px] sm:max-w-[610px] lg:h-[520px] xl:h-[460px]">
               {/* LEFT IMAGE */}
 
               <motion.div
@@ -282,6 +282,8 @@ export default function WhoWeAreContent({
                   left-[8%]
                   top-[34%]
                   z-20
+                  xl:left-[7.5%]
+                  xl:top-[186px]
                   h-[150px]
                   w-[134px]
                   overflow-hidden
@@ -338,7 +340,9 @@ export default function WhoWeAreContent({
                   absolute
                   left-[38%]
                   top-[6%]
-                  z-30
+                  z-10
+                  xl:left-[35.7%]
+                  xl:top-[2px]
                   h-[150px]
                   w-[134px]
                   overflow-hidden
@@ -401,7 +405,10 @@ export default function WhoWeAreContent({
                   absolute
                   right-[3%]
                   top-[36%]
-                  z-10
+                  z-30
+                  xl:left-[64.8%]
+                  xl:right-auto
+                  xl:top-[194px]
                   h-[150px]
                   w-[134px]
                   overflow-hidden
@@ -974,13 +981,16 @@ export default function WhoWeAreContent({
 
           <motion.div
             variants={fadeUp}
-            className="mt-4 flex flex-col items-center gap-4 sm:flex-row"
+            className="mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
           >
             <Link
               href="/signin"
               className="
-                inline-flex
+                flex
                 h-[48px]
+                w-full
+                sm:inline-flex
+                sm:w-auto
                 items-center
                 justify-center
                 rounded-[8px]

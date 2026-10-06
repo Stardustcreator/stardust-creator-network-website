@@ -46,7 +46,7 @@ export default function CaseStudiesError({
             We encountered an unexpected error loading the case studies. Don&apos;t worry, our team
             has been notified and is working on a fix.
           </Text>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center">
             <button
               onClick={reset}
               className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105"

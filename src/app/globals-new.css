@@ -640,6 +640,46 @@ body {
   line-height: 1.6;
 }
 
+/* ============================================
+   SITE FONTS (Figma)
+   Headings: Instrument Sans. Body text: Lato.
+   --font-instrument-sans and --font-lato are set on <html> by next/font
+   in src/app/layout.tsx.
+   ============================================ */
+
+:root {
+  /* Older components still use the Bricolage name for headings. Point it at
+     Instrument Sans so they follow the design without editing each file. */
+  --font-bricolage-grotesque: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-lato), 'Lato', sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+  }
+}
+
+@utility font-lato {
+  font-family: var(--font-lato), 'Lato', sans-serif;
+}
+
+@utility font-instrument-sans {
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+}
+
+@utility font-bricolage-grotesque {
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+}
+
 /* Font rendering optimization */
 body,
 h1,
