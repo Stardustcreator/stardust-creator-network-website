@@ -47,6 +47,10 @@ async function getWhoWeAreContent(): Promise<WhoWeArePageContent> {
   }
 }
 
+// The hero headline and subheading come from WhoWeAreContent's defaults
+// (the approved Figma copy). The CMS still holds an outdated hero headline,
+// so it is not passed through here. Re-add heroTitle/heroSubtitle once the
+// CMS "who-we-are" entry has been updated.
 export default async function WhoWeArePage() {
   const content = await getWhoWeAreContent();
 
@@ -55,8 +59,6 @@ export default async function WhoWeArePage() {
       <Header />
       <main id="main-content">
         <WhoWeAreContent
-          heroTitle={content.heroTitle}
-          heroSubtitle={content.heroSubtitle}
           aboutContent={content.aboutContent}
           problemContent={content.problemContent}
           buildingContent={content.buildingContent}

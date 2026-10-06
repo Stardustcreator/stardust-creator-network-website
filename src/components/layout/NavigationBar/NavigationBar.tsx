@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -64,18 +65,31 @@ export default function NavigationBar({
               <TopNavigation variant="light" />
             </div>
 
-            {/* Sign Up Button */}
-            <div className="flex items-center gap-4 shrink-0">
-              <Link href="/signin">
-                <button
-                  className="px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-all text-sm"
-                  style={{
-                    backgroundColor: '#57058B',
-                    color: '#FFFFFF',
-                  }}
-                >
-                  Sign in / Register
-                </button>
+            {/* Login + Sign Up Buttons */}
+            <div className="flex items-center gap-3 shrink-0">
+              {/* Login */}
+              <Link
+                href="/signin"
+                className="inline-flex items-center justify-center px-5 py-2 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#57058B',
+                  border: '1.5px solid #E2E8F0',
+                }}
+              >
+                Login
+              </Link>
+
+              {/* Sign Up */}
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center px-5 py-2 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: '#57058B',
+                  color: '#FFFFFF',
+                }}
+              >
+                Sign up
               </Link>
             </div>
           </div>

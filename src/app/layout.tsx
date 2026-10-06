@@ -1,50 +1,31 @@
 import type { Metadata } from 'next';
-import { Lato, Bricolage_Grotesque } from 'next/font/google';
 import Script from 'next/script';
 import { site, absoluteUrl, generateStructuredData } from '@/lib/seo';
-// Commented out unused imports
-// import { StructuredDataInjector } from '@/components/shared/StructuredDataInjector';
-// import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schemaGenerators';
 import { CountryProvider } from '@/lib/contexts/CountryContext';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
-import AttributionCapture from '@/components/analytics/AttributionCapture';
 import dynamic from 'next/dynamic';
 import { Toaster } from '@/components/ui/Toaster';
 
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
   ssr: false,
 });
+
 import './globals-new.css';
 
-const lato = Lato({
-  variable: '--font-lato',
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial'],
-  adjustFontFallback: true, // Reduce CLS by matching fallback metrics
-});
-const bricolageGrotesque = Bricolage_Grotesque({
-  variable: '--font-bricolage-grotesque',
-  subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
-  display: 'swap',
-  preload: true,
-});
-
-// Google Analytics Measurement ID
 const GA_MEASUREMENT_ID = 'G-8CMEVERXXG';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+
   title: {
     default: site.name,
     template: `%s | ${site.name}`,
   },
+
   description: site.defaultDescription,
+
   keywords: [
     'creator network',
     'content creation',
@@ -54,12 +35,15 @@ export const metadata: Metadata = {
     'monetization',
     'creator economy',
   ],
+
   authors: [{ name: 'Stardust Creator Network Team' }],
   creator: 'Stardust Creator Network',
   publisher: 'Stardust Creator Network',
+
   alternates: {
     canonical: absoluteUrl(),
   },
+
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -76,6 +60,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: 'summary_large_image',
     title: site.name,
@@ -83,6 +68,7 @@ export const metadata: Metadata = {
     site: site.twitterHandle,
     images: [absoluteUrl('/who we are/creators.webp')],
   },
+
   robots: {
     index: true,
     follow: true,
@@ -94,11 +80,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    // Add your verification IDs here when ready
-    // google: "your-google-verification-id",
-    // yandex: "your-yandex-verification-id",
-  },
+
+  verification: {},
 };
 
 export default function RootLayout({
@@ -109,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning={true}
+      suppressHydrationWarning
     >
       <head>
         {/* Google Site Verification */}
@@ -117,10 +100,10 @@ export default function RootLayout({
           name="google-site-verification"
           content="sIXklRTJlN89f-fY2f1_Yd5lpiyuixk00AHGF7KKOII"
         />
-        {/* Structured Data - Deferred, non-blocking */}
+
+        {/* Structured Data */}
         <script
           type="application/ld+json"
-          defer
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               generateStructuredData.organization(),
@@ -128,34 +111,29 @@ export default function RootLayout({
             ]),
           }}
         />
-        {/* Preconnect to external domains for performance - only critical ones */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* DNS prefetch for non-critical resources */}
+
+        {/* External resource hints */}
         <link
           rel="dns-prefetch"
           href="https://cdn.sanity.io"
         />
+
         <link
           rel="dns-prefetch"
           href="https://www.youtube-nocookie.com"
         />
+
         <link
           rel="dns-prefetch"
           href="https://www.googletagmanager.com"
         />
+
         <link
           rel="dns-prefetch"
           href="https://www.google-analytics.com"
         />
-        {/* Preload critical hero image (LCP element) */}
+
+        {/* Critical hero image */}
         <link
           rel="preload"
           href="/hero.webp"
@@ -163,51 +141,65 @@ export default function RootLayout({
           type="image/webp"
           fetchPriority="high"
         />
+
+        {/* Microsoft Clarity */}
         {process.env.NEXT_PUBLIC_APP_ENV === 'production' && (
           <Script
             id="microsoft-clarity"
             strategy="afterInteractive"
           >
             {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "xb45y9afql");
-          `}
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){
+                  (c[a].q=c[a].q||[]).push(arguments)
+                };
+                t=l.createElement(r);
+                t.async=1;
+                t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];
+                y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "xb45y9afql");
+            `}
           </Script>
         )}
       </head>
-      <body className={`${lato.variable} ${bricolageGrotesque.variable} antialiased font-lato`}>
-        {/* Deferred analytics: GTM & Meta Pixel load after interaction/idle to improve LCP */}
-        {/* eslint-disable-next-line @next/next/no-server-import-in-page */}
-        {/* Lazy client loader for analytics */}
+
+      <body className="antialiased font-lato">
         <DeferredAnalytics />
-        {/* Note: noscript fallback is included inside DeferredAnalytics */}
-        {/* Tapfiliate - Affiliate tracking */}
+
+        {/* Tapfiliate */}
         <Script
           src="https://script.tapfiliate.com/tapfiliate.js"
           strategy="afterInteractive"
         />
+
         <Script
           id="tapfiliate-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){ (t[a].q=t[a].q||[]).push(arguments)}})(window,'tap');
-tap('create', '63069-ff90ee', { integration: "javascript" });
-tap('detect');`,
+            __html: `
+              (function(t,a,p){
+                t.TapfiliateObject=a;
+                t[a]=t[a]||function(){
+                  (t[a].q=t[a].q||[]).push(arguments)
+                }
+              })(window,'tapfiliate');
+            `,
           }}
         />
-        {/* Google Analytics - Loads after page is interactive */}
+
+        {/* Google Analytics */}
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
-        {/* Outbound Link Tracking - Tracks external link clicks */}
+
+        {/* Outbound Link Tracking */}
         <OutboundLinkTracker />
-        {/* Records first-touch UTM/referrer once per session, before any internal navigation can drop it */}
-        <AttributionCapture />
-        {/* Essential: Country Provider for location-based content */}
+
+        {/* Country Provider */}
         <CountryProvider>{children}</CountryProvider>
+
         <Toaster />
-        {/* Vercel Analytics - Lazy loaded, non-essential */}
+
+        {/* Vercel Analytics */}
         <VercelAnalytics />
       </body>
     </html>
