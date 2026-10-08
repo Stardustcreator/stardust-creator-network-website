@@ -137,19 +137,26 @@ export default function FinalCTASection() {
           className="
             mt-5
             flex
-            flex-wrap
-            items-center
-            justify-center
+            w-full
+            flex-col
             gap-3
+            sm:w-auto
+            sm:flex-row
+            sm:flex-wrap
+            sm:items-center
+            sm:justify-center
           "
         >
           {/* Find your Creator match */}
           <Link
             href="/for-creators"
             className="
-              inline-flex
+              flex
               h-[40px]
+              w-full
               items-center
+              sm:inline-flex
+              sm:w-auto
               justify-center
               rounded-[6px]
               bg-[#57058B]
@@ -177,9 +184,12 @@ export default function FinalCTASection() {
           <Link
             href="/signin"
             className="
-              inline-flex
+              flex
               h-[40px]
+              w-full
               items-center
+              sm:inline-flex
+              sm:w-auto
               justify-center
               rounded-[6px]
               border
