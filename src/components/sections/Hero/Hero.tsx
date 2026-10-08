@@ -428,7 +428,7 @@ export default function Hero() {
         ================================================== */}
 
         <motion.div
-          className="mt-6 flex flex-wrap gap-3"
+          className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
           initial={{
             opacity: 0,
             y: 20,
@@ -447,14 +447,17 @@ export default function Hero() {
           <Link
             href="https://www.stardustcreatornetwork.com/signin"
             className="
-              inline-flex
+              flex
               h-[48px]
+              w-full
               items-center
               justify-center
               gap-2
               rounded-[8px]
               bg-[#57058B]
               px-5
+              sm:inline-flex
+              sm:w-auto
               font-[var(--font-lato)]
               text-[14px]
               font-medium
@@ -497,8 +500,9 @@ export default function Hero() {
           <Link
             href="/for-creators"
             className="
-              inline-flex
+              flex
               h-[48px]
+              w-full
               items-center
               justify-center
               rounded-[8px]
@@ -506,6 +510,8 @@ export default function Hero() {
               border-[#E2E8F0]
               bg-white
               px-5
+              sm:inline-flex
+              sm:w-auto
               font-[var(--font-lato)]
               text-[14px]
               font-medium
@@ -522,119 +528,62 @@ export default function Hero() {
 
         {/* =================================================
             MOBILE IMAGE LOOP
+            Two horizontal rows that scroll together (same speed,
+            same direction) so the section stays short on phones.
+            Each row repeats its images 4 times: -50% moves exactly
+            two copies, so the loop is seamless and always wider than
+            the screen up to the lg breakpoint.
         ================================================== */}
 
-        <div
-          className="
-            relative
-            mt-12
-            grid
-            grid-cols-2
-            gap-3
-            overflow-hidden
-          "
-        >
-          {/* =================================================
-              LEFT MOBILE COLUMN
-              Frame 1 → 3 → 5
-              Moves upward
-          ================================================== */}
-
-          <div className="relative h-[650px] overflow-hidden">
-            <motion.div
-              className="flex flex-col gap-3 pb-3"
-              initial={{
-                y: '0%',
-              }}
-              animate={{
-                y: ['0%', '-50%'],
-              }}
-              transition={{
-                duration: 30,
-                ease: 'linear',
-                repeat: Infinity,
-                repeatType: 'loop',
-              }}
+        <div className="relative -mx-6 mt-10 flex flex-col gap-3 overflow-hidden">
+          {[leftColumnImages, rightColumnImages].map((rowImages, row) => (
+            <div
+              key={`mobile-row-${row}`}
+              className="overflow-hidden"
             >
-              {[...leftColumnImages, ...leftColumnImages].map((image, index) => (
-                <motion.div
-                  key={`${image}-mobile-left-${index}`}
-                  className="
-                    relative
-                    h-[210px]
-                    w-full
-                    shrink-0
-                    overflow-hidden
-                    rounded-[20px]
-                    bg-transparent
-                  "
-                  whileHover={{
-                    scale: 1.015,
-                  }}
-                >
-                  <Image
-                    src={image}
-                    alt="Creator"
-                    fill
-                    sizes="50vw"
-                    className="object-cover"
-                    priority={index < 2}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* =================================================
-              RIGHT MOBILE COLUMN
-              Frame 2 → 4 → 6
-              Moves downward
-          ================================================== */}
-
-          <div className="relative h-[650px] overflow-hidden">
-            <motion.div
-              className="flex flex-col gap-3 pb-3"
-              initial={{
-                y: '-50%',
-              }}
-              animate={{
-                y: ['-50%', '0%'],
-              }}
-              transition={{
-                duration: 30,
-                ease: 'linear',
-                repeat: Infinity,
-                repeatType: 'loop',
-              }}
-            >
-              {[...rightColumnImages, ...rightColumnImages].map((image, index) => (
-                <motion.div
-                  key={`${image}-mobile-right-${index}`}
-                  className="
-                    relative
-                    h-[210px]
-                    w-full
-                    shrink-0
-                    overflow-hidden
-                    rounded-[20px]
-                    bg-transparent
-                  "
-                  whileHover={{
-                    scale: 1.015,
-                  }}
-                >
-                  <Image
-                    src={image}
-                    alt="Creator"
-                    fill
-                    sizes="50vw"
-                    className="object-cover"
-                    priority={index < 2}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+              <motion.div
+                className="flex w-max gap-3 pr-3"
+                initial={{
+                  x: '0%',
+                }}
+                animate={{
+                  x: ['0%', '-50%'],
+                }}
+                transition={{
+                  duration: 40,
+                  ease: 'linear',
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                }}
+              >
+                {Array.from({ length: 4 }, () => rowImages)
+                  .flat()
+                  .map((image, index) => (
+                    <div
+                      key={`${image}-mobile-${row}-${index}`}
+                      className="
+                        relative
+                        h-[170px]
+                        w-[150px]
+                        shrink-0
+                        overflow-hidden
+                        rounded-[16px]
+                        bg-transparent
+                      "
+                    >
+                      <Image
+                        src={image}
+                        alt="Creator"
+                        fill
+                        sizes="150px"
+                        className="object-cover"
+                        priority={row === 0 && index < 3}
+                      />
+                    </div>
+                  ))}
+              </motion.div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

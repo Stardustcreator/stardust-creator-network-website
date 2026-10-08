@@ -197,7 +197,10 @@ function AnimatedMetric({ value }: { value: string }) {
 
 export default function CaseStudySection() {
   return (
-    <section className="w-full overflow-hidden bg-white px-4 py-12 sm:px-6 sm:py-16 md:py-24 lg:px-8 lg:py-32">
+    <section
+      id="case-studies"
+      className="w-full scroll-mt-20 overflow-hidden bg-white px-4 py-12 sm:px-6 sm:py-16 md:py-24 lg:px-8 lg:py-32"
+    >
       <div className="mx-auto max-w-6xl">
         {/* =====================================================
             HEADER

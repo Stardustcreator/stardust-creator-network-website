@@ -7,6 +7,25 @@ import VercelAnalytics from '@/components/analytics/VercelAnalytics';
 import OutboundLinkTracker from '@/components/analytics/OutboundLinkTracker';
 import dynamic from 'next/dynamic';
 import { Toaster } from '@/components/ui/Toaster';
+import { Instrument_Sans, Lato } from 'next/font/google';
+
+// Site-wide fonts (Figma: Instrument Sans for headings, Lato for body text).
+// next/font self-hosts them at build time, so they satisfy the CSP
+// (fonts from 'self' only). The CSS variables below are what every page and
+// component reads: --font-instrument-sans and --font-lato.
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-instrument-sans',
+});
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  display: 'swap',
+  variable: '--font-lato',
+});
 
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics'), {
   ssr: false,
@@ -92,6 +111,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      className={`${instrumentSans.variable} ${lato.variable}`}
       suppressHydrationWarning
     >
       <head>
