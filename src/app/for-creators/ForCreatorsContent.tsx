@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, MotionConfig } from 'framer-motion';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 
@@ -185,7 +185,15 @@ function Reveal({
    HERO CREATOR
 ========================================================= */
 
-function CreatorPortrait({ src, className }: { src: string; className: string }) {
+function CreatorPortrait({
+  src,
+  className,
+  index,
+}: {
+  src: string;
+  className: string;
+  index: number;
+}) {
   return (
     <motion.div
       className={className}
@@ -201,17 +209,38 @@ function CreatorPortrait({ src, className }: { src: string; className: string })
       }}
       transition={{
         duration: 0.9,
+        delay: 0.2 + index * 0.08,
         ease: [0.16, 1, 0.3, 1],
       }}
+      whileHover={{
+        scale: 1.08,
+        transition: { duration: 0.25 },
+      }}
     >
-      <Image
-        src={src}
-        alt=""
-        fill
-        sizes="120px"
-        className="creator-image"
-        priority
-      />
+      {/* Continuous float. Each portrait gets its own rhythm so the arc
+          feels alive rather than moving as one block. */}
+      <motion.div
+        style={{ position: 'absolute', inset: 0 }}
+        animate={{
+          y: [0, index % 2 === 0 ? -10 : 10, 0],
+          rotate: [0, index % 2 === 0 ? 1.5 : -1.5, 0],
+        }}
+        transition={{
+          duration: 4.5 + (index % 4) * 0.6,
+          delay: 1.2 + index * 0.15,
+          ease: 'easeInOut',
+          repeat: Infinity,
+        }}
+      >
+        <Image
+          src={src}
+          alt=""
+          fill
+          sizes="120px"
+          className="creator-image"
+          priority
+        />
+      </motion.div>
     </motion.div>
   );
 }
@@ -225,311 +254,323 @@ export default function ForCreatorsContent() {
     <>
       <Header />
 
-      <main className="scn-creators-page">
-        {/* =====================================================
+      <MotionConfig reducedMotion="user">
+        <main className="scn-creators-page">
+          {/* =====================================================
             HERO
         ===================================================== */}
 
-        <section className="scn-hero">
-          {/* FULL-WIDTH HERO BACKGROUND */}
+          <section className="scn-hero">
+            {/* FULL-WIDTH HERO BACKGROUND */}
 
-          <div className="hero-background">
-            <div className="hero-blob hero-blob-purple" />
-            <div className="hero-blob hero-blob-blue" />
-            <div className="hero-blob hero-blob-yellow" />
-            <div className="hero-blob hero-blob-dark" />
-          </div>
+            <div className="hero-background">
+              <div className="hero-blob hero-blob-purple" />
+              <div className="hero-blob hero-blob-blue" />
+              <div className="hero-blob hero-blob-yellow" />
+              <div className="hero-blob hero-blob-dark" />
+            </div>
 
-          {/* HERO CONTENT */}
-
-          <motion.div
-            className="hero-copy"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.65,
-              ease: 'easeOut',
-            }}
-          >
-            <h1>
-              Stop chasing brand deals.
-              <br />
-              Start getting booked.
-            </h1>
-
-            <p>Get found, price with confidence and get paid properly. All in one place.</p>
-
-            <Link
-              href="/signup"
-              className="hero-button"
-            >
-              <span>Join SCN</span>
-              <span className="hero-arrow">→</span>
-            </Link>
-          </motion.div>
-
-          {/* CREATOR ARC */}
-
-          <div className="creator-arc">
-            {creators.map(creator => (
-              <CreatorPortrait
-                key={creator.src}
-                src={creator.src}
-                className={creator.className}
-              />
-            ))}
-
-            {/* Booked chip */}
+            {/* HERO CONTENT */}
 
             <motion.div
-              className="hero-chip hero-chip-booked"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              className="hero-copy"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
-                delay: 1.4,
-                duration: 0.4,
+                duration: 0.65,
                 ease: 'easeOut',
               }}
             >
-              <span className="chip-dot purple-dot" />
-              <span>Booked · ₦150k</span>
+              <h1>
+                Stop chasing brand deals.
+                <br />
+                Start getting booked.
+              </h1>
+
+              <p>Get found, price with confidence and get paid properly. All in one place.</p>
+
+              <Link
+                href="/signup"
+                className="hero-button"
+              >
+                <span>Join SCN</span>
+                <span className="hero-arrow">→</span>
+              </Link>
             </motion.div>
 
-            {/* Subscribers chip */}
+            {/* CREATOR ARC */}
 
-            <motion.div
-              className="hero-chip hero-chip-subscribers"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 1.55,
-                duration: 0.4,
-                ease: 'easeOut',
-              }}
-            >
-              <span className="chip-dot blue-dot" />
-              <span>+86 subscribers</span>
-            </motion.div>
-          </div>
-        </section>
+            <div className="creator-arc">
+              {creators.map((creator, index) => (
+                <CreatorPortrait
+                  key={creator.src}
+                  src={creator.src}
+                  className={creator.className}
+                  index={index}
+                />
+              ))}
 
-        {/* =====================================================
+              {/* Booked chip */}
+
+              <motion.div
+                className="hero-chip hero-chip-booked"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+                transition={{
+                  opacity: { delay: 1.4, duration: 0.4, ease: 'easeOut' },
+                  scale: { delay: 1.4, duration: 0.4, ease: 'easeOut' },
+                  y: { delay: 2, duration: 3.2, ease: 'easeInOut', repeat: Infinity },
+                }}
+              >
+                <span className="chip-dot purple-dot" />
+                <span>Booked · ₦150k</span>
+              </motion.div>
+
+              {/* Subscribers chip */}
+
+              <motion.div
+                className="hero-chip hero-chip-subscribers"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
+                transition={{
+                  opacity: { delay: 1.55, duration: 0.4, ease: 'easeOut' },
+                  scale: { delay: 1.55, duration: 0.4, ease: 'easeOut' },
+                  y: { delay: 2.3, duration: 3.6, ease: 'easeInOut', repeat: Infinity },
+                }}
+              >
+                <span className="chip-dot blue-dot" />
+                <span>+86 subscribers</span>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* =====================================================
             TOOLS INTRO
         ===================================================== */}
 
-        <section className="tools-intro">
-          <Reveal>
-            <h2>
-              The Infrastructure Your Creator
-              <br />
-              Business Has Been Missing
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <p>
-              Every tool on your SCN dashboard helps you earn what you&apos;re worth, get booked by
-              brands and grow a creator business that lasts.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <Link
-              href="/creators/join"
-              className="purple-button"
-            >
-              Sign Up
-              <span>→</span>
-            </Link>
-          </Reveal>
-        </section>
-
-        {/* =====================================================
-            CREATOR TOOLS
-        ===================================================== */}
-
-        <section className="tools-section">
-          <div className="tools-rows">
-            {creatorFeatures.map((feature, index) => (
-              <Reveal
-                key={feature.title}
-                delay={index * 0.04}
-                className={`tool-row ${feature.reverse ? 'tool-row-reverse' : ''}`}
-              >
-                <div className="tool-copy">
-                  <h3>{feature.title}</h3>
-
-                  <h4>{feature.subtitle}</h4>
-
-                  <p>{feature.description}</p>
-                </div>
-
-                <div className="visual-card">
-                  <Image
-                    src={feature.image}
-                    alt={feature.title}
-                    fill
-                    sizes="(max-width: 900px) 100vw, 608px"
-                    className="visual-card-image"
-                  />
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        {/* =====================================================
-            COMMUNITY
-        ===================================================== */}
-
-        <section className="community-section">
-          <div className="community-head">
+          <section className="tools-intro">
             <Reveal>
               <h2>
-                Join a community of
+                The Infrastructure Your Creator
                 <br />
-                like-minded creators
+                Business Has Been Missing
               </h2>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p>
-                Live clinics, expert mentorship, templates, and a community of creators who are
-                building real businesses from their content. You do not have to figure this out
-                alone.
+                Every tool on your SCN dashboard helps you earn what you&apos;re worth, get booked
+                by brands and grow a creator business that lasts.
               </p>
             </Reveal>
-          </div>
 
-          <div className="community-window">
-            <motion.div
-              className="community-track"
-              animate={{
-                x: ['0%', '-50%'],
-              }}
-              transition={{
-                duration: 45,
-                ease: 'linear',
-                repeat: Infinity,
-              }}
-            >
-              {[...communityImages, ...communityImages].map((image, index) => (
-                <div
-                  className="community-photo"
-                  key={`${image}-${index}`}
-                >
-                  <Image
-                    src={image}
-                    alt="SCN creator community"
-                    fill
-                    sizes="200px"
-                    className="community-photo-image"
-                  />
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* =====================================================
-            FREE / STARTER
-        ===================================================== */}
-
-        <section className="starter-section">
-          <Reveal className="starter-inner">
-            <h2 className="starter-title">Start getting booked. It&apos;s free.</h2>
-
-            <p className="starter-text">
-              Price your work, send a pro rate card, get matched with brand deals and sell your UGC
-              packages.
-            </p>
-
-            <Link
-              href="/signup"
-              className="purple-button"
-            >
-              Join SCN
-            </Link>
-
-            <p className="builder-note">
-              A Builder plan with higher limits is coming.
-              <Link href="/creators/join">Get notified →</Link>
-            </p>
-          </Reveal>
-        </section>
-
-        {/* =====================================================
-            FAQ
-        ===================================================== */}
-
-        <section className="faq-section">
-          <div className="faq-inner">
-            <Reveal className="faq-header">
-              <h2>Frequently Asked Questions</h2>
-
-              <p>Things most people want to know before they sign up.</p>
+            <Reveal delay={0.15}>
+              <Link
+                href="/creators/join"
+                className="purple-button"
+              >
+                Sign Up
+                <span>→</span>
+              </Link>
             </Reveal>
+          </section>
 
-            <div className="faq-list">
-              {faqs.map((faq, index) => (
+          {/* =====================================================
+            CREATOR TOOLS
+        ===================================================== */}
+
+          <section className="tools-section">
+            <div className="tools-rows">
+              {creatorFeatures.map((feature, index) => (
                 <Reveal
-                  key={faq.question}
-                  delay={index * 0.03}
+                  key={feature.title}
+                  delay={index * 0.04}
+                  className={`tool-row ${feature.reverse ? 'tool-row-reverse' : ''}`}
                 >
-                  <details
-                    className="faq-item"
-                    open={index === 0}
+                  <div className="tool-copy">
+                    <h3>{feature.title}</h3>
+
+                    <h4>{feature.subtitle}</h4>
+
+                    <p>{feature.description}</p>
+                  </div>
+
+                  <motion.div
+                    className="visual-card"
+                    initial={{ opacity: 0, x: feature.reverse ? -48 : 48, scale: 0.97 }}
+                    whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ y: -8, scale: 1.015, transition: { duration: 0.3 } }}
                   >
-                    <summary>
-                      <span>{faq.question}</span>
-
-                      <span
-                        className="faq-chevron"
-                        aria-hidden="true"
-                      >
-                        ⌄
-                      </span>
-
-                      <span
-                        className="faq-plus"
-                        aria-hidden="true"
-                      />
-                    </summary>
-
-                    <p>{faq.answer}</p>
-                  </details>
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      fill
+                      sizes="(max-width: 900px) 100vw, 608px"
+                      className="visual-card-image"
+                    />
+                  </motion.div>
                 </Reveal>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* =====================================================
+          {/* =====================================================
+            COMMUNITY
+        ===================================================== */}
+
+          <section className="community-section">
+            <div className="community-head">
+              <Reveal>
+                <h2>
+                  Join a community of
+                  <br />
+                  like-minded creators
+                </h2>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <p>
+                  Live clinics, expert mentorship, templates, and a community of creators who are
+                  building real businesses from their content. You do not have to figure this out
+                  alone.
+                </p>
+              </Reveal>
+            </div>
+
+            <div className="community-window">
+              <motion.div
+                className="community-track"
+                animate={{
+                  x: ['0%', '-50%'],
+                }}
+                transition={{
+                  duration: 90,
+                  ease: 'linear',
+                  repeat: Infinity,
+                }}
+              >
+                {Array.from({ length: 4 }, () => communityImages)
+                  .flat()
+                  .map((image, index) => (
+                    <div
+                      className="community-photo"
+                      key={`${image}-${index}`}
+                    >
+                      <Image
+                        src={image}
+                        alt="SCN creator community"
+                        fill
+                        sizes="200px"
+                        className="community-photo-image"
+                      />
+                    </div>
+                  ))}
+              </motion.div>
+            </div>
+          </section>
+
+          {/* =====================================================
+            FREE / STARTER
+        ===================================================== */}
+
+          <section className="starter-section">
+            <Reveal className="starter-inner">
+              <h2 className="starter-title">Start getting booked. It&apos;s free.</h2>
+
+              <p className="starter-text">
+                Price your work, send a pro rate card, get matched with brand deals and sell your
+                UGC packages.
+              </p>
+
+              <Link
+                href="/signup"
+                className="purple-button"
+              >
+                Join SCN
+              </Link>
+
+              <p className="builder-note">
+                A Builder plan with higher limits is coming.
+                <Link href="/creators/join">Get notified →</Link>
+              </p>
+            </Reveal>
+          </section>
+
+          {/* =====================================================
+            FAQ
+        ===================================================== */}
+
+          <section className="faq-section">
+            <div className="faq-inner">
+              <Reveal className="faq-header">
+                <h2>Frequently Asked Questions</h2>
+
+                <p>Things most people want to know before they sign up.</p>
+              </Reveal>
+
+              <div className="faq-list">
+                {faqs.map((faq, index) => (
+                  <Reveal
+                    key={faq.question}
+                    delay={index * 0.03}
+                  >
+                    <details
+                      className="faq-item"
+                      open={index === 0}
+                    >
+                      <summary>
+                        <span>{faq.question}</span>
+
+                        <span
+                          className="faq-chevron"
+                          aria-hidden="true"
+                        >
+                          ⌄
+                        </span>
+
+                        <span
+                          className="faq-plus"
+                          aria-hidden="true"
+                        />
+                      </summary>
+
+                      <p>{faq.answer}</p>
+                    </details>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* =====================================================
             FINAL CTA
         ===================================================== */}
 
-        <section className="final-cta">
-          <Reveal>
-            <div className="final-cta-inner">
-              <h2>Get paid for what you already create.</h2>
+          <section className="final-cta">
+            <Reveal>
+              <div className="final-cta-inner">
+                <h2>Get paid for what you already create.</h2>
 
-              <p>
-                Set up your creator profile in two minutes. We&apos;ll match you with brands that
-                fit your content and make sure you get paid.
-              </p>
+                <p>
+                  Set up your creator profile in two minutes. We&apos;ll match you with brands that
+                  fit your content and make sure you get paid.
+                </p>
 
-              <div className="final-buttons">
-                <Link
-                  href="/signup"
-                  className="purple-button"
-                >
-                  Join the Network
-                </Link>
+                <div className="final-buttons">
+                  <Link
+                    href="/signup"
+                    className="purple-button"
+                  >
+                    Join the Network
+                  </Link>
+                </div>
               </div>
-            </div>
-          </Reveal>
-        </section>
-      </main>
+            </Reveal>
+          </section>
+        </main>
+      </MotionConfig>
 
       <Footer />
 
@@ -1375,23 +1416,6 @@ export default function ForCreatorsContent() {
           padding-right: 16px;
         }
 
-        @media (min-width: 1101px) {
-          /* Desktop design: all six photos in one static row */
-          .community-track {
-            width: 100%;
-
-            justify-content: center;
-
-            padding-right: 0;
-
-            transform: none !important;
-          }
-
-          .community-photo:nth-child(n + 7) {
-            display: none;
-          }
-        }
-
         .community-photo {
           position: relative;
 
@@ -1653,6 +1677,34 @@ export default function ForCreatorsContent() {
           transform: rotate(0deg);
         }
 
+        .faq-item[open] > p {
+          animation: faqReveal 320ms ease-out;
+        }
+
+        @keyframes faqReveal {
+          from {
+            opacity: 0;
+            transform: translateY(-6px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .faq-item summary:hover {
+          color: #57058b;
+        }
+
+        .community-photo {
+          transition: transform 300ms ease;
+        }
+
+        .community-photo:hover {
+          transform: translateY(-6px) scale(1.03);
+        }
+
         .faq-item p {
           margin: 0;
 
@@ -1883,12 +1935,12 @@ export default function ForCreatorsContent() {
           */
 
           .scn-hero {
-            height: 610px;
+            height: 545px;
           }
 
           .hero-background {
             width: 100%;
-            height: 610px;
+            height: 545px;
           }
 
           /*
@@ -1935,72 +1987,60 @@ export default function ForCreatorsContent() {
 
           /*
             =====================================================
-            MOBILE CREATOR ARC
+            MOBILE CREATOR ARC  (Figma: For Creators – Mobile › Hero › Creator arc)
             =====================================================
 
-            IMPORTANT:
+            The mobile design uses 6 portraits, not 10, laid out
+            in a 342 x 96 arc that sits 20px under the Join button,
+            with about 60px of hero below it:
 
-            We are NOT scaling the 1440px desktop canvas anymore.
-
-            Instead, mobile gets its own 7-image composition.
-
-            Desktop:
-            10 images
-
-            Mobile:
-            7 images
+              Creator 1  (arch)      left 0    top 4   52 x 68
+              Creator 3  (circle)    left 62   top 35  54 x 54
+              Creator 4  (squircle)  left 125  top 48  41 x 48
+              Creator 7  (squircle)  left 176  top 48  41 x 48
+              Creator 5  (circle)    left 226  top 35  54 x 54
+              Creator 10 (arch)      left 290  top 4   52 x 68
           */
 
           .creator-arc {
             position: absolute;
 
-            top: 410px;
-            left: 0;
+            top: 386px;
+            left: 50%;
 
-            width: 100%;
-            height: 190px;
+            width: 342px;
+            height: 96px;
 
-            transform: none;
+            transform: translateX(-50%);
 
             pointer-events: none;
 
             z-index: 20;
           }
 
-          /*
-            Hide creators 8, 9 and 10 on mobile.
+          /* Not part of the mobile composition. */
 
-            This leaves exactly the 7 creators used in the
-            mobile Figma design.
-          */
-
+          .creator-2,
+          .creator-6,
           .creator-8,
-          .creator-9,
-          .creator-10 {
+          .creator-9 {
             display: none;
           }
-
-          /*
-            Mobile creator images are intentionally smaller.
-          */
 
           .creator {
             pointer-events: auto;
           }
 
-          /*
-            Creator 1
-            Left side / upper part of arc
-          */
+          /* Creator 1 · arch, far left */
 
           .creator-1 {
-            left: 2%;
+            left: 0;
             top: 4px;
 
-            width: 58px;
-            height: 76px;
+            width: 52px;
+            height: 68px;
 
-            border-radius: 29px 29px 9px 9px;
+            border-radius: 26px 26px 10px 10px;
           }
 
           .creator-1 .creator-image {
@@ -2010,38 +2050,14 @@ export default function ForCreatorsContent() {
             height: 120% !important;
           }
 
-          /*
-            Creator 2
-            Moves slightly downward toward the middle.
-          */
-
-          .creator-2 {
-            left: 15%;
-            top: 42px;
-
-            width: 48px;
-            height: 76px;
-
-            border-radius: 999px;
-          }
-
-          .creator-2 .creator-image {
-            inset: -9% -38% !important;
-
-            width: 176% !important;
-            height: 118% !important;
-          }
-
-          /*
-            Creator 3
-          */
+          /* Creator 3 · circle */
 
           .creator-3 {
-            left: 29%;
-            top: 70px;
+            left: 62px;
+            top: 35px;
 
-            width: 62px;
-            height: 62px;
+            width: 54px;
+            height: 54px;
 
             border-radius: 999px;
           }
@@ -2053,19 +2069,16 @@ export default function ForCreatorsContent() {
             height: 126% !important;
           }
 
-          /*
-            Creator 4
-            Lowest central point of the arc.
-          */
+          /* Creator 4 · squircle, lowest point (left of centre) */
 
           .creator-4 {
-            left: 43%;
-            top: 88px;
+            left: 125px;
+            top: 48px;
 
-            width: 52px;
-            height: 62px;
+            width: 41px;
+            height: 48px;
 
-            border-radius: 15px;
+            border-radius: 11px;
           }
 
           .creator-4 .creator-image {
@@ -2075,16 +2088,33 @@ export default function ForCreatorsContent() {
             height: 126% !important;
           }
 
-          /*
-            Creator 5
-          */
+          /* Creator 7 · squircle, lowest point (right of centre) */
+
+          .creator-7 {
+            left: 176px;
+            top: 48px;
+
+            width: 41px;
+            height: 48px;
+
+            border-radius: 11px;
+          }
+
+          .creator-7 .creator-image {
+            inset: -12% -14% !important;
+
+            width: 128% !important;
+            height: 124% !important;
+          }
+
+          /* Creator 5 · circle */
 
           .creator-5 {
-            left: 56%;
-            top: 78px;
+            left: 226px;
+            top: 35px;
 
-            width: 60px;
-            height: 60px;
+            width: 54px;
+            height: 54px;
 
             border-radius: 999px;
           }
@@ -2096,44 +2126,20 @@ export default function ForCreatorsContent() {
             height: 132% !important;
           }
 
-          /*
-            Creator 6
-          */
+          /* Creator 10 · arch, far right */
 
-          .creator-6 {
-            left: 70%;
-            top: 48px;
+          .creator-10 {
+            left: 290px;
+            top: 4px;
 
-            width: 45px;
+            width: 52px;
             height: 68px;
 
-            border-radius: 25px 25px 8px 8px;
+            border-radius: 26px 26px 10px 10px;
           }
 
-          .creator-6 .creator-image {
-            inset: -10% -18% !important;
-
-            width: 136% !important;
-            height: 120% !important;
-          }
-
-          /*
-            Creator 7
-            Right side / upper part of arc.
-          */
-
-          .creator-7 {
-            left: 83%;
-            top: 10px;
-
-            width: 58px;
-            height: 68px;
-
-            border-radius: 16px;
-          }
-
-          .creator-7 .creator-image {
-            inset: -12% -14% !important;
+          .creator-10 .creator-image {
+            inset: -10% -14% !important;
 
             width: 128% !important;
             height: 124% !important;

@@ -1664,7 +1664,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                 >
                   Explore More
                 </Heading>
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                   <Link
                     href="/case-studies"
                     className="flex-1 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl hover:bg-white/10 hover:border-white/20 transition-all text-center"

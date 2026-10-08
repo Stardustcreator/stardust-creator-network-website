@@ -79,12 +79,12 @@ export default function CreatorGrowthSection() {
               duration: 0.6,
               delay: 0.15,
             }}
-            className="flex flex-wrap items-center gap-3"
+            className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
           >
             {/* Find your Creator match */}
             <Link
               href="/for-creators"
-              className="inline-flex h-[48px] items-center justify-center rounded-[8px] bg-[#57058B] px-6 text-[14px] font-medium text-white transition-opacity duration-200 hover:opacity-90"
+              className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#57058B] sm:inline-flex sm:w-auto px-6 text-[14px] font-medium text-white transition-opacity duration-200 hover:opacity-90"
               style={{
                 fontFamily: 'var(--font-lato)',
               }}
@@ -95,7 +95,7 @@ export default function CreatorGrowthSection() {
             {/* I'm a Creator */}
             <Link
               href="/signin"
-              className="inline-flex h-[48px] items-center justify-center rounded-[8px] border border-[#E5E5E5] bg-white px-6 text-[14px] font-medium text-[#262626] transition-colors duration-200 hover:bg-[#f7f7f7]"
+              className="flex h-[48px] w-full items-center justify-center rounded-[8px] border sm:inline-flex sm:w-auto border-[#E5E5E5] bg-white px-6 text-[14px] font-medium text-[#262626] transition-colors duration-200 hover:bg-[#f7f7f7]"
               style={{
                 fontFamily: 'var(--font-lato)',
               }}

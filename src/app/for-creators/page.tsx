@@ -20,14 +20,21 @@ const lato = Lato({
   variable: '--font-lato-fc',
 });
 
-export const metadata: Metadata = generateMetaTags({
-  title: 'For Creators – Get Booked by Brands | Stardust Creator Network',
-  description:
-    'Get found by brands, price your work with confidence and get paid properly. Rate calculator, rate card builder, brand deals, storefront and audience tools for African creators.',
-  image: '/who we are/creators.webp',
-  url: '/for-creators',
-  tags: ['creators', 'brand deals', 'rate card', 'creator tools', 'monetization'],
-});
+const PAGE_TITLE = 'For Creators – Get Booked by Brands | Stardust Creator Network';
+
+export const metadata: Metadata = {
+  ...generateMetaTags({
+    title: PAGE_TITLE,
+    description:
+      'Get found by brands, price your work with confidence and get paid properly. Rate calculator, rate card builder, brand deals, storefront and audience tools for African creators.',
+    image: '/who we are/creators.webp',
+    url: '/for-creators',
+    tags: ['creators', 'brand deals', 'rate card', 'creator tools', 'monetization'],
+  }),
+  // "absolute" stops the root layout's "%s | Stardust Creator Network"
+  // template from adding the site name a second time.
+  title: { absolute: PAGE_TITLE },
+};
 
 export default function ForCreatorsPage() {
   return (

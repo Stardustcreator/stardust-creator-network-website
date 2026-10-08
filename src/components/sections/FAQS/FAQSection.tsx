@@ -1,7 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+
+/* =========================================================
+   FAQ  (Figma: SCN (For Uche) › Home › FAQ, node 801-11577)
+
+   - Frame: full width, padding 64 top/bottom, Surface/Primary #FAFAF9
+   - Header: Instrument Sans 600 32/44 -1.2px #262626,
+     subheading Lato 16/24 #737373, 48px above the list
+   - List: 720px wide, 12px between items, every item opened
+   - Item: padding 16, question/answer gap 16, divider at the bottom
+     Question H6 Lato 16/24 #1A002E · Answer H7 Lato 14/20 #737373
+   Fonts come from the root layout (--font-instrument-sans, --font-lato).
+========================================================= */
 
 const faqs = [
   {
@@ -10,39 +22,62 @@ const faqs = [
       "SCN is Africa's creator marketplace. Brands submit campaign briefs and get matched to vetted creators who are the right fit for their campaign. Creators get access to brand deals, a rate calculator, a UGC storefront, an audience builder, and a live creator community. We are the infrastructure that connects both sides of the African creator economy.",
   },
   {
-    question: 'Who can join SCN as a creator?',
+    question: 'How much does a campaign cost?',
     answer:
-      'SCN is for nano, micro, and mid-tier creators in food, beauty, lifestyle, tech, and finance who want to monetize their content through brand deals. You do not need a huge following. You need the right positioning, the right tools, and access to the right campaigns. SCN gives you all three.',
+      "It depends on your goals, creators and deliverables. You'll see a clear, all-in proposal before you commit.",
   },
   {
-    question: 'How does the brand matching process work?',
-    answer:
-      'Brands submit a campaign brief through SCN. Our team reviews it, handpicks creators from our vetted pool who fit the niche, audience, and campaign objectives, and presents the brand with a shortlist to approve. Once approved, SCN manages the campaign from briefing through to final delivery and settlement.',
+    question: 'How fast can we start a campaign?',
+    answer: "Share your timeline in the brief and we'll build your shortlist around it.",
   },
   {
-    question: 'How do I know what to charge brands?',
+    question: 'How do you keep our brand safe?',
     answer:
-      'The SCN rate calculator factors in your deliverables, usage rights, exclusivity, platform scope, and niche so you always have a rate you can justify and negotiate from. It is available to every creator on the platform.',
+      'Every creator is vetted for quality and conduct, and every piece of content is reviewed before it goes live.',
   },
   {
-    question: 'Can I get brand deals with a small following?',
+    question: 'Who owns the content?',
     answer:
-      'Yes. Brands on SCN are actively looking for nano and micro creators. What matters most is your niche, your content quality, and how well your audience aligns with the brand’s campaign goals. If your positioning is right and your profile is complete, you will be considered for campaigns that match your category.',
+      'Usage rights are agreed upfront, so you know exactly where and for how long you can run it.',
   },
   {
-    question: 'How much does SCN cost for creators?',
-    answer:
-      'SCN has a free Starter plan and a paid Builder plan. The Starter plan gives you access to the rate calculator, storefront, and community. The Builder plan unlocks advanced features. Full pricing details are available under Creator OS.',
+    question: 'Can we pick our own creators?',
+    answer: 'Yes. Choose from your shortlist, or let us make the call.',
   },
   {
-    question: 'Is SCN only for Nigerian creators?',
-    answer:
-      'SCN is built for African creators, starting in Nigeria. Our tools, community, and brand connections reflect the realities of the African creator economy, not Western templates adapted to fit. We are expanding across the continent as we grow.',
+    question: 'Do we pay creators directly?',
+    answer: 'No. One invoice to SCN covers every creator.',
+  },
+  {
+    question: "I'm a creator. How do I join?",
+    answer: 'Sign up free, complete your profile and get considered for briefs in your niche.',
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+function ChevronDownIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 7.5L10 12.5L15 7.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function FAQSection() {
-  // All answers open by default to match the Figma design.
+  // Every item is shown opened in the design, so all start expanded.
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>(faqs.map((_, index) => index));
 
   const toggleFAQ = (index: number) => {
@@ -52,243 +87,107 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="w-full overflow-hidden bg-[#FAFAF9] px-6 py-16 sm:px-8 sm:py-20 md:py-24 lg:px-10 lg:py-28">
-      <div className="mx-auto max-w-[760px]">
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
-        <motion.div
-          className="mb-12 text-center sm:mb-14 md:mb-16"
-          initial={{
-            opacity: 0,
-            y: 35,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <motion.h2 className="font-bricolage-grotesque mb-2 text-3xl font-bold leading-tight tracking-[-0.03em] text-[#262626] sm:text-4xl md:text-[42px]">
-            Frequently Asked Questions
-          </motion.h2>
-
-          <motion.p
-            className="font-lato text-sm leading-relaxed text-[#737373] sm:text-[15px]"
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.3,
-            }}
-            transition={{
-              duration: 0.6,
-              delay: 0.15,
-              ease: 'easeOut',
-            }}
+    <MotionConfig reducedMotion="user">
+      <section
+        className="w-full bg-[#FAFAF9] px-5 py-16 sm:px-8"
+        style={{ fontFamily: "var(--font-lato), 'Lato', sans-serif" }}
+      >
+        <div className="mx-auto w-full max-w-[720px]">
+          {/* =====================================================
+              HEADER
+          ===================================================== */}
+          <motion.div
+            className="mb-10 text-center sm:mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
-            Things most people want to know before they sign up.
-          </motion.p>
-        </motion.div>
+            <h2
+              className="text-[28px] font-semibold leading-[36px] tracking-[-1px] text-[#262626] sm:text-[32px] sm:leading-[44px] sm:tracking-[-1.2px]"
+              style={{
+                fontFamily: "var(--font-instrument-sans), 'Instrument Sans', sans-serif",
+              }}
+            >
+              Frequently Asked Questions
+            </h2>
 
-        {/* =====================================================
-            FAQ LIST
-        ===================================================== */}
-        <div className="w-full">
-          {faqs.map((faq, index) => {
-            const isExpanded = expandedIndexes.includes(index);
+            <p className="mt-1 text-[16px] font-medium leading-[24px] tracking-[-0.2px] text-[#737373] sm:mt-0">
+              Things most people want to know before they sign up.
+            </p>
+          </motion.div>
 
-            return (
-              <motion.div
-                key={faq.question}
-                initial={{
-                  opacity: 0,
-                  y: 25,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  amount: 0.15,
-                }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="border-b border-[#E5E5E5]"
-              >
-                {/* =================================================
-                    QUESTION
-                ================================================= */}
-                <motion.button
-                  type="button"
-                  onClick={() => toggleFAQ(index)}
-                  aria-expanded={isExpanded}
-                  className="
-                    group
-                    flex
-                    w-full
-                    items-center
-                    justify-between
-                    gap-6
-                    py-5
-                    text-left
-                    sm:py-6
-                  "
-                  whileHover={{
-                    x: 3,
-                  }}
-                  transition={{
-                    duration: 0.25,
-                    ease: 'easeOut',
-                  }}
+          {/* =====================================================
+              FAQ LIST
+          ===================================================== */}
+          <div className="flex flex-col gap-3">
+            {faqs.map((faq, index) => {
+              const isExpanded = expandedIndexes.includes(index);
+              const panelId = `faq-panel-${index}`;
+              const buttonId = `faq-button-${index}`;
+
+              return (
+                <motion.div
+                  key={faq.question}
+                  className="border-b border-[#E7E5E4]"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.06, ease: EASE }}
                 >
-                  <motion.span
-                    className="
-                      font-bricolage-grotesque
-                      text-[13px]
-                      font-medium
-                      leading-relaxed
-                      text-[#262626]
-                      sm:text-sm
-                    "
-                    animate={{
-                      x: isExpanded ? 2 : 0,
-                    }}
-                    transition={{
-                      duration: 0.25,
-                      ease: 'easeOut',
-                    }}
+                  {/* QUESTION */}
+                  <button
+                    id={buttonId}
+                    type="button"
+                    onClick={() => toggleFAQ(index)}
+                    aria-expanded={isExpanded}
+                    aria-controls={panelId}
+                    className="flex w-full items-center justify-between gap-4 rounded-[8px] p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51CFF]"
                   >
-                    {faq.question}
-                  </motion.span>
+                    <span className="text-[16px] font-medium leading-[24px] tracking-[-0.2px] text-[#1A002E]">
+                      {faq.question}
+                    </span>
 
-                  {/* Chevron */}
-                  <motion.span
-                    className="
-                      flex
-                      h-5
-                      w-5
-                      flex-shrink-0
-                      items-center
-                      justify-center
-                      rounded-full
-                      text-[#262626]
-                    "
-                    animate={{
-                      rotate: isExpanded ? 180 : 0,
-                    }}
-                    transition={{
-                      duration: 0.35,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <motion.span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center text-[#1A002E]"
+                      // Figma's opened state shows the chevron pointing down,
+                      // so closed items turn it to point right.
+                      animate={{ rotate: isExpanded ? 0 : -90 }}
+                      transition={{ duration: 0.3, ease: EASE }}
                     >
-                      <path
-                        d="M2.5 4.5L6 8L9.5 4.5"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </motion.span>
-                </motion.button>
+                      <ChevronDownIcon />
+                    </motion.span>
+                  </button>
 
-                {/* =================================================
-                    ANSWER
-                ================================================= */}
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      key="answer"
-                      initial={{
-                        height: 0,
-                        opacity: 0,
-                      }}
-                      animate={{
-                        height: 'auto',
-                        opacity: 1,
-                      }}
-                      exit={{
-                        height: 0,
-                        opacity: 0,
-                      }}
-                      transition={{
-                        height: {
-                          duration: 0.4,
-                          ease: [0.22, 1, 0.36, 1],
-                        },
-                        opacity: {
-                          duration: 0.25,
-                          ease: 'easeOut',
-                        },
-                      }}
-                      className="overflow-hidden"
-                    >
+                  {/* ANSWER */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
                       <motion.div
-                        initial={{
-                          opacity: 0,
-                          y: -8,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: -5,
-                        }}
+                        key="answer"
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
+                        className="overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
                         transition={{
-                          duration: 0.35,
-                          delay: 0.05,
-                          ease: 'easeOut',
+                          height: { duration: 0.35, ease: EASE },
+                          opacity: { duration: 0.25, ease: 'easeOut' },
                         }}
-                        className="pb-6 pr-8"
                       >
-                        <p
-                          className="
-                            font-lato
-                            text-[11px]
-                            leading-[1.7]
-                            text-[#737373]
-                            sm:text-xs
-                            md:text-[12px]
-                          "
-                        >
+                        <p className="px-4 pb-4 text-[14px] font-normal leading-[20px] text-[#737373]">
                           {faq.answer}
                         </p>
                       </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </MotionConfig>
   );
 }

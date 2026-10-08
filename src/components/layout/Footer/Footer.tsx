@@ -97,6 +97,44 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* For Brands */}
+          <div>
+            <Heading
+              level={4}
+              variant="default"
+              className="!text-white text-xs font-semibold mb-4"
+              as="h4"
+            >
+              For Brands
+            </Heading>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/for-creators"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                >
+                  Find a Creator
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#case-studies"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                >
+                  Campaign Examples
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/signup"
+                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                >
+                  How It Works
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* For Creators */}
           <div>
             <Heading
@@ -127,44 +165,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Brands */}
-          <div>
-            <Heading
-              level={4}
-              variant="default"
-              className="!text-white text-xs font-semibold mb-4"
-              as="h4"
-            >
-              For Brands
-            </Heading>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/find-creators"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Find a Creator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/find-creators"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  Campaign Examples
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/find-creators"
-                  className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
-                >
-                  How It Works
-                </Link>
-              </li>
-            </ul>
-          </div>
-
           {/* Company */}
           <div>
             <Heading
@@ -186,7 +186,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/creator-os"
+                  href="/for-creators"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Creator OS
