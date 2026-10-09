@@ -24,21 +24,25 @@ type PlanId = 'starter' | 'builder';
 // the CTA link exactly as before.
 const BILLING: BillingPeriod = 'annual';
 
-const FEATURES: { label: string; starter?: string; builder: string }[] = [
-  { label: 'Pricing Calculator', starter: 'Yes, One-time use', builder: 'Yes' },
-  { label: 'Rate card Builder', starter: 'Yes', builder: 'Yes' },
-  { label: 'Invoicing', starter: 'Yes', builder: 'Yes' },
-  { label: 'Platform Fee', starter: '5% of transaction value', builder: '3% of transaction value' },
-  { label: 'Email Captures', starter: '100 subscribers', builder: '500 subscribers' },
-  { label: 'Email Broadcasts', starter: '2/month', builder: '5/month' },
-  {
-    label: 'Community access',
-    starter: 'Weekly community digest/newsletter only',
-    builder: 'Full access',
-  },
-  { label: 'Brand Deals', starter: 'Yes', builder: 'Priority Access' },
-  { label: 'Templates', builder: 'Yes' },
+// Starter: what you get today (Figma no longer shows a value per row).
+const STARTER_FEATURES = [
+  'Pricing Calculator',
+  'Rate card Builder',
+  'Invoicing',
+  '7% platform fee on transaction value',
+  'Email Captures',
+  'Email Broadcasts',
+  'Community access',
+  'Brand Deals',
+  'Templates',
 ];
+
+// Builder: everything else stays hidden until launch, so the design shows
+// one row plus a blurred "coming soon" teaser.
+const BUILDER_FEATURES = ['Everything in Starter'];
+
+// Widths of the blurred placeholder bars in the teaser (from Figma).
+const TEASER_BARS = [265, 205, 300, 220, 260, 190, 245, 215];
 
 /* =========================================================
    ICONS (drawn to the Figma vectors)
@@ -148,7 +152,20 @@ function CardHeader({ name, price, caption }: { name: string; price: string; cap
   );
 }
 
+function FeatureRow({ id, label }: { id: string; label: string }) {
+  return (
+    <li className="flex items-center gap-[2px] rounded-[8px] border-b border-[#F3F4F6] bg-white pb-2 pt-1">
+      <span className="flex min-h-[23.33px] min-w-0 items-center gap-2">
+        <CheckmarkIcon id={id} />
+        <span className="text-[14px] font-normal leading-[20px] text-[#737373]">{label}</span>
+      </span>
+    </li>
+  );
+}
+
 function FeaturesList({ plan }: { plan: PlanId }) {
+  const features = plan === 'starter' ? STARTER_FEATURES : BUILDER_FEATURES;
+
   return (
     <div className="flex flex-col gap-4">
       <p className="text-[12px] font-bold uppercase leading-[16px] tracking-[0.2px] text-[#737373]">
@@ -156,29 +173,62 @@ function FeaturesList({ plan }: { plan: PlanId }) {
       </p>
 
       <ul className="flex flex-col gap-4">
-        {FEATURES.map(feature => {
-          const value = plan === 'starter' ? feature.starter : feature.builder;
-          if (value === undefined) return null;
-
-          return (
-            <li
-              key={feature.label}
-              className="flex items-center justify-between gap-[2px] rounded-[8px] border-b border-[#F3F4F6] bg-white pb-2 pt-1"
-            >
-              <span className="flex min-h-[23.33px] min-w-0 items-center gap-2">
-                <CheckmarkIcon id={`scn-check-${plan}-${feature.label.replace(/\W+/g, '-')}`} />
-                <span className="text-[14px] font-normal leading-[20px] text-[#737373]">
-                  {feature.label}
-                </span>
-              </span>
-
-              <span className="text-right text-[14px] font-bold leading-[20px] text-[#737373]">
-                {value}
-              </span>
-            </li>
-          );
-        })}
+        {features.map(feature => (
+          <FeatureRow
+            key={feature}
+            id={`scn-check-${plan}-${feature.replace(/\W+/g, '-')}`}
+            label={feature}
+          />
+        ))}
       </ul>
+    </div>
+  );
+}
+
+/* Builder "coming soon" teaser (Figma: Coming soon teaser).
+   Dashed #EDD1FF box on #FBF3FF with blurred placeholder rows and a
+   message card in the middle. It grows to fill the rest of the card so
+   both cards end at the same height. */
+
+function ComingSoonTeaser() {
+  return (
+    <div className="relative flex min-h-[300px] flex-1 flex-col overflow-hidden rounded-[16px] border border-dashed border-[#EDD1FF] bg-[#FBF3FF] px-5 py-6">
+      {/* Placeholder rows, blurred so nothing can be read */}
+      <ul
+        aria-hidden="true"
+        className="flex flex-1 flex-col justify-between gap-4 blur-[1.5px]"
+      >
+        {TEASER_BARS.map((width, index) => (
+          <li
+            key={index}
+            className="flex h-5 items-center gap-3"
+          >
+            <span className="h-[14px] w-[14px] shrink-0 rounded-full bg-[#F4E3FF]" />
+            <span
+              className="h-3 max-w-[calc(100%-26px)] rounded-[6px] bg-[#F4E3FF]"
+              style={{ width }}
+            />
+          </li>
+        ))}
+      </ul>
+
+      {/* Message card */}
+      <div className="absolute inset-0 flex items-center justify-center p-5">
+        <div className="flex flex-col items-center gap-[6px] rounded-[14px] bg-white px-5 py-4 text-center shadow-[0_8px_24px_-4px_rgba(77,13,128,0.12)]">
+          <span
+            aria-hidden="true"
+            className="text-[16px] leading-[24px]"
+          >
+            ✨
+          </span>
+          <p className="text-[14px] font-semibold leading-[20px] text-[#262626]">
+            Plus more exciting features
+          </p>
+          <p className="text-[12px] font-normal leading-[16px] text-[#737373]">
+            Revealed when Builder launches
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -267,7 +317,7 @@ export default function PlanPricingSection({
               Coming soon
             </span>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-6">
                   <CardHeader
@@ -289,6 +339,8 @@ export default function PlanPricingSection({
               </div>
 
               <FeaturesList plan="builder" />
+
+              <ComingSoonTeaser />
             </div>
           </div>
         </div>

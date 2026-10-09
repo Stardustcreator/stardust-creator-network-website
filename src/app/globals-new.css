@@ -1071,9 +1071,15 @@ a {
   touch-action: manipulation;
 }
 
+/* Paint containment clips anything that overflows the element, which
+   hid the nav bar's Login dropdown. Header and nav only get layout
+   containment so menus can drop below the bar; the footer keeps both. */
 @supports (contain: paint) {
   header,
-  nav,
+  nav {
+    contain: layout;
+  }
+
   footer {
     contain: layout paint;
   }
