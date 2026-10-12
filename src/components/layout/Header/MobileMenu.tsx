@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { navigationItems } from './navigation.constants';
+import { BRAND_LOGIN_HREF, CREATOR_LOGIN_HREF, ComingSoonPill } from './LoginDropdown';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface MobileMenuProps {
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [loginOpen, setLoginOpen] = useState(false);
 
   const toggleExpanded = (label: string) => {
     const newExpanded = new Set(expandedItems);
@@ -111,17 +113,68 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           {/* Mobile CTA Buttons */}
           <div className="mt-8 space-y-3">
-            <Link
-              href="https://www.scn.africa/signin"
-              onClick={onClose}
-              className="inline-flex items-center justify-center px-8 py-3 text-black font-semibold rounded-lg hover:opacity-90 transition-all duration-300 w-full text-center"
-              style={{
-                backgroundColor: '#FFFFFF',
-                border: '1.5px solid #E7E5E4',
-              }}
-            >
-              Login
-            </Link>
+            {/* Login: pick creator or brand */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setLoginOpen(value => !value)}
+                aria-expanded={loginOpen}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-8 py-3 text-center font-semibold text-black transition-all duration-300 hover:opacity-90"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  border: '1.5px solid #E7E5E4',
+                }}
+              >
+                Login
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden="true"
+                  className={`transition-transform duration-200 ${loginOpen ? 'rotate-180' : ''}`}
+                >
+                  <path
+                    d="M5 7.5L10 12.5L15 7.5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {loginOpen && (
+                <div className="mt-2 overflow-hidden rounded-lg border border-neutral-700">
+                  <Link
+                    href={CREATOR_LOGIN_HREF}
+                    onClick={onClose}
+                    className="block px-4 py-3 text-white transition-colors hover:bg-neutral-800 hover:text-purple-400"
+                  >
+                    As a Creator
+                  </Link>
+
+                  {BRAND_LOGIN_HREF ? (
+                    <Link
+                      href={BRAND_LOGIN_HREF}
+                      onClick={onClose}
+                      className="block border-t border-neutral-700 px-4 py-3 text-white transition-colors hover:bg-neutral-800 hover:text-purple-400"
+                    >
+                      As a brand
+                    </Link>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      className="flex cursor-not-allowed items-center justify-between gap-2 border-t border-neutral-700 px-4 py-3 text-neutral-500"
+                    >
+                      As a brand
+                      <ComingSoonPill />
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Link
               href="/signin"
               onClick={onClose}

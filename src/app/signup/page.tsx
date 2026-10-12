@@ -123,10 +123,10 @@ export default function SignupPage() {
 
             {/* Role cards */}
             <div className="role-list">
-              {/* BRAND (brand registration is not live yet, so this stays inactive) */}
-              <div
-                className="role-card brand-card"
-                aria-disabled="true"
+              {/* BRAND: registers on Brand OS */}
+              <a
+                href="https://brand-os.scn.africa/"
+                className="role-card creator-card"
               >
                 <div className="role-copy">
                   <h3>I&apos;m a Brand</h3>
@@ -134,15 +134,11 @@ export default function SignupPage() {
                   <p>Find trusted creators, launch campaigns and track results in one place.</p>
                 </div>
 
-                <div className="role-link-row">
-                  <span className="role-link">
-                    Register as a brand
-                    <ArrowIcon />
-                  </span>
-
-                  <span className="coming-soon">Coming soon</span>
-                </div>
-              </div>
+                <span className="role-link">
+                  Register as a brand
+                  <ArrowIcon />
+                </span>
+              </a>
 
               {/* CREATOR */}
               <button
@@ -470,6 +466,8 @@ export default function SignupPage() {
 
         .role-card {
           appearance: none;
+          box-sizing: border-box;
+          text-decoration: none;
 
           width: 100%;
           min-height: 137px;
