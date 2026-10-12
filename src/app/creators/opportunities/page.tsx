@@ -40,7 +40,7 @@ export default function CreatorOpportunitiesPage() {
           >
             In the meantime, explore our{' '}
             <a
-              href="/creators/join"
+              href="/signin"
               className="text-purple-300 underline"
             >
               creator application

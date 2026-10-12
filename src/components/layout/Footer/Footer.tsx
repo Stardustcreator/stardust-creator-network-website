@@ -110,7 +110,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/for-creators"
+                  href="https://brand-os.scn.africa/"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Find a Creator
@@ -126,7 +126,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/signup"
+                  href="/#how-it-works"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   How It Works
@@ -148,7 +148,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/creators/join"
+                  href="/signin"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Join Our Network

@@ -1645,7 +1645,7 @@ function CaseStudyDetail({ slug }: CaseStudyDetailProps) {
                     to bring your vision to life.
                   </p>
                   <Link
-                    href="/brands/brief"
+                    href="https://brand-os.scn.africa/"
                     className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
                   >
                     Start Your Campaign
