@@ -151,7 +151,7 @@ export default function BrandProcessPage() {
             <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center">
               <Link
-                href="/creators/join"
+                href="/signin"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-semibold transition-colors text-center"
               >
                 Join as a Creator

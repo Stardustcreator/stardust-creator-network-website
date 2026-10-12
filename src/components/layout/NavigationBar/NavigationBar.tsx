@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { TopNavigation } from '../Header/TopNavigation';
 import { MobileTopNavigation } from '../Header/MobileTopNavigation';
 import { MobileMenu } from '../Header/MobileMenu';
+import LoginDropdown from '../Header/LoginDropdown';
 
 interface NavigationBarProps {
   className?: string;
@@ -67,18 +68,8 @@ export default function NavigationBar({
 
             {/* Login + Sign Up Buttons */}
             <div className="flex items-center gap-3 shrink-0">
-              {/* Login */}
-              <Link
-                href="/signin"
-                className="inline-flex items-center justify-center px-5 py-2 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  color: '#57058B',
-                  border: '1.5px solid #E2E8F0',
-                }}
-              >
-                Login
-              </Link>
+              {/* Login: dropdown to pick creator or brand login */}
+              <LoginDropdown />
 
               {/* Sign Up */}
               <Link
