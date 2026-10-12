@@ -8,15 +8,14 @@ import Link from 'next/link';
 
    "Login" opens a small menu so people pick how they log in:
    - As a Creator  -> /signin
-   - As a brand    -> not live yet, shown with a "Coming soon" pill
-                      and not clickable
+   - As a brand    -> Brand OS (https://brand-os.scn.africa/)
 
-   When brand login is ready, give BRAND_LOGIN_HREF a URL and the
-   option becomes a normal link.
+   Set BRAND_LOGIN_HREF to null to show brand login as "Coming soon"
+   and not clickable again.
 ========================================================= */
 
 export const CREATOR_LOGIN_HREF = '/signin';
-export const BRAND_LOGIN_HREF: string | null = null;
+export const BRAND_LOGIN_HREF: string | null = 'https://brand-os.scn.africa/';
 
 function ChevronDown({ open }: { open: boolean }) {
   return (
