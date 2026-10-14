@@ -70,7 +70,7 @@ export default function WhatHappensWhenYouJoinSection() {
 
         {/* CTA Button */}
         <div className="text-center">
-          <Link href="/signin">
+          <Link href="/onboarding">
             <button
               className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90"
               style={{ backgroundColor: '#57058B' }}

@@ -39,7 +39,7 @@ export default function CreatorResourcesPage() {
           >
             Want to be notified? Visit our{' '}
             <a
-              href="/signin"
+              href="/onboarding"
               className="text-purple-300 underline"
             >
               creator page

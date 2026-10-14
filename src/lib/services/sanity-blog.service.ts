@@ -179,9 +179,32 @@ export async function getAllPosts(options = { next: { revalidate: 30 } }) {
   }
 }
 
+// The URL gives us the slug percent-encoded ("How%20to%20Get..."). Most
+// slugs are plain hyphenated text so encoding changes nothing, but a slug
+// saved in Sanity with spaces or capitals (e.g. a title pasted into the slug
+// field) only matches once decoded. Try the slug as received, then decoded.
+function slugCandidates(slug: string): string[] {
+  let decoded = slug;
+  try {
+    decoded = decodeURIComponent(slug);
+  } catch {
+    // Malformed encoding: keep the slug as received.
+  }
+  return Array.from(new Set([slug, decoded]));
+}
+
 export async function getPostBySlug(slug: string, options = { next: { revalidate: 30 } }) {
-  const post = (await client.fetch(POST_BY_SLUG_QUERY, { slug }, options)) as SanityBlogPost | null;
-  return post ? transformSanityPost(post) : null;
+  for (const candidate of slugCandidates(slug)) {
+    const post = (await client.fetch(
+      POST_BY_SLUG_QUERY,
+      { slug: candidate },
+      options
+    )) as SanityBlogPost | null;
+
+    if (post) return transformSanityPost(post);
+  }
+
+  return null;
 }
 
 export async function getAllPostSlugs() {

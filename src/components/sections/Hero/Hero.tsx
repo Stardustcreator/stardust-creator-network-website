@@ -271,7 +271,7 @@ export default function Hero() {
               {/* START A CAMPAIGN */}
 
               <Link
-                href="https://brand-os.scn.africa/"
+                href="https://brand-os.scn.africa/signup"
                 className="
                   inline-flex
                   h-[48px]
@@ -322,7 +322,7 @@ export default function Hero() {
               {/* BECOME A CREATOR */}
 
               <Link
-                href="/signin"
+                href="/onboarding"
                 className="
                   inline-flex
                   h-[48px]
@@ -484,7 +484,7 @@ export default function Hero() {
           {/* PRIMARY */}
 
           <Link
-            href="https://brand-os.scn.africa/"
+            href="https://brand-os.scn.africa/signup"
             className="
               flex
               h-[48px]
@@ -537,7 +537,7 @@ export default function Hero() {
           {/* SECONDARY */}
 
           <Link
-            href="/signin"
+            href="/onboarding"
             className="
               flex
               h-[48px]
