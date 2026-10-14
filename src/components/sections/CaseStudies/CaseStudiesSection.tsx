@@ -20,7 +20,7 @@ const caseStudies = [
       { value: '7.2%', label: 'Engagement rate' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies',
+    link: '/case-studies/honeywell-relaunch-campaign',
   },
   {
     title: 'LEADWAY TRAVEL INSURANCE CAMPAIGN',
@@ -36,7 +36,7 @@ const caseStudies = [
       { value: '344', label: 'Saves' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies',
+    link: '/case-studies/leadway-travel-insurance-campaign',
   },
   {
     title: 'AXA MANSARD AUTOFLEX',
@@ -51,7 +51,7 @@ const caseStudies = [
       { value: '6.1x', label: 'ROAS' },
     ],
     tags: ['Technology', 'Relaunch', 'Brand Awareness'],
-    link: '/case-studies',
+    link: '/case-studies/axa-mansard-autoflex-campaign',
   },
 ];
 
@@ -277,8 +277,10 @@ export default function CaseStudySection() {
             <motion.div
               key={study.title}
               className="
+                relative
                 flex
                 h-full
+                cursor-pointer
                 flex-col
                 rounded-[12px]
                 border
@@ -508,9 +510,12 @@ export default function CaseStudySection() {
                   VIEW CASE STUDY
               ================================================= */}
 
+              {/* The link covers the whole card (after:inset-0), so clicking
+                  anywhere on the card opens this case study. */}
               <Link
                 href={study.link}
-                className="mt-auto block w-full"
+                aria-label={`View case study: ${study.title}`}
+                className="mt-auto block w-full after:absolute after:inset-0 after:rounded-[12px] after:content-['']"
               >
                 <motion.div
                   whileHover={{
