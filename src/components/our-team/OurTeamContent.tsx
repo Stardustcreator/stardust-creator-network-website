@@ -98,13 +98,13 @@ export default function OurTeamContent() {
             {/* CTA Buttons */}
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-8">
               <Link
-                href="https://brand-os.scn.africa/"
+                href="https://brand-os.scn.africa/signup"
                 className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-button rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
               >
                 Find a Creator
               </Link>
               <Link
-                href="/signin"
+                href="/onboarding"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-button rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-white/10"
               >
                 Join as Creator

@@ -26,7 +26,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
   const safeDate = post?.publishedAt || new Date().toISOString();
   const formattedDate = formatDate(safeDate);
   const safeTitle = post?.title || 'Untitled';
-  const safeSlug = post?.slug || '#';
+  // Encode so a slug with spaces still produces a valid link.
+  const safeSlug = post?.slug ? encodeURIComponent(post.slug) : '#';
   const safeImage = post?.featuredImage || '/placeholder.webp';
   const safeCategory = post?.category || 'Uncategorized';
   const safeExcerpt = post?.excerpt || 'No description available';

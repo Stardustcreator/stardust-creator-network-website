@@ -187,7 +187,7 @@ export default function WhoWeAreContent({
                 className="mt-6 sm:mt-7"
               >
                 <Link
-                  href="https://brand-os.scn.africa/"
+                  href="https://brand-os.scn.africa/signup"
                   className="
                     inline-flex
                     h-[48px]
@@ -467,7 +467,7 @@ export default function WhoWeAreContent({
 
             <div className="mt-6">
               <Link
-                href="https://brand-os.scn.africa/"
+                href="https://brand-os.scn.africa/signup"
                 className="
                   inline-flex
                   h-[48px]
@@ -984,7 +984,7 @@ export default function WhoWeAreContent({
             className="mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
           >
             <Link
-              href="https://brand-os.scn.africa/"
+              href="https://brand-os.scn.africa/signup"
               className="
                 flex
                 h-[48px]
@@ -1015,7 +1015,7 @@ export default function WhoWeAreContent({
             </Link>
 
             <Link
-              href="/signin"
+              href="/onboarding"
               className="
                 hidden
                 h-[48px]

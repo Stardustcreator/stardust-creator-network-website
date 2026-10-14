@@ -83,7 +83,7 @@ export default function CreatorGrowthSection() {
           >
             {/* Find your Creator match */}
             <Link
-              href="https://brand-os.scn.africa/"
+              href="https://brand-os.scn.africa/signup"
               className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#57058B] sm:inline-flex sm:w-auto px-6 text-[14px] font-medium text-white transition-opacity duration-200 hover:opacity-90"
               style={{
                 fontFamily: 'var(--font-lato)',
@@ -94,7 +94,7 @@ export default function CreatorGrowthSection() {
 
             {/* I'm a Creator */}
             <Link
-              href="/signin"
+              href="/onboarding"
               className="flex h-[48px] w-full items-center justify-center rounded-[8px] border sm:inline-flex sm:w-auto border-[#E5E5E5] bg-white px-6 text-[14px] font-medium text-[#262626] transition-colors duration-200 hover:bg-[#f7f7f7]"
               style={{
                 fontFamily: 'var(--font-lato)',

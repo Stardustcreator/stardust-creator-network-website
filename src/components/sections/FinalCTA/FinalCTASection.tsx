@@ -149,7 +149,7 @@ export default function FinalCTASection() {
         >
           {/* Find your Creator match */}
           <Link
-            href="https://brand-os.scn.africa/"
+            href="https://brand-os.scn.africa/signup"
             className="
               flex
               h-[40px]
@@ -182,7 +182,7 @@ export default function FinalCTASection() {
 
           {/* I'm a Creator */}
           <Link
-            href="/signin"
+            href="/onboarding"
             className="
               flex
               h-[40px]

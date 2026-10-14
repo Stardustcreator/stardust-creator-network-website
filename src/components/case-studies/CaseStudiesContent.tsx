@@ -214,7 +214,7 @@ export default function CaseStudiesContent({
                   story.
                 </p>
                 <Link
-                  href="https://brand-os.scn.africa/"
+                  href="https://brand-os.scn.africa/signup"
                   className="inline-flex items-center justify-center px-6 py-2.5 text-xs md:text-sm font-semibold text-white rounded-lg transition-all duration-300 hover:opacity-90"
                   style={{ backgroundColor: '#57058B' }}
                 >
