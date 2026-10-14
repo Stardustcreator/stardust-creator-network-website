@@ -110,7 +110,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="https://brand-os.scn.africa/"
+                  href="https://brand-os.scn.africa/signup"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Find a Creator
@@ -118,7 +118,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#case-studies"
+                  href="/case-studies"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Campaign Examples
@@ -148,7 +148,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/signin"
+                  href="/onboarding"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Join Our Network
@@ -186,7 +186,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/for-creators"
+                  href="/signin"
                   className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                 >
                   Creator OS

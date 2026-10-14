@@ -290,7 +290,7 @@ export default function ForCreatorsContent() {
               <p>Get found, price with confidence and get paid properly. All in one place.</p>
 
               <Link
-                href="/signin"
+                href="/onboarding"
                 className="hero-button"
               >
                 <span>Join SCN</span>
@@ -366,7 +366,7 @@ export default function ForCreatorsContent() {
 
             <Reveal delay={0.15}>
               <Link
-                href="/signin"
+                href="/onboarding"
                 className="purple-button"
               >
                 Sign Up
@@ -485,7 +485,7 @@ export default function ForCreatorsContent() {
               </p>
 
               <Link
-                href="/signin"
+                href="/onboarding"
                 className="purple-button"
               >
                 Join SCN
@@ -493,7 +493,7 @@ export default function ForCreatorsContent() {
 
               <p className="builder-note">
                 A Builder plan with higher limits is coming.
-                <Link href="/signin">Get notified →</Link>
+                <Link href="/onboarding">Get notified →</Link>
               </p>
             </Reveal>
           </section>
@@ -560,7 +560,7 @@ export default function ForCreatorsContent() {
 
                 <div className="final-buttons">
                   <Link
-                    href="/signin"
+                    href="/onboarding"
                     className="purple-button"
                   >
                     Join the Network

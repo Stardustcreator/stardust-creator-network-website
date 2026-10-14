@@ -52,7 +52,7 @@ export default function CreatorOsCommunity() {
               Live clinics, expert mentorship, templates, and a community of creators who are
               building real businesses from their content. You do not have to figure this out alone.
             </p>
-            <Link href="/signin">
+            <Link href="/onboarding">
               <button
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-all text-sm md:text-base"
                 style={{ backgroundColor: '#57058B', color: 'white' }}

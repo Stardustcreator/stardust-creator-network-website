@@ -36,7 +36,7 @@ export default function SignupPage() {
   }, []);
 
   const handleCreatorSignup = () => {
-    router.push('/signin');
+    router.push('/onboarding');
   };
 
   return (
@@ -125,7 +125,7 @@ export default function SignupPage() {
             <div className="role-list">
               {/* BRAND: registers on Brand OS */}
               <a
-                href="https://brand-os.scn.africa/"
+                href="https://brand-os.scn.africa/signup"
                 className="role-card creator-card"
               >
                 <div className="role-copy">

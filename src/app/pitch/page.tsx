@@ -79,7 +79,7 @@ function PitchContent() {
                 : "We couldn't find a saved brief here. Use the link in your confirmation email, or submit a new brief below."}
             </p>
             <Link
-              href="https://brand-os.scn.africa/"
+              href="https://brand-os.scn.africa/signup"
               className="inline-block px-6 py-3 rounded-full font-semibold text-white"
               style={{ backgroundColor: '#57058B' }}
             >

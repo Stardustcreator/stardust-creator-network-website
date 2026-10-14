@@ -45,10 +45,7 @@ const socialIcons = [
 
 export default function WhatChangesWhenYouJoinSection() {
   return (
-    <section
-      id="how-it-works"
-      className="relative w-full scroll-mt-20 overflow-hidden bg-[#fafaf9] py-16 sm:py-20 md:py-16"
-    >
+    <section className="relative w-full overflow-hidden bg-[#fafaf9] py-16 sm:py-20 md:py-16">
       <div className="mx-auto w-full px-6 sm:px-8 lg:px-20">
         {/* =========================
             HEADER
