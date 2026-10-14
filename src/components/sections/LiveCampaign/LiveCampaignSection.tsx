@@ -54,7 +54,8 @@ const cardVariants: Variants = {
 export default function LiveCampaignSection() {
   return (
     <section
-      className="w-full overflow-hidden px-4 sm:px-6 lg:px-8"
+      id="how-it-works"
+      className="w-full scroll-mt-20 overflow-hidden px-4 sm:px-6 lg:px-8"
       style={{
         background: 'linear-gradient(135deg, #FF3E1C 0%, #AC2706 100%)',
       }}

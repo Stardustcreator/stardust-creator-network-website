@@ -169,7 +169,7 @@ export default function TestimonialsSection() {
             className="pt-1"
           >
             <Link
-              href="https://brand-os.scn.africa/"
+              href="https://brand-os.scn.africa/signup"
               className="
                 group
                 inline-flex

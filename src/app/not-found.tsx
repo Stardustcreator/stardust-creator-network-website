@@ -58,7 +58,7 @@ export default function NotFound() {
                 </Link>
                 <span className="text-white/40">•</span>
                 <Link
-                  href="https://brand-os.scn.africa/"
+                  href="https://brand-os.scn.africa/signup"
                   className="text-white hover:text-purple-300 transition-colors whitespace-nowrap"
                 >
                   Contact / Brand Brief
