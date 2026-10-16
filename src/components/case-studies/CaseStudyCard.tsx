@@ -46,7 +46,8 @@ export default function CaseStudyCard({ caseStudy, index = 0 }: CaseStudyCardPro
     <div
       className="border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
       style={{
-        width: '416px',
+        width: '100%',
+        maxWidth: '416px',
         height: '621px',
         borderRadius: '12px',
         margin: '0 auto',
