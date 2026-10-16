@@ -185,6 +185,20 @@ function Reveal({
    HERO CREATOR
 ========================================================= */
 
+// Figma (Dev Info, Hero): portraits rise in from the centre outwards
+// starting at 1.2s (fade + 32px rise + 0.92 -> 1 scale, ~1s soft ease-out),
+// then every other portrait floats +-3px on a 5s sine loop.
+const PORTRAIT_COUNT = 10;
+const ARC_START = 1.2;
+const ARC_STEP = 0.12;
+
+function outwardRank(index: number) {
+  // 0 for the two centre portraits, 1 for the next pair out, and so on.
+  return Math.round(Math.abs(index - (PORTRAIT_COUNT - 1) / 2) - 0.5);
+}
+
+const SOFT_EASE_OUT = [0.16, 1, 0.3, 1] as const;
+
 function CreatorPortrait({
   src,
   className,
@@ -194,6 +208,9 @@ function CreatorPortrait({
   className: string;
   index: number;
 }) {
+  const entranceDelay = ARC_START + outwardRank(index) * ARC_STEP;
+  const floats = index % 2 === 0;
+
   return (
     <motion.div
       className={className}
@@ -208,29 +225,28 @@ function CreatorPortrait({
         scale: 1,
       }}
       transition={{
-        duration: 0.9,
-        delay: 0.2 + index * 0.08,
-        ease: [0.16, 1, 0.3, 1],
+        duration: 1,
+        delay: entranceDelay,
+        ease: SOFT_EASE_OUT,
       }}
       whileHover={{
-        scale: 1.08,
+        scale: 1.06,
         transition: { duration: 0.25 },
       }}
     >
-      {/* Continuous float. Each portrait gets its own rhythm so the arc
-          feels alive rather than moving as one block. */}
       <motion.div
         style={{ position: 'absolute', inset: 0 }}
-        animate={{
-          y: [0, index % 2 === 0 ? -10 : 10, 0],
-          rotate: [0, index % 2 === 0 ? 1.5 : -1.5, 0],
-        }}
-        transition={{
-          duration: 4.5 + (index % 4) * 0.6,
-          delay: 1.2 + index * 0.15,
-          ease: 'easeInOut',
-          repeat: Infinity,
-        }}
+        animate={floats ? { y: [0, -3, 0, 3, 0] } : undefined}
+        transition={
+          floats
+            ? {
+                duration: 5,
+                delay: entranceDelay + 1,
+                ease: 'easeInOut',
+                repeat: Infinity,
+              }
+            : undefined
+        }
       >
         <Image
           src={src}
@@ -272,31 +288,41 @@ export default function ForCreatorsContent() {
 
             {/* HERO CONTENT */}
 
-            <motion.div
-              className="hero-copy"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.65,
-                ease: 'easeOut',
-              }}
-            >
-              <h1>
+            {/* Figma (Dev Info, Hero): plays once on page load.
+                Headline 0.15-0.65s, subheading 0.3-0.8s, button 0.45-1.0s. */}
+            <div className="hero-copy">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+              >
                 Stop chasing brand deals.
                 <br />
                 Start getting booked.
-              </h1>
+              </motion.h1>
 
-              <p>Get found, price with confidence and get paid properly. All in one place.</p>
-
-              <Link
-                href="/onboarding"
-                className="hero-button"
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
               >
-                <span>Join SCN</span>
-                <span className="hero-arrow">→</span>
-              </Link>
-            </motion.div>
+                Get found, price with confidence and get paid properly. All in one place.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.45, ease: 'easeOut' }}
+              >
+                <Link
+                  href="/onboarding"
+                  className="hero-button"
+                >
+                  <span>Join SCN</span>
+                  <span className="hero-arrow">→</span>
+                </Link>
+              </motion.div>
+            </div>
 
             {/* CREATOR ARC */}
 
@@ -314,12 +340,12 @@ export default function ForCreatorsContent() {
 
               <motion.div
                 className="hero-chip hero-chip-booked"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1, y: [0, -3, 0, 3, 0] }}
                 transition={{
-                  opacity: { delay: 1.4, duration: 0.4, ease: 'easeOut' },
-                  scale: { delay: 1.4, duration: 0.4, ease: 'easeOut' },
-                  y: { delay: 2, duration: 3.2, ease: 'easeInOut', repeat: Infinity },
+                  opacity: { delay: 2.4, duration: 0.35, ease: 'easeOut' },
+                  scale: { delay: 2.4, duration: 0.45, ease: [0.34, 1.56, 0.64, 1] },
+                  y: { delay: 2.9, duration: 5, ease: 'easeInOut', repeat: Infinity },
                 }}
               >
                 <span className="chip-dot purple-dot" />
@@ -330,12 +356,12 @@ export default function ForCreatorsContent() {
 
               <motion.div
                 className="hero-chip hero-chip-subscribers"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1, y: [0, 3, 0, -3, 0] }}
                 transition={{
-                  opacity: { delay: 1.55, duration: 0.4, ease: 'easeOut' },
-                  scale: { delay: 1.55, duration: 0.4, ease: 'easeOut' },
-                  y: { delay: 2.3, duration: 3.6, ease: 'easeInOut', repeat: Infinity },
+                  opacity: { delay: 2.5, duration: 0.35, ease: 'easeOut' },
+                  scale: { delay: 2.5, duration: 0.45, ease: [0.34, 1.56, 0.64, 1] },
+                  y: { delay: 3, duration: 5, ease: 'easeInOut', repeat: Infinity },
                 }}
               >
                 <span className="chip-dot blue-dot" />
@@ -395,12 +421,23 @@ export default function ForCreatorsContent() {
                     <p>{feature.description}</p>
                   </div>
 
+                  {/* Figma (Dev Info): each card starts when >=30% of it is in
+                      view. Storefront slides in from the left (-200px -> 0,
+                      0.5s, ease-out), once. */}
                   <motion.div
                     className="visual-card"
-                    initial={{ opacity: 0, x: feature.reverse ? -48 : 48, scale: 0.97 }}
+                    initial={
+                      feature.title === 'Storefront'
+                        ? { opacity: 0, x: -200 }
+                        : { opacity: 0, x: feature.reverse ? -48 : 48, scale: 0.97 }
+                    }
                     whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={
+                      feature.title === 'Storefront'
+                        ? { duration: 0.5, ease: 'easeOut' }
+                        : { duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+                    }
                     whileHover={{ y: -8, scale: 1.015, transition: { duration: 0.3 } }}
                   >
                     <Image
@@ -740,7 +777,12 @@ export default function ForCreatorsContent() {
 
           opacity: 0.75;
 
-          animation: blobFloat 15s ease-in-out infinite;
+          /* Figma (Dev Info, Hero): each blob drifts on its own closed path
+             (up to ~110px) and breathes 94-108% on a 15s rhythm. Both loop
+             seamlessly every 45s (3 breaths per drift lap). */
+          animation:
+            blobDriftA 45s ease-in-out infinite,
+            blobBreathe 15s ease-in-out infinite;
         }
 
         .hero-blob-purple {
@@ -762,7 +804,10 @@ export default function ForCreatorsContent() {
 
           background: rgba(125, 166, 255, 0.27);
 
-          animation-delay: -4s;
+          animation-name: blobDriftB, blobBreathe;
+          animation-delay:
+            -11s,
+            -4s;
         }
 
         .hero-blob-yellow {
@@ -774,7 +819,10 @@ export default function ForCreatorsContent() {
 
           background: rgba(255, 214, 84, 0.32);
 
-          animation-delay: -8s;
+          animation-name: blobDriftC, blobBreathe;
+          animation-delay:
+            -22s,
+            -8s;
         }
 
         .hero-blob-dark {
@@ -786,25 +834,100 @@ export default function ForCreatorsContent() {
 
           background: rgba(33, 0, 47, 0.12);
 
-          animation-delay: -11s;
+          animation-name: blobDriftD, blobBreathe;
+          animation-delay:
+            -33s,
+            -11s;
         }
 
-        @keyframes blobFloat {
+        @keyframes blobBreathe {
           0%,
           100% {
-            transform: scale(1);
+            scale: 1;
+          }
+
+          33% {
+            scale: 1.08;
+          }
+
+          66% {
+            scale: 0.94;
+          }
+        }
+
+        @keyframes blobDriftA {
+          0%,
+          100% {
+            translate: 0 0;
           }
 
           25% {
-            transform: translate(35px, -20px) scale(1.04);
+            translate: 90px -40px;
           }
 
           50% {
-            transform: translate(55px, 25px) scale(0.96);
+            translate: 110px 50px;
           }
 
           75% {
-            transform: translate(15px, 40px) scale(1.04);
+            translate: 20px 80px;
+          }
+        }
+
+        @keyframes blobDriftB {
+          0%,
+          100% {
+            translate: 0 0;
+          }
+
+          25% {
+            translate: -80px 50px;
+          }
+
+          50% {
+            translate: -110px -30px;
+          }
+
+          75% {
+            translate: -30px -90px;
+          }
+        }
+
+        @keyframes blobDriftC {
+          0%,
+          100% {
+            translate: 0 0;
+          }
+
+          25% {
+            translate: -60px -70px;
+          }
+
+          50% {
+            translate: 40px -110px;
+          }
+
+          75% {
+            translate: 90px -20px;
+          }
+        }
+
+        @keyframes blobDriftD {
+          0%,
+          100% {
+            translate: 0 0;
+          }
+
+          25% {
+            translate: 70px 60px;
+          }
+
+          50% {
+            translate: 100px -40px;
+          }
+
+          75% {
+            translate: -20px -80px;
           }
         }
 
