@@ -165,12 +165,12 @@ export default function CaseStudiesContent({
       </section>
 
       {/* Case Studies Grid Section - Light Background */}
-      <section className="py-8 md:py-10 bg-gray-50">
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Grid Layout: 1 column mobile, 2 columns tablet, 3 columns desktop */}
           <div
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-            style={{ columnGap: '12px', rowGap: '12px', maxWidth: '1300px', margin: '0 auto' }}
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-3 xl:gap-10"
+            style={{ maxWidth: '1300px', margin: '0 auto' }}
           >
             {studies.map((caseStudy, index) => (
               <CaseStudyCard
