@@ -18,16 +18,17 @@ const leftColumnImages = [heroImages[0], heroImages[2], heroImages[4]];
 const rightColumnImages = [heroImages[1], heroImages[3], heroImages[5]];
 
 /* =========================================================
-   DESKTOP HERO GEOMETRY
+   DESKTOP HERO GEOMETRY  (Figma prototype: Homepage hero)
 
    The nav bar is fixed and floats over the hero: 16px top padding plus a
    68px bar, so it ends 84px from the top of the hero.
 
-   At rest the image columns sit 48px below the nav bar and 48px above the
-   bottom of the hero. Each column shows 3 images, so the image height is
-   worked out from the hero height:
+   The image columns scroll inside a window that starts 48px below the nav
+   bar and ends 48px above the bottom of the hero. Images enter and leave
+   at the edges of that window, so they never reach or touch the nav bar.
 
-     84 (nav) + 48 + 3 images + 2 gaps of 10 + 48 = hero height
+   About two images show per column at once (as in the prototype), so the
+   image height is worked out from the window height.
 
    The hero is 100% of the viewport height (never shorter than 640px so
    the text still fits on very short windows).
@@ -36,10 +37,13 @@ const rightColumnImages = [heroImages[1], heroImages[3], heroImages[5]];
 const HERO_HEIGHT = 'max(100dvh, 640px)';
 const NAV_BOTTOM = 84;
 const EDGE_GAP = 48;
-const IMAGE_GAP = 10;
+const IMAGE_GAP = 16;
 
-// 84 + 48 + 48 + 2 x 10 = 200px of the hero is not image.
-const IMAGE_HEIGHT = `calc((${HERO_HEIGHT} - ${NAV_BOTTOM + EDGE_GAP * 2 + IMAGE_GAP * 2}px) / 3)`;
+// Height of the scrolling window: hero minus nav, minus the two 48px gaps.
+const WINDOW_HEIGHT = `calc(${HERO_HEIGHT} - ${NAV_BOTTOM + EDGE_GAP * 2}px)`;
+
+// ~2.1 images per window, matching the prototype.
+const IMAGE_HEIGHT = `calc((${WINDOW_HEIGHT} - ${IMAGE_GAP}px) / 2.1)`;
 
 // One set = 3 images + 3 gaps (the trailing gap keeps the loop seamless).
 const SET_HEIGHT = `calc(${IMAGE_HEIGHT} * 3 + ${IMAGE_GAP * 3}px)`;
@@ -47,9 +51,8 @@ const SET_HEIGHT = `calc(${IMAGE_HEIGHT} * 3 + ${IMAGE_GAP * 3}px)`;
 /* =========================================================
    VERTICAL IMAGE COLUMN (DESKTOP)
 
-   The column runs the full height of the hero and is clipped only by the
-   hero's own edges, so images enter and leave at the very top and bottom
-   of the hero, passing behind the nav bar and through the 48px gaps.
+   Each column is clipped to the scrolling window (overflow hidden), so
+   images slide in and out at the window's top and bottom edges.
 
    The track holds 4 identical sets. It is shifted up by one set so a set
    always fills the space above the first visible image. Moving it by
@@ -68,10 +71,13 @@ function VerticalImageColumn({
   const repeatedImages = [...images, ...images, ...images, ...images];
 
   return (
-    <div className="relative h-full w-full">
+    <div
+      className="relative w-full overflow-hidden"
+      style={{ height: WINDOW_HEIGHT }}
+    >
       <div
         style={{
-          marginTop: `calc(${NAV_BOTTOM + EDGE_GAP}px - ${SET_HEIGHT})`,
+          marginTop: `calc(0px - ${SET_HEIGHT})`,
         }}
       >
         <motion.div
@@ -94,17 +100,10 @@ function VerticalImageColumn({
           }}
         >
           {repeatedImages.map((image, index) => (
-            <motion.div
+            <div
               key={`${image}-${index}`}
               className="relative w-full shrink-0 overflow-hidden rounded-[24px] bg-transparent"
               style={{ height: IMAGE_HEIGHT }}
-              whileHover={{
-                scale: 1.015,
-                transition: {
-                  duration: 0.25,
-                  ease: 'easeOut',
-                },
-              }}
             >
               <Image
                 src={image}
@@ -114,7 +113,7 @@ function VerticalImageColumn({
                 className="object-cover"
                 priority={index >= 3 && index < 6}
               />
-            </motion.div>
+            </div>
           ))}
         </motion.div>
       </div>
@@ -364,9 +363,10 @@ export default function Hero() {
             w-[clamp(420px,38.5vw,554px)]
             shrink-0
             grid-cols-2
-            gap-[10px]
+            gap-4
             mr-[clamp(24px,4.2vw,61px)]
           "
+          style={{ paddingTop: NAV_BOTTOM + EDGE_GAP, paddingBottom: EDGE_GAP }}
         >
           {/* LEFT COLUMN
               Frame 1 → 3 → 5
