@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Image from 'next/image';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl, getStoredInviteBrief } from '@/lib/invite';
 
 const REDIRECT_MS = 4000;
 
@@ -23,13 +23,19 @@ function SuccessContent() {
 
   useEffect(() => {
     if (!reference) {
-      setDashboardUrl(getScnDashboardUrl());
+      setDashboardUrl(getCreatorLandingUrl());
       return;
     }
     const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
     if (!base) return;
 
-    setDashboardUrl(`${base}/payments/callback?trxref=${reference}&reference=${reference}`);
+    // The backend validates `brief` and ignores it unless it is a UUID.
+    const brief = getStoredInviteBrief();
+    const briefParam = brief ? `&brief=${encodeURIComponent(brief)}` : '';
+
+    setDashboardUrl(
+      `${base}/payments/callback?trxref=${reference}&reference=${reference}${briefParam}`
+    );
   }, [reference]);
 
   useEffect(() => {

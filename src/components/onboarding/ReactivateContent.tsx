@@ -6,7 +6,7 @@ import { Heading, Text } from '@/components/typography';
 import Button from '@/components/ui/Button';
 import PaymentStep from './PaymentStep';
 import { initializePayment } from '@/lib/api/payments';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 import { toast } from '@/lib/toast';
 
 type Billing = 'annual' | 'monthly';
@@ -54,7 +54,7 @@ export default function ReactivateContent() {
 
   const handlePaymentSuccess = useCallback(async () => {
     setStep('redirecting');
-    window.location.href = getScnDashboardUrl();
+    window.location.href = getCreatorLandingUrl();
   }, []);
 
   if (step === 'paying') {
