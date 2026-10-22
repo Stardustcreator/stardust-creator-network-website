@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { checkSubscriptionAccess } from '@/lib/api/subscriptions';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 
 export default function OnboardingCheckPage() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function OnboardingCheckPage() {
   useEffect(() => {
     checkSubscriptionAccess().then(result => {
       if (result.ok) {
-        window.location.href = getScnDashboardUrl();
+        window.location.href = getCreatorLandingUrl();
         return;
       }
       if (result.reason === 'inactive') {

@@ -7,7 +7,7 @@ import { CheckoutForm, type CheckoutValues } from './CheckoutForm';
 import Modal from '../ui/modal';
 import { initializePayment } from '@/lib/api/payments';
 import { getMyProfile } from '@/lib/api/user';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 import { toast } from '@/lib/toast';
 
 type BillingPeriod = 'annual' | 'monthly';
@@ -82,7 +82,7 @@ export default function PaymentPageContent() {
     setPlan(resolvedPlan);
 
     if (resolvedPlan === 'starter') {
-      window.location.href = getScnDashboardUrl();
+      window.location.href = getCreatorLandingUrl();
       return;
     }
 
