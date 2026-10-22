@@ -9,7 +9,7 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
 import { login, initiateGoogleAuth, resendVerification } from '@/lib/api/auth';
 import { getSubscription } from '@/lib/api/subscriptions';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 import { toast } from '@/lib/toast';
 import { getMyProfile } from '@/lib/api/user';
 
@@ -77,7 +77,7 @@ export default function SignInForm() {
       //   return;
       // }
 
-      window.location.href = getScnDashboardUrl();
+      window.location.href = getCreatorLandingUrl();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Something went wrong. Please try again.';

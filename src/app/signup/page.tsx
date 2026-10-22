@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
 
+import { parseCreatorInvite, saveCreatorInvite } from '@/lib/invite';
+
 const slides = [
   {
     image: '/creators/sign%20up.webp',
@@ -35,9 +37,23 @@ export default function SignupPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // An invited creator skips the role picker and goes straight to the creator flow.
+  const [isInvited, setIsInvited] = useState(false);
+
+  useEffect(() => {
+    const invite = parseCreatorInvite(new URLSearchParams(window.location.search));
+    if (!invite) return;
+
+    saveCreatorInvite(invite);
+    setIsInvited(true);
+    router.replace('/onboarding');
+  }, [router]);
+
   const handleCreatorSignup = () => {
     router.push('/onboarding');
   };
+
+  if (isInvited) return null;
 
   return (
     <>

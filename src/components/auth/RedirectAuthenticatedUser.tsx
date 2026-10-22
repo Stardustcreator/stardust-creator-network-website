@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { checkSubscriptionAccess } from '@/lib/api/subscriptions';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 
 interface RedirectAuthenticatedUserProps {
   children: ReactNode;
@@ -26,7 +26,7 @@ export default function RedirectAuthenticatedUser({
         const result = await checkSubscriptionAccess();
 
         if (result.ok) {
-          window.location.replace(getScnDashboardUrl());
+          window.location.replace(getCreatorLandingUrl());
           return;
         }
 

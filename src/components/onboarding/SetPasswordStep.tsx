@@ -7,7 +7,7 @@ import PlanBanner from './PlanBanner';
 import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/Button';
 import { completeRegistration } from '@/lib/api/auth';
-import { getScnDashboardUrl } from '@/lib/scn-dashboard';
+import { getCreatorLandingUrl } from '@/lib/invite';
 import { toast } from '@/lib/toast';
 import { validatePassword } from '@/lib/validations/password.validations';
 import { CheckoutForm, type CheckoutValues } from './CheckoutForm';
@@ -92,7 +92,7 @@ export default function SetPasswordStep({
         setRegistrationCompleted(true);
 
         if (!result.subscription.requiresPayment) {
-          window.location.href = getScnDashboardUrl();
+          window.location.href = getCreatorLandingUrl();
           return;
         }
       }
