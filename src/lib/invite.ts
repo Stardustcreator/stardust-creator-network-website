@@ -5,7 +5,6 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 
 export interface CreatorInvite {
   invite: string;
-  brief?: string;
 }
 
 function asUuid(value: string | null | undefined): string | undefined {
@@ -13,14 +12,11 @@ function asUuid(value: string | null | undefined): string | undefined {
   return trimmed && UUID_PATTERN.test(trimmed) ? trimmed : undefined;
 }
 
-/**
- * Reads `invite` and `brief` from untrusted query params. Returns null unless
- * `invite` is a UUID; `brief` is kept only if it is also a UUID.
- */
+/** Reads `invite` from untrusted query params. Returns null unless it is a UUID. */
 export function parseCreatorInvite(params: URLSearchParams): CreatorInvite | null {
   const invite = asUuid(params.get('invite'));
   if (!invite) return null;
-  return { invite, brief: asUuid(params.get('brief')) };
+  return { invite };
 }
 
 // sessionStorage carries the invite across the multi-step onboarding and the
@@ -34,8 +30,8 @@ export function saveCreatorInvite(value: CreatorInvite): void {
   }
 }
 
-export function getStoredInviteBrief(): string | undefined {
-  return readCreatorInvite()?.brief;
+export function getStoredInviteId(): string | undefined {
+  return readCreatorInvite()?.invite;
 }
 
 function readCreatorInvite(): CreatorInvite | null {
@@ -44,7 +40,7 @@ function readCreatorInvite(): CreatorInvite | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<CreatorInvite>;
     const invite = asUuid(parsed.invite);
-    return invite ? { invite, brief: asUuid(parsed.brief) } : null;
+    return invite ? { invite } : null;
   } catch {
     return null;
   }
@@ -52,11 +48,12 @@ function readCreatorInvite(): CreatorInvite | null {
 
 /**
  * Where a creator goes after sign-up or login: the invited opportunity in
- * Creator OS when a valid brief was carried through, otherwise the normal
- * landing. The brief is only ever used to build the Creator OS path.
+ * Creator OS when a valid invitation id was carried through, otherwise the
+ * normal landing. Creator OS opens opportunities by invitation id. The id is
+ * only ever used to build the Creator OS path.
  */
 export function getCreatorLandingUrl(): string {
   const base = getScnDashboardUrl();
-  const brief = readCreatorInvite()?.brief;
-  return brief ? `${base}/opportunities/${brief}` : base;
+  const invite = getStoredInviteId();
+  return invite ? `${base}/opportunities/${invite}` : base;
 }
