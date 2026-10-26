@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   creator: 'Stardust Creator Network',
   publisher: 'Stardust Creator Network',
 
-  alternates: {
-    canonical: absoluteUrl(),
-  },
+  // No site-wide canonical here: it was inherited by every page without its
+  // own metadata (e.g. /who-we-are), pointing them all at the home page.
+  // Each page sets its own canonical through generateMetaTags({ url }).
 
   openGraph: {
     type: 'website',
@@ -153,20 +153,11 @@ export default function RootLayout({
           href="https://www.google-analytics.com"
         />
 
-        {/* Critical hero image */}
-        <link
-          rel="preload"
-          href="/hero.webp"
-          as="image"
-          type="image/webp"
-          fetchPriority="high"
-        />
-
         {/* Microsoft Clarity */}
         {process.env.NEXT_PUBLIC_APP_ENV === 'production' && (
           <Script
             id="microsoft-clarity"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           >
             {`
               (function(c,l,a,r,i,t,y){
@@ -190,12 +181,12 @@ export default function RootLayout({
         {/* Tapfiliate */}
         <Script
           src="https://script.tapfiliate.com/tapfiliate.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
 
         <Script
           id="tapfiliate-init"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function(t,a,p){

@@ -93,6 +93,18 @@ const nextConfig = {
       { source: '/join', destination: '/#waitlist', permanent: true },
       { source: '/creators', destination: '/#waitlist', permanent: true },
       { source: '/creator-community', destination: '/#waitlist', permanent: true },
+
+      // SEO fixes (Semrush): pages that 404.
+      // Two blog posts link to this article, which was never published.
+      // Send it to the closest live article. If the article is published
+      // later with this exact slug, delete this redirect.
+      {
+        source: '/blog/how-brands-decide-what-to-pay-influencers-and-creators',
+        destination: '/blog/rate-card-for-nigerian-content-creators',
+        permanent: true,
+      },
+      // Old brand page that no longer exists.
+      { source: '/find-creators', destination: '/pricing', permanent: true },
     ];
   },
 
