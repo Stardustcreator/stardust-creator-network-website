@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   creator: 'Stardust Creator Network',
   publisher: 'Stardust Creator Network',
 
-  alternates: {
-    canonical: absoluteUrl(),
-  },
+  // No site-wide canonical here: it was inherited by every page without its
+  // own metadata (e.g. /who-we-are), pointing them all at the home page.
+  // Each page sets its own canonical through generateMetaTags({ url }).
 
   openGraph: {
     type: 'website',
