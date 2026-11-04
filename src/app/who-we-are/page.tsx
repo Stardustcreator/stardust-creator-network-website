@@ -1,6 +1,22 @@
+import type { Metadata } from 'next';
+import { generateMetaTags } from '@/lib/seo';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import WhoWeAreContent from '@/components/sections/WhoWeAre/WhoWeAreContent';
+
+// Own title, description and canonical (/who-we-are). Without this the page
+// inherited the home page's canonical, which Semrush flagged.
+export const metadata: Metadata = {
+  ...generateMetaTags({
+    title: 'Who We Are | Stardust Creator Network',
+    description:
+      "Stardust Creator Network is Africa's creator marketplace, matching brands with vetted creators and managing campaigns end to end, from briefing to reporting.",
+    image: '/who we are/creators.webp',
+    url: '/who-we-are',
+    tags: ['about', 'creator marketplace', 'influencer marketing', 'Nigeria'],
+  }),
+  title: { absolute: 'Who We Are | Stardust Creator Network' },
+};
 
 // Content editors change this in the admin CMS - fetched here rather than
 // hardcoded in WhoWeAreContent itself. Falls back to WhoWeAreContent's own

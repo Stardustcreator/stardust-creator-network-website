@@ -2,6 +2,13 @@
   "name": "stardust-creator-network-website",
   "version": "0.1.1",
   "private": true,
+  "browserslist": [
+    "chrome >= 93",
+    "edge >= 93",
+    "firefox >= 92",
+    "safari >= 15.4",
+    "ios_saf >= 15.4"
+  ],
   "engines": {
     "node": "24.x",
     "npm": ">=8.0.0"

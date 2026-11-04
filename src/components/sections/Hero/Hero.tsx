@@ -169,7 +169,6 @@ export default function Hero() {
           <motion.div
             className="w-full max-w-[680px]"
             initial={{
-              opacity: 0,
               x: -35,
             }}
             animate={{
@@ -197,7 +196,6 @@ export default function Hero() {
                 text-[#262626]
               "
               initial={{
-                opacity: 0,
                 y: 25,
               }}
               animate={{
@@ -229,7 +227,6 @@ export default function Hero() {
                 text-[#262626]
               "
               initial={{
-                opacity: 0,
                 y: 20,
               }}
               animate={{
@@ -254,7 +251,6 @@ export default function Hero() {
             <motion.div
               className="mt-[24px] flex items-center gap-[16px]"
               initial={{
-                opacity: 0,
                 y: 20,
               }}
               animate={{
@@ -417,7 +413,6 @@ export default function Hero() {
             text-[#262626]
           "
           initial={{
-            opacity: 0,
             y: 25,
           }}
           animate={{
@@ -445,7 +440,6 @@ export default function Hero() {
             text-[#262626]
           "
           initial={{
-            opacity: 0,
             y: 20,
           }}
           animate={{
@@ -469,7 +463,6 @@ export default function Hero() {
         <motion.div
           className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
           initial={{
-            opacity: 0,
             y: 20,
           }}
           animate={{

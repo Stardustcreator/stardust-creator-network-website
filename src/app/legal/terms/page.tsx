@@ -17,6 +17,16 @@ import TermsOfServiceSidebar from '@/components/legal/TermsOfServiceSidebar';
 // /legal/terms path. Note: this only covers the Nigeria/fallback variant -
 // TermsOfServiceUK stays fully hardcoded since the CMS has no UK-specific
 // content for this page.
+export const metadata: Metadata = {
+  ...generateMetaTags({
+    title: 'Terms of Service | Stardust Creator Network',
+    description:
+      'The terms that govern your use of Stardust Creator Network, for brands and creators.',
+    url: '/legal/terms',
+  }),
+  title: { absolute: 'Terms of Service | Stardust Creator Network' },
+};
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '');
 
 interface TermsContent {
