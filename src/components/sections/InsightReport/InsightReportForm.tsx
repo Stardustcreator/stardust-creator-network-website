@@ -5,7 +5,14 @@ import type { FormEvent, ReactNode } from 'react';
 import Modal from '@/components/ui/modal';
 import ArrowRight from './ArrowRight';
 
-const BUDGETS = ['Under ₦5M', '₦5M to ₦20M', '₦20M to ₦50M', '₦50M to ₦100M', 'Above ₦100M'];
+const BUDGETS = [
+  'Below ₦1 million',
+  '₦1 million – ₦3 million',
+  '₦3 million – ₦5 million',
+  '₦5 million – ₦10 million',
+  '₦10 million – ₦20 million',
+  '₦20 million+',
+];
 
 const ICON = {
   width: 18,
@@ -266,7 +273,13 @@ export default function InsightReportForm({ className = '' }: { className?: stri
                     onChange={e => update('budget', e.target.value)}
                     className={`${inputClass} appearance-none ${form.budget ? '' : 'text-[#4b4458]'}`}
                   >
-                    <option value="">Annual Influencer Marketing Budget</option>
+                    <option
+                      value=""
+                      disabled
+                      hidden
+                    >
+                      Annual Influencer Marketing Budget
+                    </option>
                     {BUDGETS.map(budget => (
                       <option
                         key={budget}
