@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const BUDGETS = [
-  'Under ₦5M',
-  '₦5M to ₦20M',
-  '₦20M to ₦50M',
-  '₦50M to ₦100M',
-  'Above ₦100M',
+  'Below ₦1 million',
+  '₦1 million – ₦3 million',
+  '₦3 million – ₦5 million',
+  '₦5 million – ₦10 million',
+  '₦10 million – ₦20 million',
+  '₦20 million+',
 ] as const;
 
 const schema = z.object({
