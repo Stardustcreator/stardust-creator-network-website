@@ -17,6 +17,7 @@ const staticPages: {
   { path: '', changeFrequency: 'weekly', priority: 1 },
   { path: '/for-creators', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pricing', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/talk-to-sales', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/who-we-are', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/case-studies', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/onboarding', changeFrequency: 'monthly', priority: 0.7 },
