@@ -14,7 +14,8 @@ import { useEffect, useRef, useState } from 'react';
    "You're booked in" confirmation.
 ========================================================= */
 
-const CALENDLY_URL = 'https://calendly.com/oluwatobi-stardustcreatornetwork';
+// Direct link to the "Talk To SCN Sales Team" 30-min event, so the calendar shows straight away.
+const CALENDLY_URL = 'https://calendly.com/oluwatobi-stardustcreatornetwork/30min';
 const CALENDLY_SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
 // hide_gdpr_banner keeps the widget clean; primary_color matches SCN purple
 // (colour only applies on paid Calendly plans, otherwise ignored).
@@ -139,41 +140,58 @@ function HowItWorksList() {
 
 /* =========================================================
    Calendly inline widget
-   Loads Calendly's script once and mounts the widget into the
-   div. Works on first load and after client-side navigation.
+   Uses Calendly's own embed markup (div with data-url + widget.js),
+   which Calendly fills in automatically when its script loads.
+   If the script was already loaded (e.g. after moving between pages),
+   the widget is started by hand. The loading message hides as soon as
+   Calendly's iframe appears, and a fallback link shows if it never does.
 ========================================================= */
 function CalendlyInline({ onScheduled }: { onScheduled: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'failed'>('loading');
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const mount = () => {
-      if (!window.Calendly || !containerRef.current) return;
-      containerRef.current.innerHTML = '';
-      window.Calendly.initInlineWidget({
-        url: CALENDLY_EMBED_URL,
-        parentElement: containerRef.current,
-      });
-      setLoading(false);
+    const hasIframe = () => Boolean(container.querySelector('iframe'));
+
+    // Hide the loading message as soon as Calendly adds its iframe.
+    const observer = new MutationObserver(() => {
+      if (hasIframe()) setStatus('ready');
+    });
+    observer.observe(container, { childList: true, subtree: true });
+
+    const startWidget = () => {
+      if (!window.Calendly || hasIframe()) return;
+      window.Calendly.initInlineWidget({ url: CALENDLY_EMBED_URL, parentElement: container });
     };
 
+    let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT}"]`);
     if (window.Calendly) {
-      mount();
-      return;
+      // Script already on the page: start the widget ourselves.
+      startWidget();
+    } else {
+      if (!script) {
+        script = document.createElement('script');
+        script.src = CALENDLY_SCRIPT;
+        script.async = true;
+        document.body.appendChild(script);
+      }
+      // Calendly normally fills the div on its own; this is a backup.
+      script.addEventListener('load', () => setTimeout(startWidget, 300));
+      script.addEventListener('error', () => setStatus('failed'));
     }
 
-    let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT}"]`);
-    if (!script) {
-      script = document.createElement('script');
-      script.src = CALENDLY_SCRIPT;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-    script.addEventListener('load', mount);
-    return () => script?.removeEventListener('load', mount);
+    // If nothing has appeared after 12 seconds, offer the fallback link.
+    const timer = window.setTimeout(() => {
+      if (!hasIframe()) setStatus('failed');
+    }, 12000);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
   // Calendly posts messages to the page when someone books.
@@ -188,14 +206,30 @@ function CalendlyInline({ onScheduled }: { onScheduled: () => void }) {
 
   return (
     <div className="relative">
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center font-lato text-[13px] text-[#737373]">
-          Loading available times…
+      {status !== 'ready' && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6 text-center font-lato text-[13px] text-[#737373]">
+          {status === 'loading' ? (
+            'Loading available times…'
+          ) : (
+            <span className="pointer-events-auto">
+              The calendar is taking a while to load.{' '}
+              <a
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-[#57058B] underline"
+              >
+                Open the booking calendar
+              </a>
+            </span>
+          )}
         </div>
       )}
+      {/* Calendly's standard inline embed */}
       <div
         ref={containerRef}
         className="calendly-inline-widget w-full"
+        data-url={CALENDLY_EMBED_URL}
         style={{ minWidth: 320, height: 700 }}
       />
     </div>
