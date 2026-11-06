@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   ...generateMetaTags({
     title: 'Pricing for Brands | Stardust Creator Network',
     description:
-      'Annual creator marketing plans for brands, from ₦5,000,000 a month. Vetted creators, contracts, approvals and reporting handled for you. Prices include VAT.',
+      'Launch a single creator campaign or partner with Stardust on a year-round retainer. Vetted creators, approvals, contracts and reporting handled for you, priced to your goals and budget.',
     url: '/pricing',
     tags: ['pricing', 'influencer marketing', 'creator campaigns', 'brands'],
   }),
