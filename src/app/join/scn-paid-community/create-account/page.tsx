@@ -413,14 +413,14 @@ function CreateAccountForm() {
                   <span className="text-sm text-gray-600">
                     I agree to the{' '}
                     <Link
-                      href="/terms"
+                      href="/legal/terms"
                       className="text-purple-600 hover:underline"
                     >
                       Terms of Service
                     </Link>{' '}
                     and{' '}
                     <Link
-                      href="/privacy"
+                      href="/legal/privacy"
                       className="text-purple-600 hover:underline"
                     >
                       Privacy Policy
