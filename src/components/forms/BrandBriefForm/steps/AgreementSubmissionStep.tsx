@@ -116,7 +116,7 @@ export default function AgreementSubmissionStep({
               >
                 I agree to SCN&apos;s{' '}
                 <a
-                  href="/terms"
+                  href="/legal/terms"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-purple-400 hover:text-purple-300 underline"
@@ -125,7 +125,7 @@ export default function AgreementSubmissionStep({
                 </a>{' '}
                 and{' '}
                 <a
-                  href="/privacy"
+                  href="/legal/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-purple-400 hover:text-purple-300 underline"

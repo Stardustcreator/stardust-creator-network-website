@@ -15,7 +15,7 @@ const ICON_PROPS = {
 
 const ITEMS: { text: string; icon: ReactNode }[] = [
   {
-    text: 'What brands look for when working with creators.',
+    text: 'What brands should look for when identifying creators for their campaigns.',
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z" />
@@ -24,7 +24,7 @@ const ITEMS: { text: string; icon: ReactNode }[] = [
     ),
   },
   {
-    text: 'What creators expect from brand partnerships.',
+    text: 'What brands should align on before launching creator campaigns.',
     icon: (
       <svg {...ICON_PROPS}>
         <circle
@@ -47,7 +47,7 @@ const ITEMS: { text: string; icon: ReactNode }[] = [
     ),
   },
   {
-    text: 'The challenges agencies face in managing creator campaigns.',
+    text: 'Common obstacles brands face when planning and executing creator partnerships.',
     icon: (
       <svg {...ICON_PROPS}>
         <circle
@@ -60,7 +60,7 @@ const ITEMS: { text: string; icon: ReactNode }[] = [
     ),
   },
   {
-    text: 'Where expectations differ and opportunities for better collaboration exist.',
+    text: 'Where brands, creators and agencies have differing expectations and how they can work better together.',
     icon: (
       <svg {...ICON_PROPS}>
         <path d="m11 17 2 2a1.4 1.4 0 0 0 2-2M14 14l2.5 2.5a1.4 1.4 0 0 0 2-2L15 11M8 12l-2.5 2.5a1.4 1.4 0 0 0 2 2L10 14" />
