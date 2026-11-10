@@ -22,7 +22,8 @@ const CALENDLY_URL = 'https://calendly.com/oluwatobi-stardustcreatornetwork/30mi
 const CALENDLY_SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
 
 const BUDGET_OPTIONS = ['Less than 1M', '1M - 3M', '3M - 5M', '5M - 10M', '10M - 20M', '20M+'];
-const TOPIC_OPTIONS = ['Retainer package', 'Custom scope', 'General demo'];
+// Only one option for now; add more here later (e.g. 'Custom scope', 'General demo').
+const TOPIC_OPTIONS = ['Retainer package'];
 
 const STEPS = [
   { title: 'Book a call', text: 'Share a few details and pick a time that suits you.' },
