@@ -13,6 +13,7 @@ import {
   isSalesCalendarConfigured,
   isSlotFree,
 } from '@/lib/services/google-calendar.service';
+import { buildSalesLeadPayload, postSalesLead } from '@/lib/sales-lead';
 
 const bookingSchema = z.object({
   firstName: z.string().trim().min(1).max(80),
@@ -93,6 +94,22 @@ export async function POST(request: NextRequest) {
       goals: data.goals,
       slot,
     });
+
+    // Best effort: a failed or slow lead post must never fail a booking that already exists.
+    await postSalesLead(
+      buildSalesLeadPayload({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        company: data.company,
+        website: normaliseWebsite(data.website),
+        email: data.email,
+        phone: data.phone,
+        budget: data.budget || undefined,
+        topic: data.topic,
+        goals: data.goals,
+        slot,
+      })
+    );
 
     return NextResponse.json({
       success: true,
