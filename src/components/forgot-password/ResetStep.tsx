@@ -11,9 +11,18 @@ import { validatePassword } from '@/lib/validations/password.validations';
 interface ResetStepProps {
   resetToken: string;
   onComplete: () => void;
+  title?: string;
+  description?: string;
+  submitLabel?: string;
 }
 
-export default function ResetStep({ resetToken, onComplete }: ResetStepProps) {
+export default function ResetStep({
+  resetToken,
+  onComplete,
+  title = 'Reset your password',
+  description = 'Create a new password for your account.',
+  submitLabel = 'Reset Password',
+}: ResetStepProps) {
   const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [apiError, setApiError] = useState('');
@@ -68,13 +77,13 @@ export default function ResetStep({ resetToken, onComplete }: ResetStepProps) {
           variant="default"
           className="text-neutral-900! mb-2"
         >
-          Reset your password
+          {title}
         </Heading>
         <Text
           variant="body"
           className="text-neutral-500!"
         >
-          Create a new password for your account.
+          {description}
         </Text>
       </div>
 
@@ -119,7 +128,7 @@ export default function ResetStep({ resetToken, onComplete }: ResetStepProps) {
           disabled={isSubmitting}
           className="w-full"
         >
-          {isSubmitting ? 'Please wait…' : 'Reset Password'}
+          {isSubmitting ? 'Please wait…' : submitLabel}
         </Button>
 
         {apiError && (

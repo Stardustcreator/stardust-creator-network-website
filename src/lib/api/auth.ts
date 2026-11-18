@@ -82,7 +82,9 @@ async function post<T>(path: string, body: unknown): Promise<T> {
       statusText: res.statusText,
       response: data,
     });
-    throw new Error(data.message ?? 'Something went wrong. Please try again.');
+    throw Object.assign(new Error(data.message ?? 'Something went wrong. Please try again.'), {
+      code: typeof data.code === 'string' ? data.code : undefined,
+    });
   }
 
   return data as T;
@@ -167,6 +169,24 @@ export function verifyResetOtp(email: string, code: string) {
 
 export function resetPassword(resetToken: string, newPassword: string) {
   return post<void>('/auth/reset-password', { resetToken, newPassword });
+}
+
+export interface CreatorInviteExchange {
+  resetToken: string;
+  firstName: string;
+  stage?: string;
+  expiresAt?: string;
+  campaign?: unknown;
+}
+
+/** Trades an invite-email token for a reset token. Rejects with code CREATOR_INVITE_LINK_INVALID. */
+export function exchangeCreatorInvite(token: string) {
+  return post<CreatorInviteExchange>('/auth/creator-invite/exchange', { token });
+}
+
+/** Declines the invitation (the API answers 204). */
+export function declineCreatorInvite(token: string) {
+  return post<void>('/auth/creator-invite/decline', { token });
 }
 
 export function login(email: string, password: string) {
