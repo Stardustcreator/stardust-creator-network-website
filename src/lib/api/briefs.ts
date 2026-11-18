@@ -1,5 +1,23 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL;
 
+/** One per-field problem from a 400 `BRIEF_SUBMISSION_INVALID` response. */
+export interface BriefFieldError {
+  field: string;
+  code: string;
+  message: string;
+}
+
+/** Thrown when the backend refuses a brief; carries every field problem at once. */
+export class BriefSubmissionError extends Error {
+  readonly errors: BriefFieldError[];
+
+  constructor(message: string, errors: BriefFieldError[]) {
+    super(message);
+    this.name = 'BriefSubmissionError';
+    this.errors = errors;
+  }
+}
+
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     method: 'POST',
@@ -14,6 +32,13 @@ async function post<T>(path: string, body: unknown): Promise<T> {
     // field-validation strings (e.g. "property X should not exist") - never
     // fit for display. A single string `message` is a deliberate backend
     // error (e.g. a business-rule rejection) and is safe to show as-is.
+    if (data.code === 'BRIEF_SUBMISSION_INVALID' && Array.isArray(data.errors)) {
+      throw new BriefSubmissionError(
+        typeof data.message === 'string' ? data.message : 'This brief cannot be submitted yet.',
+        data.errors as BriefFieldError[]
+      );
+    }
+
     const message = Array.isArray(data.message)
       ? 'We could not process your submission. Please check your details and try again.'
       : (data.message ?? 'Something went wrong. Please try again.');
@@ -71,11 +96,20 @@ export interface SubmitBriefPayload {
   // Step 4: Budget & Payment Preference
   /** One of the backend's five Naira buckets, e.g. '₦1M - ₦2.5M'. No other currency is accepted yet. */
   budgetRange?: string;
+  /** Required, not blank, max 100 characters. */
   paymentModel?: string;
 
   // Step 5: Timeline & Deliverables
+  /** "YYYY-MM-DD", not before today in Nigeria time (UTC+1). Required. */
   campaignStartDate?: string;
+  /** Free-text, display only. The backend's rules check campaignDurationDays. */
   campaignDuration?: string;
+  /** Whole days, 1 to 365. Required on every campaign type. */
+  campaignDurationDays?: number;
+  /** Creator delivery timeline. Required except for posting_only, which must not send them. */
+  turnaroundValue?: number;
+  /** days | weeks | months | years */
+  turnaroundUnit?: string;
   /** Backend-recognized deliverable labels only - see CreateBriefDto.deliverables. */
   deliverables?: Array<{ label: string; quantity: number; otherDetail?: string }>;
   /**

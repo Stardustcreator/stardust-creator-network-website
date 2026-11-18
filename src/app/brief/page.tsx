@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import { persistGuestBriefToken } from '@/lib/guest-brief-token';
-import { submitBrief } from '@/lib/api/briefs';
+import { BriefSubmissionError, submitBrief } from '@/lib/api/briefs';
 import {
   extractUTMParams,
   resolveBudgetKobo,
@@ -139,7 +139,19 @@ const PAYMENT_MODELS = [
   'Not sure yet',
 ];
 
-const CAMPAIGN_DURATIONS = ['1-4 weeks', '1-3 months', '3-6 months', 'Ongoing'];
+const DAYS_PER_UNIT: Record<string, number> = { days: 1, weeks: 7, months: 30, years: 365 };
+const MAX_CAMPAIGN_DAYS = 365;
+const MAX_PAYMENT_MODEL_LENGTH = 100;
+
+// Backend field -> wizard step that owns the input, so a refusal can send the
+// brand back to the first step with a problem.
+const BRIEF_FIELD_STEP: Record<string, number> = {
+  paymentModel: 4,
+  campaignStartDate: 5,
+  campaignDurationDays: 5,
+  turnaroundValue: 5,
+  turnaroundUnit: 5,
+};
 const DELIVERABLES = [
   'Social Media Content (Reels, TikToks, Shorts)',
   'UGC Assets (Photos, Videos)',
@@ -404,7 +416,10 @@ export default function BriefPage() {
   const [paymentModel, setPaymentModel] = useState('');
 
   const [campaignStartDate, setCampaignStartDate] = useState('');
-  const [campaignDuration, setCampaignDuration] = useState('');
+  const [campaignDurationDays, setCampaignDurationDays] = useState('');
+  // Time the creator has to deliver once chosen; not sent for Posting Only.
+  const [turnaroundValue, setTurnaroundValue] = useState('');
+  const [turnaroundUnit, setTurnaroundUnit] = useState('');
   const [deliverables, setDeliverables] = useState<string[]>([]);
   // Only required (and only sent) when more than one creator is needed - the
   // backend rejects it outright for a single-creator brief.
@@ -426,7 +441,9 @@ export default function BriefPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const phonePlaceholder = country === 'United Kingdom' ? '+44 XXXX XXXXXX' : '+234 XXX XXX XXXX';
-  const today = new Date().toISOString().split('T')[0];
+  // The backend checks the start date against today in Nigeria (UTC+1, no DST),
+  // not the visitor's local date, so min must be computed in Lagos time.
+  const today = new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 10);
 
   const isMultiCreator = parseInt(numCreators, 10) > 1;
   const isUgcOnly = campaignType === 'ugc_content_only';
@@ -514,10 +531,40 @@ export default function BriefPage() {
 
     if (step === 4) {
       if (!estimatedBudget) errs.estimatedBudget = 'Select your budget range';
+      if (!paymentModel.trim()) errs.paymentModel = 'Select your preferred payment model';
+      else if (paymentModel.length > MAX_PAYMENT_MODEL_LENGTH) {
+        errs.paymentModel = `Payment model must be ${MAX_PAYMENT_MODEL_LENGTH} characters or fewer`;
+      }
     }
 
     if (step === 5) {
       if (!campaignStartDate) errs.campaignStartDate = 'Select a campaign start date';
+      else if (campaignStartDate < today) {
+        errs.campaignStartDate = 'Campaign start date cannot be in the past.';
+      }
+
+      const durationDays = parseInt(campaignDurationDays, 10);
+      if (!campaignDurationDays.trim()) {
+        errs.campaignDurationDays = 'Enter the campaign duration in days';
+      } else if (durationDays < 1 || durationDays > MAX_CAMPAIGN_DAYS) {
+        errs.campaignDurationDays = `Enter a duration between 1 and ${MAX_CAMPAIGN_DAYS} days`;
+      }
+
+      if (!isPostingOnly) {
+        const turnaround = parseInt(turnaroundValue, 10);
+        if (!turnaroundValue.trim() || !Number.isInteger(turnaround) || turnaround < 1) {
+          errs.turnaroundValue = 'Enter how long the creator has to deliver';
+        }
+        if (!turnaroundUnit) errs.turnaroundUnit = 'Select a unit';
+        if (
+          !errs.turnaroundValue &&
+          !errs.turnaroundUnit &&
+          !errs.campaignDurationDays &&
+          turnaround * (DAYS_PER_UNIT[turnaroundUnit] ?? 1) > durationDays
+        ) {
+          errs.turnaroundValue = 'Delivery time cannot be longer than the campaign duration.';
+        }
+      }
       if (deliverables.length === 0) errs.deliverables = 'Select at least one deliverable';
       if (isMultiCreator && !deliverablesScope) {
         errs.deliverablesScope = 'Select how requirements apply across creators';
@@ -614,7 +661,10 @@ export default function BriefPage() {
         contactEmail: email,
         contactName: contactPerson || undefined,
         budget: resolveBudgetKobo(country, estimatedBudget),
-        timeline: synthesizeTimeline({ campaignStartDate, campaignDuration }),
+        timeline: synthesizeTimeline({
+          campaignStartDate,
+          campaignDuration: `${campaignDurationDays} days`,
+        }),
         campaignBrief,
 
         companyWebsite: website || undefined,
@@ -651,10 +701,14 @@ export default function BriefPage() {
         creatorAgeRange: creatorAgeRange || undefined,
 
         budgetRange: estimatedBudget || undefined,
-        paymentModel: paymentModel || undefined,
+        paymentModel: paymentModel.trim(),
 
         campaignStartDate: campaignStartDate || undefined,
-        campaignDuration: campaignDuration || undefined,
+        campaignDuration: `${campaignDurationDays} days`,
+        campaignDurationDays: parseInt(campaignDurationDays, 10),
+        // The backend refuses these on a Posting Only brief.
+        turnaroundValue: isPostingOnly ? undefined : parseInt(turnaroundValue, 10),
+        turnaroundUnit: isPostingOnly ? undefined : turnaroundUnit || undefined,
         deliverables:
           backendDeliverables.length > 0
             ? backendDeliverables.map(label => ({ label, quantity: 1 }))
@@ -690,6 +744,20 @@ export default function BriefPage() {
       router.push('/brief/success');
       return;
     } catch (error) {
+      if (error instanceof BriefSubmissionError) {
+        // Mark every refused input at once and return to the earliest step.
+        const fieldErrors: Record<string, string> = {};
+        for (const e of error.errors) fieldErrors[e.field] = e.message;
+        const steps = Object.keys(fieldErrors)
+          .map(field => BRIEF_FIELD_STEP[field])
+          .filter((n): n is number => typeof n === 'number');
+        if (steps.length > 0) {
+          setErrors(fieldErrors);
+          setCurrentStep(Math.min(...steps));
+          setSubmitError('');
+          return;
+        }
+      }
       setSubmitError(
         error instanceof Error ? error.message : 'Failed to submit brief. Please try again.'
       );
@@ -1427,7 +1495,7 @@ export default function BriefPage() {
                     <FieldError message={errors.estimatedBudget} />
                   </div>
 
-                  <div className="hidden">
+                  <div>
                     <label className="block text-sm font-medium text-neutral-800 mb-2">
                       Preferred payment model
                     </label>
@@ -1438,10 +1506,14 @@ export default function BriefPage() {
                           name="paymentModel"
                           label={model}
                           selected={paymentModel === model}
-                          onSelect={() => setPaymentModel(model)}
+                          onSelect={() => {
+                            setPaymentModel(model);
+                            clearError('paymentModel');
+                          }}
                         />
                       ))}
                     </div>
+                    <FieldError message={errors.paymentModel} />
                   </div>
                 </div>
 
@@ -1521,24 +1593,68 @@ export default function BriefPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-neutral-800 mb-1.5">
-                      Campaign Duration
+                      Campaign Duration (days)
                     </label>
-                    <select
-                      value={campaignDuration}
-                      onChange={e => setCampaignDuration(e.target.value)}
-                      className={`${inputClass} appearance-none bg-white`}
-                    >
-                      <option value="">Select campaign duration</option>
-                      {CAMPAIGN_DURATIONS.map(duration => (
-                        <option
-                          key={duration}
-                          value={duration}
-                        >
-                          {duration}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={campaignDurationDays}
+                      onChange={e => {
+                        setCampaignDurationDays(toDigits(e.target.value));
+                        clearError('campaignDurationDays');
+                        clearError('turnaroundValue');
+                      }}
+                      placeholder="e.g. 30 (1 to 365)"
+                      className={fieldClass(!!errors.campaignDurationDays)}
+                    />
+                    <FieldError message={errors.campaignDurationDays} />
                   </div>
+
+                  {!isPostingOnly && (
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-800 mb-1.5">
+                        How long does the creator have to deliver?
+                      </label>
+                      <p className="text-sm text-neutral-500 mb-2">
+                        The time the creator has once chosen. It cannot be longer than the campaign
+                        duration.
+                      </p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          value={turnaroundValue}
+                          onChange={e => {
+                            setTurnaroundValue(toDigits(e.target.value));
+                            clearError('turnaroundValue');
+                          }}
+                          placeholder="e.g. 2"
+                          className={fieldClass(!!errors.turnaroundValue)}
+                        />
+                        <select
+                          value={turnaroundUnit}
+                          onChange={e => {
+                            setTurnaroundUnit(e.target.value);
+                            clearError('turnaroundUnit');
+                            clearError('turnaroundValue');
+                          }}
+                          className={`${fieldClass(!!errors.turnaroundUnit)} appearance-none bg-white`}
+                        >
+                          <option value="">Select unit</option>
+                          {DURATION_UNITS.map(unit => (
+                            <option
+                              key={unit.value}
+                              value={unit.value}
+                            >
+                              {unit.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <FieldError message={errors.turnaroundValue} />
+                      <FieldError message={errors.turnaroundUnit} />
+                    </div>
+                  )}
 
                   <div>
                     <label className="block text-sm font-medium text-neutral-800 mb-2">
