@@ -365,6 +365,9 @@ export default function TalkToSalesContent() {
   const [step, setStep] = useState<Step>('details');
   const [stepsOpen, setStepsOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  // Fires once per visit to "Your details" is done, so re-submitting (e.g. after
+  // "Edit details") doesn't file a second lead for the same person.
+  const leadPostedRef = useRef(false);
 
   // Start loading Calendly while people fill the form.
   useEffect(() => {
@@ -389,6 +392,29 @@ export default function TalkToSalesContent() {
       document.getElementById(`tts-${Object.keys(found)[0]}`)?.focus();
       return;
     }
+
+    // File the lead as soon as someone is ready to pick a time, rather than waiting on
+    // Calendly's own "booked" message, which can go missing (ad blockers, closed tab).
+    // Best effort and fire-and-forget: it must never slow or block getting to the calendar.
+    if (!leadPostedRef.current) {
+      leadPostedRef.current = true;
+      fetch('/api/sales-call/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          company: form.company,
+          website: form.website,
+          email: form.email,
+          phone: form.phone,
+          budget: form.budget,
+          topic: form.topic,
+          goals: form.goals,
+        }),
+      }).catch(() => {});
+    }
+
     setStep('schedule');
     scrollToCard();
   }
