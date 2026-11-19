@@ -75,7 +75,7 @@ describe('POST /api/sales-call/book lead forwarding', () => {
       company: 'Acme',
       workEmail: 'ada@acme.com',
       mobilePhone: '+2348031234567',
-      discussionTopic: booking.topic,
+      discussionTopic: 'retainer_package',
       goal: 'Reach new customers',
       pageSource: '/talk-to-sales',
       website: 'https://acme.com',
