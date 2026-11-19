@@ -13,7 +13,8 @@ export interface SalesLeadSource {
   budget?: string;
   topic: string;
   goals?: string;
-  slot: Date;
+  /** Omitted when the lead is filed before a time is picked (e.g. on "Continue to pick a time"). */
+  slot?: Date;
 }
 
 export interface SalesLeadPayload {
@@ -27,10 +28,17 @@ export interface SalesLeadPayload {
   pageSource: string;
   website?: string;
   budget?: string;
-  scheduledAt: string;
+  scheduledAt?: string;
 }
 
 export const SALES_LEAD_PAGE_SOURCE = '/talk-to-sales';
+
+/** Form label -> backend slug. Only `retainer_package` is accepted; everything else is retired. */
+const TOPIC_SLUGS: Record<string, string> = {
+  'Retainer package': 'retainer_package',
+};
+
+const topicSlug = (topic: string) => TOPIC_SLUGS[topic] ?? topic;
 
 const clip = (value: string, max: number) => value.trim().slice(0, max);
 
@@ -55,10 +63,11 @@ export function buildSalesLeadPayload(source: SalesLeadSource): SalesLeadPayload
     company: clip(source.company, 200),
     workEmail: clip(source.email, 200),
     mobilePhone: normalisePhoneForLead(source.phone),
-    discussionTopic: clip(source.topic, 200),
+    discussionTopic: topicSlug(source.topic),
     pageSource: SALES_LEAD_PAGE_SOURCE,
-    scheduledAt: source.slot.toISOString(),
   };
+
+  if (source.slot) payload.scheduledAt = source.slot.toISOString();
 
   const goal = clip(source.goals ?? '', 5000);
   if (goal) payload.goal = goal;
