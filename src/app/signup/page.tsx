@@ -37,23 +37,32 @@ export default function SignupPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // An invited creator skips the role picker and goes straight to the creator flow.
-  const [isInvited, setIsInvited] = useState(false);
+  // Invited creators and explicit creator referral links skip the role picker.
+  const [isRedirectingToCreatorSignup, setIsRedirectingToCreatorSignup] = useState(false);
 
   useEffect(() => {
-    const invite = parseCreatorInvite(new URLSearchParams(window.location.search));
-    if (!invite) return;
+    const params = new URLSearchParams(window.location.search);
+    const invite = parseCreatorInvite(params);
+    const isCreatorSignup = params.get('role') === 'creator';
 
-    saveCreatorInvite(invite);
-    setIsInvited(true);
-    router.replace('/onboarding');
+    if (invite) saveCreatorInvite(invite);
+    if (!invite && !isCreatorSignup) return;
+
+    setIsRedirectingToCreatorSignup(true);
+    const referralCode = params.get('referralCode');
+    router.replace(
+      referralCode ? `/onboarding?referralCode=${encodeURIComponent(referralCode)}` : '/onboarding'
+    );
   }, [router]);
 
   const handleCreatorSignup = () => {
-    router.push('/onboarding');
+    const referralCode = new URLSearchParams(window.location.search).get('referralCode');
+    router.push(
+      referralCode ? `/onboarding?referralCode=${encodeURIComponent(referralCode)}` : '/onboarding'
+    );
   };
 
-  if (isInvited) return null;
+  if (isRedirectingToCreatorSignup) return null;
 
   return (
     <>

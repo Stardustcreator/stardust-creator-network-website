@@ -64,5 +64,8 @@ export function buildForwardedUtmQuery(search: string): string {
     if (value) forwarded.set(key, value);
   }
 
+  const referralCode = current.get('referralCode');
+  if (referralCode) forwarded.set('referralCode', referralCode);
+
   return forwarded.toString();
 }
