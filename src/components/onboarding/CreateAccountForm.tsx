@@ -10,7 +10,7 @@ import VerificationStep from './VerificationStep';
 import SetPasswordStep from './SetPasswordStep';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import Button from '@/components/ui/Button';
-import { initiateRegistration, initiateGoogleAuth } from '@/lib/api/auth';
+import { initiateRegistration, initiateGoogleAuth, validateCampusReferral } from '@/lib/api/auth';
 import { toast } from '@/lib/toast';
 import { extractUTMParams } from '@/lib/brief-payload';
 import { getStoredAttribution } from '@/lib/attribution';
@@ -25,6 +25,7 @@ interface CreateAccountFormProps {
   initialPlan: PlanId;
   initialEmail?: string;
   initialStep?: OnboardingSubstep;
+  referralCode?: string;
 }
 
 function toBackendPlanId(plan: PlanId, billing: BillingPeriod): string {
@@ -37,6 +38,7 @@ export default function CreateAccountForm({
   initialPlan,
   initialEmail,
   initialStep = 'form',
+  referralCode,
 }: CreateAccountFormProps) {
   const router = useRouter();
   const billing = initialBilling;
@@ -87,6 +89,7 @@ export default function CreateAccountForm({
             email: formData.email,
           });
           if (reference) params.set('reference', reference);
+          if (referralCode) params.set('referralCode', referralCode);
 
           router.push(`/onboarding/success?${params.toString()}`);
         }}
@@ -149,6 +152,11 @@ export default function CreateAccountForm({
         stored.referrerUrl ??
         (typeof document === 'undefined' ? undefined : document.referrer || undefined);
 
+      // Referral validation is best effort. Invalid or unavailable codes do
+      // not interrupt signup and are omitted from the registration request.
+      const validReferralCode =
+        referralCode && (await validateCampusReferral(referralCode)) ? referralCode : undefined;
+
       const result = await initiateRegistration(
         formData.email,
         formData.firstName,
@@ -160,7 +168,8 @@ export default function CreateAccountForm({
         utmCampaign,
         referrerUrl,
         utmTerm,
-        utmContent
+        utmContent,
+        validReferralCode
       );
 
       if (result.message) {
