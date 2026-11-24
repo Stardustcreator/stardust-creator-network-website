@@ -82,7 +82,9 @@ async function post<T>(path: string, body: unknown): Promise<T> {
       statusText: res.statusText,
       response: data,
     });
-    throw new Error(data.message ?? 'Something went wrong. Please try again.');
+    throw Object.assign(new Error(data.message ?? 'Something went wrong. Please try again.'), {
+      code: typeof data.code === 'string' ? data.code : undefined,
+    });
   }
 
   return data as T;
@@ -112,7 +114,8 @@ export function initiateRegistration(
   utmCampaign?: string,
   referrerUrl?: string,
   utmTerm?: string,
-  utmContent?: string
+  utmContent?: string,
+  referralCode?: string
 ) {
   return post<{ message: string }>('/auth/initiate-registration', {
     email,
@@ -126,7 +129,21 @@ export function initiateRegistration(
     referrerUrl,
     utmTerm,
     utmContent,
+    ...(referralCode ? { referralCode } : {}),
   });
+}
+
+export async function validateCampusReferral(code: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/campus-referrals/${encodeURIComponent(code)}`, {
+      method: 'GET',
+    });
+    if (!res.ok) return false;
+    const data: unknown = await res.json();
+    return typeof data === 'object' && data !== null && 'valid' in data && data.valid === true;
+  } catch {
+    return false;
+  }
 }
 
 export function verifyEmail(email: string, code: string) {
@@ -167,6 +184,24 @@ export function verifyResetOtp(email: string, code: string) {
 
 export function resetPassword(resetToken: string, newPassword: string) {
   return post<void>('/auth/reset-password', { resetToken, newPassword });
+}
+
+export interface CreatorInviteExchange {
+  resetToken: string;
+  firstName: string;
+  stage?: string;
+  expiresAt?: string;
+  campaign?: unknown;
+}
+
+/** Trades an invite-email token for a reset token. Rejects with code CREATOR_INVITE_LINK_INVALID. */
+export function exchangeCreatorInvite(token: string) {
+  return post<CreatorInviteExchange>('/auth/creator-invite/exchange', { token });
+}
+
+/** Declines the invitation (the API answers 204). */
+export function declineCreatorInvite(token: string) {
+  return post<void>('/auth/creator-invite/decline', { token });
 }
 
 export function login(email: string, password: string) {
