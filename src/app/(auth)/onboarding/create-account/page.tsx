@@ -22,6 +22,7 @@ interface CreateAccountPageProps {
     plan?: string;
     email?: string;
     step?: string;
+    referralCode?: string;
   };
 }
 
@@ -38,7 +39,10 @@ export default function CreateAccountPage({ searchParams }: CreateAccountPagePro
   const billing = getBillingPeriod(searchParams?.billing);
   const planId = getPlanId(searchParams?.plan);
   const initialStep = searchParams?.step === 'otp' && searchParams.email ? 'otp' : 'form';
-  const paymentPath = `/onboarding/payment?plan=${planId}&billing=${billing}`;
+  const referralQuery = searchParams?.referralCode
+    ? `&referralCode=${encodeURIComponent(searchParams.referralCode)}`
+    : '';
+  const paymentPath = `/onboarding/payment?plan=${planId}&billing=${billing}${referralQuery}`;
 
   return (
     <>
@@ -56,7 +60,7 @@ export default function CreateAccountPage({ searchParams }: CreateAccountPagePro
             {/* Top bar: back link + stepper */}
             <div className="flex items-start flex-col md:flex-row justify-between mb-16 gap-10 md:gap-5">
               <Link
-                href="/onboarding"
+                href={`/onboarding${referralQuery ? `?referralCode=${encodeURIComponent(searchParams?.referralCode ?? '')}` : ''}`}
                 className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-800 transition-colors"
               >
                 <BackArrowIcon />
@@ -85,6 +89,7 @@ export default function CreateAccountPage({ searchParams }: CreateAccountPagePro
                 initialPlan={planId}
                 initialEmail={searchParams?.email}
                 initialStep={initialStep}
+                referralCode={searchParams?.referralCode}
               />
             </Suspense>
           </div>

@@ -41,7 +41,9 @@ export const BUDGET_OPTIONS = [
   '20M+',
 ] as const;
 
-export const TOPIC_OPTIONS = ['Retainer package', 'Single campaign', 'Something else'] as const;
+// Only "Retainer package" maps to a backend topic slug that's still accepted
+// (custom_scope/general_demo are retired); keep this list to just that.
+export const TOPIC_OPTIONS = ['Retainer package'] as const;
 
 export type Topic = (typeof TOPIC_OPTIONS)[number];
 

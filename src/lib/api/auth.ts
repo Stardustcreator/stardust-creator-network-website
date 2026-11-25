@@ -114,7 +114,8 @@ export function initiateRegistration(
   utmCampaign?: string,
   referrerUrl?: string,
   utmTerm?: string,
-  utmContent?: string
+  utmContent?: string,
+  referralCode?: string
 ) {
   return post<{ message: string }>('/auth/initiate-registration', {
     email,
@@ -128,7 +129,21 @@ export function initiateRegistration(
     referrerUrl,
     utmTerm,
     utmContent,
+    ...(referralCode ? { referralCode } : {}),
   });
+}
+
+export async function validateCampusReferral(code: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/campus-referrals/${encodeURIComponent(code)}`, {
+      method: 'GET',
+    });
+    if (!res.ok) return false;
+    const data: unknown = await res.json();
+    return typeof data === 'object' && data !== null && 'valid' in data && data.valid === true;
+  } catch {
+    return false;
+  }
 }
 
 export function verifyEmail(email: string, code: string) {
